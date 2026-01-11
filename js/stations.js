@@ -1,6 +1,11 @@
 let stations = [];
 let latestData = [];
 
+const group = st.Airshed === "ACA" ? layerACA : layerWCAS;
+
+const marker = L.circleMarker([st.Lat, st.Lon], { ... }).addTo(group);
+
+
 Promise.all([
   fetch("data/stations.json").then(r => r.json()),
   fetch("data/last6h.json").then(r => r.json())
