@@ -1,4 +1,9 @@
 const map = L.map("map").setView([53.518, -115.917], 7);
+const layerACA = L.layerGroup().addTo(map);
+const layerWCAS = L.layerGroup().addTo(map);
+const layerPA = L.layerGroup().addTo(map);
+const layerWind = L.layerGroup();
+
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors"
