@@ -48,6 +48,12 @@ map.on("click", e => {
 
 L.control.layers(null, overlays, { collapsed:false }).addTo(map);
 
+map.locate({setView:true, maxZoom:10});
+
+map.on("locationfound", e=>{
+  L.circleMarker(e.latlng,{radius:6,color:'blue'}).addTo(map);
+});
+
 
   showLocationModal(lat, lon, nearestStations, nearestPA);
 });
