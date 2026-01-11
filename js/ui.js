@@ -16,3 +16,15 @@ function getAQHIColor(val) {
   if (val == 10) return "#9a0100";
   return "#640100";
 }
+
+const modal = document.getElementById("modal");
+const body = document.getElementById("modal-body");
+document.getElementById("close").onclick = () => modal.style.display = "none";
+
+function showStationModal(st) {
+  body.innerHTML = `
+    <h2>${st.StationName}</h2>
+    <div id="station-gauges"></div>
+  `;
+  modal.style.display = "block";
+}
