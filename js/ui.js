@@ -41,6 +41,18 @@ const modal = document.getElementById("modal");
 const body = document.getElementById("modal-body");
 document.getElementById("close").onclick = () => modal.style.display = "none";
 
+const legend = L.control({position:'bottomleft'});
+
+legend.onAdd = function () {
+  const div = L.DomUtil.create('div','info legend');
+  div.innerHTML = `<img src="aep-aqhi-scale.png" style="width:150px">`;
+  return div;
+};
+
+legend.addTo(map);
+
+
+
 function showStationModal(st) {
   body.innerHTML = `
     <h2>${st.StationName}</h2>
