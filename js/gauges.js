@@ -25,3 +25,16 @@ function buildFullGaugePanel(station) {
     height: 500
   });
 }
+
+function buildForecastGauges(forecast) {
+
+  const gauges = forecast.map((f,i)=>({
+    type:"indicator",
+    mode:"gauge+number",
+    value:f.AQHI,
+    title:{text:`+${i+1} hr`},
+    gauge:{axis:{range:[0,11]}}
+  }));
+
+  Plotly.newPlot("forecast-gauges", gauges, {height:300});
+}
