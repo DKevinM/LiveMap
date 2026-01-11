@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Live Air Quality</title>
+  <title>Live Air Quality Platform</title>
+  <meta charset="utf-8"/>
+
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
-<div id="gauges" style="height:520px;"></div>
-<div id="map" style="height:600px;"></div>
+<div id="header">Live Air Quality Monitoring</div>
 
+<div id="gauges"></div>
+<div id="map"></div>
+
+<script src="js/stations.js"></script>
+<script src="js/purpleair.js"></script>
 <script src="js/gauges.js"></script>
+<script src="js/ui.js"></script>
 <script src="js/map.js"></script>
-<script
+
+</body>
+</html>
