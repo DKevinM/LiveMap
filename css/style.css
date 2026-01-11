@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+#header {
+  background: #0b5ed7;
+  color: white;
+  padding: 10px;
+  font-size: 22px;
+}
+
+#gauges {
+  height: 520px;
+  background: #cfe8f3;
+}
+
+#map {
+  height: 600px;
+}
