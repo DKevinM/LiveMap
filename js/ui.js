@@ -52,6 +52,24 @@ legend.onAdd = function () {
 legend.addTo(map);
 
 
+function showHistoryChart(stationName) {
+
+  fetch(`data/history/${stationName}.json`)
+    .then(r=>r.json())
+    .then(hist => {
+
+      const trace = {
+        x: hist.map(r=>r.time),
+        y: hist.map(r=>r.value),
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: 'AQHI'
+      };
+
+      Plotly.newPlot("history-chart", [trace], {height:300});
+    });
+}
+
 
 function showStationModal(st) {
   body.innerHTML = `
