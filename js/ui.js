@@ -1,3 +1,5 @@
+<div id="forecast-gauges"></div>
+
 function showStationModal(station) {
   alert("Station: " + station.name);
 }
@@ -78,3 +80,7 @@ function showStationModal(st) {
   `;
   modal.style.display = "block";
 }
+
+fetch(`data/forecast/${stations[0].StationName}.json`)
+  .then(r=>r.json())
+  .then(buildForecastGauges);
