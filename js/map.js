@@ -30,5 +30,15 @@ map.on("click", e => {
   const nearestStations = findClosest(lat, lon, stations, 2);
   const nearestPA = findClosest(lat, lon, purpleair, 3);
 
+  const overlays = {
+  "ACA Stations": layerACA,
+  "WCAS Stations": layerWCAS,
+  "PurpleAir": layerPA,
+  "Wind": layerWind
+};
+
+L.control.layers(null, overlays, { collapsed:false }).addTo(map);
+
+
   showLocationModal(lat, lon, nearestStations, nearestPA);
 });
