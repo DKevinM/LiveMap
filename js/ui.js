@@ -17,6 +17,26 @@ function getAQHIColor(val) {
   return "#640100";
 }
 
+function showLocationModal(lat, lon, stations, sensors) {
+
+  let html = `<h2>Location Analysis</h2>
+              <b>Lat:</b> ${lat.toFixed(4)} <b>Lon:</b> ${lon.toFixed(4)}<br><br>`;
+
+  html += `<h3>Nearest Stations</h3>`;
+  stations.forEach(s => html += `• ${s.StationName}<br>`);
+
+  html += `<h3>Nearest PurpleAir</h3>`;
+  sensors.forEach(p => html += `• ${p.name}<br>`);
+
+  html += `<div id="station-gauges"></div>`;
+
+  body.innerHTML = html;
+  modal.style.display = "block";
+
+  buildFullGaugePanel(stations[0]);   // Primary station
+}
+
+
 const modal = document.getElementById("modal");
 const body = document.getElementById("modal-body");
 document.getElementById("close").onclick = () => modal.style.display = "none";
