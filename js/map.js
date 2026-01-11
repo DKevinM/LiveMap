@@ -30,6 +30,15 @@ map.on("click", e => {
   const nearestStations = findClosest(lat, lon, stations, 2);
   const nearestPA = findClosest(lat, lon, purpleair, 3);
 
+  const windLayer = L.tileLayer.wms("https://geo.weather.gc.ca/geomet", {
+    layers: "HRDPS.CONTINENTAL_UU",
+    format: "image/png",
+    transparent: true,
+    opacity: 0.6
+  });
+  
+  layerWind.addLayer(windLayer);
+  
   const overlays = {
   "ACA Stations": layerACA,
   "WCAS Stations": layerWCAS,
