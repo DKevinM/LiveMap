@@ -1,40 +1,80 @@
-function buildGauge(id, title, value, min, max) {
+function safeValue(v) {
+  if (v === null || v === undefined || isNaN(v)) return null;
+  return Number(v);
+}
+
+function buildGauge(title, value, min, max, guideline = null, units = "") {
+
+  const v = safeValue(value);
+
+  const axisMax = (v !== null && v > max) ? v * 1.15 : max;
+
+  let steps = [];
+  if (guideline !== null) {
+    steps.push({ range: [min, guideline], color: "#e0f3f8" });
+    steps.push({ range: [guideline, axisMax], color: "#ffd2d2" });
+  }
+
   return {
     type: "indicator",
     mode: "gauge+number",
-    value: value ?? 0,
+    value: v ?? 0,
     title: { text: title },
-    gauge: { axis: { range: [min, max] } }
+    number: { suffix: units },
+    gauge: {
+      axis: { range: [min, axisMax] },
+      bar: { color: v === null ? "#999" : "#016797" },
+      steps: steps,
+      threshold: guideline !== null ? {
+        line: { color: "red", width: 4 },
+        thickness: 0.75,
+        value: guideline
+      } : undefined
+    },
+    domain: { x: [0, 1], y: [0, 1] }
   };
 }
 
-function buildFullGaugePanel(station) {
+window.buildFullGaugePanel = function (station) {
+
+  const offline = v => v === null || v === undefined || isNaN(v);
 
   const gauges = [
-    buildGauge("AQHI","AQHI",station.AQHI,0,11),
-    buildGauge("PM2.5","PM2.5",station.PM25,0,200),
-    buildGauge("O3","O₃",station.O3,0,100),
-    buildGauge("NO2","NO₂",station.NO2,0,200),
-    buildGauge("RH","RH",station.RH,0,100),
-    buildGauge("Temp","Temp",station.Temp,-40,40),
-    buildGauge("WS","Wind",station.WS,0,100)
+    buildGauge("AQHI", station.AQHI, 0, 11),
+    buildGauge("PM2.5", station.PM25, 0, 200, 80, " µg/m³"),
+    buildGauge("O₃", station.O3, 0, 100, 80, " ppb"),
+    buildGauge("NO₂", station.NO2, 0, 200, 100, " ppb"),
+    buildGauge("RH", station.RH, 0, 100, null, " %"),
+    buildGauge("Temp", station.Temp, -40, 40, null, " °C"),
+    buildGauge("Wind", station.WS, 0, 100, null, " km/h")
   ];
 
-  Plotly.newPlot("station-gauges", gauges, {
+  const layout = {
     grid: { rows: 2, columns: 4, pattern: "independent" },
-    height: 500
-  });
-}
+    height: 520,
+    annotations: []
+  };
 
-function buildForecastGauges(forecast) {
+  if (offline(station.PM25)) {
+    layout.annotations.push({
+      text: "Equipment Offline",
+      x: 0.5, y: 0.95,
+      xref: "paper", yref: "paper",
+      showarrow: false,
+      font: { color: "red", size: 14 }
+    });
+  }
 
-  const gauges = forecast.map((f,i)=>({
-    type:"indicator",
-    mode:"gauge+number",
-    value:f.AQHI,
-    title:{text:`+${i+1} hr`},
-    gauge:{axis:{range:[0,11]}}
-  }));
+  Plotly.newPlot("station-gauges", gauges, layout);
+};
 
-  Plotly.newPlot("forecast-gauges", gauges, {height:300});
-}
+window.buildForecastGauges = function (forecast) {
+
+  const gauges = forecast.map((f, i) =>
+    buildGauge(`+${i+1} hr`, f.AQHI, 0, 11)
+  );
+
+  Plotly.newPlot("forecast-gauges", gauges, { height: 300 });
+};
+
+
