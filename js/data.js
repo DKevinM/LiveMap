@@ -11,8 +11,5 @@ window.initData = async function () {
   window.last6hTable = last6h;
   window.purpleTable = purple;
 
-  window.stationsFC = buildStationsFC();
-  window.purpleFC   = buildPurpleFC(purple);
-
   console.log("Data ready.");
 };
