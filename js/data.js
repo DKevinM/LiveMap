@@ -1,49 +1,16 @@
-const DATA_BASE = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data";
-
 window.initData = async function () {
+  console.log("Loading published JSON datasets...");
 
-  console.log("Loading AB_datapull datasets...");
+  const DATA_BASE = "https://dkevinm.github.io/LiveMap/data";
 
-  const [stations, equipment, last6h, purple] = await Promise.all([
-    fetch(`${DATA_BASE}/station_list.csv`).then(r => r.text()),
-    fetch(`${DATA_BASE}/equipment.csv`).then(r => r.text()),
-    fetch(`${DATA_BASE}/last6h.csv`).then(r => r.text()),
-    fetch(`${DATA_BASE}/AB_PA_sensors.csv`).then(r => r.text())
+  const [last6h, purple] = await Promise.all([
+    fetch(`${DATA_BASE}/last6h.json`).then(r => r.json()),
+    fetch(`${DATA_BASE}/AB_PA_sensors.json`).then(r => r.json())
   ]);
 
-  // CSV parser
-  const parse = txt => Papa.parse(txt, {
-    header: true,
-    dynamicTyping: true,
-    skipEmptyLines: true
-  }).data;
+  window.last6hTable = last6h;
+  window.purpleTable = purple;
 
-  window.stationTable   = parse(stations);
-  window.equipmentTable = parse(equipment);
-  window.last6hTable    = parse(last6h);
-
-  const purpleTable = parse(purpleCSV);
-  // Build spatial objects from the CSV
-  window.purpleFC = {
-    type: "FeatureCollection",
-    features: purpleTable.map(p => ({
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [Number(p.longitude), Number(p.latitude)]
-      },
-      properties: p
-    }))
-  };
-
-  console.log("Tables loaded:", {
-    stations: window.stationTable.length,
-    equipment: window.equipmentTable.length,
-    last6h: window.last6hTable.length,
-    purple: purple.length
-  });
-
-  // Build spatial FeatureCollections
   window.stationsFC = buildStationsFC();
   window.purpleFC   = buildPurpleFC(purple);
 
