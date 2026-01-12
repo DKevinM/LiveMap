@@ -24,4 +24,4 @@ out_dir.mkdir(parents=True, exist_ok=True)
 # 3️⃣ Write outputs
 # ------------------------------------------------------------------
 
-df.to_json(out_dir / "last6h.json", orient="records", indent=2))
+df.to_json(out_dir / "last6h.json", orient="records", indent=2)
