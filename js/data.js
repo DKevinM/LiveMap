@@ -22,7 +22,7 @@ window.initData = async function () {
   window.equipmentTable = parse(equipment);
   window.last6hTable    = parse(last6h);
 
-  console.log("🧪 Tables loaded:", {
+  console.log("Tables loaded:", {
     stations: window.stationTable.length,
     equipment: window.equipmentTable.length,
     last6h: window.last6hTable.length,
