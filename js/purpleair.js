@@ -60,7 +60,7 @@ window.buildPurpleFC = function (data) {
   return {
     type: "FeatureCollection",
     features: data
-      .filter(p => p.latitude && p.longitude)
+      .filter(p => Number.isFinite(Number(p.latitude)) && Number.isFinite(Number(p.longitude)))
       .map(p => ({
         type: "Feature",
         geometry: {
@@ -71,3 +71,4 @@ window.buildPurpleFC = function (data) {
       }))
   };
 };
+
