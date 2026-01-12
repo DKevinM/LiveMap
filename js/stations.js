@@ -20,8 +20,8 @@ window.drawStations = function () {
     const lon = f.geometry.coordinates[0];
 
     const group = st.Airshed === "ACA" ? window.layerACA : window.layerWCAS;
-
-    const row = latest.find(r =>
+    
+    const row = latest?.find(r =>
       r.StationName === st.StationName &&
       r.ParameterName === "AQHI"
     );
@@ -53,3 +53,21 @@ window.drawStations = function () {
 
   console.log("Stations rendered.");
 };
+
+  window.buildStationsFC = function () {
+    return {
+      type: "FeatureCollection",
+      features: window.stationTable
+        .filter(r => r.Lat && r.Lon)
+        .map(r => ({
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [Number(r.Lon), Number(r.Lat)]
+          },
+          properties: r
+        }))
+    };
+  };
+
+
