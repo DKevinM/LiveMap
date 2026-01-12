@@ -72,3 +72,9 @@ window.buildPurpleFC = function (data) {
   };
 };
 
+
+window.initPurpleAir = async function () {
+  console.log("Initializing PurpleAir layers…");
+  window.drawPurpleAir();
+  return window.layerPA;
+};
