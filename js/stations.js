@@ -1,44 +1,55 @@
-let stations = [];
-let latestData = [];
+window.drawStations = function () {
 
-const group = st.Airshed === "ACA" ? layerACA : layerWCAS;
+  console.log("Drawing stations…");
 
-const marker = L.circleMarker([st.Lat, st.Lon], { ... }).addTo(group);
+  if (!window.map || !window.stationsFC || !window.last6hTable) {
+    console.error("Missing map or station data");
+    return;
+  }
 
+  // Clear previous
+  window.layerACA.clearLayers();
+  window.layerWCAS.clearLayers();
 
-Promise.all([
-  fetch("data/stations.json").then(r => r.json()),
-  fetch("data/last6h.json").then(r => r.json())
-]).then(([stationList, last6h]) => {
-  stations = stationList;
-  latestData = last6h;
-  drawStations();
-});
+  const latest = window.last6hTable;
 
-function drawStations() {
-  stations.forEach(st => {
-    const row = latestData.find(r => r.StationName === st.StationName && r.ParameterName === "AQHI");
+  window.stationsFC.features.forEach(f => {
+
+    const st = f.properties;
+    const lat = f.geometry.coordinates[1];
+    const lon = f.geometry.coordinates[0];
+
+    const group = st.Airshed === "ACA" ? window.layerACA : window.layerWCAS;
+
+    const row = latest.find(r =>
+      r.StationName === st.StationName &&
+      r.ParameterName === "AQHI"
+    );
+
     let val = row ? Number(row.Value) : null;
-
     if (row?.Value === "10+" || row?.Value === "10 +") val = 11;
 
     const color = getAQHIColor(val);
 
-    const marker = L.circleMarker([st.Lat, st.Lon], {
+    const marker = L.circleMarker([lat, lon], {
       radius: 18,
       color: "black",
       weight: 2,
       fillColor: color,
       fillOpacity: 0.85
-    }).addTo(map);
+    }).addTo(group);
 
-    marker.stationData = {...st, AQHI: val};
+    marker.stationData = { ...st, AQHI: val };
 
-    marker.bindTooltip(`${st.StationName}<br>AQHI: ${val ?? "NA"}`);
+    marker.bindTooltip(
+      `<b>${st.StationName}</b><br>AQHI: ${val ?? "NA"}`
+    );
 
     marker.on("click", () => {
       showStationModal(marker.stationData);
       buildGauges(marker.stationData);
     });
   });
-}
+
+  console.log("Stations rendered.");
+};
