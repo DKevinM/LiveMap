@@ -1,0 +1,2567 @@
+[
+  {
+    "sensor_index":4327,
+    "last_seen":1768198338,
+    "name":"Didsbury",
+    "location_type":0,
+    "latitude":51.667637,
+    "longitude":-114.12493,
+    "geometry":"POINT (-114.12493 51.667637)"
+  },
+  {
+    "sensor_index":267739,
+    "last_seen":1768198269,
+    "name":"Twintree",
+    "location_type":0,
+    "latitude":50.934338,
+    "longitude":-114.03835,
+    "geometry":"POINT (-114.03835 50.934338)"
+  },
+  {
+    "sensor_index":7208,
+    "last_seen":1768198239,
+    "name":"FAP-Redwater",
+    "location_type":0,
+    "latitude":53.951702,
+    "longitude":-113.10582,
+    "geometry":"POINT (-113.10582 53.951702)"
+  },
+  {
+    "sensor_index":269406,
+    "last_seen":1768198271,
+    "name":"Calling lake recreational center",
+    "location_type":0,
+    "latitude":55.23663,
+    "longitude":-113.196785,
+    "geometry":"POINT (-113.196785 55.23663)"
+  },
+  {
+    "sensor_index":269420,
+    "last_seen":1768198244,
+    "name":"Eagle point golf course",
+    "location_type":0,
+    "latitude":56.02103,
+    "longitude":-113.90384,
+    "geometry":"POINT (-113.90384 56.02103)"
+  },
+  {
+    "sensor_index":269426,
+    "last_seen":1768198242,
+    "name":"Red Earth Community Hall",
+    "location_type":0,
+    "latitude":56.56017,
+    "longitude":-115.30642,
+    "geometry":"POINT (-115.30642 56.56017)"
+  },
+  {
+    "sensor_index":269504,
+    "last_seen":1768198334,
+    "name":"Meadowview Leduc",
+    "location_type":0,
+    "latitude":53.24569,
+    "longitude":-113.5247,
+    "geometry":"POINT (-113.5247 53.24569)"
+  },
+  {
+    "sensor_index":276296,
+    "last_seen":1768198261,
+    "name":"Foggy Mountain Farm",
+    "location_type":0,
+    "latitude":58.444336,
+    "longitude":-116.1405,
+    "geometry":"POINT (-116.1405 58.444336)"
+  },
+  {
+    "sensor_index":276354,
+    "last_seen":1768198315,
+    "name":"Nipisi Terminal",
+    "location_type":0,
+    "latitude":55.90808,
+    "longitude":-115.14166,
+    "geometry":"POINT (-115.14166 55.90808)"
+  },
+  {
+    "sensor_index":277275,
+    "last_seen":1768198274,
+    "name":"Sexsmith Community Field",
+    "location_type":0,
+    "latitude":55.34613,
+    "longitude":-118.786194,
+    "geometry":"POINT (-118.786194 55.34613)"
+  },
+  {
+    "sensor_index":278167,
+    "last_seen":1768198330,
+    "name":"Norbo",
+    "location_type":0,
+    "latitude":52.683586,
+    "longitude":-112.52988,
+    "geometry":"POINT (-112.52988 52.683586)"
+  },
+  {
+    "sensor_index":278779,
+    "last_seen":1768198291,
+    "name":"Sharp Hills Wind Farm",
+    "location_type":0,
+    "latitude":51.678337,
+    "longitude":-110.66584,
+    "geometry":"POINT (-110.66584 51.678337)"
+  },
+  {
+    "sensor_index":278917,
+    "last_seen":1768198260,
+    "name":"MacEwan Calgary",
+    "location_type":0,
+    "latitude":51.131187,
+    "longitude":-114.11456,
+    "geometry":"POINT (-114.11456 51.131187)"
+  },
+  {
+    "sensor_index":279217,
+    "last_seen":1768198355,
+    "name":"Hollick Kenyon",
+    "location_type":0,
+    "latitude":53.626366,
+    "longitude":-113.42572,
+    "geometry":"POINT (-113.42572 53.626366)"
+  },
+  {
+    "sensor_index":279898,
+    "last_seen":1768195745,
+    "name":"Ervins",
+    "location_type":0,
+    "latitude":53.86501,
+    "longitude":-112.96842,
+    "geometry":"POINT (-112.96842 53.86501)"
+  },
+  {
+    "sensor_index":280178,
+    "last_seen":1768198347,
+    "name":"Air Sniffer",
+    "location_type":0,
+    "latitude":51.073933,
+    "longitude":-114.21235,
+    "geometry":"POINT (-114.21235 51.073933)"
+  },
+  {
+    "sensor_index":280540,
+    "last_seen":1768198321,
+    "name":"Ranchridge Court Calgary",
+    "location_type":0,
+    "latitude":51.12379,
+    "longitude":-114.18642,
+    "geometry":"POINT (-114.18642 51.12379)"
+  },
+  {
+    "sensor_index":280732,
+    "last_seen":1768198236,
+    "name":"LOCHEND DRIVE",
+    "location_type":0,
+    "latitude":51.181812,
+    "longitude":-114.32207,
+    "geometry":"POINT (-114.32207 51.181812)"
+  },
+  {
+    "sensor_index":24481,
+    "last_seen":1768198261,
+    "name":"AQSU-5226",
+    "location_type":0,
+    "latitude":53.528072,
+    "longitude":-113.41634,
+    "geometry":"POINT (-113.41634 53.528072)"
+  },
+  {
+    "sensor_index":24491,
+    "last_seen":1768198331,
+    "name":"AQSU-D34F",
+    "location_type":0,
+    "latitude":53.53523,
+    "longitude":-113.446594,
+    "geometry":"POINT (-113.446594 53.53523)"
+  },
+  {
+    "sensor_index":24513,
+    "last_seen":1768198303,
+    "name":"AQSU-D341",
+    "location_type":0,
+    "latitude":53.532578,
+    "longitude":-113.43812,
+    "geometry":"POINT (-113.43812 53.532578)"
+  },
+  {
+    "sensor_index":24523,
+    "last_seen":1768198247,
+    "name":"AQSU-D36F",
+    "location_type":0,
+    "latitude":53.532368,
+    "longitude":-113.41343,
+    "geometry":"POINT (-113.41343 53.532368)"
+  },
+  {
+    "sensor_index":288250,
+    "last_seen":1768198330,
+    "name":"TLFN",
+    "location_type":0,
+    "latitude":56.499516,
+    "longitude":-114.55182,
+    "geometry":"POINT (-114.55182 56.499516)"
+  },
+  {
+    "sensor_index":26503,
+    "last_seen":1768198295,
+    "name":"ACA_South Cooking Lake",
+    "location_type":0,
+    "latitude":53.415577,
+    "longitude":-113.1269,
+    "geometry":"POINT (-113.1269 53.415577)"
+  },
+  {
+    "sensor_index":288704,
+    "last_seen":1768198316,
+    "name":"HAMP-Brookville",
+    "location_type":0,
+    "latitude":53.570873,
+    "longitude":-112.99915,
+    "geometry":"POINT (-112.99915 53.570873)"
+  },
+  {
+    "sensor_index":288726,
+    "last_seen":1768198350,
+    "name":"HAMP-Partridge Hill",
+    "location_type":0,
+    "latitude":53.658012,
+    "longitude":-113.098946,
+    "geometry":"POINT (-113.098946 53.658012)"
+  },
+  {
+    "sensor_index":26633,
+    "last_seen":1768198248,
+    "name":"ACA_Campbell Park",
+    "location_type":0,
+    "latitude":53.555477,
+    "longitude":-113.28192,
+    "geometry":"POINT (-113.28192 53.555477)"
+  },
+  {
+    "sensor_index":26681,
+    "last_seen":1768198252,
+    "name":"ACA_Hansen Estates",
+    "location_type":0,
+    "latitude":53.41918,
+    "longitude":-113.22016,
+    "geometry":"POINT (-113.22016 53.41918)"
+  },
+  {
+    "sensor_index":27475,
+    "last_seen":1768198331,
+    "name":"Town of Castor",
+    "location_type":0,
+    "latitude":52.219707,
+    "longitude":-111.90631,
+    "geometry":"POINT (-111.90631 52.219707)"
+  },
+  {
+    "sensor_index":27707,
+    "last_seen":1768198325,
+    "name":"ACA_Woodcroft",
+    "location_type":0,
+    "latitude":53.564735,
+    "longitude":-113.56231,
+    "geometry":"POINT (-113.56231 53.564735)"
+  },
+  {
+    "sensor_index":27709,
+    "last_seen":1768198335,
+    "name":"ACA_Lions Park",
+    "location_type":0,
+    "latitude":53.629276,
+    "longitude":-113.63121,
+    "geometry":"POINT (-113.63121 53.629276)"
+  },
+  {
+    "sensor_index":289866,
+    "last_seen":1768198243,
+    "name":"Banff Warden Compound",
+    "location_type":0,
+    "latitude":51.191696,
+    "longitude":-115.55949,
+    "geometry":"POINT (-115.55949 51.191696)"
+  },
+  {
+    "sensor_index":27741,
+    "last_seen":1768198245,
+    "name":"ACA_Natalia Park",
+    "location_type":0,
+    "latitude":53.654835,
+    "longitude":-113.67236,
+    "geometry":"POINT (-113.67236 53.654835)"
+  },
+  {
+    "sensor_index":28587,
+    "last_seen":1768198311,
+    "name":"ACA_Jamieson Park",
+    "location_type":0,
+    "latitude":53.491158,
+    "longitude":-113.65097,
+    "geometry":"POINT (-113.65097 53.491158)"
+  },
+  {
+    "sensor_index":28617,
+    "last_seen":1768198284,
+    "name":"ACA_Spruce Grove Fire Services",
+    "location_type":0,
+    "latitude":53.545223,
+    "longitude":-113.899765,
+    "geometry":"POINT (-113.899765 53.545223)"
+  },
+  {
+    "sensor_index":28627,
+    "last_seen":1768198258,
+    "name":"ACA_Windsor Park",
+    "location_type":0,
+    "latitude":53.526073,
+    "longitude":-113.530045,
+    "geometry":"POINT (-113.530045 53.526073)"
+  },
+  {
+    "sensor_index":29211,
+    "last_seen":1768198320,
+    "name":"ACA_LendrumAQMS",
+    "location_type":0,
+    "latitude":53.497707,
+    "longitude":-113.527115,
+    "geometry":"POINT (-113.527115 53.497707)"
+  },
+  {
+    "sensor_index":29663,
+    "last_seen":1768198294,
+    "name":"Fort Vermillion County Office",
+    "location_type":0,
+    "latitude":58.38633,
+    "longitude":-116.00532,
+    "geometry":"POINT (-116.00532 58.38633)"
+  },
+  {
+    "sensor_index":33111,
+    "last_seen":1768198328,
+    "name":"PRAMP - Three Creeks",
+    "location_type":0,
+    "latitude":56.367107,
+    "longitude":-116.92315,
+    "geometry":"POINT (-116.92315 56.367107)"
+  },
+  {
+    "sensor_index":33137,
+    "last_seen":1768198311,
+    "name":"PRAMP - Nampa",
+    "location_type":0,
+    "latitude":56.04157,
+    "longitude":-117.13135,
+    "geometry":"POINT (-117.13135 56.04157)"
+  },
+  {
+    "sensor_index":33141,
+    "last_seen":1768198337,
+    "name":"PRAMP - Peace River (above valley)",
+    "location_type":0,
+    "latitude":56.229584,
+    "longitude":-117.32788,
+    "geometry":"POINT (-117.32788 56.229584)"
+  },
+  {
+    "sensor_index":295535,
+    "last_seen":1768198249,
+    "name":"Meadowbrook",
+    "location_type":0,
+    "latitude":51.274,
+    "longitude":-113.983,
+    "geometry":"POINT (-113.983 51.274)"
+  },
+  {
+    "sensor_index":298063,
+    "last_seen":1768198351,
+    "name":"Fireside",
+    "location_type":0,
+    "latitude":51.15669,
+    "longitude":-114.47526,
+    "geometry":"POINT (-114.47526 51.15669)"
+  },
+  {
+    "sensor_index":37199,
+    "last_seen":1768198315,
+    "name":"Wapiti",
+    "location_type":0,
+    "latitude":51.090633,
+    "longitude":-115.33135,
+    "geometry":"POINT (-115.33135 51.090633)"
+  },
+  {
+    "sensor_index":299447,
+    "last_seen":1768198315,
+    "name":"Evanston",
+    "location_type":0,
+    "latitude":51.181713,
+    "longitude":-114.109634,
+    "geometry":"POINT (-114.109634 51.181713)"
+  },
+  {
+    "sensor_index":38449,
+    "last_seen":1768198300,
+    "name":"PAS_Crescent Heights",
+    "location_type":0,
+    "latitude":50.0488,
+    "longitude":-110.68129,
+    "geometry":"POINT (-110.68129 50.0488)"
+  },
+  {
+    "sensor_index":38527,
+    "last_seen":1768198286,
+    "name":"PAS_Oyen",
+    "location_type":0,
+    "latitude":51.353207,
+    "longitude":-110.4846,
+    "geometry":"POINT (-110.4846 51.353207)"
+  },
+  {
+    "sensor_index":48675,
+    "last_seen":1768198281,
+    "name":"LICA - University nuhelot\u2019\u012fne thaiyots\u2019\u012f nistameyim\u00e2kanak Blue Quills",
+    "location_type":0,
+    "latitude":54.00074,
+    "longitude":-111.371155,
+    "geometry":"POINT (-111.371155 54.00074)"
+  },
+  {
+    "sensor_index":48843,
+    "last_seen":1768198352,
+    "name":"LICA - Bonnyville",
+    "location_type":0,
+    "latitude":54.264797,
+    "longitude":-110.73975,
+    "geometry":"POINT (-110.73975 54.264797)"
+  },
+  {
+    "sensor_index":49803,
+    "last_seen":1768198313,
+    "name":"AQSU-850B",
+    "location_type":0,
+    "latitude":51.285793,
+    "longitude":-114.8044,
+    "geometry":"POINT (-114.8044 51.285793)"
+  },
+  {
+    "sensor_index":49843,
+    "last_seen":1768198319,
+    "name":"WCAS_Breton",
+    "location_type":0,
+    "latitude":53.065487,
+    "longitude":-114.453995,
+    "geometry":"POINT (-114.453995 53.065487)"
+  },
+  {
+    "sensor_index":49851,
+    "last_seen":1768194004,
+    "name":"AQSU-CD29",
+    "location_type":0,
+    "latitude":51.255703,
+    "longitude":-114.07773,
+    "geometry":"POINT (-114.07773 51.255703)"
+  },
+  {
+    "sensor_index":52583,
+    "last_seen":1768198282,
+    "name":"ACA_RAC",
+    "location_type":0,
+    "latitude":53.48924,
+    "longitude":-113.45945,
+    "geometry":"POINT (-113.45945 53.48924)"
+  },
+  {
+    "sensor_index":52797,
+    "last_seen":1768198244,
+    "name":"ACA_QueenAlexandraPark",
+    "location_type":0,
+    "latitude":53.509693,
+    "longitude":-113.5083,
+    "geometry":"POINT (-113.5083 53.509693)"
+  },
+  {
+    "sensor_index":52941,
+    "last_seen":1768198236,
+    "name":"ACA_CD Nova",
+    "location_type":0,
+    "latitude":53.5675,
+    "longitude":-113.31479,
+    "geometry":"POINT (-113.31479 53.5675)"
+  },
+  {
+    "sensor_index":53143,
+    "last_seen":1768198285,
+    "name":"ACA_HeritageLakes",
+    "location_type":0,
+    "latitude":53.609863,
+    "longitude":-113.62693,
+    "geometry":"POINT (-113.62693 53.609863)"
+  },
+  {
+    "sensor_index":53155,
+    "last_seen":1768198285,
+    "name":"ACA_Winterburn Industrial",
+    "location_type":0,
+    "latitude":53.56212,
+    "longitude":-113.66366,
+    "geometry":"POINT (-113.66366 53.56212)"
+  },
+  {
+    "sensor_index":53215,
+    "last_seen":1768198283,
+    "name":"ACA_CentennialPark",
+    "location_type":0,
+    "latitude":53.366737,
+    "longitude":-113.7184,
+    "geometry":"POINT (-113.7184 53.366737)"
+  },
+  {
+    "sensor_index":53221,
+    "last_seen":1768198243,
+    "name":"ACA_ArgyllCL",
+    "location_type":0,
+    "latitude":53.505424,
+    "longitude":-113.46344,
+    "geometry":"POINT (-113.46344 53.505424)"
+  },
+  {
+    "sensor_index":53297,
+    "last_seen":1768198323,
+    "name":"ACA_Secord",
+    "location_type":0,
+    "latitude":53.536823,
+    "longitude":-113.693825,
+    "geometry":"POINT (-113.693825 53.536823)"
+  },
+  {
+    "sensor_index":53321,
+    "last_seen":1768198303,
+    "name":"ACA_PrinceRupert",
+    "location_type":0,
+    "latitude":53.560955,
+    "longitude":-113.51841,
+    "geometry":"POINT (-113.51841 53.560955)"
+  },
+  {
+    "sensor_index":53399,
+    "last_seen":1768198238,
+    "name":"ACA_Mt Pleasant Park",
+    "location_type":0,
+    "latitude":53.012997,
+    "longitude":-112.845474,
+    "geometry":"POINT (-112.845474 53.012997)"
+  },
+  {
+    "sensor_index":54145,
+    "last_seen":1768198301,
+    "name":"HouseYEG",
+    "location_type":0,
+    "latitude":53.54118,
+    "longitude":-113.56681,
+    "geometry":"POINT (-113.56681 53.54118)"
+  },
+  {
+    "sensor_index":60489,
+    "last_seen":1768198269,
+    "name":"University of Athabasca: Wabasca",
+    "location_type":0,
+    "latitude":55.99706,
+    "longitude":-113.88391,
+    "geometry":"POINT (-113.88391 55.99706)"
+  },
+  {
+    "sensor_index":60491,
+    "last_seen":1768197632,
+    "name":"Athabasca GeoSpace",
+    "location_type":0,
+    "latitude":54.602673,
+    "longitude":-113.64429,
+    "geometry":"POINT (-113.64429 54.602673)"
+  },
+  {
+    "sensor_index":60725,
+    "last_seen":1768198286,
+    "name":"TOB Fox",
+    "location_type":0,
+    "latitude":51.183052,
+    "longitude":-115.5619,
+    "geometry":"POINT (-115.5619 51.183052)"
+  },
+  {
+    "sensor_index":61041,
+    "last_seen":1768198322,
+    "name":"AQSU-4097",
+    "location_type":0,
+    "latitude":50.030506,
+    "longitude":-113.58495,
+    "geometry":"POINT (-113.58495 50.030506)"
+  },
+  {
+    "sensor_index":78783,
+    "last_seen":1768198252,
+    "name":"WCAS_Wagner",
+    "location_type":0,
+    "latitude":53.424202,
+    "longitude":-114.37478,
+    "geometry":"POINT (-114.37478 53.424202)"
+  },
+  {
+    "sensor_index":79343,
+    "last_seen":1767731420,
+    "name":"WCAS_Lodgepole",
+    "location_type":0,
+    "latitude":53.103786,
+    "longitude":-115.31703,
+    "geometry":"POINT (-115.31703 53.103786)"
+  },
+  {
+    "sensor_index":79371,
+    "last_seen":1768198263,
+    "name":"ACA_O'Morrow",
+    "location_type":0,
+    "latitude":54.90272,
+    "longitude":-112.84355,
+    "geometry":"POINT (-112.84355 54.90272)"
+  },
+  {
+    "sensor_index":79495,
+    "last_seen":1768198275,
+    "name":"WCAS_CarrotCreek",
+    "location_type":0,
+    "latitude":53.619835,
+    "longitude":-115.87102,
+    "geometry":"POINT (-115.87102 53.619835)"
+  },
+  {
+    "sensor_index":83939,
+    "last_seen":1767980054,
+    "name":"AQSU 06A8",
+    "location_type":0,
+    "latitude":51.21551,
+    "longitude":-113.93806,
+    "geometry":"POINT (-113.93806 51.21551)"
+  },
+  {
+    "sensor_index":83955,
+    "last_seen":1767745727,
+    "name":"AQSU-7177",
+    "location_type":0,
+    "latitude":50.124706,
+    "longitude":-113.106476,
+    "geometry":"POINT (-113.106476 50.124706)"
+  },
+  {
+    "sensor_index":83959,
+    "last_seen":1768198293,
+    "name":"Wheatland County Office",
+    "location_type":0,
+    "latitude":51.039913,
+    "longitude":-113.2859,
+    "geometry":"POINT (-113.2859 51.039913)"
+  },
+  {
+    "sensor_index":83971,
+    "last_seen":1767722706,
+    "name":"WCAS_Entwistle2(AQSU-858E)",
+    "location_type":0,
+    "latitude":53.59378,
+    "longitude":-114.9758,
+    "geometry":"POINT (-114.9758 53.59378)"
+  },
+  {
+    "sensor_index":87569,
+    "last_seen":1768198318,
+    "name":"Fort Macleod West",
+    "location_type":0,
+    "latitude":49.72151,
+    "longitude":-113.41215,
+    "geometry":"POINT (-113.41215 49.72151)"
+  },
+  {
+    "sensor_index":89567,
+    "last_seen":1768198257,
+    "name":"FAP-Thorhild",
+    "location_type":0,
+    "latitude":54.16194,
+    "longitude":-113.12362,
+    "geometry":"POINT (-113.12362 54.16194)"
+  },
+  {
+    "sensor_index":89933,
+    "last_seen":1768197883,
+    "name":"WCAS_Mayerthorpe(AQSU-7963)",
+    "location_type":0,
+    "latitude":53.953537,
+    "longitude":-115.145706,
+    "geometry":"POINT (-115.145706 53.953537)"
+  },
+  {
+    "sensor_index":91007,
+    "last_seen":1768198335,
+    "name":"Rainbow",
+    "location_type":0,
+    "latitude":51.168503,
+    "longitude":-115.57116,
+    "geometry":"POINT (-115.57116 51.168503)"
+  },
+  {
+    "sensor_index":91009,
+    "last_seen":1768198355,
+    "name":"WCAS_Pigeon Lake(AQSU-FFC0)",
+    "location_type":0,
+    "latitude":53.078487,
+    "longitude":-114.14398,
+    "geometry":"POINT (-114.14398 53.078487)"
+  },
+  {
+    "sensor_index":91475,
+    "last_seen":1768198332,
+    "name":"ACA_Poachers Landing",
+    "location_type":0,
+    "latitude":54.94255,
+    "longitude":-112.81085,
+    "geometry":"POINT (-112.81085 54.94255)"
+  },
+  {
+    "sensor_index":91535,
+    "last_seen":1768198356,
+    "name":"AQSU-442b",
+    "location_type":0,
+    "latitude":52.38103,
+    "longitude":-114.91628,
+    "geometry":"POINT (-114.91628 52.38103)"
+  },
+  {
+    "sensor_index":91545,
+    "last_seen":1768198354,
+    "name":"WCAS_Entwistle1(AQSU-6463)",
+    "location_type":0,
+    "latitude":53.593525,
+    "longitude":-114.971245,
+    "geometry":"POINT (-114.971245 53.593525)"
+  },
+  {
+    "sensor_index":92179,
+    "last_seen":1768198336,
+    "name":"AQSU-0095 Bonanza Public School",
+    "location_type":0,
+    "latitude":55.9133,
+    "longitude":-119.8277,
+    "geometry":"POINT (-119.8277 55.9133)"
+  },
+  {
+    "sensor_index":93279,
+    "last_seen":1768198267,
+    "name":"AQSU-76E1",
+    "location_type":0,
+    "latitude":49.06504,
+    "longitude":-113.90419,
+    "geometry":"POINT (-113.90419 49.06504)"
+  },
+  {
+    "sensor_index":96597,
+    "last_seen":1768198272,
+    "name":"Kananaskis",
+    "location_type":0,
+    "latitude":51.02913,
+    "longitude":-115.03353,
+    "geometry":"POINT (-115.03353 51.02913)"
+  },
+  {
+    "sensor_index":96833,
+    "last_seen":1768198263,
+    "name":"Lac des Arcs",
+    "location_type":0,
+    "latitude":51.05396,
+    "longitude":-115.16247,
+    "geometry":"POINT (-115.16247 51.05396)"
+  },
+  {
+    "sensor_index":96945,
+    "last_seen":1768198251,
+    "name":"DMF - BVCAS",
+    "location_type":0,
+    "latitude":51.04249,
+    "longitude":-115.25845,
+    "geometry":"POINT (-115.25845 51.04249)"
+  },
+  {
+    "sensor_index":100653,
+    "last_seen":1768198275,
+    "name":"PRAMP - M.D. of Peace Office",
+    "location_type":0,
+    "latitude":56.146744,
+    "longitude":-117.74339,
+    "geometry":"POINT (-117.74339 56.146744)"
+  },
+  {
+    "sensor_index":100655,
+    "last_seen":1768198313,
+    "name":"LICA - County of St. Paul",
+    "location_type":0,
+    "latitude":54.20083,
+    "longitude":-111.522255,
+    "geometry":"POINT (-111.522255 54.20083)"
+  },
+  {
+    "sensor_index":101369,
+    "last_seen":1768198267,
+    "name":"LICA - Ardmore",
+    "location_type":0,
+    "latitude":54.333332,
+    "longitude":-110.480225,
+    "geometry":"POINT (-110.480225 54.333332)"
+  },
+  {
+    "sensor_index":101383,
+    "last_seen":1768198258,
+    "name":"LICA - Lac La Biche",
+    "location_type":0,
+    "latitude":54.76268,
+    "longitude":-111.94575,
+    "geometry":"POINT (-111.94575 54.76268)"
+  },
+  {
+    "sensor_index":101764,
+    "last_seen":1768188092,
+    "name":"HAMP-Bon Accord",
+    "location_type":0,
+    "latitude":53.833584,
+    "longitude":-113.422325,
+    "geometry":"POINT (-113.422325 53.833584)"
+  },
+  {
+    "sensor_index":104952,
+    "last_seen":1768198286,
+    "name":"Cochrane",
+    "location_type":0,
+    "latitude":51.215492,
+    "longitude":-114.46866,
+    "geometry":"POINT (-114.46866 51.215492)"
+  },
+  {
+    "sensor_index":106978,
+    "last_seen":1768198294,
+    "name":"Red Deer Clearview Ridge",
+    "location_type":0,
+    "latitude":52.281784,
+    "longitude":-113.776566,
+    "geometry":"POINT (-113.776566 52.281784)"
+  },
+  {
+    "sensor_index":107160,
+    "last_seen":1768198283,
+    "name":"Drumheller - Town Hall",
+    "location_type":0,
+    "latitude":51.465256,
+    "longitude":-112.70726,
+    "geometry":"POINT (-112.70726 51.465256)"
+  },
+  {
+    "sensor_index":107244,
+    "last_seen":1768198290,
+    "name":"Rainbow Lake_Town Office and Airport_AEP",
+    "location_type":0,
+    "latitude":58.494736,
+    "longitude":-119.41358,
+    "geometry":"POINT (-119.41358 58.494736)"
+  },
+  {
+    "sensor_index":107246,
+    "last_seen":1768198216,
+    "name":"High Level_Town Hall_AEP",
+    "location_type":0,
+    "latitude":58.51561,
+    "longitude":-117.14293,
+    "geometry":"POINT (-117.14293 58.51561)"
+  },
+  {
+    "sensor_index":107248,
+    "last_seen":1768198315,
+    "name":"Slave Lake_Government Centre_AEP",
+    "location_type":0,
+    "latitude":55.281788,
+    "longitude":-114.77335,
+    "geometry":"POINT (-114.77335 55.281788)"
+  },
+  {
+    "sensor_index":107252,
+    "last_seen":1768198315,
+    "name":"Three Hills Library",
+    "location_type":0,
+    "latitude":51.70299,
+    "longitude":-113.27038,
+    "geometry":"POINT (-113.27038 51.70299)"
+  },
+  {
+    "sensor_index":107254,
+    "last_seen":1768198348,
+    "name":"Wainwright_Town Hall_AEP",
+    "location_type":0,
+    "latitude":52.833378,
+    "longitude":-110.860054,
+    "geometry":"POINT (-110.860054 52.833378)"
+  },
+  {
+    "sensor_index":107992,
+    "last_seen":1768198329,
+    "name":"AEP_Lethbridge",
+    "location_type":0,
+    "latitude":49.71643,
+    "longitude":-112.8003,
+    "geometry":"POINT (-112.8003 49.71643)"
+  },
+  {
+    "sensor_index":109982,
+    "last_seen":1768198308,
+    "name":"BVCAS \/ LDA2",
+    "location_type":0,
+    "latitude":51.05749,
+    "longitude":-115.16087,
+    "geometry":"POINT (-115.16087 51.05749)"
+  },
+  {
+    "sensor_index":112824,
+    "last_seen":1768198338,
+    "name":"MD PC Airport",
+    "location_type":0,
+    "latitude":49.52254,
+    "longitude":-114.000015,
+    "geometry":"POINT (-114.000015 49.52254)"
+  },
+  {
+    "sensor_index":114279,
+    "last_seen":1768198317,
+    "name":"Sheppard Boulevard",
+    "location_type":0,
+    "latitude":53.242477,
+    "longitude":-113.54863,
+    "geometry":"POINT (-113.54863 53.242477)"
+  },
+  {
+    "sensor_index":114435,
+    "last_seen":1768198348,
+    "name":"PAS_AcadiaValley(AQSU-D48F)",
+    "location_type":0,
+    "latitude":51.158504,
+    "longitude":-110.20845,
+    "geometry":"POINT (-110.20845 51.158504)"
+  },
+  {
+    "sensor_index":114831,
+    "last_seen":1768198261,
+    "name":"Didsbury 2",
+    "location_type":0,
+    "latitude":51.654808,
+    "longitude":-114.140076,
+    "geometry":"POINT (-114.140076 51.654808)"
+  },
+  {
+    "sensor_index":121533,
+    "last_seen":1768198317,
+    "name":"AQSU-2DB6",
+    "location_type":0,
+    "latitude":49.66113,
+    "longitude":-110.2928,
+    "geometry":"POINT (-110.2928 49.66113)"
+  },
+  {
+    "sensor_index":121555,
+    "last_seen":1768198260,
+    "name":"AQSU-7FC7_Chateh",
+    "location_type":0,
+    "latitude":58.702457,
+    "longitude":-118.68943,
+    "geometry":"POINT (-118.68943 58.702457)"
+  },
+  {
+    "sensor_index":121565,
+    "last_seen":1768198278,
+    "name":"PAS_Redcliff(AQSU-A84B)",
+    "location_type":0,
+    "latitude":50.077908,
+    "longitude":-110.78538,
+    "geometry":"POINT (-110.78538 50.077908)"
+  },
+  {
+    "sensor_index":121935,
+    "last_seen":1768198346,
+    "name":"AQSU-98F1",
+    "location_type":0,
+    "latitude":58.51658,
+    "longitude":-117.06416,
+    "geometry":"POINT (-117.06416 58.51658)"
+  },
+  {
+    "sensor_index":121943,
+    "last_seen":1768198335,
+    "name":"PAS_Empress(AQSU-9D8F)",
+    "location_type":0,
+    "latitude":50.95494,
+    "longitude":-110.0086,
+    "geometry":"POINT (-110.0086 50.95494)"
+  },
+  {
+    "sensor_index":122203,
+    "last_seen":1768198344,
+    "name":"PAS_Warner(AQSU-7104)",
+    "location_type":0,
+    "latitude":49.281773,
+    "longitude":-112.20722,
+    "geometry":"POINT (-112.20722 49.281773)"
+  },
+  {
+    "sensor_index":123361,
+    "last_seen":1768198303,
+    "name":"ACA_Inside Education",
+    "location_type":0,
+    "latitude":53.539177,
+    "longitude":-113.51903,
+    "geometry":"POINT (-113.51903 53.539177)"
+  },
+  {
+    "sensor_index":123383,
+    "last_seen":1768198259,
+    "name":"ACA_Westmount",
+    "location_type":0,
+    "latitude":53.549595,
+    "longitude":-113.53986,
+    "geometry":"POINT (-113.53986 53.549595)"
+  },
+  {
+    "sensor_index":123395,
+    "last_seen":1768198333,
+    "name":"ACA_Belmont",
+    "location_type":0,
+    "latitude":53.59432,
+    "longitude":-113.394005,
+    "geometry":"POINT (-113.394005 53.59432)"
+  },
+  {
+    "sensor_index":123419,
+    "last_seen":1768198314,
+    "name":"ACA_Uncas Park",
+    "location_type":0,
+    "latitude":53.507637,
+    "longitude":-113.03368,
+    "geometry":"POINT (-113.03368 53.507637)"
+  },
+  {
+    "sensor_index":123421,
+    "last_seen":1768198314,
+    "name":"ACA-Spruce Grove Aspenglen",
+    "location_type":0,
+    "latitude":53.55923,
+    "longitude":-113.91254,
+    "geometry":"POINT (-113.91254 53.55923)"
+  },
+  {
+    "sensor_index":123437,
+    "last_seen":1768198261,
+    "name":"ACA_Augustana",
+    "location_type":0,
+    "latitude":53.0125,
+    "longitude":-112.82366,
+    "geometry":"POINT (-112.82366 53.0125)"
+  },
+  {
+    "sensor_index":123445,
+    "last_seen":1768110523,
+    "name":"ACA_BelgraviaCL",
+    "location_type":0,
+    "latitude":53.50989,
+    "longitude":-113.53188,
+    "geometry":"POINT (-113.53188 53.50989)"
+  },
+  {
+    "sensor_index":123455,
+    "last_seen":1768198302,
+    "name":"ACA_Hazeldean2",
+    "location_type":0,
+    "latitude":53.50794,
+    "longitude":-113.47934,
+    "geometry":"POINT (-113.47934 53.50794)"
+  },
+  {
+    "sensor_index":125511,
+    "last_seen":1768198346,
+    "name":"Crowsnest1_AEP",
+    "location_type":0,
+    "latitude":49.54992,
+    "longitude":-114.288376,
+    "geometry":"POINT (-114.288376 49.54992)"
+  },
+  {
+    "sensor_index":125837,
+    "last_seen":1768198343,
+    "name":"Wabasca Community Hall",
+    "location_type":0,
+    "latitude":55.94443,
+    "longitude":-113.808464,
+    "geometry":"POINT (-113.808464 55.94443)"
+  },
+  {
+    "sensor_index":126359,
+    "last_seen":1768198282,
+    "name":"Stormfarm",
+    "location_type":0,
+    "latitude":51.328136,
+    "longitude":-114.595276,
+    "geometry":"POINT (-114.595276 51.328136)"
+  },
+  {
+    "sensor_index":133075,
+    "last_seen":1768198251,
+    "name":"TOWN OFFICE",
+    "location_type":0,
+    "latitude":53.52915,
+    "longitude":-114.00546,
+    "geometry":"POINT (-114.00546 53.52915)"
+  },
+  {
+    "sensor_index":143626,
+    "last_seen":1768198246,
+    "name":"MunicipalityCrowsnest_AEP",
+    "location_type":0,
+    "latitude":49.635395,
+    "longitude":-114.492195,
+    "geometry":"POINT (-114.492195 49.635395)"
+  },
+  {
+    "sensor_index":146904,
+    "last_seen":1768198277,
+    "name":"ACA_Kiniski Gardens",
+    "location_type":0,
+    "latitude":53.477036,
+    "longitude":-113.39919,
+    "geometry":"POINT (-113.39919 53.477036)"
+  },
+  {
+    "sensor_index":151162,
+    "last_seen":1768198309,
+    "name":"PAS_Hanna(AQSU-706B)",
+    "location_type":0,
+    "latitude":51.64296,
+    "longitude":-111.93076,
+    "geometry":"POINT (-111.93076 51.64296)"
+  },
+  {
+    "sensor_index":155955,
+    "last_seen":1768198337,
+    "name":"AHS_Grandview Cardston (AQSU-13DF)",
+    "location_type":0,
+    "latitude":49.18735,
+    "longitude":-113.30004,
+    "geometry":"POINT (-113.30004 49.18735)"
+  },
+  {
+    "sensor_index":156103,
+    "last_seen":1768198326,
+    "name":"AHS_Coalhurst(AQSU-43A3)",
+    "location_type":0,
+    "latitude":49.7419,
+    "longitude":-112.9314,
+    "geometry":"POINT (-112.9314 49.7419)"
+  },
+  {
+    "sensor_index":156367,
+    "last_seen":1768198343,
+    "name":"ACA_Wetaskiwin (AQSU-708E)",
+    "location_type":0,
+    "latitude":52.978676,
+    "longitude":-113.38429,
+    "geometry":"POINT (-113.38429 52.978676)"
+  },
+  {
+    "sensor_index":156365,
+    "last_seen":1768198252,
+    "name":"McBride",
+    "location_type":0,
+    "latitude":49.587254,
+    "longitude":-113.47292,
+    "geometry":"POINT (-113.47292 49.587254)"
+  },
+  {
+    "sensor_index":156573,
+    "last_seen":1768198326,
+    "name":"University of Lethbridge",
+    "location_type":0,
+    "latitude":49.667812,
+    "longitude":-112.8645,
+    "geometry":"POINT (-112.8645 49.667812)"
+  },
+  {
+    "sensor_index":156643,
+    "last_seen":1768198308,
+    "name":"AHS_Nobleford (AQSU-2726)",
+    "location_type":0,
+    "latitude":49.879803,
+    "longitude":-113.05574,
+    "geometry":"POINT (-113.05574 49.879803)"
+  },
+  {
+    "sensor_index":156679,
+    "last_seen":1768198255,
+    "name":"WCAS_Jasper4 (AQSU - D978)",
+    "location_type":0,
+    "latitude":52.87667,
+    "longitude":-118.084785,
+    "geometry":"POINT (-118.084785 52.87667)"
+  },
+  {
+    "sensor_index":156677,
+    "last_seen":1767784305,
+    "name":"Tallcree First Nation",
+    "location_type":0,
+    "latitude":57.904114,
+    "longitude":-115.360886,
+    "geometry":"POINT (-115.360886 57.904114)"
+  },
+  {
+    "sensor_index":156733,
+    "last_seen":1768198258,
+    "name":"LRRCN_Garden River",
+    "location_type":0,
+    "latitude":58.70812,
+    "longitude":-113.872215,
+    "geometry":"POINT (-113.872215 58.70812)"
+  },
+  {
+    "sensor_index":156805,
+    "last_seen":1768198244,
+    "name":"ACA_Klarvatten",
+    "location_type":0,
+    "latitude":53.641834,
+    "longitude":-113.48319,
+    "geometry":"POINT (-113.48319 53.641834)"
+  },
+  {
+    "sensor_index":156909,
+    "last_seen":1768198237,
+    "name":"WCAS_Edson1 (AQSU - ACD8)",
+    "location_type":0,
+    "latitude":53.59018,
+    "longitude":-116.426605,
+    "geometry":"POINT (-116.426605 53.59018)"
+  },
+  {
+    "sensor_index":160929,
+    "last_seen":1768198325,
+    "name":"BBCan_Edmonton_out_42C",
+    "location_type":0,
+    "latitude":53.42745,
+    "longitude":-113.39937,
+    "geometry":"POINT (-113.39937 53.42745)"
+  },
+  {
+    "sensor_index":161021,
+    "last_seen":1768198293,
+    "name":"BBCan_Joussard_out_001",
+    "location_type":0,
+    "latitude":55.340366,
+    "longitude":-115.89567,
+    "geometry":"POINT (-115.89567 55.340366)"
+  },
+  {
+    "sensor_index":164853,
+    "last_seen":1768198339,
+    "name":"Vientos",
+    "location_type":0,
+    "latitude":51.118874,
+    "longitude":-114.240906,
+    "geometry":"POINT (-114.240906 51.118874)"
+  },
+  {
+    "sensor_index":166925,
+    "last_seen":1768198069,
+    "name":"PAS_Jenner(AQSU-14FF)",
+    "location_type":0,
+    "latitude":50.748875,
+    "longitude":-111.18138,
+    "geometry":"POINT (-111.18138 50.748875)"
+  },
+  {
+    "sensor_index":166941,
+    "last_seen":1768198286,
+    "name":"ACA_Idylwylde (AQSU-A4BF)",
+    "location_type":0,
+    "latitude":53.52446,
+    "longitude":-113.451904,
+    "geometry":"POINT (-113.451904 53.52446)"
+  },
+  {
+    "sensor_index":166947,
+    "last_seen":1768198269,
+    "name":"PAS_Foremost(AQSU-0E7F)",
+    "location_type":0,
+    "latitude":49.476425,
+    "longitude":-111.44159,
+    "geometry":"POINT (-111.44159 49.476425)"
+  },
+  {
+    "sensor_index":166955,
+    "last_seen":1768198275,
+    "name":"PAS_Youngstown(AQSU-A056)",
+    "location_type":0,
+    "latitude":51.529312,
+    "longitude":-111.20714,
+    "geometry":"POINT (-111.20714 51.529312)"
+  },
+  {
+    "sensor_index":166953,
+    "last_seen":1768198240,
+    "name":"ACA_W.P.Wagner(AQSU-133F)",
+    "location_type":0,
+    "latitude":53.500053,
+    "longitude":-113.453636,
+    "geometry":"POINT (-113.453636 53.500053)"
+  },
+  {
+    "sensor_index":166957,
+    "last_seen":1768198342,
+    "name":"PAS_Ralston(AQSU-BDA2)",
+    "location_type":0,
+    "latitude":50.246002,
+    "longitude":-111.16488,
+    "geometry":"POINT (-111.16488 50.246002)"
+  },
+  {
+    "sensor_index":166961,
+    "last_seen":1768198320,
+    "name":"ACA_Bonnie Doon (AQSU-8CBD)",
+    "location_type":0,
+    "latitude":53.526333,
+    "longitude":-113.46699,
+    "geometry":"POINT (-113.46699 53.526333)"
+  },
+  {
+    "sensor_index":166965,
+    "last_seen":1768198352,
+    "name":"WCAS_Evansburg1 (AQSU-A26A)",
+    "location_type":0,
+    "latitude":53.60466,
+    "longitude":-115.018326,
+    "geometry":"POINT (-115.018326 53.60466)"
+  },
+  {
+    "sensor_index":166971,
+    "last_seen":1768198258,
+    "name":"ACA_BPAC (AQSU-6FE5)",
+    "location_type":0,
+    "latitude":53.549248,
+    "longitude":-113.939095,
+    "geometry":"POINT (-113.939095 53.549248)"
+  },
+  {
+    "sensor_index":166969,
+    "last_seen":1768198333,
+    "name":"ACA_Summerside(AQSU-D273)",
+    "location_type":0,
+    "latitude":53.419025,
+    "longitude":-113.45067,
+    "geometry":"POINT (-113.45067 53.419025)"
+  },
+  {
+    "sensor_index":166977,
+    "last_seen":1768198292,
+    "name":"ACA_StrathconaCL (AQSU-9E5B)",
+    "location_type":0,
+    "latitude":53.52217,
+    "longitude":-113.493385,
+    "geometry":"POINT (-113.493385 53.52217)"
+  },
+  {
+    "sensor_index":166981,
+    "last_seen":1768198260,
+    "name":"ACA_Chappelle(AQSU-9FF5)",
+    "location_type":0,
+    "latitude":53.407112,
+    "longitude":-113.58364,
+    "geometry":"POINT (-113.58364 53.407112)"
+  },
+  {
+    "sensor_index":172289,
+    "last_seen":1767732561,
+    "name":"East Sundre",
+    "location_type":0,
+    "latitude":51.795395,
+    "longitude":-114.625916,
+    "geometry":"POINT (-114.625916 51.795395)"
+  },
+  {
+    "sensor_index":172951,
+    "last_seen":1768198337,
+    "name":"Goldstick Park",
+    "location_type":0,
+    "latitude":53.54826,
+    "longitude":-113.40451,
+    "geometry":"POINT (-113.40451 53.54826)"
+  },
+  {
+    "sensor_index":173005,
+    "last_seen":1768198275,
+    "name":"Olfert House-O-PA",
+    "location_type":0,
+    "latitude":53.486847,
+    "longitude":-113.51945,
+    "geometry":"POINT (-113.51945 53.486847)"
+  },
+  {
+    "sensor_index":175653,
+    "last_seen":1768198335,
+    "name":"HAMP-RHJH",
+    "location_type":0,
+    "latitude":53.697224,
+    "longitude":-113.22486,
+    "geometry":"POINT (-113.22486 53.697224)"
+  },
+  {
+    "sensor_index":175689,
+    "last_seen":1768198322,
+    "name":"FAP-Newbrook1",
+    "location_type":0,
+    "latitude":54.327793,
+    "longitude":-112.95018,
+    "geometry":"POINT (-112.95018 54.327793)"
+  },
+  {
+    "sensor_index":175707,
+    "last_seen":1768198242,
+    "name":"HAMP-Elk Island",
+    "location_type":0,
+    "latitude":53.678474,
+    "longitude":-112.8291,
+    "geometry":"POINT (-112.8291 53.678474)"
+  },
+  {
+    "sensor_index":176075,
+    "last_seen":1768198248,
+    "name":"Three Sisters - TOC\/BVCAS",
+    "location_type":0,
+    "latitude":51.06254,
+    "longitude":-115.32748,
+    "geometry":"POINT (-115.32748 51.06254)"
+  },
+  {
+    "sensor_index":176073,
+    "last_seen":1768198356,
+    "name":"Spring Creek TOC\/BVCAS",
+    "location_type":0,
+    "latitude":51.082848,
+    "longitude":-115.35052,
+    "geometry":"POINT (-115.35052 51.082848)"
+  },
+  {
+    "sensor_index":176079,
+    "last_seen":1768198332,
+    "name":"Silvertip - TOC\/BVCAS",
+    "location_type":0,
+    "latitude":51.100964,
+    "longitude":-115.33152,
+    "geometry":"POINT (-115.33152 51.100964)"
+  },
+  {
+    "sensor_index":176085,
+    "last_seen":1768198291,
+    "name":"Rundleview - TOC\/BVCAS",
+    "location_type":0,
+    "latitude":51.083958,
+    "longitude":-115.373146,
+    "geometry":"POINT (-115.373146 51.083958)"
+  },
+  {
+    "sensor_index":176097,
+    "last_seen":1768198333,
+    "name":"Larch - TOC\/BVCAS",
+    "location_type":0,
+    "latitude":51.10016,
+    "longitude":-115.37332,
+    "geometry":"POINT (-115.37332 51.10016)"
+  },
+  {
+    "sensor_index":176289,
+    "last_seen":1768198327,
+    "name":"Swan Hills",
+    "location_type":0,
+    "latitude":54.717575,
+    "longitude":-115.40453,
+    "geometry":"POINT (-115.40453 54.717575)"
+  },
+  {
+    "sensor_index":177339,
+    "last_seen":1768198269,
+    "name":"Canada Task Force 2",
+    "location_type":0,
+    "latitude":51.032455,
+    "longitude":-113.953514,
+    "geometry":"POINT (-113.953514 51.032455)"
+  },
+  {
+    "sensor_index":177393,
+    "last_seen":1768198269,
+    "name":"TOB Pavilion",
+    "location_type":0,
+    "latitude":51.173504,
+    "longitude":-115.578606,
+    "geometry":"POINT (-115.578606 51.173504)"
+  },
+  {
+    "sensor_index":177857,
+    "last_seen":1768198276,
+    "name":"MATC",
+    "location_type":0,
+    "latitude":51.032402,
+    "longitude":-113.95362,
+    "geometry":"POINT (-113.95362 51.032402)"
+  },
+  {
+    "sensor_index":178113,
+    "last_seen":1768198243,
+    "name":"ACA_Morinville (AQSU - 2C47)",
+    "location_type":0,
+    "latitude":53.797264,
+    "longitude":-113.64369,
+    "geometry":"POINT (-113.64369 53.797264)"
+  },
+  {
+    "sensor_index":178295,
+    "last_seen":1768198327,
+    "name":"Huntington Hills NE",
+    "location_type":0,
+    "latitude":51.112934,
+    "longitude":-114.069305,
+    "geometry":"POINT (-114.069305 51.112934)"
+  },
+  {
+    "sensor_index":178305,
+    "last_seen":1768198239,
+    "name":"Sunnyside",
+    "location_type":0,
+    "latitude":51.05969,
+    "longitude":-114.07253,
+    "geometry":"POINT (-114.07253 51.05969)"
+  },
+  {
+    "sensor_index":179823,
+    "last_seen":1768198332,
+    "name":"Highfield",
+    "location_type":0,
+    "latitude":52.499992,
+    "longitude":-113.80018,
+    "geometry":"POINT (-113.80018 52.499992)"
+  },
+  {
+    "sensor_index":179893,
+    "last_seen":1768198253,
+    "name":"TRO 4",
+    "location_type":0,
+    "latitude":55.202007,
+    "longitude":-118.78446,
+    "geometry":"POINT (-118.78446 55.202007)"
+  },
+  {
+    "sensor_index":179935,
+    "last_seen":1768198137,
+    "name":"TRO 3",
+    "location_type":0,
+    "latitude":55.20201,
+    "longitude":-118.7853,
+    "geometry":"POINT (-118.7853 55.20201)"
+  },
+  {
+    "sensor_index":180485,
+    "last_seen":1768198268,
+    "name":"RBL Processing Plant",
+    "location_type":0,
+    "latitude":58.44874,
+    "longitude":-119.23867,
+    "geometry":"POINT (-119.23867 58.44874)"
+  },
+  {
+    "sensor_index":180571,
+    "last_seen":1768198341,
+    "name":"Calgary Mission",
+    "location_type":0,
+    "latitude":51.033283,
+    "longitude":-114.076996,
+    "geometry":"POINT (-114.076996 51.033283)"
+  },
+  {
+    "sensor_index":182585,
+    "last_seen":1768198269,
+    "name":"HAMP-Josephburg",
+    "location_type":0,
+    "latitude":53.712765,
+    "longitude":-113.07054,
+    "geometry":"POINT (-113.07054 53.712765)"
+  },
+  {
+    "sensor_index":183225,
+    "last_seen":1768198303,
+    "name":"Beaverbrook School",
+    "location_type":0,
+    "latitude":50.97301,
+    "longitude":-114.06213,
+    "geometry":"POINT (-114.06213 50.97301)"
+  },
+  {
+    "sensor_index":184395,
+    "last_seen":1768198244,
+    "name":"Bragg Creek Trails",
+    "location_type":0,
+    "latitude":50.94828,
+    "longitude":-114.69332,
+    "geometry":"POINT (-114.69332 50.94828)"
+  },
+  {
+    "sensor_index":184635,
+    "last_seen":1768198310,
+    "name":"Canmore",
+    "location_type":0,
+    "latitude":51.08092,
+    "longitude":-115.33024,
+    "geometry":"POINT (-115.33024 51.08092)"
+  },
+  {
+    "sensor_index":185155,
+    "last_seen":1768198321,
+    "name":"Harvie Heights",
+    "location_type":0,
+    "latitude":51.12639,
+    "longitude":-115.38335,
+    "geometry":"POINT (-115.38335 51.12639)"
+  },
+  {
+    "sensor_index":186143,
+    "last_seen":1768198345,
+    "name":"AE-Fort Saskatchewan (south)",
+    "location_type":0,
+    "latitude":53.67414,
+    "longitude":-113.23655,
+    "geometry":"POINT (-113.23655 53.67414)"
+  },
+  {
+    "sensor_index":187769,
+    "last_seen":1768198255,
+    "name":"Akinsdale",
+    "location_type":0,
+    "latitude":53.631107,
+    "longitude":-113.58479,
+    "geometry":"POINT (-113.58479 53.631107)"
+  },
+  {
+    "sensor_index":188593,
+    "last_seen":1768198255,
+    "name":"EDTNAB_Miller",
+    "location_type":0,
+    "latitude":53.610676,
+    "longitude":-113.41368,
+    "geometry":"POINT (-113.41368 53.610676)"
+  },
+  {
+    "sensor_index":189139,
+    "last_seen":1768127409,
+    "name":"Garneau1",
+    "location_type":0,
+    "latitude":53.51572,
+    "longitude":-113.51871,
+    "geometry":"POINT (-113.51871 53.51572)"
+  },
+  {
+    "sensor_index":189171,
+    "last_seen":1768146032,
+    "name":"PRAMP - Roma Drive",
+    "location_type":0,
+    "latitude":56.20442,
+    "longitude":-117.54525,
+    "geometry":"POINT (-117.54525 56.20442)"
+  },
+  {
+    "sensor_index":189173,
+    "last_seen":1768198293,
+    "name":"PRAMP - Woodland Cree (Cadotte Lake)",
+    "location_type":0,
+    "latitude":56.4714,
+    "longitude":-116.404945,
+    "geometry":"POINT (-116.404945 56.4714)"
+  },
+  {
+    "sensor_index":189179,
+    "last_seen":1768198326,
+    "name":"LICA - Buffalo Lake M\u00e9tis Settlement",
+    "location_type":0,
+    "latitude":54.567116,
+    "longitude":-112.47862,
+    "geometry":"POINT (-112.47862 54.567116)"
+  },
+  {
+    "sensor_index":189195,
+    "last_seen":1768198297,
+    "name":"LICA - Kehewin Cree Nation",
+    "location_type":0,
+    "latitude":54.11655,
+    "longitude":-110.85766,
+    "geometry":"POINT (-110.85766 54.11655)"
+  },
+  {
+    "sensor_index":189211,
+    "last_seen":1768198314,
+    "name":"PRAMP - Rosary School",
+    "location_type":0,
+    "latitude":56.91943,
+    "longitude":-117.61997,
+    "geometry":"POINT (-117.61997 56.91943)"
+  },
+  {
+    "sensor_index":189325,
+    "last_seen":1768198242,
+    "name":"Calgary Wildwood",
+    "location_type":0,
+    "latitude":51.04869,
+    "longitude":-114.14528,
+    "geometry":"POINT (-114.14528 51.04869)"
+  },
+  {
+    "sensor_index":189587,
+    "last_seen":1768198353,
+    "name":"Town of Carstairs",
+    "location_type":0,
+    "latitude":51.553383,
+    "longitude":-114.10732,
+    "geometry":"POINT (-114.10732 51.553383)"
+  },
+  {
+    "sensor_index":189677,
+    "last_seen":1768198311,
+    "name":"Pelican Point",
+    "location_type":0,
+    "latitude":52.527145,
+    "longitude":-112.8229,
+    "geometry":"POINT (-112.8229 52.527145)"
+  },
+  {
+    "sensor_index":192117,
+    "last_seen":1768198288,
+    "name":"Tongue Creek",
+    "location_type":0,
+    "latitude":50.611244,
+    "longitude":-113.98209,
+    "geometry":"POINT (-113.98209 50.611244)"
+  },
+  {
+    "sensor_index":193947,
+    "last_seen":1768198295,
+    "name":"FMFN_NamurLakeAQMS",
+    "location_type":0,
+    "latitude":57.381405,
+    "longitude":-112.66844,
+    "geometry":"POINT (-112.66844 57.381405)"
+  },
+  {
+    "sensor_index":194203,
+    "last_seen":1768198294,
+    "name":"Bankview",
+    "location_type":0,
+    "latitude":51.036434,
+    "longitude":-114.10456,
+    "geometry":"POINT (-114.10456 51.036434)"
+  },
+  {
+    "sensor_index":195401,
+    "last_seen":1768198246,
+    "name":"College Park",
+    "location_type":0,
+    "latitude":53.258633,
+    "longitude":-110.02521,
+    "geometry":"POINT (-110.02521 53.258633)"
+  },
+  {
+    "sensor_index":195423,
+    "last_seen":1768198345,
+    "name":"Malmo Plains",
+    "location_type":0,
+    "latitude":53.485397,
+    "longitude":-113.53542,
+    "geometry":"POINT (-113.53542 53.485397)"
+  },
+  {
+    "sensor_index":197345,
+    "last_seen":1768198261,
+    "name":"WCAS_Barrhead(AQSU-855E)",
+    "location_type":0,
+    "latitude":54.124115,
+    "longitude":-114.40461,
+    "geometry":"POINT (-114.40461 54.124115)"
+  },
+  {
+    "sensor_index":197353,
+    "last_seen":1768198336,
+    "name":"WCAS_FortAssinibione(AQSU-4E29)",
+    "location_type":0,
+    "latitude":54.334663,
+    "longitude":-114.7751,
+    "geometry":"POINT (-114.7751 54.334663)"
+  },
+  {
+    "sensor_index":197359,
+    "last_seen":1768198351,
+    "name":"WCAS_Neerlandia(AQSU-46A0)",
+    "location_type":0,
+    "latitude":54.318977,
+    "longitude":-114.37856,
+    "geometry":"POINT (-114.37856 54.318977)"
+  },
+  {
+    "sensor_index":197383,
+    "last_seen":1768198244,
+    "name":"ACA_WestlockCounty (AQSU-509E)",
+    "location_type":0,
+    "latitude":54.15923,
+    "longitude":-113.85229,
+    "geometry":"POINT (-113.85229 54.15923)"
+  },
+  {
+    "sensor_index":197381,
+    "last_seen":1768198352,
+    "name":"WCAS_DV-CETC(AQSU-4E23)",
+    "location_type":0,
+    "latitude":53.195824,
+    "longitude":-114.98231,
+    "geometry":"POINT (-114.98231 53.195824)"
+  },
+  {
+    "sensor_index":197391,
+    "last_seen":1768198335,
+    "name":"WCAS_Edson FC (AQSU-4E5E)",
+    "location_type":0,
+    "latitude":53.579163,
+    "longitude":-116.44375,
+    "geometry":"POINT (-116.44375 53.579163)"
+  },
+  {
+    "sensor_index":197389,
+    "last_seen":1768198304,
+    "name":"ACA_Pickardville (AQSU-1D05)",
+    "location_type":0,
+    "latitude":54.04966,
+    "longitude":-113.88053,
+    "geometry":"POINT (-113.88053 54.04966)"
+  },
+  {
+    "sensor_index":197393,
+    "last_seen":1768198325,
+    "name":"AQSU-4AE79 KFN HC",
+    "location_type":0,
+    "latitude":55.54847,
+    "longitude":-116.154854,
+    "geometry":"POINT (-116.154854 55.54847)"
+  },
+  {
+    "sensor_index":197407,
+    "last_seen":1768198242,
+    "name":"ACA_EnochSE (AQSU-AD04)",
+    "location_type":0,
+    "latitude":53.467728,
+    "longitude":-113.703255,
+    "geometry":"POINT (-113.703255 53.467728)"
+  },
+  {
+    "sensor_index":197815,
+    "last_seen":1768198327,
+    "name":"Brentwood",
+    "location_type":0,
+    "latitude":51.096348,
+    "longitude":-114.1317,
+    "geometry":"POINT (-114.1317 51.096348)"
+  },
+  {
+    "sensor_index":198809,
+    "last_seen":1768198326,
+    "name":"WCAS_Lakeview(AQSU-5203)",
+    "location_type":0,
+    "latitude":53.558376,
+    "longitude":-114.4562,
+    "geometry":"POINT (-114.4562 53.558376)"
+  },
+  {
+    "sensor_index":203059,
+    "last_seen":1768198313,
+    "name":"Huntington",
+    "location_type":0,
+    "latitude":51.121742,
+    "longitude":-114.0698,
+    "geometry":"POINT (-114.0698 51.121742)"
+  },
+  {
+    "sensor_index":203269,
+    "last_seen":1768198355,
+    "name":"WCAS_Sangudo",
+    "location_type":0,
+    "latitude":53.885475,
+    "longitude":-114.8679,
+    "geometry":"POINT (-114.8679 53.885475)"
+  },
+  {
+    "sensor_index":203503,
+    "last_seen":1768198272,
+    "name":"WCAS_Whitecourt COC",
+    "location_type":0,
+    "latitude":54.142246,
+    "longitude":-115.68245,
+    "geometry":"POINT (-115.68245 54.142246)"
+  },
+  {
+    "sensor_index":203515,
+    "last_seen":1768198343,
+    "name":"WCAS_Hinton1",
+    "location_type":0,
+    "latitude":53.427498,
+    "longitude":-117.54485,
+    "geometry":"POINT (-117.54485 53.427498)"
+  },
+  {
+    "sensor_index":203517,
+    "last_seen":1768198261,
+    "name":"WCAS_ParklandCountyCentre",
+    "location_type":0,
+    "latitude":53.559006,
+    "longitude":-114.000725,
+    "geometry":"POINT (-114.000725 53.559006)"
+  },
+  {
+    "sensor_index":204385,
+    "last_seen":1768198290,
+    "name":"LPSD Division Office",
+    "location_type":0,
+    "latitude":53.279503,
+    "longitude":-110.007545,
+    "geometry":"POINT (-110.007545 53.279503)"
+  },
+  {
+    "sensor_index":207827,
+    "last_seen":1768198353,
+    "name":"Exshaw - BVCAS",
+    "location_type":0,
+    "latitude":51.062695,
+    "longitude":-115.15673,
+    "geometry":"POINT (-115.15673 51.062695)"
+  },
+  {
+    "sensor_index":207841,
+    "last_seen":1768198349,
+    "name":"MAC Fans and Furnaces",
+    "location_type":0,
+    "latitude":51.064594,
+    "longitude":-115.16699,
+    "geometry":"POINT (-115.16699 51.064594)"
+  },
+  {
+    "sensor_index":208893,
+    "last_seen":1768198258,
+    "name":"Okotoks - Ranchers Rise",
+    "location_type":0,
+    "latitude":50.733322,
+    "longitude":-113.932686,
+    "geometry":"POINT (-113.932686 50.733322)"
+  },
+  {
+    "sensor_index":210283,
+    "last_seen":1768013953,
+    "name":"HAMP-Namao",
+    "location_type":0,
+    "latitude":53.716686,
+    "longitude":-113.49689,
+    "geometry":"POINT (-113.49689 53.716686)"
+  },
+  {
+    "sensor_index":211505,
+    "last_seen":1768198287,
+    "name":"Silverview DR Silver Springs",
+    "location_type":0,
+    "latitude":51.097927,
+    "longitude":-114.18659,
+    "geometry":"POINT (-114.18659 51.097927)"
+  },
+  {
+    "sensor_index":211921,
+    "last_seen":1768198266,
+    "name":"Valleyview Generating Station",
+    "location_type":0,
+    "latitude":54.938923,
+    "longitude":-117.20374,
+    "geometry":"POINT (-117.20374 54.938923)"
+  },
+  {
+    "sensor_index":213995,
+    "last_seen":1768198326,
+    "name":"PAS Vauxhall AQSU-87FC",
+    "location_type":0,
+    "latitude":50.068954,
+    "longitude":-112.10579,
+    "geometry":"POINT (-112.10579 50.068954)"
+  },
+  {
+    "sensor_index":213999,
+    "last_seen":1768198293,
+    "name":"PAS Raymond",
+    "location_type":0,
+    "latitude":49.46575,
+    "longitude":-112.66895,
+    "geometry":"POINT (-112.66895 49.46575)"
+  },
+  {
+    "sensor_index":214003,
+    "last_seen":1768198356,
+    "name":"AQSU-Horse Lake First Nation Band Administration Building",
+    "location_type":0,
+    "latitude":55.35181,
+    "longitude":-119.69367,
+    "geometry":"POINT (-119.69367 55.35181)"
+  },
+  {
+    "sensor_index":214007,
+    "last_seen":1768198240,
+    "name":"PAS Bow Island AQSU-333E",
+    "location_type":0,
+    "latitude":49.870388,
+    "longitude":-111.37903,
+    "geometry":"POINT (-111.37903 49.870388)"
+  },
+  {
+    "sensor_index":214013,
+    "last_seen":1768198339,
+    "name":"Consort",
+    "location_type":0,
+    "latitude":52.008984,
+    "longitude":-110.77279,
+    "geometry":"POINT (-110.77279 52.008984)"
+  },
+  {
+    "sensor_index":214019,
+    "last_seen":1768198253,
+    "name":"AQSU-3330_Stony-Plain",
+    "location_type":0,
+    "latitude":53.5475,
+    "longitude":-114.10844,
+    "geometry":"POINT (-114.10844 53.5475)"
+  },
+  {
+    "sensor_index":214479,
+    "last_seen":1768198316,
+    "name":"AQSU-353E",
+    "location_type":0,
+    "latitude":51.42215,
+    "longitude":-114.03641,
+    "geometry":"POINT (-114.03641 51.42215)"
+  },
+  {
+    "sensor_index":214785,
+    "last_seen":1768198341,
+    "name":"AE- McIntyre Reference",
+    "location_type":0,
+    "latitude":53.486317,
+    "longitude":-113.46324,
+    "geometry":"POINT (-113.46324 53.486317)"
+  },
+  {
+    "sensor_index":215199,
+    "last_seen":1768198263,
+    "name":"Rainbow Lake Generating Station",
+    "location_type":0,
+    "latitude":58.477806,
+    "longitude":-119.246445,
+    "geometry":"POINT (-119.246445 58.477806)"
+  },
+  {
+    "sensor_index":216463,
+    "last_seen":1768198341,
+    "name":"PRAMP - Reno",
+    "location_type":0,
+    "latitude":55.896965,
+    "longitude":-117.15764,
+    "geometry":"POINT (-117.15764 55.896965)"
+  },
+  {
+    "sensor_index":216477,
+    "last_seen":1768198252,
+    "name":"PRAMP - Northern Sunrise County",
+    "location_type":0,
+    "latitude":56.20889,
+    "longitude":-117.20611,
+    "geometry":"POINT (-117.20611 56.20889)"
+  },
+  {
+    "sensor_index":217071,
+    "last_seen":1768198310,
+    "name":"SC Social Development",
+    "location_type":0,
+    "latitude":55.404125,
+    "longitude":-116.15419,
+    "geometry":"POINT (-116.15419 55.404125)"
+  },
+  {
+    "sensor_index":217099,
+    "last_seen":1768198332,
+    "name":"Ft Chip Health Centre",
+    "location_type":0,
+    "latitude":58.714806,
+    "longitude":-111.15673,
+    "geometry":"POINT (-111.15673 58.714806)"
+  },
+  {
+    "sensor_index":217121,
+    "last_seen":1768198259,
+    "name":"Eden Valley",
+    "location_type":0,
+    "latitude":50.43096,
+    "longitude":-114.44651,
+    "geometry":"POINT (-114.44651 50.43096)"
+  },
+  {
+    "sensor_index":217147,
+    "last_seen":1768198266,
+    "name":"SS",
+    "location_type":0,
+    "latitude":53.423473,
+    "longitude":-113.53611,
+    "geometry":"POINT (-113.53611 53.423473)"
+  },
+  {
+    "sensor_index":217511,
+    "last_seen":1768198325,
+    "name":"Bighorn Health Centre",
+    "location_type":0,
+    "latitude":52.40488,
+    "longitude":-116.23982,
+    "geometry":"POINT (-116.23982 52.40488)"
+  },
+  {
+    "sensor_index":217729,
+    "last_seen":1768198318,
+    "name":"PRAMP - St Thomas More School",
+    "location_type":0,
+    "latitude":56.067074,
+    "longitude":-118.396935,
+    "geometry":"POINT (-118.396935 56.067074)"
+  },
+  {
+    "sensor_index":217747,
+    "last_seen":1768198260,
+    "name":"PRAMP - Dixonville",
+    "location_type":0,
+    "latitude":56.535824,
+    "longitude":-117.672226,
+    "geometry":"POINT (-117.672226 56.535824)"
+  },
+  {
+    "sensor_index":217745,
+    "last_seen":1768198260,
+    "name":"PRAMP - Peace River Hospital",
+    "location_type":0,
+    "latitude":56.23071,
+    "longitude":-117.3547,
+    "geometry":"POINT (-117.3547 56.23071)"
+  },
+  {
+    "sensor_index":217749,
+    "last_seen":1768198243,
+    "name":"PRAMP - Good Shepherd School",
+    "location_type":0,
+    "latitude":56.261314,
+    "longitude":-117.289276,
+    "geometry":"POINT (-117.289276 56.261314)"
+  },
+  {
+    "sensor_index":217765,
+    "last_seen":1768198350,
+    "name":"PRAMP - Holy Family School",
+    "location_type":0,
+    "latitude":56.18451,
+    "longitude":-117.60611,
+    "geometry":"POINT (-117.60611 56.18451)"
+  },
+  {
+    "sensor_index":218127,
+    "last_seen":1768198325,
+    "name":"Field 1",
+    "location_type":0,
+    "latitude":51.01019,
+    "longitude":-114.136154,
+    "geometry":"POINT (-114.136154 51.01019)"
+  },
+  {
+    "sensor_index":219323,
+    "last_seen":1768198309,
+    "name":"bill gilhespy complex",
+    "location_type":0,
+    "latitude":53.61041,
+    "longitude":-113.574394,
+    "geometry":"POINT (-113.574394 53.61041)"
+  },
+  {
+    "sensor_index":219579,
+    "last_seen":1768198191,
+    "name":"SLCN HC",
+    "location_type":0,
+    "latitude":55.071262,
+    "longitude":-117.500885,
+    "geometry":"POINT (-117.500885 55.071262)"
+  },
+  {
+    "sensor_index":219577,
+    "last_seen":1768198257,
+    "name":"Fort McMurray Fen House",
+    "location_type":0,
+    "latitude":56.762222,
+    "longitude":-111.43385,
+    "geometry":"POINT (-111.43385 56.762222)"
+  },
+  {
+    "sensor_index":219599,
+    "last_seen":1768198328,
+    "name":"AE 1061 - Montana FN",
+    "location_type":0,
+    "latitude":52.72768,
+    "longitude":-113.44141,
+    "geometry":"POINT (-113.44141 52.72768)"
+  },
+  {
+    "sensor_index":220361,
+    "last_seen":1768198264,
+    "name":"Kingsbury Close SE",
+    "location_type":0,
+    "latitude":51.26163,
+    "longitude":-113.98339,
+    "geometry":"POINT (-113.98339 51.26163)"
+  },
+  {
+    "sensor_index":220371,
+    "last_seen":1768198248,
+    "name":"SWC Solar",
+    "location_type":0,
+    "latitude":51.59806,
+    "longitude":-114.55074,
+    "geometry":"POINT (-114.55074 51.59806)"
+  },
+  {
+    "sensor_index":223443,
+    "last_seen":1768198282,
+    "name":"AQSU-B794",
+    "location_type":0,
+    "latitude":53.528908,
+    "longitude":-113.41582,
+    "geometry":"POINT (-113.41582 53.528908)"
+  },
+  {
+    "sensor_index":223505,
+    "last_seen":1768198270,
+    "name":"SAMBA",
+    "location_type":0,
+    "latitude":53.650555,
+    "longitude":-113.61139,
+    "geometry":"POINT (-113.61139 53.650555)"
+  },
+  {
+    "sensor_index":223513,
+    "last_seen":1768198315,
+    "name":"Calwest1",
+    "location_type":0,
+    "latitude":51.020603,
+    "longitude":-114.10116,
+    "geometry":"POINT (-114.10116 51.020603)"
+  },
+  {
+    "sensor_index":223531,
+    "last_seen":1768198335,
+    "name":"Mackenzie County La Crete",
+    "location_type":0,
+    "latitude":58.179443,
+    "longitude":-116.403336,
+    "geometry":"POINT (-116.403336 58.179443)"
+  },
+  {
+    "sensor_index":223537,
+    "last_seen":1768198286,
+    "name":"Mackenzie County - Zama",
+    "location_type":0,
+    "latitude":59.15501,
+    "longitude":-118.67624,
+    "geometry":"POINT (-118.67624 59.15501)"
+  },
+  {
+    "sensor_index":223861,
+    "last_seen":1768198242,
+    "name":"Glamorgan",
+    "location_type":0,
+    "latitude":51.011707,
+    "longitude":-114.15037,
+    "geometry":"POINT (-114.15037 51.011707)"
+  },
+  {
+    "sensor_index":224243,
+    "last_seen":1768198277,
+    "name":"Outdoor Pool",
+    "location_type":0,
+    "latitude":53.36261,
+    "longitude":-113.72619,
+    "geometry":"POINT (-113.72619 53.36261)"
+  },
+  {
+    "sensor_index":224259,
+    "last_seen":1768198329,
+    "name":"Public Works",
+    "location_type":0,
+    "latitude":53.34485,
+    "longitude":-113.72582,
+    "geometry":"POINT (-113.72582 53.34485)"
+  },
+  {
+    "sensor_index":224293,
+    "last_seen":1768198272,
+    "name":"WCAS_Hinton2",
+    "location_type":0,
+    "latitude":53.423798,
+    "longitude":-117.53791,
+    "geometry":"POINT (-117.53791 53.423798)"
+  },
+  {
+    "sensor_index":224909,
+    "last_seen":1768198342,
+    "name":"Nolan Hill",
+    "location_type":0,
+    "latitude":51.174534,
+    "longitude":-114.16559,
+    "geometry":"POINT (-114.16559 51.174534)"
+  },
+  {
+    "sensor_index":224917,
+    "last_seen":1767668680,
+    "name":"Commonwealth Upper",
+    "location_type":0,
+    "latitude":53.559692,
+    "longitude":-113.4749,
+    "geometry":"POINT (-113.4749 53.559692)"
+  },
+  {
+    "sensor_index":225365,
+    "last_seen":1768198314,
+    "name":"McMahon Stadium - Concourse Level",
+    "location_type":0,
+    "latitude":51.07118,
+    "longitude":-114.12125,
+    "geometry":"POINT (-114.12125 51.07118)"
+  },
+  {
+    "sensor_index":225383,
+    "last_seen":1768198309,
+    "name":"McMahon Stadium - Field Level",
+    "location_type":0,
+    "latitude":51.069584,
+    "longitude":-114.12102,
+    "geometry":"POINT (-114.12102 51.069584)"
+  },
+  {
+    "sensor_index":225861,
+    "last_seen":1768198238,
+    "name":"Riverbend",
+    "location_type":0,
+    "latitude":53.47205,
+    "longitude":-113.59385,
+    "geometry":"POINT (-113.59385 53.47205)"
+  },
+  {
+    "sensor_index":228053,
+    "last_seen":1768069109,
+    "name":"Tuscany, Calgary, AB",
+    "location_type":0,
+    "latitude":51.133244,
+    "longitude":-114.24935,
+    "geometry":"POINT (-114.24935 51.133244)"
+  },
+  {
+    "sensor_index":229605,
+    "last_seen":1768198260,
+    "name":"RBL AB Satt",
+    "location_type":0,
+    "latitude":58.428375,
+    "longitude":-119.96859,
+    "geometry":"POINT (-119.96859 58.428375)"
+  },
+  {
+    "sensor_index":229627,
+    "last_seen":1768198241,
+    "name":"Paliswood",
+    "location_type":0,
+    "latitude":50.970486,
+    "longitude":-114.10888,
+    "geometry":"POINT (-114.10888 50.970486)"
+  },
+  {
+    "sensor_index":230593,
+    "last_seen":1768198267,
+    "name":"Castle Downs, Edmonton",
+    "location_type":0,
+    "latitude":53.60826,
+    "longitude":-113.54445,
+    "geometry":"POINT (-113.54445 53.60826)"
+  },
+  {
+    "sensor_index":231285,
+    "last_seen":1768198301,
+    "name":"HAMP-Waskatenau",
+    "location_type":0,
+    "latitude":54.093246,
+    "longitude":-112.78669,
+    "geometry":"POINT (-112.78669 54.093246)"
+  },
+  {
+    "sensor_index":231633,
+    "last_seen":1768198333,
+    "name":"Coleman",
+    "location_type":0,
+    "latitude":49.63258,
+    "longitude":-114.47859,
+    "geometry":"POINT (-114.47859 49.63258)"
+  },
+  {
+    "sensor_index":232819,
+    "last_seen":1768198241,
+    "name":"Westmount",
+    "location_type":0,
+    "latitude":51.04992,
+    "longitude":-114.09669,
+    "geometry":"POINT (-114.09669 51.04992)"
+  },
+  {
+    "sensor_index":232985,
+    "last_seen":1768198299,
+    "name":"West Castleridge",
+    "location_type":0,
+    "latitude":51.10664,
+    "longitude":-113.96722,
+    "geometry":"POINT (-113.96722 51.10664)"
+  },
+  {
+    "sensor_index":233195,
+    "last_seen":1768198306,
+    "name":"Cranston Pond",
+    "location_type":0,
+    "latitude":50.88407,
+    "longitude":-113.98579,
+    "geometry":"POINT (-113.98579 50.88407)"
+  },
+  {
+    "sensor_index":240945,
+    "last_seen":1768198272,
+    "name":"ACA_UITC",
+    "location_type":0,
+    "latitude":53.51731,
+    "longitude":-113.52458,
+    "geometry":"POINT (-113.52458 53.51731)"
+  },
+  {
+    "sensor_index":244977,
+    "last_seen":1768198272,
+    "name":"Siksika Fire",
+    "location_type":0,
+    "latitude":50.847454,
+    "longitude":-113.054054,
+    "geometry":"POINT (-113.054054 50.847454)"
+  },
+  {
+    "sensor_index":244993,
+    "last_seen":1768198350,
+    "name":"ACA_Florian Park",
+    "location_type":0,
+    "latitude":53.519844,
+    "longitude":-113.25795,
+    "geometry":"POINT (-113.25795 53.519844)"
+  },
+  {
+    "sensor_index":245663,
+    "last_seen":1768198345,
+    "name":"AQSU-3329 Swan River FN HC",
+    "location_type":0,
+    "latitude":55.325394,
+    "longitude":-115.4322,
+    "geometry":"POINT (-115.4322 55.325394)"
+  },
+  {
+    "sensor_index":246279,
+    "last_seen":1768198238,
+    "name":"Westmount",
+    "location_type":0,
+    "latitude":53.55592,
+    "longitude":-113.54853,
+    "geometry":"POINT (-113.54853 53.55592)"
+  },
+  {
+    "sensor_index":249153,
+    "last_seen":1768198276,
+    "name":"302 - 200 Patina Court SW",
+    "location_type":0,
+    "latitude":51.062565,
+    "longitude":-114.16999,
+    "geometry":"POINT (-114.16999 51.062565)"
+  },
+  {
+    "sensor_index":249965,
+    "last_seen":1768198279,
+    "name":"ACA_LaurierHeightsCL",
+    "location_type":0,
+    "latitude":53.517063,
+    "longitude":-113.56859,
+    "geometry":"POINT (-113.56859 53.517063)"
+  },
+  {
+    "sensor_index":249993,
+    "last_seen":1768198312,
+    "name":"ACA_North Cooking Lake Hall",
+    "location_type":0,
+    "latitude":53.468292,
+    "longitude":-112.96113,
+    "geometry":"POINT (-112.96113 53.468292)"
+  },
+  {
+    "sensor_index":250005,
+    "last_seen":1768198323,
+    "name":"ACA_Hastings Lake Hall",
+    "location_type":0,
+    "latitude":53.381157,
+    "longitude":-112.90348,
+    "geometry":"POINT (-112.90348 53.381157)"
+  },
+  {
+    "sensor_index":250155,
+    "last_seen":1768198252,
+    "name":"ACA_Strathcona Wilderness Centre",
+    "location_type":0,
+    "latitude":53.532345,
+    "longitude":-112.998314,
+    "geometry":"POINT (-112.998314 53.532345)"
+  },
+  {
+    "sensor_index":250165,
+    "last_seen":1768198335,
+    "name":"ACA_Antler Lake\/Uncas Hall",
+    "location_type":0,
+    "latitude":53.50329,
+    "longitude":-112.971115,
+    "geometry":"POINT (-112.971115 53.50329)"
+  },
+  {
+    "sensor_index":260975,
+    "last_seen":1768198316,
+    "name":"Town of Fort Macleod Outdoor Pool",
+    "location_type":0,
+    "latitude":49.72361,
+    "longitude":-113.407684,
+    "geometry":"POINT (-113.407684 49.72361)"
+  }
+]
