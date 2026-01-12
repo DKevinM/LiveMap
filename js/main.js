@@ -3,36 +3,34 @@
 // ================================
 
 (async function bootstrapApp() {
+
   console.log("Bootstrapping AQ Platform...");
 
   try {
-    // 1️⃣ Load core datasets (CSV / JSON / APIs)
+
+    // 1️⃣ Load core datasets
     console.log("Loading data...");
-    await window.initData();                     // data.js
+    await window.initData();
 
-    // 2️⃣ Create map and base layers
+    // 2️⃣ Create map
     console.log("Creating map...");
-    const map = await window.initMap();          // map.js
+    const map = await window.initMap();
 
-    // 3️⃣ Build station layers
+    // 3️⃣ Render stations
     console.log("Loading stations...");
-    const stationsLayer = await window.initStations(map); // stations.js
+    const stationsLayer = await window.initStations(map);
 
-    // 4️⃣ Build PurpleAir layers
+    // 4️⃣ Render PurpleAir
     console.log("Loading PurpleAir...");
-    const purpleLayer = await window.initPurpleAir(map);  // purpleair.js
+    const purpleLayer = await window.initPurpleAir(map);
 
-    // 5️⃣ Initialize UI wiring & toggles
+    // 5️⃣ Wire UI
     console.log("Initializing UI...");
-    window.initUI({
-      map,
-      stationsLayer,
-      purpleLayer
-    });                                          // ui.js
+    window.initUI({ map, stationsLayer, purpleLayer });
 
     // 6️⃣ Initialize gauges
     console.log("Initializing gauges...");
-    window.initGauges();                         // gauges.js
+    window.initGauges();
 
     console.log("AQ Platform ready.");
 
@@ -40,4 +38,5 @@
     console.error("Boot failure:", err);
     alert("Application failed to start — see console.");
   }
+
 })();
