@@ -22,6 +22,20 @@ window.initData = async function () {
   window.equipmentTable = parse(equipment);
   window.last6hTable    = parse(last6h);
 
+  const purpleTable = parse(purpleCSV);
+  // Build spatial objects from the CSV
+  window.purpleFC = {
+    type: "FeatureCollection",
+    features: purpleTable.map(p => ({
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [Number(p.longitude), Number(p.latitude)]
+      },
+      properties: p
+    }))
+  };
+
   console.log("Tables loaded:", {
     stations: window.stationTable.length,
     equipment: window.equipmentTable.length,
