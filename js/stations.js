@@ -89,3 +89,13 @@ window.drawStations = function () {
       }))
     };
   };
+
+  window.initStations = async function () {
+    console.log("Initializing station layers…");
+    window.drawStations();
+    return {
+      ACA: window.layerACA,
+      WCAS: window.layerWCAS
+    };
+  };
+
