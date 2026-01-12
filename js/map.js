@@ -13,6 +13,22 @@ window.initMap = async function () {
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
 
+
+  console.log("Loading boundary layers…");
+  
+  const acaBoundary = await fetch("data/ACA.geojson").then(r => r.json());
+  const wcasBoundary = await fetch("data/WCAS.geojson").then(r => r.json());
+  
+  window.layerACA_Boundary = L.geoJSON(acaBoundary, {
+    style: { color: "#0033cc", weight: 2, fillOpacity: 0 }
+  }).addTo(map);
+  
+  window.layerWCAS_Boundary = L.geoJSON(wcasBoundary, {
+    style: { color: "#cc3300", weight: 2, fillOpacity: 0 }
+  }).addTo(map);
+
+
+  
   function distance(a, b) {
     return map.distance([a.lat, a.lon], [b.lat, b.lon]);
   }
@@ -48,6 +64,8 @@ window.initMap = async function () {
     layerWind.addLayer(windLayer);
 
     const overlays = {
+      "ACA Boundary": window.layerACA_Boundary,
+      "WCAS Boundary": window.layerWCAS_Boundary,
       "ACA Stations": layerACA,
       "WCAS Stations": layerWCAS,
       "PurpleAir": layerPA,
