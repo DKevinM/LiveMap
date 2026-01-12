@@ -77,4 +77,9 @@ window.buildForecastGauges = function (forecast) {
   Plotly.newPlot("forecast-gauges", gauges, { height: 300 });
 };
 
+window.initGauges = function () {
+  console.log("Gauges ready.");
+};
+
+
 
