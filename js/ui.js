@@ -86,3 +86,15 @@ window.initLegend = function () {
 
   legend.addTo(window.map);
 };
+
+
+window.initUI = function ({ map }) {
+  console.log("Initializing UI components…");
+
+  // Add AQHI legend
+  if (typeof initLegend === "function") {
+    initLegend();
+  }
+
+  console.log("UI ready.");
+};
