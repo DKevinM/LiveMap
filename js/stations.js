@@ -54,20 +54,38 @@ window.drawStations = function () {
   console.log("Stations rendered.");
 };
 
+
   window.buildStationsFC = function () {
+  
+    if (!window.last6hTable) {
+      console.error("No last6hTable available for building stations.");
+      return { type: "FeatureCollection", features: [] };
+    }
+  
+    const uniqueStations = {};
+  
+    window.last6hTable.forEach(r => {
+      if (!r.Lat || !r.Lon || !r.StationName) return;
+  
+      if (!uniqueStations[r.StationName]) {
+        uniqueStations[r.StationName] = {
+          StationName: r.StationName,
+          Lat: Number(r.Lat),
+          Lon: Number(r.Lon),
+          Airshed: r.Airshed || "Unknown"
+        };
+      }
+    });
+  
     return {
       type: "FeatureCollection",
-      features: window.stationTable
-        .filter(r => r.Lat && r.Lon)
-        .map(r => ({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [Number(r.Lon), Number(r.Lat)]
-          },
-          properties: r
-        }))
+      features: Object.values(uniqueStations).map(st => ({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [st.Lon, st.Lat]
+        },
+        properties: st
+      }))
     };
   };
-
-
