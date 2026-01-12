@@ -1,9 +1,9 @@
 window.drawPurpleAir = function () {
 
-  console.log("🟣 Drawing PurpleAir…");
+  console.log("Drawing PurpleAir…");
 
   if (!window.map || !window.purpleFC) {
-    console.error("❌ Missing map or PurpleAir data");
+    console.error("Missing map or PurpleAir data");
     return;
   }
 
@@ -32,7 +32,7 @@ window.drawPurpleAir = function () {
     );
   });
 
-  console.log("✅ PurpleAir rendered.");
+  console.log("PurpleAir rendered.");
 };
 
 
