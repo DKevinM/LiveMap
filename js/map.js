@@ -1,8 +1,7 @@
 window.initMap = async function () {
 
-  console.log("Initializing map...");
-
-  const map = L.map("map").setView([53.518, -115.917], 7);
+  const map = L.map("map").setView([53.53, -113.30], 8);
+  window.map = map;
 
   const layerACA  = L.layerGroup().addTo(map);
   const layerWCAS = L.layerGroup().addTo(map);
@@ -10,6 +9,7 @@ window.initMap = async function () {
   const layerWind = L.layerGroup();
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
 
