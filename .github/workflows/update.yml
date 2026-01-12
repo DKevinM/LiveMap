@@ -1,5 +1,8 @@
 name: Update Data
 
+permissions:
+  contents: write
+  
 on:
   schedule:
     - cron: "*/30 * * * *"
