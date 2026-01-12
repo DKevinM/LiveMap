@@ -67,11 +67,11 @@ window.initMap = async function () {
 
   // Expose layers & map
   window.map = map;
-  window.layerACA  = layerACA;
-  window.layerWCAS = layerWCAS;
-  window.layerPA   = layerPA;
-  window.layerWind = layerWind;
+  window.layerACA  = L.layerGroup().addTo(map);
+  window.layerWCAS = L.layerGroup().addTo(map);
+  window.layerPA   = L.layerGroup().addTo(map);
 
   console.log("Map ready.");
 
-  return
+  return map;
+};
