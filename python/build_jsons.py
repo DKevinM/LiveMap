@@ -1,4 +1,9 @@
+from pathlib import Path
 import pandas as pd
 
-df = pd.read_csv("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv")
-df.to_json("../data/last6h.json", orient="records")
+# Ensure output directory exists
+out_dir = Path(__file__).resolve().parent.parent / "data"
+out_dir.mkdir(parents=True, exist_ok=True)
+
+# your dataframe logic...
+df.to_json(out_dir / "last6h.json", orient="records")
