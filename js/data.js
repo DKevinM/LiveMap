@@ -8,7 +8,7 @@ window.initData = async function () {
     fetch(`${DATA_BASE}/station_list.csv`).then(r => r.text()),
     fetch(`${DATA_BASE}/equipment.csv`).then(r => r.text()),
     fetch(`${DATA_BASE}/last6h.csv`).then(r => r.text()),
-    fetch(`${DATA_BASE}/AB_PA_sensors.json`).then(r => r.json())
+    fetch(`${DATA_BASE}/AB_PA_sensors.csv`).then(r => r.text())
   ]);
 
   // CSV parser
