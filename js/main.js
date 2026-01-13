@@ -1,34 +1,34 @@
-// ================================
-// main.js — Application Orchestrator
-// ================================
-
 (async function bootstrapApp() {
 
   console.log("Bootstrapping AQ Platform...");
 
   try {
-
-    // 1️⃣ Load data & build geometry
     console.log("Loading data...");
     await window.initData();
 
-    // 2️⃣ Create map
+    console.log("Building geometry...");
+    window.stationsFC = buildStationsFC();
+    window.purpleFC   = buildPurpleFC(window.purpleTable);
+
     console.log("Creating map...");
     const map = await window.initMap();
 
-    // 3️⃣ Render stations
+    // Wait for map + layers to exist
+    if (!window.map || !window.layerACA || !window.layerPA) {
+      throw new Error("Map or base layers not ready");
+    }
+
     console.log("Loading stations...");
-    const stationsLayer = await window.initStations(map);
+    await new Promise(r => setTimeout(r, 0));  // allow DOM & map to settle
+    await window.initStations();
 
-    // 4️⃣ Render PurpleAir
     console.log("Loading PurpleAir...");
-    const purpleLayer = await window.initPurpleAir(map);
+    await new Promise(r => setTimeout(r, 0));
+    await window.initPurpleAir();
 
-    // 5️⃣ Wire UI
     console.log("Initializing UI...");
-    window.initUI({ map, stationsLayer, purpleLayer });
+    window.initUI({ map });
 
-    // 6️⃣ Initialize gauges
     console.log("Initializing gauges...");
     window.initGauges();
 
