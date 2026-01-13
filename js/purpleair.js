@@ -1,6 +1,9 @@
+// ================================
+// purpleair.js
+// ================================
+
 window.drawPurpleAir = function () {
-  
-  console.log("PurpleAir sample:", window.purpleFC.features[0].properties);
+
   console.log("Drawing PurpleAir…");
 
   if (!window.map || !window.purpleFC) {
@@ -16,7 +19,6 @@ window.drawPurpleAir = function () {
     const lat = f.geometry.coordinates[1];
     const lon = f.geometry.coordinates[0];
 
-    
     const pm = Number(
       p.pm2_5_corrected ??
       p.pm25 ??
@@ -26,8 +28,8 @@ window.drawPurpleAir = function () {
       p.value ??
       p.Value
     );
-    const color = getPAColor(pm);
 
+    const color = getPAColor(pm);
 
     const marker = L.circleMarker([lat, lon], {
       radius: 6,
@@ -39,29 +41,39 @@ window.drawPurpleAir = function () {
     }).addTo(window.layerPA);
 
     marker.bindTooltip(
-      `<b>${p.name}</b><br>PM2.5: ${Number.isFinite(pm) ? pm.toFixed(1) : "Offline"}`
+      `<b>${p.name || "PurpleAir"}</b><br>
+       PM2.5: ${Number.isFinite(pm) ? pm.toFixed(1) : "Offline"}`
     );
-   marker.on("click", () => {
-    showStationModal({
-      StationName: p.name,
-      PM25: pm
+
+    // ✅ click wiring INSIDE loop
+    marker.on("click", () => {
+      showStationModal({
+        StationName: p.name || "PurpleAir",
+        PM25: pm
+      });
+
+      buildGauges({
+        PM25: pm,
+        AQHI: null,
+        O3: null,
+        NO2: null,
+        RH: null,
+        Temp: null,
+        WS: null
+      });
     });
-    buildGauges({
-      PM25: pm,
-      AQHI: null,
-      O3: null,
-      NO2: null,
-      RH: null,
-      Temp: null,
-      WS: null
-    });
+
   });
 
   console.log("PurpleAir rendered.");
 };
 
 
-function getPAColor(pm, name) {
+// ================================
+// PurpleAir Color Scale
+// ================================
+
+function getPAColor(pm) {
 
   if (!Number.isFinite(pm)) return "#808080";
   if (pm > 100) return "#640100";
@@ -79,8 +91,10 @@ function getPAColor(pm, name) {
   return "#D3D3D3";
 }
 
-if (!Number.isFinite(pm)) console.warn("PurpleAir missing PM:", p);
 
+// ================================
+// GeoJSON Builder
+// ================================
 
 window.buildPurpleFC = function (data) {
   return {
@@ -98,6 +112,10 @@ window.buildPurpleFC = function (data) {
   };
 };
 
+
+// ================================
+// Init hook
+// ================================
 
 window.initPurpleAir = async function () {
   console.log("Initializing PurpleAir layers…");
