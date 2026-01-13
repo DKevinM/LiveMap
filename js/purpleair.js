@@ -17,21 +17,44 @@ window.drawPurpleAir = function () {
     const lon = f.geometry.coordinates[0];
 
     
-    const pm = Number(p.pm2_5_corrected ?? p.pm25 ?? p.pm2_5_atm ?? p.PM2_5 ?? p.PM25);
+    const pm = Number(
+      p.pm2_5_corrected ??
+      p.pm25 ??
+      p.pm2_5_atm ??
+      p.PM2_5 ??
+      p.PM25 ??
+      p.value ??
+      p.Value
+    );
     const color = getPAColor(pm);
 
 
     const marker = L.circleMarker([lat, lon], {
-      radius: 5,
+      radius: 6,
       color: "black",
-      weight: 1,
+      weight: 1.5,
       fillColor: color,
-      fillOpacity: 0.85
+      fillOpacity: 0.85,
+      className: "pa-dot"
     }).addTo(window.layerPA);
 
     marker.bindTooltip(
       `<b>${p.name}</b><br>PM2.5: ${Number.isFinite(pm) ? pm.toFixed(1) : "Offline"}`
     );
+   marker.on("click", () => {
+    showStationModal({
+      StationName: p.name,
+      PM25: pm
+    });
+    buildGauges({
+      PM25: pm,
+      AQHI: null,
+      O3: null,
+      NO2: null,
+      RH: null,
+      Temp: null,
+      WS: null
+    });
   });
 
   console.log("PurpleAir rendered.");
@@ -41,7 +64,6 @@ window.drawPurpleAir = function () {
 function getPAColor(pm, name) {
 
   if (!Number.isFinite(pm)) return "#808080";
-
   if (pm > 100) return "#640100";
   if (pm > 90)  return "#9a0100";
   if (pm > 80)  return "#cc0001";
@@ -56,6 +78,8 @@ function getPAColor(pm, name) {
 
   return "#D3D3D3";
 }
+
+if (!Number.isFinite(pm)) console.warn("PurpleAir missing PM:", p);
 
 
 window.buildPurpleFC = function (data) {
