@@ -33,49 +33,47 @@ window.initMap = async function () {
     return map.distance([a.lat, a.lon], [b.lat, b.lon]);
   }
 
+
   function findClosest(lat, lon, list, n = 1) {
-    return list
+  
+    const safe = list
+      .filter(p =>
+        Number.isFinite(p.Lat ?? p.lat) &&
+        Number.isFinite(p.Lon ?? p.lon)
+      )
       .map(p => ({
         ...p,
         d: map.distance([lat, lon], [p.Lat ?? p.lat, p.Lon ?? p.lon])
       }))
-      .sort((a, b) => a.d - b.d)
-      .slice(0, n);
+      .sort((a, b) => a.d - b.d);
+  
+    return safe.slice(0, n);
   }
 
+
   map.on("click", e => {
+  
     const lat = e.latlng.lat;
     const lon = e.latlng.lng;
-
-    const nearestStations = findClosest(lat, lon, window.stationsFC.features, 2)
-      .map(f => ({ lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0], ...f.properties }));
-
-    const nearestPA = findClosest(lat, lon, window.purpleFC.features, 3)
-      .map(f => ({ lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0], ...f.properties }));
-
-    const windLayer = L.tileLayer.wms("https://geo.weather.gc.ca/geomet", {
-      layers: "HRDPS.CONTINENTAL_UU",
-      format: "image/png",
-      transparent: true,
-      opacity: 0.6
-    });
-
-    layerWind.clearLayers();
-    layerWind.addLayer(windLayer);
-
-    const overlays = {
-      "ACA Boundary": window.layerACA_Boundary,
-      "WCAS Boundary": window.layerWCAS_Boundary,
-      "ACA Stations": layerACA,
-      "WCAS Stations": layerWCAS,
-      "PurpleAir": layerPA,
-      "Wind": layerWind
-    };
-
-    L.control.layers(null, overlays, { collapsed: false }).addTo(map);
-
+  
+    const stationList = window.stationsFC.features.map(f => ({
+      ...f.properties,
+      lat: f.geometry.coordinates[1],
+      lon: f.geometry.coordinates[0]
+    }));
+  
+    const paList = window.purpleFC.features.map(f => ({
+      ...f.properties,
+      lat: f.geometry.coordinates[1],
+      lon: f.geometry.coordinates[0]
+    }));
+  
+    const nearestStations = findClosest(lat, lon, stationList, 2);
+    const nearestPA = findClosest(lat, lon, paList, 3);
+  
     showLocationModal(lat, lon, nearestStations, nearestPA);
   });
+
 
   map.locate({ setView: true, maxZoom: 10 });
 
