@@ -2,10 +2,18 @@ window.drawStations = function () {
 
   console.log("Drawing stations…");
 
-  if (!window.map || !window.stationsFC || !window.last6hTable) {
-    console.error("Missing map or station data");
+  
+  if (!window.map || !window.layerACA || !window.layerWCAS || !window.stationsFC || !window.last6hTable) {
+    console.error("Station draw blocked: missing dependency", {
+      map: !!window.map,
+      layerACA: !!window.layerACA,
+      layerWCAS: !!window.layerWCAS,
+      stationsFC: !!window.stationsFC,
+      last6hTable: !!window.last6hTable
+    });
     return;
   }
+
 
   // Clear previous
   window.layerACA.clearLayers();
