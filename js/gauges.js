@@ -90,6 +90,7 @@ window.showGaugesForStation = function (station) {
     return;
   }
 
+  // Actually draw the gauges
   window.buildFullGaugePanel(station);
 };
 
