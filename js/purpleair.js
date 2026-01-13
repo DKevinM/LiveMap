@@ -15,9 +15,10 @@ window.drawPurpleAir = function () {
     const lat = f.geometry.coordinates[1];
     const lon = f.geometry.coordinates[0];
 
-    const pm = Number(p.pm2_5_corrected);
+    
+    const pm = Number(p.pm2_5_corrected ?? p.pm25 ?? p.pm2_5_atm ?? p.PM2_5 ?? p.PM25);
+    const color = getPAColor(pm);
 
-    const color = getPAColor(pm, p.name);
 
     const marker = L.circleMarker([lat, lon], {
       radius: 8,
