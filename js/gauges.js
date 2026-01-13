@@ -81,5 +81,16 @@ window.initGauges = function () {
   console.log("Gauges ready.");
 };
 
+window.showGaugesForStation = function (station) {
+  if (!station) return;
+
+  const panel = document.getElementById("station-gauges");
+  if (!panel) {
+    console.warn("No gauge container in DOM");
+    return;
+  }
+
+  window.buildFullGaugePanel(station);
+};
 
 
