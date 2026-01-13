@@ -21,13 +21,18 @@ window.drawStations = function () {
 
     const group = st.Airshed === "ACA" ? window.layerACA : window.layerWCAS;
     
-    const row = latest?.find(r =>
-      r.StationName === st.StationName &&
-      r.ParameterName === "AQHI"
-    );
 
-    let val = row ? Number(row.Value) : null;
-    if (row?.Value === "10+" || row?.Value === "10 +") val = 11;
+    const row = window.last6hTable.find(r =>
+      r.StationName === st.StationName &&
+      String(r.ParameterName).toUpperCase() === "AQHI"
+    );
+    
+    let val = null;
+    if (row && row.Value !== null && row.Value !== undefined) {
+      val = row.Value === "10+" ? 11 : Number(row.Value);
+    }
+
+      
 
     const color = getAQHIColor(val);
 
