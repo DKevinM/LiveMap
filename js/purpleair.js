@@ -6,10 +6,16 @@ window.drawPurpleAir = function () {
 
   console.log("Drawing PurpleAir…");
 
-  if (!window.map || !window.purpleFC) {
-    console.error("Missing map or PurpleAir data");
+  
+  if (!window.map || !window.layerPA || !window.purpleFC) {
+    console.error("PurpleAir draw blocked: missing dependency", {
+      map: !!window.map,
+      layerPA: !!window.layerPA,
+      purpleFC: !!window.purpleFC
+    });
     return;
   }
+
 
   window.layerPA.clearLayers();
 
