@@ -47,23 +47,13 @@ window.drawPurpleAir = function () {
 
     // ✅ click wiring INSIDE loop
     marker.on("click", () => {
-      showStationModal({
-        StationName: p.name || "PurpleAir",
-        PM25: pm
-      });
-
-      buildGauges({
-        PM25: pm,
-        AQHI: null,
-        O3: null,
-        NO2: null,
-        RH: null,
-        Temp: null,
-        WS: null
-      });
+      showStationModal({ StationName: p.name });
+      window.showGaugesForStation({ PM25: pm });
     });
 
   });
+
+});
 
   console.log("PurpleAir rendered.");
 };
