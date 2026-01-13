@@ -8,32 +8,27 @@
 
   try {
 
-    // 1️⃣ Load raw datasets
+    // 1️⃣ Load data & build geometry
     console.log("Loading data...");
     await window.initData();
 
-    // 2️⃣ Build spatial FeatureCollections (must happen AFTER data loads)
-    console.log("Building geometry...");
-    window.stationsFC = buildStationsFC();
-    window.purpleFC   = buildPurpleFC(window.purpleTable);
-
-    // 3️⃣ Create map
+    // 2️⃣ Create map
     console.log("Creating map...");
     const map = await window.initMap();
 
-    // 4️⃣ Render stations
+    // 3️⃣ Render stations
     console.log("Loading stations...");
     const stationsLayer = await window.initStations(map);
 
-    // 5️⃣ Render PurpleAir
+    // 4️⃣ Render PurpleAir
     console.log("Loading PurpleAir...");
     const purpleLayer = await window.initPurpleAir(map);
 
-    // 6️⃣ Wire UI
+    // 5️⃣ Wire UI
     console.log("Initializing UI...");
     window.initUI({ map, stationsLayer, purpleLayer });
 
-    // 7️⃣ Initialize gauges
+    // 6️⃣ Initialize gauges
     console.log("Initializing gauges...");
     window.initGauges();
 
