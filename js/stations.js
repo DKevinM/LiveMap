@@ -99,6 +99,9 @@ window.drawStations = function () {
 
   window.initStations = async function () {
     console.log("Initializing station layers…");
+    // Ensure map exists
+    window.map = map;
+    
     window.drawStations();
     return {
       ACA: window.layerACA,
