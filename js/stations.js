@@ -50,10 +50,12 @@ window.drawStations = function () {
       `<b>${st.StationName}</b><br>AQHI: ${val ?? "NA"}`
     );
 
+
     marker.on("click", () => {
       showStationModal(marker.stationData);
-      buildGauges(marker.stationData);
+      window.showGaugesForStation(marker.stationData);
     });
+
   });
 
   console.log("Stations rendered.");
