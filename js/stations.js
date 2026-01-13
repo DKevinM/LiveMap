@@ -98,14 +98,16 @@ window.drawStations = function () {
   };
 
   window.initStations = async function () {
-    console.log("Initializing station layers…");
-    // Ensure map exists
-    window.map = map;
-    
+    if (!window.map || !window.layerACA || !window.layerWCAS) {
+      console.error("Map not ready for stations");
+      return;
+    }
+  
     window.drawStations();
-    return {
-      ACA: window.layerACA,
-      WCAS: window.layerWCAS
-    };
+    return { ACA: window.layerACA, WCAS: window.layerWCAS };
+  };
+
+    window.map = map;
+
   };
 
