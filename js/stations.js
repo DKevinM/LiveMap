@@ -107,7 +107,3 @@ window.drawStations = function () {
     return { ACA: window.layerACA, WCAS: window.layerWCAS };
   };
 
-    window.map = map;
-
-  };
-
