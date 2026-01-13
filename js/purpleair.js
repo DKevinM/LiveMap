@@ -1,5 +1,6 @@
 window.drawPurpleAir = function () {
-
+  
+  console.log("PurpleAir sample:", window.purpleFC.features[0].properties);
   console.log("Drawing PurpleAir…");
 
   if (!window.map || !window.purpleFC) {
@@ -21,7 +22,7 @@ window.drawPurpleAir = function () {
 
 
     const marker = L.circleMarker([lat, lon], {
-      radius: 8,
+      radius: 5,
       color: "black",
       weight: 1,
       fillColor: color,
