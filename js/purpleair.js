@@ -45,15 +45,13 @@ window.drawPurpleAir = function () {
        PM2.5: ${Number.isFinite(pm) ? pm.toFixed(1) : "Offline"}`
     );
 
-    // ✅ click wiring INSIDE loop
+    // click wiring
     marker.on("click", () => {
       showStationModal({ StationName: p.name });
       window.showGaugesForStation({ PM25: pm });
     });
 
   });
-
-});
 
   console.log("PurpleAir rendered.");
 };
