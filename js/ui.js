@@ -78,9 +78,18 @@ window.initLegend = function () {
 
   const legend = L.control({ position: 'bottomleft' });
 
+
   legend.onAdd = function () {
-    const div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = `<img src="aep-aqhi-scale.png" style="width:150px">`;
+    const div = L.DomUtil.create("div", "aqhi-legend");
+    div.innerHTML = `
+      <img src="aqhilegend.png" style="
+        width:160px;
+        background:white;
+        padding:6px;
+        border-radius:8px;
+        box-shadow:0 2px 6px rgba(0,0,0,0.25);
+      ">
+    `;
     return div;
   };
 
