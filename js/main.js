@@ -1,33 +1,43 @@
-(async function bootstrap() {
+// js/main.js
 
-  console.log("Booting app...");
+async function bootstrap() {
+  console.log("Booting app…");
 
-  // 1️⃣ Wait for all data to load
-  await window.dataReady;
-  console.log("Data ready");
+  // 1. Wait for station + PurpleAir data
+  if (window.dataReady) {
+    await window.dataReady;
+    console.log("Data ready");
+  } else {
+    console.error("dataReady missing");
+    return;
+  }
 
-  // 2️⃣ Initialize map
+  // 2. Init map
   if (typeof window.initMap === "function") {
     window.initMap();
     console.log("Map initialized");
+  } else {
+    console.error("initMap missing");
+    return;
   }
 
-  // 3️⃣ Render stations
+  // 3. Render stations
   if (typeof window.renderStations === "function") {
     await window.renderStations();
     console.log("Stations rendered");
+  } else {
+    console.error("renderStations missing");
   }
 
-  // 4️⃣ Render PurpleAir
+  // 4. Render PurpleAir
   if (typeof window.renderPurpleAir === "function") {
     await window.renderPurpleAir();
     console.log("PurpleAir rendered");
+  } else {
+    console.error("renderPurpleAir missing");
   }
 
-  // 5️⃣ Initialize UI + gauges
-  if (typeof window.initUI === "function") window.initUI();
-  if (typeof window.initGauges === "function") window.initGauges();
+  console.log("App ready");
+}
 
-  console.log("App fully loaded");
-
-})();
+window.addEventListener("load", bootstrap);
