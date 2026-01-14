@@ -1,34 +1,44 @@
-// stations.js
 window.renderStations = async function () {
-  if (!window.map || !window.markerGroup) throw new Error("Map not initialized");
 
-  // Make sure data.js finished building dataByStation
-  await window.dataReady;
+  console.log("Rendering stations…");
 
-  const stations = await window.fetchAllStationData(); // <-- your function
+  if (!window.fetchAllStationData) {
+    console.error("fetchAllStationData not available yet.");
+    return;
+  }
+
+  const allStations = await window.fetchAllStationData();
+
+  if (!window.map || !window.markerGroup) {
+    console.error("Map not ready for stations.");
+    return;
+  }
+
   window.markerGroup.clearLayers();
 
-  stations.forEach(({ stationName, lat, lon, html, aqhi }) => {
-    const fillColor = window.getAQHIColor(String(aqhi ?? "NA"));
+  allStations.forEach(st => {
 
-    const marker = L.circleMarker([Number(lat), Number(lon)], {
-      radius: 10,                 // station size
-      fillColor,
-      color: "#111",
-      weight: 2,
-      fillOpacity: 0.92
-    });
+    const color = getColor(String(st.aqhi || "NA"));
 
-    marker.bindPopup(html);
+    const marker = L.circleMarker([st.lat, st.lon], {
+      radius: 7,
+      fillColor: color,
+      color: "#222",
+      weight: 1,
+      fillOpacity: 0.85
+    })
+    .bindPopup(st.html)
+    .addTo(window.markerGroup);
 
     marker.on("click", () => {
-      // Optional: if you want gauges in your modal later, hook here.
-      // For now: just open popup
-      marker.openPopup();
+      if (window.buildFullGaugePanel) {
+        window.buildFullGaugePanel({
+          StationName: st.stationName,
+          AQHI: st.aqhi
+        });
+      }
     });
-
-    marker.addTo(window.markerGroup);
   });
 
-  return window.markerGroup;
+  console.log("Stations rendered.");
 };
