@@ -1,121 +1,58 @@
-// ================================
 // purpleair.js
-// ================================
+const PURPLE_URL = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/AB_PM25_map.json";
 
-window.drawPurpleAir = function () {
-
-  console.log("Drawing PurpleAir…");
-
-  
-  if (!window.map || !window.layerPA || !window.purpleFC) {
-    console.error("PurpleAir draw blocked: missing dependency", {
-      map: !!window.map,
-      layerPA: !!window.layerPA,
-      purpleFC: !!window.purpleFC
-    });
-    return;
-  }
-
-
-  window.layerPA.clearLayers();
-
-  window.purpleFC.features.forEach(f => {
-
-    const p = f.properties;
-    const lat = f.geometry.coordinates[1];
-    const lon = f.geometry.coordinates[0];
-
-    const pm = Number(
-      p.pm2_5_corrected ??
-      p.pm25 ??
-      p.pm2_5_atm ??
-      p.PM2_5 ??
-      p.PM25 ??
-      p.value ??
-      p.Value
-    );
-
-    const color = getPAColor(pm);
-
-    const marker = L.circleMarker([lat, lon], {
-      radius: 6,
-      color: "black",
-      weight: 1.5,
-      fillColor: color,
-      fillOpacity: 0.85,
-      className: "pa-dot"
-    }).addTo(window.layerPA);
-
-    marker.bindTooltip(
-      `<b>${p.name || "PurpleAir"}</b><br>
-       PM2.5: ${Number.isFinite(pm) ? pm.toFixed(1) : "Offline"}`
-    );
-
-    // click wiring
-    marker.on("click", () => {
-      showStationModal({ StationName: p.name });
-      window.showGaugesForStation({ PM25: pm });
-    });
-
-  });
-
-  console.log("PurpleAir rendered.");
-};
-
-
-// ================================
-// PurpleAir Color Scale
-// ================================
-
-function getPAColor(pm) {
-
-  if (!Number.isFinite(pm)) return "#808080";
-  if (pm > 100) return "#640100";
-  if (pm > 90)  return "#9a0100";
-  if (pm > 80)  return "#cc0001";
-  if (pm > 70)  return "#fe0002";
-  if (pm > 60)  return "#fd6866";
-  if (pm > 50)  return "#ff9835";
-  if (pm > 40)  return "#ffcb00";
-  if (pm > 30)  return "#fffe03";
-  if (pm > 20)  return "#016797";
-  if (pm > 10)  return "#0099cb";
-  if (pm > 0)   return "#01cbff";
-
-  return "#D3D3D3";
+function computeEAQHI(pm) {
+  if (pm == null || isNaN(pm)) return null;
+  let val = Math.floor(pm / 10) + 1;
+  if (val < 0) val = 0;
+  if (val > 10) val = 10;
+  return val;
 }
 
+window.renderPurpleAir = async function () {
+  if (!window.map || !window.paLayer) throw new Error("Map not initialized");
 
-// ================================
-// GeoJSON Builder
-// ================================
+  const res = await fetch(PURPLE_URL);
+  const data = await res.json();
 
-window.buildPurpleFC = function (data) {
-  return {
-    type: "FeatureCollection",
-    features: data
-      .filter(p => Number.isFinite(Number(p.latitude)) && Number.isFinite(Number(p.longitude)))
-      .map(p => ({
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [Number(p.longitude), Number(p.latitude)]
-        },
-        properties: p
-      }))
-  };
-};
+  const records = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+  window.paLayer.clearLayers();
 
+  records.forEach(rec => {
+    const lat = parseFloat(rec.lat ?? rec.Latitude ?? rec.latitude);
+    const lon = parseFloat(rec.lon ?? rec.Longitude ?? rec.longitude);
+    const pm  = parseFloat(rec.pm_corr);
 
-// ================================
-// Init hook
-// ================================
+    if (!isFinite(lat) || !isFinite(lon) || !isFinite(pm)) return;
 
-window.initPurpleAir = async function () {
-  console.log("Initializing PurpleAir layers…");
+    const eAQHI = computeEAQHI(pm);
+    if (eAQHI == null) return;
 
-  window.map = map;
-  
-  window.drawPurpleAir();
-  return window.layerPA;
+    const sensorIndex = rec.sensor_index;
+    const label = rec.name || (sensorIndex != null ? `Sensor ${sensorIndex}` : "Unnamed sensor");
+    const color = window.getAQHIColor(String(eAQHI));
+
+    const marker = L.circleMarker([lat, lon], {
+      radius: 5,                 // smaller than stations
+      fillColor: color,
+      color: "#111",
+      weight: 1,
+      fillOpacity: 0.88
+    }).bindPopup(
+      `<strong>PurpleAir</strong><br>
+       ${label}<br>
+       ${sensorIndex != null ? `Sensor index: ${sensorIndex}<br>` : ""}
+       eAQHI: ${eAQHI}<br>
+       PM₂.₅ (corr): ${pm.toFixed(1)} µg/m³
+       <hr>
+       ${sensorIndex != null ? `
+         <a href="/AQHI.forecast/history/sensor_compare.html?sensor_index=${sensorIndex}" target="_blank">
+           View historical PM2.5
+         </a>` : ""}`
+    );
+
+    marker.addTo(window.paLayer);
+  });
+
+  return window.paLayer;
 };
