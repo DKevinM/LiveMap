@@ -35,8 +35,6 @@ window.computeEAQHI = function(pm) {
 };
 
 
-
-
 async function loadPurpleAir() {
   const url = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/AB_PM25_map.json";
   const res = await fetch(url);
@@ -70,7 +68,6 @@ async function loadPurpleAir() {
 }
 
 
-
 window.AppData.ready = Promise.all([
   window.dataReady,
   loadPurpleAir()
@@ -79,3 +76,59 @@ window.AppData.ready = Promise.all([
   AppData.purpleair = purple;
 });
 
+window.fetchAllStationData = async function () {
+
+  const url = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv";
+  const res = await fetch(url);
+  const text = await res.text();
+
+  const rows = text.trim().split("\n");
+  const headers = rows.shift().split(",");
+
+  const byStation = {};
+
+  rows.forEach(line => {
+    const cols = line.split(",");
+    const e = Object.fromEntries(headers.map((h,i)=>[h, cols[i]]));
+
+    if (!e.Latitude || !e.Longitude || !e.StationName) return;
+
+    const val = Number(e.Value);
+    if (!isFinite(val)) return;
+
+    const station = e.StationName;
+
+    byStation[station] ??= {
+      stationName: station,
+      lat: Number(e.Latitude),
+      lon: Number(e.Longitude),
+      params: {}
+    };
+
+    byStation[station].params[e.ParameterName || "AQHI"] = e;
+  });
+
+  const stations = [];
+
+  Object.values(byStation).forEach(st => {
+    const aqhi = st.params["AQHI"]?.Value ?? "NA";
+
+    const lines = Object.values(st.params)
+      .filter(p => p.ParameterName !== "AQHI")
+      .map(p => `${p.ParameterName}: ${p.Value}`);
+
+    stations.push({
+      stationName: st.stationName,
+      lat: st.lat,
+      lon: st.lon,
+      aqhi,
+      html: `
+        <strong>${st.stationName}</strong><br>
+        AQHI: ${aqhi}<br>
+        ${lines.join("<br>")}
+      `
+    });
+  });
+
+  return stations;
+};
