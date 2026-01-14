@@ -15,11 +15,9 @@ async function bootstrap() {
   // 2. Init map
   if (typeof window.initMap === "function") {
     window.initMap();
-    console.log("Map initialized");
-  } else {
-    console.error("initMap missing");
-    return;
+    await new Promise(r => setTimeout(r, 100));  // allow map to attach
   }
+
 
   // 3. Render stations
   if (typeof window.renderStations === "function") {
