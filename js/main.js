@@ -1,41 +1,30 @@
-// js/main.js
+window.bootstrap = async function () {
 
-async function bootstrap() {
-  console.log("Booting app…");
+  console.log("Bootstrapping app...");
 
-  // 1. Wait for station + PurpleAir data
-  if (window.dataReady) {
-    await window.dataReady;
-    console.log("Data ready");
-  } else {
-    console.error("dataReady missing");
+  if (!window.initMap) {
+    console.error("initMap missing");
     return;
   }
 
-  // 2. Init map
-  if (typeof window.initMap === "function") {
-    window.initMap();
-    await new Promise(r => setTimeout(r, 100));  // allow map to attach
+  await initMap();
+
+  if (!window.AppData?.ready) {
+    console.error("AppData.ready missing");
+    return;
   }
 
+  await AppData.ready;
 
-  // 3. Render stations
-  if (typeof window.renderStations === "function") {
-    await window.renderStations();
-    console.log("Stations rendered");
-  } else {
-    console.error("renderStations missing");
+  if (window.renderStations) {
+    await renderStations();
   }
 
-  // 4. Render PurpleAir
-  if (typeof window.renderPurpleAir === "function") {
-    await window.renderPurpleAir();
-    console.log("PurpleAir rendered");
-  } else {
-    console.error("renderPurpleAir missing");
+  if (window.renderPurpleAir) {
+    await renderPurpleAir();
   }
 
-  console.log("App ready");
-}
+  console.log("Application ready.");
+};
 
 window.addEventListener("load", bootstrap);
