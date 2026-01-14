@@ -8,17 +8,28 @@ window.renderMap = function () {
   // --- Stations ---
   AppData.stations.forEach(st => {
     const color = getAQHIColor(st.aqhi);
-
-    L.circleMarker([st.lat, st.lon], {
+  
+    const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
       fillColor: color,
       color: "#222",
       weight: 1,
       fillOpacity: 0.85
     })
-    .bindPopup(st.html)
     .addTo(stationLayer);
-  });
+  
+    marker.on("click", () => {
+      if (typeof showStationModal === "function") {
+        showStationModal(st);
+      }
+      if (typeof buildGauges === "function") {
+        buildGauges(st);
+      }
+    });
+
+  marker.bindPopup(st.html);
+});
+
 
   // --- PurpleAir ---
   AppData.purpleair.forEach(p => {
