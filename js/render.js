@@ -56,9 +56,6 @@ window.renderMap = function () {
     
     ALLStations.addLayer(marker);
     
-    const inACA  = inside(ACApoly, st.lat, st.lon);
-    const inWCAS = inside(WCASpoly, st.lat, st.lon);
-    
     if (inACA)  ACAStations.addLayer(marker);
     if (inWCAS) WCASStations.addLayer(marker);
 
@@ -66,9 +63,6 @@ window.renderMap = function () {
 
   // ---------- PURPLEAIR ----------
   AppData.purpleair.forEach(p => {
-
-    const inACA  = inside(ACApoly, p.lat, p.lon);
-    const inWCAS = inside(WCASpoly, p.lat, p.lon);
 
     const aq = Number(p.eAQHI);
     if (!Number.isFinite(aq)) return;
@@ -89,9 +83,7 @@ window.renderMap = function () {
     `);
 
     ALLPurple.addLayer(marker);
-    const inACA  = inside(ACApoly, st.lat, st.lon);
-    const inWCAS = inside(WCASpoly, st.lat, st.lon);
-    
+   
     if (inACA)  ACAStations.addLayer(marker);
     if (inWCAS) WCASStations.addLayer(marker);
     
