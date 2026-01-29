@@ -75,7 +75,32 @@ window.renderMap = function () {
     
     const color = hasAQHI ? getAQHIColor(aq) : "#888888";
 
-    const rows = window.dataByStation?.[st.stationName] || [];
+    const by = window.dataByStation || {};
+    const wanted = (st.stationName || "").trim().toLowerCase();
+    
+    const matchKey = Object.keys(by).find(k => k.trim().toLowerCase() === wanted);
+    const rows = matchKey ? (by[matchKey] || []) : [];
+
+    if (!rows.length) {
+      // fallback popup so you at least get station + AQHI
+      const fallbackAQ = (st.aqhi ?? "--");
+      const marker = L.circleMarker([st.lat, st.lon], {
+        radius: 7,
+        fillColor: color,
+        color: "#222",
+        weight: 1,
+        fillOpacity: 0.85
+      }).bindPopup(`
+        <strong>${st.stationName}</strong><br>
+        AQHI: ${fallbackAQ}<br><br>
+        <em>No recent station parameter data loaded.</em>
+      `);
+    
+      // add marker to correct layer (use your inACA/inWCAS logic)
+      // ... your layer add code here ...
+      return; // stop here for this station
+    }
+    
     
     function val(p) {
       const r = rows.find(x => x.ParameterName === p);
@@ -87,26 +112,22 @@ window.renderMap = function () {
       return r ? r.Unit : "";
     }
     
+    const rows = window.dataByStation?.[st.stationName] || [];
+    
+    const lines = rows.map(r => {
+      return `${r.ParameterName}: ${r.Value} ${r.Unit || ""}`;
+    }).join("<br>");
+    
     const popupHTML = `
       <strong>${st.stationName}</strong><br>
       ${rows[0]?.DateTime || ""}<br><br>
-    
-      AQHI: <b>${val("AQHI")}</b><br>
-      Temp: ${val("Outdoor Temperature")} °C<br>
-      Humidity: ${val("Relative Humidity")} %<br>
-      Wind Speed: ${val("Wind Speed")} km/h<br>
-      Wind Dir: ${val("Wind Direction")}°<br><br>
-    
-      NO₂: ${val("Nitrogen Dioxide")} ppb<br>
-      O₃: ${val("Ozone")} ppb<br>
-      PM2.5: ${val("Fine Particulate Matter")} µg/m³<br>
-      CO: ${val("Carbon Monoxide")} ppm<br>
-    
+      ${lines}
       <hr>
-      <a href="/AQHI.forecast/history/station_history.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
+      <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
         View historical data
       </a>
     `;
+
     
     const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
