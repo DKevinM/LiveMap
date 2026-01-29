@@ -1,7 +1,7 @@
 [
   {
     "sensor_index":4327,
-    "last_seen":1769580655,
+    "last_seen":1769667545,
     "name":"Didsbury",
     "location_type":0,
     "latitude":51.667637,
@@ -10,7 +10,7 @@
   },
   {
     "sensor_index":267739,
-    "last_seen":1769580700,
+    "last_seen":1769667596,
     "name":"Twintree",
     "location_type":0,
     "latitude":50.934338,
@@ -19,7 +19,7 @@
   },
   {
     "sensor_index":7208,
-    "last_seen":1769580682,
+    "last_seen":1769667579,
     "name":"FAP-Redwater",
     "location_type":0,
     "latitude":53.951702,
@@ -28,7 +28,7 @@
   },
   {
     "sensor_index":269406,
-    "last_seen":1769580701,
+    "last_seen":1769667595,
     "name":"Calling lake recreational center",
     "location_type":0,
     "latitude":55.23663,
@@ -37,7 +37,7 @@
   },
   {
     "sensor_index":269420,
-    "last_seen":1769580619,
+    "last_seen":1769667513,
     "name":"Eagle point golf course",
     "location_type":0,
     "latitude":56.02103,
@@ -46,7 +46,7 @@
   },
   {
     "sensor_index":269426,
-    "last_seen":1769580660,
+    "last_seen":1769667555,
     "name":"Red Earth Community Hall",
     "location_type":0,
     "latitude":56.56017,
@@ -55,7 +55,7 @@
   },
   {
     "sensor_index":269504,
-    "last_seen":1769580686,
+    "last_seen":1769667579,
     "name":"Meadowview Leduc",
     "location_type":0,
     "latitude":53.24569,
@@ -64,7 +64,7 @@
   },
   {
     "sensor_index":276296,
-    "last_seen":1769580713,
+    "last_seen":1769667607,
     "name":"Foggy Mountain Farm",
     "location_type":0,
     "latitude":58.444336,
@@ -73,7 +73,7 @@
   },
   {
     "sensor_index":276354,
-    "last_seen":1769580722,
+    "last_seen":1769667500,
     "name":"Nipisi Terminal",
     "location_type":0,
     "latitude":55.90808,
@@ -82,7 +82,7 @@
   },
   {
     "sensor_index":277275,
-    "last_seen":1769580640,
+    "last_seen":1769667541,
     "name":"Sexsmith Community Field",
     "location_type":0,
     "latitude":55.34613,
@@ -91,7 +91,7 @@
   },
   {
     "sensor_index":278167,
-    "last_seen":1769580722,
+    "last_seen":1769667499,
     "name":"Norbo",
     "location_type":0,
     "latitude":52.683586,
@@ -100,7 +100,7 @@
   },
   {
     "sensor_index":278779,
-    "last_seen":1769580684,
+    "last_seen":1769667578,
     "name":"Sharp Hills Wind Farm",
     "location_type":0,
     "latitude":51.678337,
@@ -109,7 +109,7 @@
   },
   {
     "sensor_index":278917,
-    "last_seen":1769580634,
+    "last_seen":1769667528,
     "name":"MacEwan Calgary",
     "location_type":0,
     "latitude":51.131187,
@@ -118,7 +118,7 @@
   },
   {
     "sensor_index":279217,
-    "last_seen":1769580731,
+    "last_seen":1769667504,
     "name":"Hollick Kenyon",
     "location_type":0,
     "latitude":53.626366,
@@ -127,7 +127,7 @@
   },
   {
     "sensor_index":279898,
-    "last_seen":1769578159,
+    "last_seen":1769664550,
     "name":"Ervins",
     "location_type":0,
     "latitude":53.86501,
@@ -136,7 +136,7 @@
   },
   {
     "sensor_index":280178,
-    "last_seen":1769580725,
+    "last_seen":1769667500,
     "name":"Air Sniffer",
     "location_type":0,
     "latitude":51.073933,
@@ -145,7 +145,7 @@
   },
   {
     "sensor_index":280540,
-    "last_seen":1769580709,
+    "last_seen":1769667602,
     "name":"Ranchridge Court Calgary",
     "location_type":0,
     "latitude":51.12379,
@@ -154,7 +154,7 @@
   },
   {
     "sensor_index":280732,
-    "last_seen":1769580676,
+    "last_seen":1769667522,
     "name":"LOCHEND DRIVE",
     "location_type":0,
     "latitude":51.181812,
@@ -163,7 +163,7 @@
   },
   {
     "sensor_index":24481,
-    "last_seen":1769580695,
+    "last_seen":1769667593,
     "name":"AQSU-5226",
     "location_type":0,
     "latitude":53.528072,
@@ -172,7 +172,7 @@
   },
   {
     "sensor_index":24491,
-    "last_seen":1769580705,
+    "last_seen":1769667599,
     "name":"AQSU-D34F",
     "location_type":0,
     "latitude":53.53523,
@@ -181,7 +181,7 @@
   },
   {
     "sensor_index":24513,
-    "last_seen":1769580674,
+    "last_seen":1769667567,
     "name":"AQSU-D341",
     "location_type":0,
     "latitude":53.532578,
@@ -190,7 +190,7 @@
   },
   {
     "sensor_index":24523,
-    "last_seen":1769580667,
+    "last_seen":1769667564,
     "name":"AQSU-D36F",
     "location_type":0,
     "latitude":53.532368,
@@ -199,7 +199,7 @@
   },
   {
     "sensor_index":288250,
-    "last_seen":1769580654,
+    "last_seen":1769667555,
     "name":"TLFN",
     "location_type":0,
     "latitude":56.499516,
@@ -208,7 +208,7 @@
   },
   {
     "sensor_index":26503,
-    "last_seen":1769580643,
+    "last_seen":1769667541,
     "name":"ACA_South Cooking Lake",
     "location_type":0,
     "latitude":53.415577,
@@ -217,7 +217,7 @@
   },
   {
     "sensor_index":288704,
-    "last_seen":1769580710,
+    "last_seen":1769667604,
     "name":"HAMP-Brookville",
     "location_type":0,
     "latitude":53.570873,
@@ -226,7 +226,7 @@
   },
   {
     "sensor_index":288726,
-    "last_seen":1769580620,
+    "last_seen":1769667515,
     "name":"HAMP-Partridge Hill",
     "location_type":0,
     "latitude":53.658012,
@@ -235,7 +235,7 @@
   },
   {
     "sensor_index":26633,
-    "last_seen":1769580636,
+    "last_seen":1769667529,
     "name":"ACA_Campbell Park",
     "location_type":0,
     "latitude":53.555477,
@@ -244,7 +244,7 @@
   },
   {
     "sensor_index":26681,
-    "last_seen":1769580690,
+    "last_seen":1769667571,
     "name":"ACA_Hansen Estates",
     "location_type":0,
     "latitude":53.41918,
@@ -253,7 +253,7 @@
   },
   {
     "sensor_index":27475,
-    "last_seen":1769580698,
+    "last_seen":1769667615,
     "name":"Town of Castor",
     "location_type":0,
     "latitude":52.219707,
@@ -262,7 +262,7 @@
   },
   {
     "sensor_index":27707,
-    "last_seen":1769580616,
+    "last_seen":1769667511,
     "name":"ACA_Woodcroft",
     "location_type":0,
     "latitude":53.564735,
@@ -271,7 +271,7 @@
   },
   {
     "sensor_index":27709,
-    "last_seen":1769580730,
+    "last_seen":1769667505,
     "name":"ACA_Lions Park",
     "location_type":0,
     "latitude":53.629276,
@@ -280,7 +280,7 @@
   },
   {
     "sensor_index":289866,
-    "last_seen":1769580731,
+    "last_seen":1769667524,
     "name":"Banff Warden Compound",
     "location_type":0,
     "latitude":51.191696,
@@ -289,7 +289,7 @@
   },
   {
     "sensor_index":27741,
-    "last_seen":1769580648,
+    "last_seen":1769667543,
     "name":"ACA_Natalia Park",
     "location_type":0,
     "latitude":53.654835,
@@ -298,7 +298,7 @@
   },
   {
     "sensor_index":28587,
-    "last_seen":1769580695,
+    "last_seen":1769667588,
     "name":"ACA_Jamieson Park",
     "location_type":0,
     "latitude":53.491158,
@@ -307,7 +307,7 @@
   },
   {
     "sensor_index":28617,
-    "last_seen":1769580691,
+    "last_seen":1769667571,
     "name":"ACA_Spruce Grove Fire Services",
     "location_type":0,
     "latitude":53.545223,
@@ -316,7 +316,7 @@
   },
   {
     "sensor_index":29211,
-    "last_seen":1769580618,
+    "last_seen":1769667514,
     "name":"ACA_LendrumAQMS",
     "location_type":0,
     "latitude":53.497707,
@@ -325,7 +325,7 @@
   },
   {
     "sensor_index":29663,
-    "last_seen":1769580733,
+    "last_seen":1769667508,
     "name":"Fort Vermillion County Office",
     "location_type":0,
     "latitude":58.38633,
@@ -334,7 +334,7 @@
   },
   {
     "sensor_index":33111,
-    "last_seen":1769580524,
+    "last_seen":1769667546,
     "name":"PRAMP - Three Creeks",
     "location_type":0,
     "latitude":56.367107,
@@ -343,7 +343,7 @@
   },
   {
     "sensor_index":33137,
-    "last_seen":1769580620,
+    "last_seen":1769667516,
     "name":"PRAMP - Nampa",
     "location_type":0,
     "latitude":56.04157,
@@ -352,7 +352,7 @@
   },
   {
     "sensor_index":33141,
-    "last_seen":1769580724,
+    "last_seen":1769667499,
     "name":"PRAMP - Peace River (above valley)",
     "location_type":0,
     "latitude":56.229584,
@@ -361,7 +361,7 @@
   },
   {
     "sensor_index":295535,
-    "last_seen":1769580627,
+    "last_seen":1769667569,
     "name":"Meadowbrook",
     "location_type":0,
     "latitude":51.274,
@@ -370,7 +370,7 @@
   },
   {
     "sensor_index":298063,
-    "last_seen":1769580725,
+    "last_seen":1769667499,
     "name":"Fireside",
     "location_type":0,
     "latitude":51.15669,
@@ -379,7 +379,7 @@
   },
   {
     "sensor_index":37199,
-    "last_seen":1769580692,
+    "last_seen":1769667585,
     "name":"Wapiti",
     "location_type":0,
     "latitude":51.090633,
@@ -388,7 +388,7 @@
   },
   {
     "sensor_index":299447,
-    "last_seen":1769580623,
+    "last_seen":1769667516,
     "name":"Evanston",
     "location_type":0,
     "latitude":51.181713,
@@ -397,7 +397,7 @@
   },
   {
     "sensor_index":38449,
-    "last_seen":1769580617,
+    "last_seen":1769667514,
     "name":"PAS_Crescent Heights",
     "location_type":0,
     "latitude":50.0488,
@@ -406,7 +406,7 @@
   },
   {
     "sensor_index":38527,
-    "last_seen":1769580658,
+    "last_seen":1769667551,
     "name":"PAS_Oyen",
     "location_type":0,
     "latitude":51.353207,
@@ -415,7 +415,7 @@
   },
   {
     "sensor_index":48675,
-    "last_seen":1769580679,
+    "last_seen":1769667572,
     "name":"LICA - University nuhelot\u2019\u012fne thaiyots\u2019\u012f nistameyim\u00e2kanak Blue Quills",
     "location_type":0,
     "latitude":54.00074,
@@ -424,7 +424,7 @@
   },
   {
     "sensor_index":48843,
-    "last_seen":1769580646,
+    "last_seen":1769667497,
     "name":"LICA - Bonnyville",
     "location_type":0,
     "latitude":54.264797,
@@ -433,7 +433,7 @@
   },
   {
     "sensor_index":49803,
-    "last_seen":1769580664,
+    "last_seen":1769667592,
     "name":"AQSU-850B",
     "location_type":0,
     "latitude":51.285793,
@@ -442,7 +442,7 @@
   },
   {
     "sensor_index":49843,
-    "last_seen":1769580717,
+    "last_seen":1769667612,
     "name":"WCAS_Breton",
     "location_type":0,
     "latitude":53.065487,
@@ -451,7 +451,7 @@
   },
   {
     "sensor_index":49851,
-    "last_seen":1769580685,
+    "last_seen":1769667580,
     "name":"AQSU-CD29",
     "location_type":0,
     "latitude":51.255703,
@@ -460,7 +460,7 @@
   },
   {
     "sensor_index":52583,
-    "last_seen":1769580651,
+    "last_seen":1769667544,
     "name":"ACA_RAC",
     "location_type":0,
     "latitude":53.48924,
@@ -469,7 +469,7 @@
   },
   {
     "sensor_index":52797,
-    "last_seen":1769580721,
+    "last_seen":1769667546,
     "name":"ACA_QueenAlexandraPark",
     "location_type":0,
     "latitude":53.509693,
@@ -478,7 +478,7 @@
   },
   {
     "sensor_index":52941,
-    "last_seen":1769580679,
+    "last_seen":1769667600,
     "name":"ACA_CD Nova",
     "location_type":0,
     "latitude":53.5675,
@@ -487,7 +487,7 @@
   },
   {
     "sensor_index":53143,
-    "last_seen":1769580655,
+    "last_seen":1769667551,
     "name":"ACA_HeritageLakes",
     "location_type":0,
     "latitude":53.609863,
@@ -496,7 +496,7 @@
   },
   {
     "sensor_index":53155,
-    "last_seen":1769580698,
+    "last_seen":1769667592,
     "name":"ACA_Winterburn Industrial",
     "location_type":0,
     "latitude":53.56212,
@@ -505,7 +505,7 @@
   },
   {
     "sensor_index":53215,
-    "last_seen":1769580716,
+    "last_seen":1769667497,
     "name":"ACA_CentennialPark",
     "location_type":0,
     "latitude":53.366737,
@@ -514,7 +514,7 @@
   },
   {
     "sensor_index":53221,
-    "last_seen":1769580716,
+    "last_seen":1769667608,
     "name":"ACA_ArgyllCL",
     "location_type":0,
     "latitude":53.505424,
@@ -523,7 +523,7 @@
   },
   {
     "sensor_index":53297,
-    "last_seen":1769580703,
+    "last_seen":1769667597,
     "name":"ACA_Secord",
     "location_type":0,
     "latitude":53.536823,
@@ -532,7 +532,7 @@
   },
   {
     "sensor_index":53321,
-    "last_seen":1769580682,
+    "last_seen":1769667575,
     "name":"ACA_PrinceRupert",
     "location_type":0,
     "latitude":53.560955,
@@ -541,7 +541,7 @@
   },
   {
     "sensor_index":53399,
-    "last_seen":1769580730,
+    "last_seen":1769667503,
     "name":"ACA_Mt Pleasant Park",
     "location_type":0,
     "latitude":53.012997,
@@ -550,7 +550,7 @@
   },
   {
     "sensor_index":54145,
-    "last_seen":1769580630,
+    "last_seen":1769667522,
     "name":"HouseYEG",
     "location_type":0,
     "latitude":53.54118,
@@ -559,7 +559,7 @@
   },
   {
     "sensor_index":60491,
-    "last_seen":1769580333,
+    "last_seen":1769667472,
     "name":"Athabasca GeoSpace",
     "location_type":0,
     "latitude":54.602673,
@@ -568,7 +568,7 @@
   },
   {
     "sensor_index":60725,
-    "last_seen":1769580696,
+    "last_seen":1769667587,
     "name":"TOB Fox",
     "location_type":0,
     "latitude":51.183052,
@@ -577,7 +577,7 @@
   },
   {
     "sensor_index":61041,
-    "last_seen":1769580725,
+    "last_seen":1769667569,
     "name":"AQSU-4097",
     "location_type":0,
     "latitude":50.030506,
@@ -595,7 +595,7 @@
   },
   {
     "sensor_index":78783,
-    "last_seen":1769580676,
+    "last_seen":1769667572,
     "name":"WCAS_Wagner",
     "location_type":0,
     "latitude":53.424202,
@@ -604,7 +604,7 @@
   },
   {
     "sensor_index":79371,
-    "last_seen":1769580692,
+    "last_seen":1769667589,
     "name":"ACA_O'Morrow",
     "location_type":0,
     "latitude":54.90272,
@@ -613,7 +613,7 @@
   },
   {
     "sensor_index":79495,
-    "last_seen":1769580631,
+    "last_seen":1769667528,
     "name":"WCAS_CarrotCreek",
     "location_type":0,
     "latitude":53.619835,
@@ -622,7 +622,7 @@
   },
   {
     "sensor_index":83939,
-    "last_seen":1769261561,
+    "last_seen":1769635915,
     "name":"AQSU 06A8",
     "location_type":0,
     "latitude":51.21551,
@@ -631,7 +631,7 @@
   },
   {
     "sensor_index":83959,
-    "last_seen":1769580658,
+    "last_seen":1769667551,
     "name":"Wheatland County Office",
     "location_type":0,
     "latitude":51.039913,
@@ -640,7 +640,7 @@
   },
   {
     "sensor_index":83971,
-    "last_seen":1769580665,
+    "last_seen":1769667559,
     "name":"WCAS_Entwistle2(AQSU-858E)",
     "location_type":0,
     "latitude":53.59378,
@@ -649,7 +649,7 @@
   },
   {
     "sensor_index":87569,
-    "last_seen":1769580647,
+    "last_seen":1769667542,
     "name":"Fort Macleod West",
     "location_type":0,
     "latitude":49.72151,
@@ -658,7 +658,7 @@
   },
   {
     "sensor_index":89567,
-    "last_seen":1769580699,
+    "last_seen":1769667596,
     "name":"FAP-Thorhild",
     "location_type":0,
     "latitude":54.16194,
@@ -667,7 +667,7 @@
   },
   {
     "sensor_index":89933,
-    "last_seen":1769580223,
+    "last_seen":1769666846,
     "name":"WCAS_Mayerthorpe(AQSU-7963)",
     "location_type":0,
     "latitude":53.953537,
@@ -676,7 +676,7 @@
   },
   {
     "sensor_index":91007,
-    "last_seen":1769580715,
+    "last_seen":1769667608,
     "name":"Rainbow",
     "location_type":0,
     "latitude":51.168503,
@@ -685,7 +685,7 @@
   },
   {
     "sensor_index":91009,
-    "last_seen":1769580700,
+    "last_seen":1769646953,
     "name":"WCAS_Pigeon Lake(AQSU-FFC0)",
     "location_type":0,
     "latitude":53.078487,
@@ -694,7 +694,7 @@
   },
   {
     "sensor_index":91475,
-    "last_seen":1769580639,
+    "last_seen":1769667534,
     "name":"ACA_Poachers Landing",
     "location_type":0,
     "latitude":54.94255,
@@ -703,7 +703,7 @@
   },
   {
     "sensor_index":91535,
-    "last_seen":1769580670,
+    "last_seen":1769667575,
     "name":"AQSU-442b",
     "location_type":0,
     "latitude":52.38103,
@@ -712,7 +712,7 @@
   },
   {
     "sensor_index":91545,
-    "last_seen":1769580655,
+    "last_seen":1769667551,
     "name":"WCAS_Entwistle1(AQSU-6463)",
     "location_type":0,
     "latitude":53.593525,
@@ -721,7 +721,7 @@
   },
   {
     "sensor_index":92179,
-    "last_seen":1769580716,
+    "last_seen":1769667610,
     "name":"AQSU-0095 Bonanza Public School",
     "location_type":0,
     "latitude":55.9133,
@@ -730,7 +730,7 @@
   },
   {
     "sensor_index":93279,
-    "last_seen":1769580704,
+    "last_seen":1769667584,
     "name":"AQSU-76E1",
     "location_type":0,
     "latitude":49.06504,
@@ -739,7 +739,7 @@
   },
   {
     "sensor_index":96597,
-    "last_seen":1769580706,
+    "last_seen":1769667587,
     "name":"Kananaskis",
     "location_type":0,
     "latitude":51.02913,
@@ -748,7 +748,7 @@
   },
   {
     "sensor_index":96833,
-    "last_seen":1769580669,
+    "last_seen":1769667566,
     "name":"Lac des Arcs",
     "location_type":0,
     "latitude":51.05396,
@@ -757,7 +757,7 @@
   },
   {
     "sensor_index":96945,
-    "last_seen":1769580638,
+    "last_seen":1769667531,
     "name":"DMF - BVCAS",
     "location_type":0,
     "latitude":51.04249,
@@ -766,7 +766,7 @@
   },
   {
     "sensor_index":100653,
-    "last_seen":1769580617,
+    "last_seen":1769667525,
     "name":"PRAMP - M.D. of Peace Office",
     "location_type":0,
     "latitude":56.146744,
@@ -775,7 +775,7 @@
   },
   {
     "sensor_index":100655,
-    "last_seen":1769580643,
+    "last_seen":1769667537,
     "name":"LICA - County of St. Paul",
     "location_type":0,
     "latitude":54.20083,
@@ -784,7 +784,7 @@
   },
   {
     "sensor_index":101369,
-    "last_seen":1769580694,
+    "last_seen":1769667611,
     "name":"LICA - Ardmore",
     "location_type":0,
     "latitude":54.333332,
@@ -793,7 +793,7 @@
   },
   {
     "sensor_index":101383,
-    "last_seen":1769580646,
+    "last_seen":1769667537,
     "name":"LICA - Lac La Biche",
     "location_type":0,
     "latitude":54.76268,
@@ -802,7 +802,7 @@
   },
   {
     "sensor_index":101764,
-    "last_seen":1769580711,
+    "last_seen":1769667591,
     "name":"HAMP-Bon Accord",
     "location_type":0,
     "latitude":53.833584,
@@ -811,7 +811,7 @@
   },
   {
     "sensor_index":104952,
-    "last_seen":1769580714,
+    "last_seen":1769667611,
     "name":"Cochrane",
     "location_type":0,
     "latitude":51.215492,
@@ -820,7 +820,7 @@
   },
   {
     "sensor_index":106978,
-    "last_seen":1769580728,
+    "last_seen":1769667507,
     "name":"Red Deer Clearview Ridge",
     "location_type":0,
     "latitude":52.281784,
@@ -829,7 +829,7 @@
   },
   {
     "sensor_index":107160,
-    "last_seen":1769563896,
+    "last_seen":1769667391,
     "name":"Drumheller - Town Hall",
     "location_type":0,
     "latitude":51.465256,
@@ -838,7 +838,7 @@
   },
   {
     "sensor_index":107244,
-    "last_seen":1769580667,
+    "last_seen":1769667561,
     "name":"Rainbow Lake_Town Office and Airport_AEP",
     "location_type":0,
     "latitude":58.494736,
@@ -847,7 +847,7 @@
   },
   {
     "sensor_index":107246,
-    "last_seen":1769580706,
+    "last_seen":1769667549,
     "name":"High Level_Town Hall_AEP",
     "location_type":0,
     "latitude":58.51561,
@@ -856,7 +856,7 @@
   },
   {
     "sensor_index":107248,
-    "last_seen":1769580631,
+    "last_seen":1769667528,
     "name":"Slave Lake_Government Centre_AEP",
     "location_type":0,
     "latitude":55.281788,
@@ -865,7 +865,7 @@
   },
   {
     "sensor_index":107252,
-    "last_seen":1769580613,
+    "last_seen":1769667510,
     "name":"Three Hills Library",
     "location_type":0,
     "latitude":51.70299,
@@ -874,7 +874,7 @@
   },
   {
     "sensor_index":107254,
-    "last_seen":1769580635,
+    "last_seen":1769667515,
     "name":"Wainwright_Town Hall_AEP",
     "location_type":0,
     "latitude":52.833378,
@@ -883,7 +883,7 @@
   },
   {
     "sensor_index":107992,
-    "last_seen":1769580689,
+    "last_seen":1769667587,
     "name":"AEP_Lethbridge",
     "location_type":0,
     "latitude":49.71643,
@@ -892,7 +892,7 @@
   },
   {
     "sensor_index":109982,
-    "last_seen":1769580627,
+    "last_seen":1769667519,
     "name":"BVCAS \/ LDA2",
     "location_type":0,
     "latitude":51.05749,
@@ -901,7 +901,7 @@
   },
   {
     "sensor_index":112824,
-    "last_seen":1769580647,
+    "last_seen":1769667544,
     "name":"MD PC Airport",
     "location_type":0,
     "latitude":49.52254,
@@ -910,7 +910,7 @@
   },
   {
     "sensor_index":114279,
-    "last_seen":1769580693,
+    "last_seen":1769667586,
     "name":"Sheppard Boulevard",
     "location_type":0,
     "latitude":53.242477,
@@ -919,7 +919,7 @@
   },
   {
     "sensor_index":114435,
-    "last_seen":1769580632,
+    "last_seen":1769667533,
     "name":"PAS_AcadiaValley(AQSU-D48F)",
     "location_type":0,
     "latitude":51.158504,
@@ -928,7 +928,7 @@
   },
   {
     "sensor_index":114831,
-    "last_seen":1769580665,
+    "last_seen":1769667555,
     "name":"Didsbury 2",
     "location_type":0,
     "latitude":51.654808,
@@ -937,7 +937,7 @@
   },
   {
     "sensor_index":121533,
-    "last_seen":1769580663,
+    "last_seen":1769667613,
     "name":"AQSU-2DB6",
     "location_type":0,
     "latitude":49.66113,
@@ -946,7 +946,7 @@
   },
   {
     "sensor_index":121555,
-    "last_seen":1769580637,
+    "last_seen":1769667583,
     "name":"AQSU-7FC7_Chateh",
     "location_type":0,
     "latitude":58.702457,
@@ -955,7 +955,7 @@
   },
   {
     "sensor_index":121565,
-    "last_seen":1769580724,
+    "last_seen":1769667527,
     "name":"PAS_Redcliff(AQSU-A84B)",
     "location_type":0,
     "latitude":50.077908,
@@ -964,7 +964,7 @@
   },
   {
     "sensor_index":121935,
-    "last_seen":1769580667,
+    "last_seen":1769667562,
     "name":"AQSU-98F1",
     "location_type":0,
     "latitude":58.51658,
@@ -973,7 +973,7 @@
   },
   {
     "sensor_index":121943,
-    "last_seen":1769580731,
+    "last_seen":1769667505,
     "name":"PAS_Empress(AQSU-9D8F)",
     "location_type":0,
     "latitude":50.95494,
@@ -982,7 +982,7 @@
   },
   {
     "sensor_index":122203,
-    "last_seen":1769580639,
+    "last_seen":1769667535,
     "name":"PAS_Warner(AQSU-7104)",
     "location_type":0,
     "latitude":49.281773,
@@ -991,7 +991,7 @@
   },
   {
     "sensor_index":123383,
-    "last_seen":1769580730,
+    "last_seen":1769667503,
     "name":"ACA_Westmount",
     "location_type":0,
     "latitude":53.549595,
@@ -1000,7 +1000,7 @@
   },
   {
     "sensor_index":123395,
-    "last_seen":1769580705,
+    "last_seen":1769667603,
     "name":"ACA_Belmont",
     "location_type":0,
     "latitude":53.59432,
@@ -1009,7 +1009,7 @@
   },
   {
     "sensor_index":123419,
-    "last_seen":1769580701,
+    "last_seen":1769667595,
     "name":"ACA_Uncas Park",
     "location_type":0,
     "latitude":53.507637,
@@ -1018,7 +1018,7 @@
   },
   {
     "sensor_index":123421,
-    "last_seen":1769580690,
+    "last_seen":1769667583,
     "name":"ACA-Spruce Grove Aspenglen",
     "location_type":0,
     "latitude":53.55923,
@@ -1027,7 +1027,7 @@
   },
   {
     "sensor_index":123437,
-    "last_seen":1769580627,
+    "last_seen":1769667520,
     "name":"ACA_Augustana",
     "location_type":0,
     "latitude":53.0125,
@@ -1036,7 +1036,7 @@
   },
   {
     "sensor_index":123445,
-    "last_seen":1769580654,
+    "last_seen":1769667544,
     "name":"ACA_BelgraviaCL",
     "location_type":0,
     "latitude":53.50989,
@@ -1045,7 +1045,7 @@
   },
   {
     "sensor_index":123455,
-    "last_seen":1769580679,
+    "last_seen":1769667577,
     "name":"ACA_Hazeldean2",
     "location_type":0,
     "latitude":53.50794,
@@ -1054,7 +1054,7 @@
   },
   {
     "sensor_index":125511,
-    "last_seen":1769580732,
+    "last_seen":1769667510,
     "name":"Crowsnest1_AEP",
     "location_type":0,
     "latitude":49.54992,
@@ -1072,7 +1072,7 @@
   },
   {
     "sensor_index":126359,
-    "last_seen":1769580665,
+    "last_seen":1769667561,
     "name":"Stormfarm",
     "location_type":0,
     "latitude":51.328136,
@@ -1081,7 +1081,7 @@
   },
   {
     "sensor_index":133075,
-    "last_seen":1769580680,
+    "last_seen":1769667584,
     "name":"TOWN OFFICE",
     "location_type":0,
     "latitude":53.52915,
@@ -1090,7 +1090,7 @@
   },
   {
     "sensor_index":143626,
-    "last_seen":1769580683,
+    "last_seen":1769667578,
     "name":"MunicipalityCrowsnest_AEP",
     "location_type":0,
     "latitude":49.635395,
@@ -1099,7 +1099,7 @@
   },
   {
     "sensor_index":146904,
-    "last_seen":1769580661,
+    "last_seen":1769667551,
     "name":"ACA_Kiniski Gardens",
     "location_type":0,
     "latitude":53.477036,
@@ -1108,7 +1108,7 @@
   },
   {
     "sensor_index":151162,
-    "last_seen":1769580631,
+    "last_seen":1769667530,
     "name":"PAS_Hanna(AQSU-706B)",
     "location_type":0,
     "latitude":51.64296,
@@ -1117,7 +1117,7 @@
   },
   {
     "sensor_index":155955,
-    "last_seen":1769580711,
+    "last_seen":1769667568,
     "name":"AHS_Grandview Cardston (AQSU-13DF)",
     "location_type":0,
     "latitude":49.18735,
@@ -1126,7 +1126,7 @@
   },
   {
     "sensor_index":156103,
-    "last_seen":1769580714,
+    "last_seen":1769667607,
     "name":"AHS_Coalhurst(AQSU-43A3)",
     "location_type":0,
     "latitude":49.7419,
@@ -1135,7 +1135,7 @@
   },
   {
     "sensor_index":156367,
-    "last_seen":1769580682,
+    "last_seen":1769667576,
     "name":"ACA_Wetaskiwin (AQSU-708E)",
     "location_type":0,
     "latitude":52.978676,
@@ -1144,7 +1144,7 @@
   },
   {
     "sensor_index":156365,
-    "last_seen":1769580659,
+    "last_seen":1769667539,
     "name":"McBride",
     "location_type":0,
     "latitude":49.587254,
@@ -1153,7 +1153,7 @@
   },
   {
     "sensor_index":156573,
-    "last_seen":1769580654,
+    "last_seen":1769667548,
     "name":"University of Lethbridge",
     "location_type":0,
     "latitude":49.667812,
@@ -1162,7 +1162,7 @@
   },
   {
     "sensor_index":156643,
-    "last_seen":1769580702,
+    "last_seen":1769667572,
     "name":"AHS_Nobleford (AQSU-2726)",
     "location_type":0,
     "latitude":49.879803,
@@ -1171,7 +1171,7 @@
   },
   {
     "sensor_index":156679,
-    "last_seen":1769580663,
+    "last_seen":1769667559,
     "name":"WCAS_Jasper4 (AQSU - D978)",
     "location_type":0,
     "latitude":52.87667,
@@ -1180,7 +1180,7 @@
   },
   {
     "sensor_index":156677,
-    "last_seen":1769580695,
+    "last_seen":1769667587,
     "name":"Tallcree First Nation",
     "location_type":0,
     "latitude":57.904114,
@@ -1189,7 +1189,7 @@
   },
   {
     "sensor_index":156733,
-    "last_seen":1769580682,
+    "last_seen":1769667581,
     "name":"LRRCN_Garden River",
     "location_type":0,
     "latitude":58.70812,
@@ -1198,7 +1198,7 @@
   },
   {
     "sensor_index":156805,
-    "last_seen":1769580617,
+    "last_seen":1769667511,
     "name":"ACA_Klarvatten",
     "location_type":0,
     "latitude":53.641834,
@@ -1207,7 +1207,7 @@
   },
   {
     "sensor_index":156909,
-    "last_seen":1769580434,
+    "last_seen":1769667570,
     "name":"WCAS_Edson1 (AQSU - ACD8)",
     "location_type":0,
     "latitude":53.59018,
@@ -1216,7 +1216,7 @@
   },
   {
     "sensor_index":160929,
-    "last_seen":1769580685,
+    "last_seen":1769667578,
     "name":"BBCan_Edmonton_out_42C",
     "location_type":0,
     "latitude":53.42745,
@@ -1225,7 +1225,7 @@
   },
   {
     "sensor_index":161021,
-    "last_seen":1769580679,
+    "last_seen":1769667578,
     "name":"BBCan_Joussard_out_001",
     "location_type":0,
     "latitude":55.340366,
@@ -1234,7 +1234,7 @@
   },
   {
     "sensor_index":164853,
-    "last_seen":1769580679,
+    "last_seen":1769667593,
     "name":"Vientos",
     "location_type":0,
     "latitude":51.118874,
@@ -1243,7 +1243,7 @@
   },
   {
     "sensor_index":166925,
-    "last_seen":1769580605,
+    "last_seen":1769667484,
     "name":"PAS_Jenner(AQSU-14FF)",
     "location_type":0,
     "latitude":50.748875,
@@ -1252,7 +1252,7 @@
   },
   {
     "sensor_index":166941,
-    "last_seen":1769580679,
+    "last_seen":1769667572,
     "name":"ACA_Idylwylde (AQSU-A4BF)",
     "location_type":0,
     "latitude":53.52446,
@@ -1261,7 +1261,7 @@
   },
   {
     "sensor_index":166947,
-    "last_seen":1769580673,
+    "last_seen":1769667584,
     "name":"PAS_Foremost(AQSU-0E7F)",
     "location_type":0,
     "latitude":49.476425,
@@ -1270,7 +1270,7 @@
   },
   {
     "sensor_index":166955,
-    "last_seen":1769580615,
+    "last_seen":1769667508,
     "name":"PAS_Youngstown(AQSU-A056)",
     "location_type":0,
     "latitude":51.529312,
@@ -1279,7 +1279,7 @@
   },
   {
     "sensor_index":166953,
-    "last_seen":1769580644,
+    "last_seen":1769667539,
     "name":"ACA_W.P.Wagner(AQSU-133F)",
     "location_type":0,
     "latitude":53.500053,
@@ -1288,7 +1288,7 @@
   },
   {
     "sensor_index":166957,
-    "last_seen":1769580711,
+    "last_seen":1769667604,
     "name":"PAS_Ralston(AQSU-BDA2)",
     "location_type":0,
     "latitude":50.246002,
@@ -1297,7 +1297,7 @@
   },
   {
     "sensor_index":166961,
-    "last_seen":1769580717,
+    "last_seen":1769667612,
     "name":"ACA_Bonnie Doon (AQSU-8CBD)",
     "location_type":0,
     "latitude":53.526333,
@@ -1306,7 +1306,7 @@
   },
   {
     "sensor_index":166965,
-    "last_seen":1769580615,
+    "last_seen":1769667508,
     "name":"WCAS_Evansburg1 (AQSU-A26A)",
     "location_type":0,
     "latitude":53.60466,
@@ -1315,7 +1315,7 @@
   },
   {
     "sensor_index":166971,
-    "last_seen":1769580712,
+    "last_seen":1769667506,
     "name":"ACA_BPAC (AQSU-6FE5)",
     "location_type":0,
     "latitude":53.549248,
@@ -1324,7 +1324,7 @@
   },
   {
     "sensor_index":166969,
-    "last_seen":1769580706,
+    "last_seen":1769667600,
     "name":"ACA_Summerside(AQSU-D273)",
     "location_type":0,
     "latitude":53.419025,
@@ -1333,7 +1333,7 @@
   },
   {
     "sensor_index":166977,
-    "last_seen":1769580660,
+    "last_seen":1769667553,
     "name":"ACA_StrathconaCL (AQSU-9E5B)",
     "location_type":0,
     "latitude":53.52217,
@@ -1342,7 +1342,7 @@
   },
   {
     "sensor_index":166981,
-    "last_seen":1769580672,
+    "last_seen":1769667572,
     "name":"ACA_Chappelle(AQSU-9FF5)",
     "location_type":0,
     "latitude":53.407112,
@@ -1351,7 +1351,7 @@
   },
   {
     "sensor_index":172951,
-    "last_seen":1769580637,
+    "last_seen":1769667526,
     "name":"Goldstick Park",
     "location_type":0,
     "latitude":53.54826,
@@ -1360,7 +1360,7 @@
   },
   {
     "sensor_index":173005,
-    "last_seen":1769580709,
+    "last_seen":1769667598,
     "name":"Olfert House-O-PA",
     "location_type":0,
     "latitude":53.486847,
@@ -1369,7 +1369,7 @@
   },
   {
     "sensor_index":175653,
-    "last_seen":1769580650,
+    "last_seen":1769667547,
     "name":"HAMP-RHJH",
     "location_type":0,
     "latitude":53.697224,
@@ -1378,7 +1378,7 @@
   },
   {
     "sensor_index":175689,
-    "last_seen":1769580721,
+    "last_seen":1769667615,
     "name":"FAP-Newbrook1",
     "location_type":0,
     "latitude":54.327793,
@@ -1387,7 +1387,7 @@
   },
   {
     "sensor_index":175707,
-    "last_seen":1769580643,
+    "last_seen":1769667537,
     "name":"HAMP-Elk Island",
     "location_type":0,
     "latitude":53.678474,
@@ -1396,7 +1396,7 @@
   },
   {
     "sensor_index":176075,
-    "last_seen":1769580691,
+    "last_seen":1769667590,
     "name":"Three Sisters - TOC\/BVCAS",
     "location_type":0,
     "latitude":51.06254,
@@ -1405,7 +1405,7 @@
   },
   {
     "sensor_index":176073,
-    "last_seen":1769580731,
+    "last_seen":1769667504,
     "name":"Spring Creek TOC\/BVCAS",
     "location_type":0,
     "latitude":51.082848,
@@ -1414,7 +1414,7 @@
   },
   {
     "sensor_index":176079,
-    "last_seen":1769580730,
+    "last_seen":1769667503,
     "name":"Silvertip - TOC\/BVCAS",
     "location_type":0,
     "latitude":51.100964,
@@ -1423,7 +1423,7 @@
   },
   {
     "sensor_index":176085,
-    "last_seen":1769580662,
+    "last_seen":1769667556,
     "name":"Rundleview - TOC\/BVCAS",
     "location_type":0,
     "latitude":51.083958,
@@ -1432,7 +1432,7 @@
   },
   {
     "sensor_index":176097,
-    "last_seen":1769580674,
+    "last_seen":1769667574,
     "name":"Larch - TOC\/BVCAS",
     "location_type":0,
     "latitude":51.10016,
@@ -1441,7 +1441,7 @@
   },
   {
     "sensor_index":176289,
-    "last_seen":1769580460,
+    "last_seen":1769626636,
     "name":"Swan Hills",
     "location_type":0,
     "latitude":54.717575,
@@ -1450,7 +1450,7 @@
   },
   {
     "sensor_index":177339,
-    "last_seen":1769580632,
+    "last_seen":1769667529,
     "name":"Canada Task Force 2",
     "location_type":0,
     "latitude":51.032455,
@@ -1459,7 +1459,7 @@
   },
   {
     "sensor_index":177393,
-    "last_seen":1769580703,
+    "last_seen":1769667503,
     "name":"TOB Pavilion",
     "location_type":0,
     "latitude":51.173504,
@@ -1468,7 +1468,7 @@
   },
   {
     "sensor_index":177857,
-    "last_seen":1769580641,
+    "last_seen":1769667534,
     "name":"MATC",
     "location_type":0,
     "latitude":51.032402,
@@ -1477,7 +1477,7 @@
   },
   {
     "sensor_index":178113,
-    "last_seen":1769580717,
+    "last_seen":1769667614,
     "name":"ACA_Morinville (AQSU - 2C47)",
     "location_type":0,
     "latitude":53.797264,
@@ -1486,7 +1486,7 @@
   },
   {
     "sensor_index":178295,
-    "last_seen":1769580464,
+    "last_seen":1769667598,
     "name":"Huntington Hills NE",
     "location_type":0,
     "latitude":51.112934,
@@ -1495,7 +1495,7 @@
   },
   {
     "sensor_index":178305,
-    "last_seen":1769580625,
+    "last_seen":1769667518,
     "name":"Sunnyside",
     "location_type":0,
     "latitude":51.05969,
@@ -1504,7 +1504,7 @@
   },
   {
     "sensor_index":179823,
-    "last_seen":1769580730,
+    "last_seen":1769667524,
     "name":"Highfield",
     "location_type":0,
     "latitude":52.499992,
@@ -1513,7 +1513,7 @@
   },
   {
     "sensor_index":179893,
-    "last_seen":1769580626,
+    "last_seen":1769667525,
     "name":"TRO 4",
     "location_type":0,
     "latitude":55.202007,
@@ -1522,7 +1522,7 @@
   },
   {
     "sensor_index":179935,
-    "last_seen":1769580653,
+    "last_seen":1769667546,
     "name":"TRO 3",
     "location_type":0,
     "latitude":55.20201,
@@ -1531,7 +1531,7 @@
   },
   {
     "sensor_index":180485,
-    "last_seen":1769580663,
+    "last_seen":1769667542,
     "name":"RBL Processing Plant",
     "location_type":0,
     "latitude":58.44874,
@@ -1540,7 +1540,7 @@
   },
   {
     "sensor_index":180571,
-    "last_seen":1769580665,
+    "last_seen":1769667558,
     "name":"Calgary Mission",
     "location_type":0,
     "latitude":51.033283,
@@ -1558,7 +1558,7 @@
   },
   {
     "sensor_index":183225,
-    "last_seen":1769580683,
+    "last_seen":1769667577,
     "name":"Beaverbrook School",
     "location_type":0,
     "latitude":50.97301,
@@ -1567,7 +1567,7 @@
   },
   {
     "sensor_index":184395,
-    "last_seen":1769580726,
+    "last_seen":1769667501,
     "name":"Bragg Creek Trails",
     "location_type":0,
     "latitude":50.94828,
@@ -1576,7 +1576,7 @@
   },
   {
     "sensor_index":184635,
-    "last_seen":1769580687,
+    "last_seen":1769667581,
     "name":"Canmore",
     "location_type":0,
     "latitude":51.08092,
@@ -1585,7 +1585,7 @@
   },
   {
     "sensor_index":185155,
-    "last_seen":1769580708,
+    "last_seen":1769667601,
     "name":"Harvie Heights",
     "location_type":0,
     "latitude":51.12639,
@@ -1594,7 +1594,7 @@
   },
   {
     "sensor_index":186143,
-    "last_seen":1769580711,
+    "last_seen":1769667604,
     "name":"AE-Fort Saskatchewan (south)",
     "location_type":0,
     "latitude":53.67414,
@@ -1603,7 +1603,7 @@
   },
   {
     "sensor_index":187769,
-    "last_seen":1769580628,
+    "last_seen":1769667522,
     "name":"Akinsdale",
     "location_type":0,
     "latitude":53.631107,
@@ -1612,7 +1612,7 @@
   },
   {
     "sensor_index":188593,
-    "last_seen":1769580693,
+    "last_seen":1769667587,
     "name":"EDTNAB_Miller",
     "location_type":0,
     "latitude":53.610676,
@@ -1621,7 +1621,7 @@
   },
   {
     "sensor_index":189139,
-    "last_seen":1769580634,
+    "last_seen":1769667528,
     "name":"Garneau1",
     "location_type":0,
     "latitude":53.51572,
@@ -1630,7 +1630,7 @@
   },
   {
     "sensor_index":189171,
-    "last_seen":1769580707,
+    "last_seen":1769667501,
     "name":"PRAMP - Roma Drive",
     "location_type":0,
     "latitude":56.20442,
@@ -1639,7 +1639,7 @@
   },
   {
     "sensor_index":189173,
-    "last_seen":1769580703,
+    "last_seen":1769667499,
     "name":"PRAMP - Woodland Cree (Cadotte Lake)",
     "location_type":0,
     "latitude":56.4714,
@@ -1648,7 +1648,7 @@
   },
   {
     "sensor_index":189179,
-    "last_seen":1769580726,
+    "last_seen":1769667499,
     "name":"LICA - Buffalo Lake M\u00e9tis Settlement",
     "location_type":0,
     "latitude":54.567116,
@@ -1657,7 +1657,7 @@
   },
   {
     "sensor_index":189195,
-    "last_seen":1769580678,
+    "last_seen":1769667574,
     "name":"LICA - Kehewin Cree Nation",
     "location_type":0,
     "latitude":54.11655,
@@ -1666,7 +1666,7 @@
   },
   {
     "sensor_index":189211,
-    "last_seen":1769580719,
+    "last_seen":1769667614,
     "name":"PRAMP - Rosary School",
     "location_type":0,
     "latitude":56.91943,
@@ -1675,7 +1675,7 @@
   },
   {
     "sensor_index":189325,
-    "last_seen":1769580633,
+    "last_seen":1769667530,
     "name":"Calgary Wildwood",
     "location_type":0,
     "latitude":51.04869,
@@ -1684,7 +1684,7 @@
   },
   {
     "sensor_index":189587,
-    "last_seen":1769580719,
+    "last_seen":1769667571,
     "name":"Town of Carstairs",
     "location_type":0,
     "latitude":51.553383,
@@ -1693,7 +1693,7 @@
   },
   {
     "sensor_index":189677,
-    "last_seen":1769580701,
+    "last_seen":1769667595,
     "name":"Pelican Point",
     "location_type":0,
     "latitude":52.527145,
@@ -1702,7 +1702,7 @@
   },
   {
     "sensor_index":192117,
-    "last_seen":1769580668,
+    "last_seen":1769667568,
     "name":"Tongue Creek",
     "location_type":0,
     "latitude":50.611244,
@@ -1720,7 +1720,7 @@
   },
   {
     "sensor_index":194203,
-    "last_seen":1769580727,
+    "last_seen":1769667499,
     "name":"Bankview",
     "location_type":0,
     "latitude":51.036434,
@@ -1729,7 +1729,7 @@
   },
   {
     "sensor_index":195401,
-    "last_seen":1769580630,
+    "last_seen":1769667526,
     "name":"College Park",
     "location_type":0,
     "latitude":53.258633,
@@ -1738,7 +1738,7 @@
   },
   {
     "sensor_index":195423,
-    "last_seen":1769580712,
+    "last_seen":1769667605,
     "name":"Malmo Plains",
     "location_type":0,
     "latitude":53.485397,
@@ -1747,7 +1747,7 @@
   },
   {
     "sensor_index":197345,
-    "last_seen":1769580660,
+    "last_seen":1769667540,
     "name":"WCAS_Barrhead(AQSU-855E)",
     "location_type":0,
     "latitude":54.124115,
@@ -1756,7 +1756,7 @@
   },
   {
     "sensor_index":197353,
-    "last_seen":1769568723,
+    "last_seen":1769667574,
     "name":"WCAS_FortAssinibione(AQSU-4E29)",
     "location_type":0,
     "latitude":54.334663,
@@ -1765,7 +1765,7 @@
   },
   {
     "sensor_index":197359,
-    "last_seen":1769580633,
+    "last_seen":1769667513,
     "name":"WCAS_Neerlandia(AQSU-46A0)",
     "location_type":0,
     "latitude":54.318977,
@@ -1774,7 +1774,7 @@
   },
   {
     "sensor_index":197383,
-    "last_seen":1769580686,
+    "last_seen":1769667592,
     "name":"ACA_WestlockCounty (AQSU-509E)",
     "location_type":0,
     "latitude":54.15923,
@@ -1783,7 +1783,7 @@
   },
   {
     "sensor_index":197381,
-    "last_seen":1769580724,
+    "last_seen":1769667497,
     "name":"WCAS_DV-CETC(AQSU-4E23)",
     "location_type":0,
     "latitude":53.195824,
@@ -1792,7 +1792,7 @@
   },
   {
     "sensor_index":197391,
-    "last_seen":1769580712,
+    "last_seen":1769667606,
     "name":"WCAS_Edson FC (AQSU-4E5E)",
     "location_type":0,
     "latitude":53.579163,
@@ -1801,7 +1801,7 @@
   },
   {
     "sensor_index":197389,
-    "last_seen":1769580657,
+    "last_seen":1769667550,
     "name":"ACA_Pickardville (AQSU-1D05)",
     "location_type":0,
     "latitude":54.04966,
@@ -1810,7 +1810,7 @@
   },
   {
     "sensor_index":197393,
-    "last_seen":1769580464,
+    "last_seen":1769667597,
     "name":"AQSU-4AE79 KFN HC",
     "location_type":0,
     "latitude":55.54847,
@@ -1819,7 +1819,7 @@
   },
   {
     "sensor_index":197407,
-    "last_seen":1769580635,
+    "last_seen":1769667530,
     "name":"ACA_EnochSE (AQSU-AD04)",
     "location_type":0,
     "latitude":53.467728,
@@ -1828,7 +1828,7 @@
   },
   {
     "sensor_index":197815,
-    "last_seen":1769580673,
+    "last_seen":1769667566,
     "name":"Brentwood",
     "location_type":0,
     "latitude":51.096348,
@@ -1837,7 +1837,7 @@
   },
   {
     "sensor_index":198809,
-    "last_seen":1769580714,
+    "last_seen":1769667610,
     "name":"WCAS_Lakeview(AQSU-5203)",
     "location_type":0,
     "latitude":53.558376,
@@ -1846,7 +1846,7 @@
   },
   {
     "sensor_index":203059,
-    "last_seen":1769580617,
+    "last_seen":1769667510,
     "name":"Huntington",
     "location_type":0,
     "latitude":51.121742,
@@ -1855,7 +1855,7 @@
   },
   {
     "sensor_index":203269,
-    "last_seen":1769580687,
+    "last_seen":1769667567,
     "name":"WCAS_Sangudo",
     "location_type":0,
     "latitude":53.885475,
@@ -1864,7 +1864,7 @@
   },
   {
     "sensor_index":203503,
-    "last_seen":1769580711,
+    "last_seen":1769667607,
     "name":"WCAS_Whitecourt COC",
     "location_type":0,
     "latitude":54.142246,
@@ -1873,7 +1873,7 @@
   },
   {
     "sensor_index":203515,
-    "last_seen":1769580733,
+    "last_seen":1769667511,
     "name":"WCAS_Hinton1",
     "location_type":0,
     "latitude":53.427498,
@@ -1882,7 +1882,7 @@
   },
   {
     "sensor_index":203517,
-    "last_seen":1769580637,
+    "last_seen":1769667536,
     "name":"WCAS_ParklandCountyCentre",
     "location_type":0,
     "latitude":53.559006,
@@ -1891,7 +1891,7 @@
   },
   {
     "sensor_index":204385,
-    "last_seen":1769580652,
+    "last_seen":1769667532,
     "name":"LPSD Division Office",
     "location_type":0,
     "latitude":53.279503,
@@ -1900,7 +1900,7 @@
   },
   {
     "sensor_index":207827,
-    "last_seen":1769580629,
+    "last_seen":1769667522,
     "name":"Exshaw - BVCAS",
     "location_type":0,
     "latitude":51.062695,
@@ -1909,7 +1909,7 @@
   },
   {
     "sensor_index":207841,
-    "last_seen":1769580708,
+    "last_seen":1769667600,
     "name":"MAC Fans and Furnaces",
     "location_type":0,
     "latitude":51.064594,
@@ -1918,7 +1918,7 @@
   },
   {
     "sensor_index":208893,
-    "last_seen":1769580635,
+    "last_seen":1769667542,
     "name":"Okotoks - Ranchers Rise",
     "location_type":0,
     "latitude":50.733322,
@@ -1927,7 +1927,7 @@
   },
   {
     "sensor_index":210283,
-    "last_seen":1769569198,
+    "last_seen":1769655543,
     "name":"HAMP-Namao",
     "location_type":0,
     "latitude":53.716686,
@@ -1936,7 +1936,7 @@
   },
   {
     "sensor_index":211505,
-    "last_seen":1769580715,
+    "last_seen":1769667604,
     "name":"Silverview DR Silver Springs",
     "location_type":0,
     "latitude":51.097927,
@@ -1945,7 +1945,7 @@
   },
   {
     "sensor_index":211921,
-    "last_seen":1769580648,
+    "last_seen":1769667538,
     "name":"Valleyview Generating Station",
     "location_type":0,
     "latitude":54.938923,
@@ -1954,7 +1954,7 @@
   },
   {
     "sensor_index":213995,
-    "last_seen":1769580620,
+    "last_seen":1769667515,
     "name":"PAS Vauxhall AQSU-87FC",
     "location_type":0,
     "latitude":50.068954,
@@ -1963,7 +1963,7 @@
   },
   {
     "sensor_index":213999,
-    "last_seen":1769580667,
+    "last_seen":1769667563,
     "name":"PAS Raymond",
     "location_type":0,
     "latitude":49.46575,
@@ -1972,7 +1972,7 @@
   },
   {
     "sensor_index":214003,
-    "last_seen":1769580731,
+    "last_seen":1769667505,
     "name":"AQSU-Horse Lake First Nation Band Administration Building",
     "location_type":0,
     "latitude":55.35181,
@@ -1981,7 +1981,7 @@
   },
   {
     "sensor_index":214007,
-    "last_seen":1769580702,
+    "last_seen":1769667595,
     "name":"PAS Bow Island AQSU-333E",
     "location_type":0,
     "latitude":49.870388,
@@ -1990,7 +1990,7 @@
   },
   {
     "sensor_index":214013,
-    "last_seen":1769580704,
+    "last_seen":1769667597,
     "name":"Consort",
     "location_type":0,
     "latitude":52.008984,
@@ -1999,7 +1999,7 @@
   },
   {
     "sensor_index":214019,
-    "last_seen":1769580678,
+    "last_seen":1769667576,
     "name":"AQSU-3330_Stony-Plain",
     "location_type":0,
     "latitude":53.5475,
@@ -2008,7 +2008,7 @@
   },
   {
     "sensor_index":214479,
-    "last_seen":1769580711,
+    "last_seen":1769667612,
     "name":"AQSU-353E",
     "location_type":0,
     "latitude":51.42215,
@@ -2017,7 +2017,7 @@
   },
   {
     "sensor_index":214785,
-    "last_seen":1769580640,
+    "last_seen":1769667539,
     "name":"AE- McIntyre Reference",
     "location_type":0,
     "latitude":53.486317,
@@ -2026,7 +2026,7 @@
   },
   {
     "sensor_index":215199,
-    "last_seen":1769580686,
+    "last_seen":1769667581,
     "name":"Rainbow Lake Generating Station",
     "location_type":0,
     "latitude":58.477806,
@@ -2035,7 +2035,7 @@
   },
   {
     "sensor_index":216463,
-    "last_seen":1769580621,
+    "last_seen":1769667501,
     "name":"PRAMP - Reno",
     "location_type":0,
     "latitude":55.896965,
@@ -2044,7 +2044,7 @@
   },
   {
     "sensor_index":216477,
-    "last_seen":1769580632,
+    "last_seen":1769667529,
     "name":"PRAMP - Northern Sunrise County",
     "location_type":0,
     "latitude":56.20889,
@@ -2053,7 +2053,7 @@
   },
   {
     "sensor_index":217071,
-    "last_seen":1769580636,
+    "last_seen":1769667526,
     "name":"SC Social Development",
     "location_type":0,
     "latitude":55.404125,
@@ -2062,7 +2062,7 @@
   },
   {
     "sensor_index":217099,
-    "last_seen":1769580676,
+    "last_seen":1769667569,
     "name":"Ft Chip Health Centre",
     "location_type":0,
     "latitude":58.714806,
@@ -2071,7 +2071,7 @@
   },
   {
     "sensor_index":217121,
-    "last_seen":1769580724,
+    "last_seen":1769667613,
     "name":"Eden Valley",
     "location_type":0,
     "latitude":50.43096,
@@ -2080,7 +2080,7 @@
   },
   {
     "sensor_index":217147,
-    "last_seen":1769580637,
+    "last_seen":1769667530,
     "name":"SS",
     "location_type":0,
     "latitude":53.423473,
@@ -2089,7 +2089,7 @@
   },
   {
     "sensor_index":217511,
-    "last_seen":1769580691,
+    "last_seen":1769667580,
     "name":"Bighorn Health Centre",
     "location_type":0,
     "latitude":52.40488,
@@ -2098,7 +2098,7 @@
   },
   {
     "sensor_index":217729,
-    "last_seen":1769580709,
+    "last_seen":1769667603,
     "name":"PRAMP - St Thomas More School",
     "location_type":0,
     "latitude":56.067074,
@@ -2107,7 +2107,7 @@
   },
   {
     "sensor_index":217747,
-    "last_seen":1769580642,
+    "last_seen":1769667538,
     "name":"PRAMP - Dixonville",
     "location_type":0,
     "latitude":56.535824,
@@ -2116,7 +2116,7 @@
   },
   {
     "sensor_index":217745,
-    "last_seen":1769580731,
+    "last_seen":1769666744,
     "name":"PRAMP - Peace River Hospital",
     "location_type":0,
     "latitude":56.23071,
@@ -2125,7 +2125,7 @@
   },
   {
     "sensor_index":217749,
-    "last_seen":1769580681,
+    "last_seen":1769667577,
     "name":"PRAMP - Good Shepherd School",
     "location_type":0,
     "latitude":56.261314,
@@ -2134,7 +2134,7 @@
   },
   {
     "sensor_index":217765,
-    "last_seen":1769580637,
+    "last_seen":1769667532,
     "name":"PRAMP - Holy Family School",
     "location_type":0,
     "latitude":56.18451,
@@ -2142,8 +2142,17 @@
     "geometry":"POINT (-117.60611 56.18451)"
   },
   {
+    "sensor_index":217795,
+    "last_seen":1769649628,
+    "name":"LICA_PurpleAir_Demo",
+    "location_type":0,
+    "latitude":54.257874,
+    "longitude":-110.735214,
+    "geometry":"POINT (-110.735214 54.257874)"
+  },
+  {
     "sensor_index":219323,
-    "last_seen":1769580723,
+    "last_seen":1769667498,
     "name":"bill gilhespy complex",
     "location_type":0,
     "latitude":53.61041,
@@ -2152,7 +2161,7 @@
   },
   {
     "sensor_index":219579,
-    "last_seen":1769580708,
+    "last_seen":1769667509,
     "name":"SLCN HC",
     "location_type":0,
     "latitude":55.071262,
@@ -2161,7 +2170,7 @@
   },
   {
     "sensor_index":219577,
-    "last_seen":1769580634,
+    "last_seen":1769667528,
     "name":"Fort McMurray Fen House",
     "location_type":0,
     "latitude":56.762222,
@@ -2170,7 +2179,7 @@
   },
   {
     "sensor_index":219599,
-    "last_seen":1769580653,
+    "last_seen":1769667520,
     "name":"AE 1061 - Montana FN",
     "location_type":0,
     "latitude":52.72768,
@@ -2179,7 +2188,7 @@
   },
   {
     "sensor_index":220361,
-    "last_seen":1769580639,
+    "last_seen":1769667532,
     "name":"Kingsbury Close SE",
     "location_type":0,
     "latitude":51.26163,
@@ -2188,7 +2197,7 @@
   },
   {
     "sensor_index":220371,
-    "last_seen":1769580637,
+    "last_seen":1769667588,
     "name":"SWC Solar",
     "location_type":0,
     "latitude":51.59806,
@@ -2197,7 +2206,7 @@
   },
   {
     "sensor_index":223443,
-    "last_seen":1769580673,
+    "last_seen":1769667572,
     "name":"AQSU-B794",
     "location_type":0,
     "latitude":53.528908,
@@ -2206,7 +2215,7 @@
   },
   {
     "sensor_index":223505,
-    "last_seen":1769580675,
+    "last_seen":1769667570,
     "name":"SAMBA",
     "location_type":0,
     "latitude":53.650555,
@@ -2215,7 +2224,7 @@
   },
   {
     "sensor_index":223513,
-    "last_seen":1769580681,
+    "last_seen":1769667574,
     "name":"Calwest1",
     "location_type":0,
     "latitude":51.020603,
@@ -2224,7 +2233,7 @@
   },
   {
     "sensor_index":223531,
-    "last_seen":1769580617,
+    "last_seen":1769667515,
     "name":"Mackenzie County La Crete",
     "location_type":0,
     "latitude":58.179443,
@@ -2233,7 +2242,7 @@
   },
   {
     "sensor_index":223537,
-    "last_seen":1769580663,
+    "last_seen":1769667558,
     "name":"Mackenzie County - Zama",
     "location_type":0,
     "latitude":59.15501,
@@ -2242,7 +2251,7 @@
   },
   {
     "sensor_index":223765,
-    "last_seen":1769580657,
+    "last_seen":1769667534,
     "name":"ACA_GallagherPark",
     "location_type":0,
     "latitude":53.532684,
@@ -2251,7 +2260,7 @@
   },
   {
     "sensor_index":223861,
-    "last_seen":1769580694,
+    "last_seen":1769667588,
     "name":"Glamorgan",
     "location_type":0,
     "latitude":51.011707,
@@ -2260,7 +2269,7 @@
   },
   {
     "sensor_index":224243,
-    "last_seen":1769580626,
+    "last_seen":1769667525,
     "name":"Outdoor Pool",
     "location_type":0,
     "latitude":53.36261,
@@ -2269,7 +2278,7 @@
   },
   {
     "sensor_index":224259,
-    "last_seen":1769580700,
+    "last_seen":1769667590,
     "name":"Public Works",
     "location_type":0,
     "latitude":53.34485,
@@ -2278,7 +2287,7 @@
   },
   {
     "sensor_index":224293,
-    "last_seen":1769580637,
+    "last_seen":1769667530,
     "name":"WCAS_Hinton2",
     "location_type":0,
     "latitude":53.423798,
@@ -2287,7 +2296,7 @@
   },
   {
     "sensor_index":224909,
-    "last_seen":1769580710,
+    "last_seen":1769667605,
     "name":"Nolan Hill",
     "location_type":0,
     "latitude":51.174534,
@@ -2296,7 +2305,7 @@
   },
   {
     "sensor_index":225365,
-    "last_seen":1769580656,
+    "last_seen":1769667549,
     "name":"McMahon Stadium - Concourse Level",
     "location_type":0,
     "latitude":51.07118,
@@ -2305,7 +2314,7 @@
   },
   {
     "sensor_index":225383,
-    "last_seen":1769580649,
+    "last_seen":1769667542,
     "name":"McMahon Stadium - Field Level",
     "location_type":0,
     "latitude":51.069584,
@@ -2314,7 +2323,7 @@
   },
   {
     "sensor_index":225861,
-    "last_seen":1769580711,
+    "last_seen":1769667612,
     "name":"Riverbend",
     "location_type":0,
     "latitude":53.47205,
@@ -2332,7 +2341,7 @@
   },
   {
     "sensor_index":229605,
-    "last_seen":1769580619,
+    "last_seen":1769667499,
     "name":"RBL AB Satt",
     "location_type":0,
     "latitude":58.428375,
@@ -2341,7 +2350,7 @@
   },
   {
     "sensor_index":229627,
-    "last_seen":1769580654,
+    "last_seen":1769667549,
     "name":"Paliswood",
     "location_type":0,
     "latitude":50.970486,
@@ -2350,7 +2359,7 @@
   },
   {
     "sensor_index":230593,
-    "last_seen":1769580649,
+    "last_seen":1769667545,
     "name":"Castle Downs, Edmonton",
     "location_type":0,
     "latitude":53.60826,
@@ -2359,7 +2368,7 @@
   },
   {
     "sensor_index":230911,
-    "last_seen":1769580657,
+    "last_seen":1769667557,
     "name":"Haysboro1",
     "location_type":0,
     "latitude":50.977554,
@@ -2368,7 +2377,7 @@
   },
   {
     "sensor_index":231283,
-    "last_seen":1769580693,
+    "last_seen":1769667589,
     "name":"AQSU-C015",
     "location_type":0,
     "latitude":53.532784,
@@ -2377,7 +2386,7 @@
   },
   {
     "sensor_index":231285,
-    "last_seen":1769580677,
+    "last_seen":1769667571,
     "name":"HAMP-Waskatenau",
     "location_type":0,
     "latitude":54.093246,
@@ -2386,7 +2395,7 @@
   },
   {
     "sensor_index":231633,
-    "last_seen":1769580632,
+    "last_seen":1769667529,
     "name":"Coleman",
     "location_type":0,
     "latitude":49.63258,
@@ -2395,7 +2404,7 @@
   },
   {
     "sensor_index":232819,
-    "last_seen":1769580643,
+    "last_seen":1769667537,
     "name":"Westmount",
     "location_type":0,
     "latitude":51.04992,
@@ -2404,7 +2413,7 @@
   },
   {
     "sensor_index":232985,
-    "last_seen":1769580698,
+    "last_seen":1769667593,
     "name":"West Castleridge",
     "location_type":0,
     "latitude":51.10664,
@@ -2413,7 +2422,7 @@
   },
   {
     "sensor_index":233195,
-    "last_seen":1769580685,
+    "last_seen":1769667579,
     "name":"Cranston Pond",
     "location_type":0,
     "latitude":50.88407,
@@ -2422,7 +2431,7 @@
   },
   {
     "sensor_index":240945,
-    "last_seen":1769580622,
+    "last_seen":1769667515,
     "name":"ACA_UITC",
     "location_type":0,
     "latitude":53.51731,
@@ -2431,7 +2440,7 @@
   },
   {
     "sensor_index":244977,
-    "last_seen":1769580645,
+    "last_seen":1769667539,
     "name":"Siksika Fire",
     "location_type":0,
     "latitude":50.847454,
@@ -2440,7 +2449,7 @@
   },
   {
     "sensor_index":244993,
-    "last_seen":1769580673,
+    "last_seen":1769667587,
     "name":"ACA_Florian Park",
     "location_type":0,
     "latitude":53.519844,
@@ -2449,7 +2458,7 @@
   },
   {
     "sensor_index":245663,
-    "last_seen":1769580619,
+    "last_seen":1769667512,
     "name":"AQSU-3329 Swan River FN HC",
     "location_type":0,
     "latitude":55.325394,
@@ -2458,7 +2467,7 @@
   },
   {
     "sensor_index":246279,
-    "last_seen":1769580724,
+    "last_seen":1769667498,
     "name":"Westmount",
     "location_type":0,
     "latitude":53.55592,
@@ -2467,7 +2476,7 @@
   },
   {
     "sensor_index":249153,
-    "last_seen":1769580619,
+    "last_seen":1769667510,
     "name":"302 - 200 Patina Court SW",
     "location_type":0,
     "latitude":51.062565,
@@ -2476,7 +2485,7 @@
   },
   {
     "sensor_index":249949,
-    "last_seen":1769580707,
+    "last_seen":1769667607,
     "name":"WCAS_EntwistleRecCentre",
     "location_type":0,
     "latitude":53.593185,
@@ -2485,7 +2494,7 @@
   },
   {
     "sensor_index":249965,
-    "last_seen":1769580638,
+    "last_seen":1769667530,
     "name":"ACA_LaurierHeightsCL",
     "location_type":0,
     "latitude":53.517063,
@@ -2494,7 +2503,7 @@
   },
   {
     "sensor_index":249993,
-    "last_seen":1769580701,
+    "last_seen":1769667595,
     "name":"ACA_North Cooking Lake Hall",
     "location_type":0,
     "latitude":53.468292,
@@ -2503,7 +2512,7 @@
   },
   {
     "sensor_index":250005,
-    "last_seen":1769580724,
+    "last_seen":1769667498,
     "name":"ACA_Hastings Lake Hall",
     "location_type":0,
     "latitude":53.381157,
@@ -2512,7 +2521,7 @@
   },
   {
     "sensor_index":250155,
-    "last_seen":1769580524,
+    "last_seen":1769667541,
     "name":"ACA_Strathcona Wilderness Centre",
     "location_type":0,
     "latitude":53.532345,
@@ -2521,7 +2530,7 @@
   },
   {
     "sensor_index":250165,
-    "last_seen":1769580668,
+    "last_seen":1769667562,
     "name":"ACA_Antler Lake\/Uncas Hall",
     "location_type":0,
     "latitude":53.50329,
@@ -2530,7 +2539,7 @@
   },
   {
     "sensor_index":260975,
-    "last_seen":1769580669,
+    "last_seen":1769667559,
     "name":"Town of Fort Macleod Outdoor Pool",
     "location_type":0,
     "latitude":49.72361,
