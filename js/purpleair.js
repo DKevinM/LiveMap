@@ -32,6 +32,13 @@ window.renderPurpleAir = async function () {
     const label = rec.name || (sensorIndex != null ? `Sensor ${sensorIndex}` : "Unnamed sensor");
     const color = window.getAQHIColor(String(eAQHI));
 
+    const inACA  = inside(ACApoly, lat, lon);
+    const inWCAS = inside(WCASpoly, lat, lon);
+    
+    if (inACA)  marker.addTo(window.ACAPurple);
+    if (inWCAS) marker.addTo(window.WCASPurple);
+
+    
     const marker = L.circleMarker([lat, lon], {
       radius: 5,                 // smaller than stations
       fillColor: color,
