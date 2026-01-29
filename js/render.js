@@ -1,57 +1,54 @@
+let ACApoly = null;
+let WCASpoly = null;
+
+fetch('data/ACA.geojson')
+  .then(r => r.json())
+  .then(g => ACApoly = g);
+
+fetch('data/WCAS.geojson')
+  .then(r => r.json())
+  .then(g => WCASpoly = g);
+
+function inside(poly, lat, lon) {
+  if (!poly) return false;
+  return turf.booleanPointInPolygon(
+    turf.point([lon, lat]),
+    poly.features[0]
+  );
+}
+
+
 window.renderMap = function () {
-  let ACApoly = null;
-  let WCASpoly = null;
-  
-  fetch('data/ACA.geojson')
-    .then(r => r.json())
-    .then(g => ACApoly = g);
-  
-  fetch('data/WCAS.geojson')
-    .then(r => r.json())
-    .then(g => WCASpoly = g);
-  
-  function inside(poly, lat, lon) {
-    if (!poly) return false;
-    return turf.booleanPointInPolygon(
-      turf.point([lon, lat]),
-      poly.features[0]
-    );
-  }
-
-  
-  function normalizeStationForGauges(st) {
-
-    const params = {};
-    const list = window.dataByStation?.[st.stationName] || [];
-
-    list.forEach(r => {
-      const p = r.ParameterName;
-      const v = Number(r.Value);
-
-      if (p === "AQHI") params.AQHI = v;
-      if (p === "Fine Particulate Matter") params.PM25 = v;
-      if (p === "Ozone") params.O3 = v;
-      if (p === "Nitrogen Dioxide") params.NO2 = v;
-      if (p === "Relative Humidity") params.RH = v;
-      if (p === "Outdoor Temperature") params.Temp = v;
-      if (p === "Wind Speed") params.WS = v;
-    });
-
-    return {
-      ...st,
-      ...params
-    };
-  }
 
   const map = window.map;
 
-  const stationLayer = L.layerGroup().addTo(map);
-  const purpleLayer  = L.layerGroup().addTo(map);
+  // --- Layer Groups ---
+  const ACAStations   = L.layerGroup();
+  const ACAPurple     = L.layerGroup();
 
-  // --- Stations ---
+  const WCASStations  = L.layerGroup();
+  const WCASPurple    = L.layerGroup();
+
+  const ALLStations   = L.layerGroup().addTo(map);
+  const ALLPurple     = L.layerGroup().addTo(map);
+
+  // ---------- STATIONS ----------
   AppData.stations.forEach(st => {
 
-    const color = getAQHIColor(st.aqhi);
+    const name = st.stationName.toUpperCase();
+
+    const inACA  = inside(ACApoly, st.lat, st.lon);
+    const inWCAS = inside(WCASpoly, st.lat, st.lon);
+
+    const isACA  = inACA  && name.includes("ACA");
+    const isWCAS = inWCAS && (name.includes("WCAS") || name.includes("WCA"));
+
+    if (!isACA && !isWCAS) return;
+
+    const aq = Number(st.aqhi);
+    if (!Number.isFinite(aq)) return;
+
+    const color = getAQHIColor(aq);
 
     const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
@@ -59,37 +56,64 @@ window.renderMap = function () {
       color: "#222",
       weight: 1,
       fillOpacity: 0.85
-    }).addTo(stationLayer);
-    
-    marker.bindPopup(`
+    }).bindPopup(`
       <strong>${st.stationName}</strong><br>
-      AQHI: ${st.aqhi ?? "N/A"}
+      AQHI: ${aq}
     `);
 
+    ALLStations.addLayer(marker);
+    if (isACA)  ACAStations.addLayer(marker);
+    if (isWCAS) WCASStations.addLayer(marker);
+  });
 
-  // --- PurpleAir ---
+  // ---------- PURPLEAIR ----------
   AppData.purpleair.forEach(p => {
 
-    L.circleMarker([p.lat, p.lon], {
+    const inACA  = inside(ACApoly, p.lat, p.lon);
+    const inWCAS = inside(WCASpoly, p.lat, p.lon);
+
+    if (!inACA && !inWCAS) return;
+
+    const aq = Number(p.eAQHI);
+    if (!Number.isFinite(aq)) return;
+
+    const color = getAQHIColor(aq);
+
+    const marker = L.circleMarker([p.lat, p.lon], {
       radius: 4,
-      fillColor: p.color,
+      fillColor: color,
       color: "#222",
       weight: 0.5,
       fillOpacity: 0.85
-    })
-    .bindPopup(
-      `<strong>PurpleAir</strong><br>
-       ${p.name}<br>
-       eAQHI: ${p.eAQHI}<br>
-       PM₂.₅: ${p.pm.toFixed(1)} µg/m³`
-    )
-    .addTo(purpleLayer);
+    }).bindPopup(`
+      <strong>PurpleAir</strong><br>
+      ${p.name}<br>
+      AQHI: ${aq}<br>
+      PM₂.₅: ${p.pm.toFixed(1)} µg/m³
+    `);
 
+    ALLPurple.addLayer(marker);
+    if (inACA)  ACAPurple.addLayer(marker);
+    if (inWCAS) WCASPurple.addLayer(marker);
   });
+
+  // ---------- LAYER CONTROL ----------
+  L.control.layers(null, {
+    "ACA Stations": ACAStations,
+    "ACA PurpleAir": ACAPurple,
+    "WCAS Stations": WCASStations,
+    "WCAS PurpleAir": WCASPurple,
+    "All Stations (AB)": ALLStations,
+    "All PurpleAir (AB)": ALLPurple
+  }, { collapsed: false }).addTo(map);
 
   console.log("Map rendered.");
 };
 
 
+
 window.renderStations = window.renderMap;
 window.renderPurpleAir = () => {};
+
+
+  
