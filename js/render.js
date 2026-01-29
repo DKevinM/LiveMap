@@ -68,3 +68,7 @@ window.renderMap = function () {
 
   console.log("Map rendered.");
 };
+
+
+window.renderStations = window.renderMap;
+window.renderPurpleAir = () => {};
