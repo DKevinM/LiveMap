@@ -56,6 +56,8 @@ window.renderPurpleAir = async function () {
     `);
 
     // --- Add to layer system ---
+    if (!window.ALLPurple) return;
+
     marker.addTo(window.ALLPurple);
 
     const inACA  = inside(ACApoly, lat, lon);
