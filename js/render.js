@@ -66,72 +66,24 @@ window.renderMap = function () {
 
   // ---------- STATIONS ----------
   AppData.stations.forEach(st => {
-
+  
     const inACA  = inside(ACApoly, st.lat, st.lon);
     const inWCAS = inside(WCASpoly, st.lat, st.lon);
-    
+  
     const aq = Number(st.aqhi);
-    const hasAQHI = Number.isFinite(aq);
-    
-    const color = hasAQHI ? getAQHIColor(aq) : "#888888";
-
+    const color = Number.isFinite(aq) ? getAQHIColor(aq) : "#888888";
+  
     const by = window.dataByStation || {};
     const wanted = (st.stationName || "").trim().toLowerCase();
-    
     const matchKey = Object.keys(by).find(k => k.trim().toLowerCase() === wanted);
     const rows = matchKey ? (by[matchKey] || []) : [];
-
-    if (!rows.length) {
-      const fallbackAQ = (st.aqhi ?? "--");
-    
-      const marker = L.circleMarker([st.lat, st.lon], {
-        radius: 7,
-        fillColor: color,
-        color: "#222",
-        weight: 1,
-        fillOpacity: 0.85
-      }).bindPopup(`
-        <strong>${st.stationName}</strong><br>
-        AQHI: ${fallbackAQ}<br><br>
-        <em>No recent station parameter data loaded.</em>
-      `);
-    
-      if (inACA) {
-        ACAStations.addLayer(marker);
-      } else if (inWCAS) {
-        WCASStations.addLayer(marker);
-      } else {
-        ALLStations.addLayer(marker);
-      }
-    
-      return;
-    }
-
-    
-    
-    function val(p) {
-      const r = rows.find(x => x.ParameterName === p);
-      return r ? r.Value : "--";
-    }
-    
-    function unit(p) {
-      const r = rows.find(x => x.ParameterName === p);
-      return r ? r.Unit : "";
-    }
-    
-    const lines = rows.map(r => {
-      return `${r.ParameterName}: ${r.Value} ${r.Unit || ""}`;
-    }).join("<br>");
-
-    
-    // Build popup content (rich if we have rows, otherwise fallback)
+  
     let popupHTML;
-    
+  
     if (!rows.length) {
-      const fallbackAQ = (Number.isFinite(aq) ? aq : "--");
       popupHTML = `
         <strong>${st.stationName}</strong><br>
-        AQHI: ${fallbackAQ}<br><br>
+        AQHI: ${Number.isFinite(aq) ? aq : "--"}<br><br>
         <em>No recent station parameter data loaded.</em>
       `;
     } else {
@@ -139,7 +91,7 @@ window.renderMap = function () {
         const u = r.Unit ? ` ${r.Unit}` : "";
         return `${r.ParameterName}: ${r.Value}${u}`;
       }).join("<br>");
-    
+  
       popupHTML = `
         <strong>${st.stationName}</strong><br>
         ${rows[0]?.DateTime || ""}<br><br>
@@ -150,8 +102,7 @@ window.renderMap = function () {
         </a>
       `;
     }
-    
-    // Create ONE marker
+  
     const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
       fillColor: color,
@@ -159,8 +110,7 @@ window.renderMap = function () {
       weight: 1,
       fillOpacity: 0.85
     }).bindPopup(popupHTML);
-    
-    // Add to ONE layer only
+  
     if (inACA) {
       window.ACAStations.addLayer(marker);
     } else if (inWCAS) {
@@ -168,10 +118,9 @@ window.renderMap = function () {
     } else {
       window.ALLStations.addLayer(marker);
     }
-
-
-
+  
   });
+
 
   // ---------- PURPLEAIR ----------
   AppData.purpleair.forEach(p => {
