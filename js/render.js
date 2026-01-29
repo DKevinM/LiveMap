@@ -134,6 +134,9 @@ window.renderMap = function () {
 };
 
 
+window.ALLPurple = ALLPurple;
+window.ACAPurple = ACAPurple;
+window.WCASPurple = WCASPurple;
 
 window.renderStations = window.renderMap;
 window.renderPurpleAir = () => {};
