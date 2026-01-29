@@ -112,11 +112,10 @@ window.renderMap = function () {
       return r ? r.Unit : "";
     }
     
-    const rows = window.dataByStation?.[st.stationName] || [];
-    
     const lines = rows.map(r => {
       return `${r.ParameterName}: ${r.Value} ${r.Unit || ""}`;
     }).join("<br>");
+
     
     const popupHTML = `
       <strong>${st.stationName}</strong><br>
