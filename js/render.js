@@ -82,8 +82,8 @@ window.renderMap = function () {
     const rows = matchKey ? (by[matchKey] || []) : [];
 
     if (!rows.length) {
-      // fallback popup so you at least get station + AQHI
       const fallbackAQ = (st.aqhi ?? "--");
+    
       const marker = L.circleMarker([st.lat, st.lon], {
         radius: 7,
         fillColor: color,
@@ -96,10 +96,17 @@ window.renderMap = function () {
         <em>No recent station parameter data loaded.</em>
       `);
     
-      // add marker to correct layer (use your inACA/inWCAS logic)
-      // ... your layer add code here ...
-      return; // stop here for this station
+      if (inACA) {
+        ACAStations.addLayer(marker);
+      } else if (inWCAS) {
+        WCASStations.addLayer(marker);
+      } else {
+        ALLStations.addLayer(marker);
+      }
+    
+      return;
     }
+
     
     
     function val(p) {
@@ -117,17 +124,34 @@ window.renderMap = function () {
     }).join("<br>");
 
     
-    const popupHTML = `
-      <strong>${st.stationName}</strong><br>
-      ${rows[0]?.DateTime || ""}<br><br>
-      ${lines}
-      <hr>
-      <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
-        View historical data
-      </a>
-    `;
-
+    // Build popup content (rich if we have rows, otherwise fallback)
+    let popupHTML;
     
+    if (!rows.length) {
+      const fallbackAQ = (Number.isFinite(aq) ? aq : "--");
+      popupHTML = `
+        <strong>${st.stationName}</strong><br>
+        AQHI: ${fallbackAQ}<br><br>
+        <em>No recent station parameter data loaded.</em>
+      `;
+    } else {
+      const lines = rows.map(r => {
+        const u = r.Unit ? ` ${r.Unit}` : "";
+        return `${r.ParameterName}: ${r.Value}${u}`;
+      }).join("<br>");
+    
+      popupHTML = `
+        <strong>${st.stationName}</strong><br>
+        ${rows[0]?.DateTime || ""}<br><br>
+        ${lines}
+        <hr>
+        <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
+          View historical data
+        </a>
+      `;
+    }
+    
+    // Create ONE marker
     const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
       fillColor: color,
@@ -135,17 +159,16 @@ window.renderMap = function () {
       weight: 1,
       fillOpacity: 0.85
     }).bindPopup(popupHTML);
-
     
+    // Add to ONE layer only
     if (inACA) {
-      ACAStations.addLayer(marker);
+      window.ACAStations.addLayer(marker);
+    } else if (inWCAS) {
+      window.WCASStations.addLayer(marker);
+    } else {
+      window.ALLStations.addLayer(marker);
     }
-    else if (inWCAS) {
-      WCASStations.addLayer(marker);
-    }
-    else {
-      ALLStations.addLayer(marker);
-    }
+
 
 
   });
