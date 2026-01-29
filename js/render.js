@@ -42,22 +42,8 @@ window.renderMap = function () {
       fillOpacity: 0.85
     }).addTo(stationLayer);
 
-    marker.bindPopup(st.html);
-
-    marker.on("click", () => {
-
-      const fullStation = normalizeStationForGauges(st);
-
-      if (typeof showStationModal === "function") {
-        showStationModal(fullStation);
-      }
-
-      if (typeof showGaugesForStation === "function") {
-        showGaugesForStation(fullStation);
-      }
-
-    });
-
+    marker.on("click", () => marker.openPopup());
+    
   });
 
   // --- PurpleAir ---
