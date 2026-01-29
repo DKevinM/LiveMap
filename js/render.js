@@ -1,3 +1,12 @@
+// --- Shared Layer Groups (available to all scripts) ---
+window.ACAStations  = L.layerGroup();
+window.ACAPurple    = L.layerGroup();
+window.WCASStations = L.layerGroup();
+window.WCASPurple   = L.layerGroup();
+window.ALLStations  = L.layerGroup();
+window.ALLPurple    = L.layerGroup();
+
+
 let ACApoly = null;
 let WCASpoly = null;
 
@@ -43,19 +52,17 @@ function inside(poly, lat, lon) {
 window.renderMap = function () {
 
   const map = window.map;
+  window.ALLStations.addTo(map);
+  window.ALLPurple.addTo(map);
+  window.ACAStations.addTo(map);
+  window.ACAPurple.addTo(map);
+  window.WCASStations.addTo(map);
+  window.WCASPurple.addTo(map);
+  
   ACABoundaryLayer.addTo(map);
   WCASBoundaryLayer.addTo(map);
 
 
-  // --- Layer Groups ---
-  const ACAStations   = L.layerGroup();
-  const ACAPurple     = L.layerGroup();
-
-  const WCASStations  = L.layerGroup();
-  const WCASPurple    = L.layerGroup();
-
-  const ALLStations   = L.layerGroup().addTo(map);
-  const ALLPurple     = L.layerGroup().addTo(map);
 
   // ---------- STATIONS ----------
   AppData.stations.forEach(st => {
@@ -110,8 +117,8 @@ window.renderMap = function () {
 
     ALLPurple.addLayer(marker);
    
-    if (inACA)  ACAStations.addLayer(marker);
-    if (inWCAS) WCASStations.addLayer(marker);
+    if (inACA)  ACAPurple.addLayer(marker);
+    if (inWCAS) WCASPurple.addLayer(marker);
     
   });
 
@@ -133,10 +140,6 @@ window.renderMap = function () {
   console.log("Map rendered.");
 };
 
-
-window.ALLPurple = ALLPurple;
-window.ACAPurple = ACAPurple;
-window.WCASPurple = WCASPurple;
 
 window.renderStations = window.renderMap;
 window.renderPurpleAir = () => {};
