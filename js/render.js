@@ -1,35 +1,43 @@
 let ACApoly = null;
 let WCASpoly = null;
 
-let ACABoundaryLayer = null;
-let WCASBoundaryLayer = null;
+// Create empty layers FIRST
+let ACABoundaryLayer = L.layerGroup().addTo(window.map);
+let WCASBoundaryLayer = L.layerGroup().addTo(window.map);
 
 fetch('data/ACA.geojson')
   .then(r => r.json())
   .then(g => {
     ACApoly = g;
-    ACABoundaryLayer = L.geoJSON(g, {
-      style: { color: "#1f78b4", weight: 2, fill: false }
+    const gj = L.geoJSON(g, {
+      style: { color: "#33a02c", weight: 2, fill: false }
     });
+    ACABoundaryLayer.clearLayers();   // important
+    ACABoundaryLayer.addLayer(gj);   // add INTO the group
   });
 
 fetch('data/WCAS.geojson')
   .then(r => r.json())
   .then(g => {
     WCASpoly = g;
-    WCASBoundaryLayer = L.geoJSON(g, {
-      style: { color: "#33a02c", weight: 2, fill: false }
+
+    const gj = L.geoJSON(g, {
+      style: { color: "#1b9e77", weight: 2, fill: false }
     });
+
+    WCASBoundaryLayer.clearLayers();   // important
+    WCASBoundaryLayer.addLayer(gj);   // add INTO the group
   });
 
 
 function inside(poly, lat, lon) {
-  if (!poly) return true;  // allow drawing until boundaries load
+  if (!poly) return true;
   return turf.booleanPointInPolygon(
     turf.point([lon, lat]),
     poly.features[0]
   );
 }
+
 
 
 window.renderMap = function () {
