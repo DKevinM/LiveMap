@@ -53,10 +53,15 @@ window.renderMap = function () {
       <strong>${st.stationName}</strong><br>
       AQHI: ${aq}
     `);
-
+    
     ALLStations.addLayer(marker);
-    if (isACA)  ACAStations.addLayer(marker);
-    if (isWCAS) WCASStations.addLayer(marker);
+    
+    const inACA  = inside(ACApoly, st.lat, st.lon);
+    const inWCAS = inside(WCASpoly, st.lat, st.lon);
+    
+    if (inACA)  ACAStations.addLayer(marker);
+    if (inWCAS) WCASStations.addLayer(marker);
+
   });
 
   // ---------- PURPLEAIR ----------
@@ -84,8 +89,12 @@ window.renderMap = function () {
     `);
 
     ALLPurple.addLayer(marker);
-    if (inACA)  ACAPurple.addLayer(marker);
-    if (inWCAS) WCASPurple.addLayer(marker);
+    const inACA  = inside(ACApoly, st.lat, st.lon);
+    const inWCAS = inside(WCASpoly, st.lat, st.lon);
+    
+    if (inACA)  ACAStations.addLayer(marker);
+    if (inWCAS) WCASStations.addLayer(marker);
+    
   });
 
   // ---------- LAYER CONTROL ----------
