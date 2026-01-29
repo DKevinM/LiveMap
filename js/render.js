@@ -23,6 +23,14 @@ fetch('data/WCAS.geojson')
   });
 
 
+function inside(poly, lat, lon) {
+  if (!poly) return true;  // allow drawing until boundaries load
+  return turf.booleanPointInPolygon(
+    turf.point([lon, lat]),
+    poly.features[0]
+  );
+}
+
 
 window.renderMap = function () {
 
