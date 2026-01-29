@@ -41,10 +41,12 @@ window.renderMap = function () {
       weight: 1,
       fillOpacity: 0.85
     }).addTo(stationLayer);
-
-    marker.on("click", () => marker.openPopup());
     
-  });
+    marker.bindPopup(`
+      <strong>${st.stationName}</strong><br>
+      AQHI: ${st.aqhi ?? "N/A"}
+    `);
+
 
   // --- PurpleAir ---
   AppData.purpleair.forEach(p => {
