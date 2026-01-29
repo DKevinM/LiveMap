@@ -51,7 +51,7 @@ window.renderPurpleAir = async function () {
          </a>` : ""}`
     );
 
-    marker.addTo(window.paLayer);
+    marker.addTo(window.ALLPurple);
   });
 
   return window.paLayer;
