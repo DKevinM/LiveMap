@@ -35,15 +35,8 @@ window.renderMap = function () {
   // ---------- STATIONS ----------
   AppData.stations.forEach(st => {
 
-    const name = st.stationName.toUpperCase();
-
     const inACA  = inside(ACApoly, st.lat, st.lon);
     const inWCAS = inside(WCASpoly, st.lat, st.lon);
-
-    const isACA  = inACA  && name.includes("ACA");
-    const isWCAS = inWCAS && (name.includes("WCAS") || name.includes("WCA"));
-
-    if (!isACA && !isWCAS) return;
 
     const aq = Number(st.aqhi);
     if (!Number.isFinite(aq)) return;
@@ -71,8 +64,6 @@ window.renderMap = function () {
 
     const inACA  = inside(ACApoly, p.lat, p.lon);
     const inWCAS = inside(WCASpoly, p.lat, p.lon);
-
-    if (!inACA && !inWCAS) return;
 
     const aq = Number(p.eAQHI);
     if (!Number.isFinite(aq)) return;
