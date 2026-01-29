@@ -75,21 +75,58 @@ window.renderMap = function () {
     
     const color = hasAQHI ? getAQHIColor(aq) : "#888888";
 
+    const rows = window.dataByStation?.[st.stationName] || [];
+    
+    function val(p) {
+      const r = rows.find(x => x.ParameterName === p);
+      return r ? r.Value : "--";
+    }
+    
+    function unit(p) {
+      const r = rows.find(x => x.ParameterName === p);
+      return r ? r.Unit : "";
+    }
+    
+    const popupHTML = `
+      <strong>${st.stationName}</strong><br>
+      ${rows[0]?.DateTime || ""}<br><br>
+    
+      AQHI: <b>${val("AQHI")}</b><br>
+      Temp: ${val("Outdoor Temperature")} °C<br>
+      Humidity: ${val("Relative Humidity")} %<br>
+      Wind Speed: ${val("Wind Speed")} km/h<br>
+      Wind Dir: ${val("Wind Direction")}°<br><br>
+    
+      NO₂: ${val("Nitrogen Dioxide")} ppb<br>
+      O₃: ${val("Ozone")} ppb<br>
+      PM2.5: ${val("Fine Particulate Matter")} µg/m³<br>
+      CO: ${val("Carbon Monoxide")} ppm<br>
+    
+      <hr>
+      <a href="/AQHI.forecast/history/station_history.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
+        View historical data
+      </a>
+    `;
+    
     const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
       fillColor: color,
       color: "#222",
       weight: 1,
       fillOpacity: 0.85
-    }).bindPopup(`
-      <strong>${st.stationName}</strong><br>
-      AQHI: ${aq}
-    `);
+    }).bindPopup(popupHTML);
+
     
-    ALLStations.addLayer(marker);
-    
-    if (inACA)  ACAStations.addLayer(marker);
-    if (inWCAS) WCASStations.addLayer(marker);
+    if (inACA) {
+      ACAStations.addLayer(marker);
+    }
+    else if (inWCAS) {
+      WCASStations.addLayer(marker);
+    }
+    else {
+      ALLStations.addLayer(marker);
+    }
+
 
   });
 
