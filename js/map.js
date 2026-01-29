@@ -20,11 +20,11 @@ window.initMap = function () {
     .then(r => r.json())
     .then(j => L.geoJSON(j, { style:{color:"#cc3300",weight:2,fillOpacity:0} }).addTo(map));
 
-  map.locate({ setView:true, maxZoom:10 });
+  // map.locate({ setView:true, maxZoom:10 });
 
-  map.on("locationfound", e => {
-    L.circleMarker(e.latlng,{radius:6,color:"blue"}).addTo(map);
-  });
+//  map.on("locationfound", e => {
+//    L.circleMarker(e.latlng,{radius:6,color:"blue"}).addTo(map);
+//  });
 
   console.log("Map ready");
 };
