@@ -1,21 +1,27 @@
 let ACApoly = null;
 let WCASpoly = null;
 
+let ACABoundaryLayer = null;
+let WCASBoundaryLayer = null;
+
 fetch('data/ACA.geojson')
   .then(r => r.json())
-  .then(g => ACApoly = g);
+  .then(g => {
+    ACApoly = g;
+    ACABoundaryLayer = L.geoJSON(g, {
+      style: { color: "#1f78b4", weight: 2, fill: false }
+    });
+  });
 
 fetch('data/WCAS.geojson')
   .then(r => r.json())
-  .then(g => WCASpoly = g);
+  .then(g => {
+    WCASpoly = g;
+    WCASBoundaryLayer = L.geoJSON(g, {
+      style: { color: "#33a02c", weight: 2, fill: false }
+    });
+  });
 
-function inside(poly, lat, lon) {
-  if (!poly) return false;
-  return turf.booleanPointInPolygon(
-    turf.point([lon, lat]),
-    poly.features[0]
-  );
-}
 
 
 window.renderMap = function () {
@@ -37,11 +43,11 @@ window.renderMap = function () {
 
     const inACA  = inside(ACApoly, st.lat, st.lon);
     const inWCAS = inside(WCASpoly, st.lat, st.lon);
-
+    
     const aq = Number(st.aqhi);
-    if (!Number.isFinite(aq)) return;
-
-    const color = getAQHIColor(aq);
+    const hasAQHI = Number.isFinite(aq);
+    
+    const color = hasAQHI ? getAQHIColor(aq) : "#888888";
 
     const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
@@ -65,9 +71,10 @@ window.renderMap = function () {
   AppData.purpleair.forEach(p => {
 
     const aq = Number(p.eAQHI);
-    if (!Number.isFinite(aq)) return;
+    const hasAQHI = Number.isFinite(aq);
+    
+    const color = hasAQHI ? getAQHIColor(aq) : "#666666";
 
-    const color = getAQHIColor(aq);
 
     const marker = L.circleMarker([p.lat, p.lon], {
       radius: 4,
