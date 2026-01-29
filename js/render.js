@@ -98,10 +98,15 @@ window.renderMap = function () {
 
   // ---------- LAYER CONTROL ----------
   L.control.layers(null, {
+    "ACA Boundary": ACABoundaryLayer,
+    "WCAS Boundary": WCASBoundaryLayer,
+  
     "ACA Stations": ACAStations,
     "ACA PurpleAir": ACAPurple,
+  
     "WCAS Stations": WCASStations,
     "WCAS PurpleAir": WCASPurple,
+  
     "All Stations (AB)": ALLStations,
     "All PurpleAir (AB)": ALLPurple
   }, { collapsed: false }).addTo(map);
