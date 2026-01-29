@@ -1,5 +1,24 @@
 window.renderMap = function () {
+  let ACApoly = null;
+  let WCASpoly = null;
+  
+  fetch('data/ACA.geojson')
+    .then(r => r.json())
+    .then(g => ACApoly = g);
+  
+  fetch('data/WCAS.geojson')
+    .then(r => r.json())
+    .then(g => WCASpoly = g);
+  
+  function inside(poly, lat, lon) {
+    if (!poly) return false;
+    return turf.booleanPointInPolygon(
+      turf.point([lon, lat]),
+      poly.features[0]
+    );
+  }
 
+  
   function normalizeStationForGauges(st) {
 
     const params = {};
