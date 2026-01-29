@@ -2,8 +2,8 @@ let ACApoly = null;
 let WCASpoly = null;
 
 // Create empty layers FIRST
-let ACABoundaryLayer = L.layerGroup().addTo(window.map);
-let WCASBoundaryLayer = L.layerGroup().addTo(window.map);
+let ACABoundaryLayer = L.layerGroup();
+let WCASBoundaryLayer = L.layerGroup();
 
 fetch('data/ACA.geojson')
   .then(r => r.json())
@@ -43,6 +43,9 @@ function inside(poly, lat, lon) {
 window.renderMap = function () {
 
   const map = window.map;
+  ACABoundaryLayer.addTo(map);
+  WCASBoundaryLayer.addTo(map);
+
 
   // --- Layer Groups ---
   const ACAStations   = L.layerGroup();
