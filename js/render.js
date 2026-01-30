@@ -52,7 +52,8 @@ function clearAllLayers() {
   window.ALLPurple.clearLayers();
 }
 
-window.renderMap = function () {
+window.renderMap = async function () {
+  await window.dataReady; 
   const map = window.map;
   if (!map) {
     console.error("renderMap: window.map missing");
