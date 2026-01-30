@@ -73,55 +73,39 @@ window.renderMap = function () {
   ACABoundaryLayer.addTo(map);
   WCASBoundaryLayer.addTo(map);
 
+
   // -----------------------
   // STATIONS
   // -----------------------
-  const by = window.dataByStation || {};
-  const keys = Object.keys(by);
-
   window.AppData.stations.forEach(st => {
+  
     const lat = Number(st.lat);
     const lon = Number(st.lon);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-
+  
     const inACA  = inside(ACApoly,  lat, lon);
     const inWCAS = inside(WCASpoly, lat, lon);
-
+  
     const aq = Number(st.aqhi);
     const color = Number.isFinite(aq) ? window.getAQHIColor(aq) : "#888888";
-
-    // Robust station name match (exact -> contains)
-    const wanted = (st.stationName || "").trim().toLowerCase();
-    let matchKey = keys.find(k => k.trim().toLowerCase() === wanted);
-    if (!matchKey) matchKey = keys.find(k => k.toLowerCase().includes(wanted) || wanted.includes(k.toLowerCase()));
-
-    const rows = matchKey ? (by[matchKey] || []) : [];
-
-    let popupHTML;
-    if (rows.length) {
-      const dt = rows[0]?.DateTime || "";
-      const body = rows.map(r => {
-        const u = r.Unit ? ` ${r.Unit}` : "";
-        return `${r.ParameterName}: ${r.Value}${u}`;
-      }).join("<br>");
-
-      popupHTML = `
-        <strong>${st.stationName}</strong><br>
-        ${dt}<br><br>
-        ${body}
-        <hr>
-        <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
-          View historical data
-        </a>
-      `;
-    } else {
-      popupHTML = `
-        <strong>${st.stationName}</strong><br>
-        AQHI: ${Number.isFinite(aq) ? aq : "--"}<br><br>
-        <em>No recent station parameter data loaded.</em>
-      `;
-    }
-
+  
+    const rows = window.dataByStation[st.stationName] || [];
+  
+    const lines = rows.map(r => {
+      const u = r.Unit ? ` ${r.Unit}` : "";
+      return `${r.ParameterName}: ${r.Value}${u}`;
+    }).join("<br>");
+  
+    const popupHTML = `
+      <strong>${st.stationName}</strong><br>
+      ${rows[0]?.ReadingDate || ""}<br><br>
+      ${lines}
+      <hr>
+      <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
+        View historical data
+      </a>
+    `;
+  
     const marker = L.circleMarker([lat, lon], {
       radius: 7,
       fillColor: color,
@@ -129,12 +113,13 @@ window.renderMap = function () {
       weight: 1,
       fillOpacity: 0.85
     }).bindPopup(popupHTML);
-
-    // Add to ONE layer only
-    if (inACA) window.ACAStations.addLayer(marker);
-    else if (inWCAS) window.WCASStations.addLayer(marker);
-    else window.ALLStations.addLayer(marker);
+  
+    window.ALLStations.addLayer(marker);
+    if (inACA)  window.ACAStations.addLayer(marker);
+    if (inWCAS) window.WCASStations.addLayer(marker);
+  
   });
+
 
   // -----------------------
   // PURPLEAIR
