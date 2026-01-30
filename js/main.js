@@ -15,10 +15,12 @@ window.bootstrap = async function () {
   }
 
   await AppData.ready;
-
+  
   if (window.renderStations) {
+    await window.dataReady;  
     await renderStations();
   }
+
 
   if (window.renderPurpleAir) {
     await renderPurpleAir();
