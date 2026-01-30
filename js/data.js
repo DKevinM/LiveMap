@@ -26,56 +26,53 @@ window.getAQHIColor = function (val) {
   return "#640100";
 };
 
-// ---------------- LOAD STATIONS ----------------
-async function loadStations() {
-  const url = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv";
-  const res = await fetch(url);
-  const text = await res.text();
+// ---------------- LOAD STATIONS (WORKING VERSION) ----------------
+window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
+  .then(res => res.text())
+  .then(text => {
+    const rows = text.trim().split('\n');
+    const headers = rows.shift().split(',');
 
-  const rows = text.trim().split("\n");
-  const headers = rows.shift().split(",");
+    const raw = {};
+    rows.forEach(line => {
+      const cols = line.split(',');
+      const e = Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
+      if (!e.Latitude || !e.Longitude) return;
 
-  const raw = {};
-
-  rows.forEach(line => {
-    const cols = line.split(",");
-    const e = Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
-
-    if (!e.StationName || !e.Latitude || !e.Longitude) return;
-
-    raw[e.StationName] = raw[e.StationName] || [];
-    raw[e.StationName].push(e);
-  });
-
-  // build dataByStation (latest per param)
-  Object.entries(raw).forEach(([station, arr]) => {
-    const byParam = {};
-    arr.forEach(e => {
-      const p = e.ParameterName || "AQHI";
-      if (!byParam[p] || new Date(e.ReadingDate) > new Date(byParam[p].ReadingDate)) {
-        byParam[p] = e;
-      }
+      raw[e.StationName] = raw[e.StationName] || [];
+      raw[e.StationName].push(e);
     });
-    dataByStation[station] = Object.values(byParam);
+
+    Object.entries(raw).forEach(([station, arr]) => {
+      const byParam = {};
+      arr.forEach(e => {
+        const p = e.ParameterName || "AQHI";
+        if (!byParam[p] || new Date(e.ReadingDate) > new Date(byParam[p].ReadingDate)) {
+          byParam[p] = e;
+        }
+      });
+      dataByStation[station] = Object.values(byParam);
+    });
   });
 
-  // build AppData.stations for map
-  const stations = Object.keys(dataByStation).map(name => {
+// ---------------- STATIONS FOR MAP ----------------
+window.fetchAllStationData = function () {
+  const stationNames = Object.keys(dataByStation);
+
+  const stations = stationNames.map(name => {
     const rows = dataByStation[name];
     const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
-    const lat = rows[0].Latitude;
-    const lon = rows[0].Longitude;
 
     return {
       stationName: name,
-      lat: Number(lat),
-      lon: Number(lon),
+      lat: Number(rows[0].Latitude),
+      lon: Number(rows[0].Longitude),
       aqhi: aqhiRow ? aqhiRow.Value : "NA"
     };
   });
 
-  return stations;
-}
+  return Promise.resolve(stations);
+};
 
 // ---------------- PURPLEAIR ----------------
 async function loadPurpleAir() {
@@ -95,9 +92,10 @@ async function loadPurpleAir() {
 
 // ---------------- READY ----------------
 window.AppData.ready = Promise.all([
-  loadStations(),
+  window.dataReady,
+  window.fetchAllStationData(),
   loadPurpleAir()
-]).then(([stations, purple]) => {
+]).then(([_, stations, purple]) => {
   AppData.stations = stations;
   AppData.purpleair = purple;
 });
