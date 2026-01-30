@@ -77,21 +77,39 @@ window.renderMap = function () {
   // -----------------------
   // STATIONS
   // -----------------------
-  window.fetchAllStationData().then(stations => {
+  window.dataReady.then(() => {
   
-    stations.forEach(st => {
+    Object.entries(window.dataByStation).forEach(([stationName, rows]) => {
   
-      const lat = Number(st.lat);
-      const lon = Number(st.lon);
+      if (!rows || !rows.length) return;
+  
+      const lat = Number(rows[0].Latitude);
+      const lon = Number(rows[0].Longitude);
       if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
   
       const inACA  = inside(ACApoly,  lat, lon);
       const inWCAS = inside(WCASpoly, lat, lon);
   
-      const aq = Number(st.aqhi);
-      const color = Number.isFinite(aq)
-        ? window.getAQHIColor(aq)
+      const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
+      const aqhiVal = aqhiRow ? Number(aqhiRow.Value) : null;
+      const color   = Number.isFinite(aqhiVal)
+        ? window.getAQHIColor(aqhiVal)
         : "#888888";
+  
+      const lines = rows.map(r => {
+        const u = r.Units ? ` ${r.Units}` : "";
+        return `${r.Shortform || r.ParameterName}: ${r.Value}${u}`;
+      }).join("<br>");
+  
+      const popupHTML = `
+        <strong>${stationName}</strong><br>
+        <small>${rows[0].DisplayDate}</small><br><br>
+        ${lines}
+        <hr>
+        <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
+          View historical data
+        </a>
+      `;
   
       const marker = L.circleMarker([lat, lon], {
         radius: 7,
@@ -99,15 +117,16 @@ window.renderMap = function () {
         color: "#222",
         weight: 1,
         fillOpacity: 0.85
-      }).bindPopup(st.html);   // ← THIS IS THE KEY
+      }).bindPopup(popupHTML);
   
-      if (inACA)       window.ACAStations.addLayer(marker);
+      if (inACA) window.ACAStations.addLayer(marker);
       else if (inWCAS) window.WCASStations.addLayer(marker);
-      else             window.ALLStations.addLayer(marker);
+      else window.ALLStations.addLayer(marker);
   
     });
   
   });
+
 
 
 
