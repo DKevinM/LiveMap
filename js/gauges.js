@@ -1,97 +1,47 @@
-function safeValue(v) {
-  if (v === null || v === undefined || isNaN(v)) return null;
-  return Number(v);
-}
+// =======================
+// gauges_page.js
+// =======================
 
-function buildGauge(title, value, min, max, guideline = null, units = "") {
+const params = new URLSearchParams(window.location.search);
+const station = params.get("station");
 
-  const v = safeValue(value);
+document.getElementById("title").innerText = station;
 
-  const axisMax = (v !== null && v > max) ? v * 1.15 : max;
+fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
+  .then(r => r.text())
+  .then(text => {
 
-  let steps = [];
-  if (guideline !== null) {
-    steps.push({ range: [min, guideline], color: "#e0f3f8" });
-    steps.push({ range: [guideline, axisMax], color: "#ffd2d2" });
-  }
+    const rows = text.trim().split('\n');
+    const headers = rows.shift().split(',');
 
-  return {
-    type: "indicator",
-    mode: "gauge+number",
-    value: v ?? 0,
-    title: { text: title },
-    number: { suffix: units },
-    gauge: {
-      axis: { range: [min, axisMax] },
-      bar: { color: v === null ? "#999" : "#016797" },
-      steps: steps,
-      threshold: guideline !== null ? {
-        line: { color: "red", width: 4 },
-        thickness: 0.75,
-        value: guideline
-      } : undefined
-    },
-    domain: { x: [0, 1], y: [0, 1] }
-  };
-}
+    const data = rows.map(line => {
+      const cols = line.split(',');
+      return Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
+    }).filter(r => r.StationName === station);
 
-window.buildFullGaugePanel = function (station) {
-
-  const offline = v => v === null || v === undefined || isNaN(v);
-
-  const gauges = [
-    buildGauge("AQHI", station.AQHI, 0, 11),
-    buildGauge("PM2.5", station.PM25, 0, 200, 80, " µg/m³"),
-    buildGauge("O₃", station.O3, 0, 100, 80, " ppb"),
-    buildGauge("NO₂", station.NO2, 0, 200, 100, " ppb"),
-    buildGauge("RH", station.RH, 0, 100, null, " %"),
-    buildGauge("Temp", station.Temp, -40, 40, null, " °C"),
-    buildGauge("Wind", station.WS, 0, 100, null, " km/h")
-  ];
-
-  const layout = {
-    grid: { rows: 2, columns: 4, pattern: "independent" },
-    height: 520,
-    annotations: []
-  };
-
-  if (offline(station.PM25)) {
-    layout.annotations.push({
-      text: "Equipment Offline",
-      x: 0.5, y: 0.95,
-      xref: "paper", yref: "paper",
-      showarrow: false,
-      font: { color: "red", size: 14 }
+    const byParam = {};
+    data.forEach(r => {
+      const p = r.ParameterName || "AQHI";
+      byParam[p] = byParam[p] || [];
+      byParam[p].push(Number(r.Value));
     });
-  }
 
-  Plotly.newPlot("station-gauges", gauges, layout);
-};
+    const container = document.getElementById("gauges");
 
-window.buildForecastGauges = function (forecast) {
+    Object.entries(byParam).forEach(([param, values]) => {
 
-  const gauges = forecast.map((f, i) =>
-    buildGauge(`+${i+1} hr`, f.AQHI, 0, 11)
-  );
+      const gid = `g_${param.replace(/\s/g,'')}`;
+      const sid = `s_${param.replace(/\s/g,'')}`;
 
-  Plotly.newPlot("forecast-gauges", gauges, { height: 300 });
-};
+      container.insertAdjacentHTML("beforeend", `
+        <div id="${gid}" class="g"></div>
+        <div id="${sid}" class="s"></div>
+      `);
 
-window.initGauges = function () {
-  console.log("Gauges ready.");
-};
+      const latest = values[values.length-1];
+      const max = guideLimits[param] || 100;
 
-window.showGaugesForStation = function (station) {
-  if (!station) return;
-
-  const panel = document.getElementById("station-gauges");
-  if (!panel) {
-    console.warn("No gauge container in DOM");
-    return;
-  }
-
-  // Actually draw the gauges
-  window.buildFullGaugePanel(station);
-};
-
-
+      buildGauge(gid, latest, param, 0, max, gaugeZones(param, max));
+      buildSpark(sid, values.slice(-12)); // last 6 hours (5-min)
+    });
+  });
