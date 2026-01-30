@@ -26,6 +26,51 @@ window.getAQHIColor = function (val) {
   return "#640100";
 };
 
+
+const unitsLookup = {
+  "AQHI": "",
+  "Ozone": " ppb",
+  "Total Oxides of Nitrogen": " ppb",
+  "Hydrogen Sulphide": " ppb",
+  "Total Reduced Sulphur": " ppb",
+  "Sulphur Dioxide": " ppb",
+  "Fine Particulate Matter": " µg/m³",
+  "Total Hydrocarbons": " ppm",
+  "Carbon Monoxide": " ppm",
+  "Wind Direction": " degrees",
+  "Relative Humidity": " %",
+  "Outdoor Temperature": " °C",
+  "Nitric Oxide": " ppb",
+  "Wind Speed": " km/hr",
+  "Non-methane Hydrocarbons": " ppm",
+  "Nitrogen Dioxide": " ppb",
+  "Methane": " ppm"
+};
+
+const shortLookup = {
+  "AQHI": "AQHI",
+  "Ozone": "O3",
+  "Total Oxides of Nitrogen": "NOX",
+  "Hydrogen Sulphide": "H2S",
+  "Total Reduced Sulphur": "TRS",
+  "Sulphur Dioxide": "SO2",
+  "Fine Particulate Matter": "PM2.5",
+  "Total Hydrocarbons": "THC",
+  "Carbon Monoxide": "CO",
+  "Wind Direction": "Wind Dir",
+  "Relative Humidity": "Humidity",
+  "Outdoor Temperature": "Temp",
+  "Nitric Oxide": "NO",
+  "Wind Speed": "Wind Speed",
+  "Non-methane Hydrocarbons": "NMHC",
+  "Nitrogen Dioxide": "NO2",
+  "Methane": "CH4"
+};
+
+
+
+
+
 // ---------------- LOAD STATIONS (WORKING VERSION) ----------------
 window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
   .then(res => res.text())
@@ -35,13 +80,46 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
 
     const raw = {};
     rows.forEach(line => {
-      const cols = line.split(',');
+      const cols = line.split(",");
       const e = Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
-      if (!e.Latitude || !e.Longitude) return;
-
+    
+      if (!e.StationName || !e.Latitude || !e.Longitude) return;
+    
+      // ---- FIX 1: blank ParameterName is AQHI ----
+      e.ParameterName = (e.ParameterName && e.ParameterName.trim())
+        ? e.ParameterName.trim()
+        : "AQHI";
+    
+      // ---- FIX 2: numeric value ----
+      let v = parseFloat(e.Value);
+      if (!isFinite(v)) return;
+    
+      // ---- FIX 3: ppm → ppb conversion (what your working script does) ----
+      if ([
+        "Ozone","Total Oxides of Nitrogen","Hydrogen Sulphide",
+        "Total Reduced Sulphur","Sulphur Dioxide",
+        "Nitric Oxide","Nitrogen Dioxide"
+      ].includes(e.ParameterName)) {
+        v *= 1000;
+      }
+      e.Value = v;
+    
+      // ---- FIX 4: Units + Shortform (missing in LiveMap) ----
+      e.Units = unitsLookup[e.ParameterName] || "";
+      e.Shortform = shortLookup[e.ParameterName] || e.ParameterName;
+    
+      // ---- FIX 5: Edmonton timestamp ----
+      const dt = new Date(e.ReadingDate);
+      e.DisplayDate = dt.toLocaleString("en-CA", {
+        timeZone: "America/Edmonton",
+        hour12: true
+      });
+    
       raw[e.StationName] = raw[e.StationName] || [];
       raw[e.StationName].push(e);
     });
+
+
 
     Object.entries(raw).forEach(([station, arr]) => {
       const byParam = {};
