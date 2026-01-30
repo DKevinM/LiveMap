@@ -80,26 +80,30 @@ window.renderMap = function () {
   
     let popupHTML;
   
-    if (!rows.length) {
-      popupHTML = `
+    if (rows.length) {
+      const header = `
         <strong>${st.stationName}</strong><br>
-        AQHI: ${Number.isFinite(aq) ? aq : "--"}<br><br>
-        <em>No recent station parameter data loaded.</em>
+        ${rows[0]?.DateTime || ""}<br><br>
       `;
-    } else {
-      const lines = rows.map(r => {
+  
+      const body = rows.map(r => {
         const u = r.Unit ? ` ${r.Unit}` : "";
         return `${r.ParameterName}: ${r.Value}${u}`;
       }).join("<br>");
   
       popupHTML = `
-        <strong>${st.stationName}</strong><br>
-        ${rows[0]?.DateTime || ""}<br><br>
-        ${lines}
+        ${header}
+        ${body}
         <hr>
         <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
           View historical data
         </a>
+      `;
+    } else {
+      popupHTML = `
+        <strong>${st.stationName}</strong><br>
+        AQHI: ${Number.isFinite(aq) ? aq : "--"}<br><br>
+        <em>No recent station parameter data loaded.</em>
       `;
     }
   
@@ -120,6 +124,7 @@ window.renderMap = function () {
     }
   
   });
+
 
 
   // ---------- PURPLEAIR ----------
