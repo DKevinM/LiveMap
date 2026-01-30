@@ -110,7 +110,14 @@ window.fetchAllStationData = async function () {
       `
     });
   });
+   
+   window.dataByStation = {};
+   
+   Object.values(byStation).forEach(st => {
+     window.dataByStation[st.stationName] = Object.values(st.params);
+   });
 
+   
   return stations;
 };
 
