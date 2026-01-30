@@ -77,7 +77,6 @@ window.renderMap = function () {
   // -----------------------
   // STATIONS
   // -----------------------
-
   window.fetchAllStationData().then(stations => {
   
     stations.forEach(st => {
@@ -100,15 +99,16 @@ window.renderMap = function () {
         color: "#222",
         weight: 1,
         fillOpacity: 0.85
-      }).bindPopup(st.html);
+      }).bindPopup(st.html);   // ← THIS IS THE KEY
   
-      if (inACA)      window.ACAStations.addLayer(marker);
+      if (inACA)       window.ACAStations.addLayer(marker);
       else if (inWCAS) window.WCASStations.addLayer(marker);
-      else            window.ALLStations.addLayer(marker);
+      else             window.ALLStations.addLayer(marker);
   
     });
   
   });
+
 
 
 
