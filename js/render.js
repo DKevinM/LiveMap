@@ -17,8 +17,8 @@ let WCASpoly = null;
 const ACABoundaryLayer  = L.layerGroup();
 const WCASBoundaryLayer = L.layerGroup();
 
-// Load boundaries (async)
-fetch("data/ACA.geojson")
+
+const acaBoundaryReady = fetch("data/ACA.geojson")
   .then(r => r.json())
   .then(g => {
     ACApoly = g;
@@ -27,7 +27,7 @@ fetch("data/ACA.geojson")
   })
   .catch(e => console.error("ACA boundary load failed:", e));
 
-fetch("data/WCAS.geojson")
+const wcasBoundaryReady = fetch("data/WCAS.geojson")
   .then(r => r.json())
   .then(g => {
     WCASpoly = g;
@@ -36,11 +36,13 @@ fetch("data/WCAS.geojson")
   })
   .catch(e => console.error("WCAS boundary load failed:", e));
 
+
 // point-in-polygon helper
 function inside(poly, lat, lon) {
   if (!poly || !poly.features || !poly.features.length) return false;
   return turf.booleanPointInPolygon(turf.point([lon, lat]), poly.features[0]);
 }
+
 
 // clear layers (so re-render doesn’t duplicate)
 function clearAllLayers() {
@@ -53,7 +55,8 @@ function clearAllLayers() {
 }
 
 window.renderMap = async function () {
-  await window.dataReady; 
+  await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
+
   const map = window.map;
   if (!map) {
     console.error("renderMap: window.map missing");
@@ -78,55 +81,102 @@ window.renderMap = async function () {
   // -----------------------
   // STATIONS
   // -----------------------
-  window.dataReady.then(() => {
+
+  Object.entries(window.dataByStation).forEach(([stationName, rows]) => {
   
-    Object.entries(window.dataByStation).forEach(([stationName, rows]) => {
+    if (!rows || !rows.length) return;
   
-      if (!rows || !rows.length) return;
+    const lat = Number(rows[0].Latitude);
+    const lon = Number(rows[0].Longitude);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
   
-      const lat = Number(rows[0].Latitude);
-      const lon = Number(rows[0].Longitude);
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+    const inACA  = inside(ACApoly,  lat, lon);
+    const inWCAS = inside(WCASpoly, lat, lon);
   
-      const inACA  = inside(ACApoly,  lat, lon);
-      const inWCAS = inside(WCASpoly, lat, lon);
+    // AQHI value for color
+    const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
+    const aqhiVal = aqhiRow ? Number(aqhiRow.Value) : NaN;
   
-      const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
-      const aqhiVal = aqhiRow ? Number(aqhiRow.Value) : null;
-      const color   = Number.isFinite(aqhiVal)
-        ? window.getAQHIColor(aqhiVal)
-        : "#888888";
+    const color = Number.isFinite(aqhiVal) ? window.getAQHIColor(aqhiVal) : "#888888";
   
-      const lines = rows.map(r => {
-        const u = r.Units ? ` ${r.Units}` : "";
-        return `${r.Shortform || r.ParameterName}: ${r.Value}${u}`;
-      }).join("<br>");
-  
-      const popupHTML = `
-        <strong>${stationName}</strong><br>
-        <small>${rows[0].DisplayDate}</small><br><br>
-        ${lines}
-        <hr>
-        <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
-          View historical data
-        </a>
-      `;
-  
-      const marker = L.circleMarker([lat, lon], {
-        radius: 7,
-        fillColor: color,
-        color: "#222",
-        weight: 1,
-        fillOpacity: 0.85
-      }).bindPopup(popupHTML);
-  
-      if (inACA) window.ACAStations.addLayer(marker);
-      else if (inWCAS) window.WCASStations.addLayer(marker);
-      else window.ALLStations.addLayer(marker);
-  
+    // timestamp: use latest ReadingDate across the rows (rows[0] is NOT reliable)
+    let latest = null;
+    rows.forEach(r => {
+      const t = new Date(r.ReadingDate);
+      if (!latest || t > latest) latest = t;
     });
   
+    const displayTime = latest
+      ? latest.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true })
+      : "";
+  
+    // Keep the popup dynamic, but order key params first (everything else after)
+    const ordered = [
+      "AQHI",
+      "Outdoor Temperature",
+      "Relative Humidity",
+      "Wind Speed",
+      "Wind Direction",
+      "Nitrogen Dioxide",
+      "Total Oxides of Nitrogen",
+      "Nitric Oxide",
+      "Ozone",
+      "Fine Particulate Matter",
+      "Sulphur Dioxide",
+      "Hydrogen Sulphide",
+      "Total Reduced Sulphur",
+      "Carbon Monoxide",
+      "Total Hydrocarbons",
+      "Methane",
+      "Non-methane Hydrocarbons"
+    ];
+  
+    const byParam = {};
+    rows.forEach(r => { byParam[r.ParameterName] = r; });
+  
+    const used = new Set();
+  
+    const linesFirst = ordered
+      .filter(p => byParam[p])
+      .map(p => {
+        used.add(p);
+        const r = byParam[p];
+        const u = r.Units ? `${r.Units}` : "";
+        const label = r.Shortform || r.ParameterName;
+        return `${label}: ${r.Value}${u}`;
+      });
+  
+    const linesRest = rows
+      .filter(r => !used.has(r.ParameterName))
+      .map(r => {
+        const u = r.Units ? `${r.Units}` : "";
+        const label = r.Shortform || r.ParameterName;
+        return `${label}: ${r.Value}${u}`;
+      });
+  
+    const popupHTML = `
+      <strong>${stationName}</strong><br>
+      <small>${displayTime}</small><br><br>
+      ${[...linesFirst, ...linesRest].join("<br>")}
+      <hr>
+      <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
+        View historical data
+      </a>
+    `;
+  
+    const marker = L.circleMarker([lat, lon], {
+      radius: 7,
+      fillColor: color,
+      color: "#222",
+      weight: 1,
+      fillOpacity: 0.85
+    }).bindPopup(popupHTML);
+  
+    if (inACA) window.ACAStations.addLayer(marker);
+    else if (inWCAS) window.WCASStations.addLayer(marker);
+    else window.ALLStations.addLayer(marker);
   });
+
 
 
 
