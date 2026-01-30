@@ -1,98 +1,113 @@
-// --- Shared Layer Groups (available to all scripts) ---
-window.ACAStations  = L.layerGroup();
-window.ACAPurple    = L.layerGroup();
-window.WCASStations = L.layerGroup();
-window.WCASPurple   = L.layerGroup();
-window.ALLStations  = L.layerGroup();
-window.ALLPurple    = L.layerGroup();
+// =======================
+// render.js
+// =======================
 
+// --- Shared Layer Groups (available to all scripts) ---
+window.ACAStations  = window.ACAStations  || L.layerGroup();
+window.ACAPurple    = window.ACAPurple    || L.layerGroup();
+window.WCASStations = window.WCASStations || L.layerGroup();
+window.WCASPurple   = window.WCASPurple   || L.layerGroup();
+window.ALLStations  = window.ALLStations  || L.layerGroup();
+window.ALLPurple    = window.ALLPurple    || L.layerGroup();
 
 let ACApoly = null;
 let WCASpoly = null;
 
-// Create empty layers FIRST
-let ACABoundaryLayer = L.layerGroup();
-let WCASBoundaryLayer = L.layerGroup();
+// Boundary layers (toggleable)
+const ACABoundaryLayer  = L.layerGroup();
+const WCASBoundaryLayer = L.layerGroup();
 
-fetch('data/ACA.geojson')
+// Load boundaries (async)
+fetch("data/ACA.geojson")
   .then(r => r.json())
   .then(g => {
     ACApoly = g;
-    const gj = L.geoJSON(g, {
-      style: { color: "#33a02c", weight: 2, fill: false }
-    });
-    ACABoundaryLayer.clearLayers();   // important
-    ACABoundaryLayer.addLayer(gj);   // add INTO the group
-  });
+    ACABoundaryLayer.clearLayers();
+    ACABoundaryLayer.addLayer(L.geoJSON(g, { style: { color: "#33a02c", weight: 2, fill: false } }));
+  })
+  .catch(e => console.error("ACA boundary load failed:", e));
 
-fetch('data/WCAS.geojson')
+fetch("data/WCAS.geojson")
   .then(r => r.json())
   .then(g => {
     WCASpoly = g;
+    WCASBoundaryLayer.clearLayers();
+    WCASBoundaryLayer.addLayer(L.geoJSON(g, { style: { color: "#1b9e77", weight: 2, fill: false } }));
+  })
+  .catch(e => console.error("WCAS boundary load failed:", e));
 
-    const gj = L.geoJSON(g, {
-      style: { color: "#1b9e77", weight: 2, fill: false }
-    });
-
-    WCASBoundaryLayer.clearLayers();   // important
-    WCASBoundaryLayer.addLayer(gj);   // add INTO the group
-  });
-
-
+// point-in-polygon helper
 function inside(poly, lat, lon) {
-  if (!poly) return true;
-  return turf.booleanPointInPolygon(
-    turf.point([lon, lat]),
-    poly.features[0]
-  );
+  if (!poly || !poly.features || !poly.features.length) return false;
+  return turf.booleanPointInPolygon(turf.point([lon, lat]), poly.features[0]);
 }
 
-
+// clear layers (so re-render doesn’t duplicate)
+function clearAllLayers() {
+  window.ACAStations.clearLayers();
+  window.WCASStations.clearLayers();
+  window.ALLStations.clearLayers();
+  window.ACAPurple.clearLayers();
+  window.WCASPurple.clearLayers();
+  window.ALLPurple.clearLayers();
+}
 
 window.renderMap = function () {
-
   const map = window.map;
+  if (!map) {
+    console.error("renderMap: window.map missing");
+    return;
+  }
+  if (!window.AppData?.stations || !window.AppData?.purpleair) {
+    console.error("renderMap: AppData missing stations/purpleair");
+    return;
+  }
+
+  clearAllLayers();
+
+  // Add base overlay layers (default ON)
   window.ALLStations.addTo(map);
   window.ALLPurple.addTo(map);
-  window.ACAStations.addTo(map);
-  window.ACAPurple.addTo(map);
-  window.WCASStations.addTo(map);
-  window.WCASPurple.addTo(map);
-  
+
+  // Optional: boundaries default ON
   ACABoundaryLayer.addTo(map);
   WCASBoundaryLayer.addTo(map);
 
+  // -----------------------
+  // STATIONS
+  // -----------------------
+  const by = window.dataByStation || {};
+  const keys = Object.keys(by);
 
+  window.AppData.stations.forEach(st => {
+    const lat = Number(st.lat);
+    const lon = Number(st.lon);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
 
-  // ---------- STATIONS ----------
-  AppData.stations.forEach(st => {
-  
-    const inACA  = inside(ACApoly, st.lat, st.lon);
-    const inWCAS = inside(WCASpoly, st.lat, st.lon);
-  
+    const inACA  = inside(ACApoly,  lat, lon);
+    const inWCAS = inside(WCASpoly, lat, lon);
+
     const aq = Number(st.aqhi);
-    const color = Number.isFinite(aq) ? getAQHIColor(aq) : "#888888";
-  
-    const by = window.dataByStation || {};
+    const color = Number.isFinite(aq) ? window.getAQHIColor(aq) : "#888888";
+
+    // Robust station name match (exact -> contains)
     const wanted = (st.stationName || "").trim().toLowerCase();
-    const matchKey = Object.keys(by).find(k => k.trim().toLowerCase() === wanted);
+    let matchKey = keys.find(k => k.trim().toLowerCase() === wanted);
+    if (!matchKey) matchKey = keys.find(k => k.toLowerCase().includes(wanted) || wanted.includes(k.toLowerCase()));
+
     const rows = matchKey ? (by[matchKey] || []) : [];
-  
+
     let popupHTML;
-  
     if (rows.length) {
-      const header = `
-        <strong>${st.stationName}</strong><br>
-        ${rows[0]?.DateTime || ""}<br><br>
-      `;
-  
+      const dt = rows[0]?.DateTime || "";
       const body = rows.map(r => {
         const u = r.Unit ? ` ${r.Unit}` : "";
         return `${r.ParameterName}: ${r.Value}${u}`;
       }).join("<br>");
-  
+
       popupHTML = `
-        ${header}
+        <strong>${st.stationName}</strong><br>
+        ${dt}<br><br>
         ${body}
         <hr>
         <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
@@ -106,37 +121,36 @@ window.renderMap = function () {
         <em>No recent station parameter data loaded.</em>
       `;
     }
-  
-    const marker = L.circleMarker([st.lat, st.lon], {
+
+    const marker = L.circleMarker([lat, lon], {
       radius: 7,
       fillColor: color,
       color: "#222",
       weight: 1,
       fillOpacity: 0.85
     }).bindPopup(popupHTML);
-  
-    if (inACA) {
-      window.ACAStations.addLayer(marker);
-    } else if (inWCAS) {
-      window.WCASStations.addLayer(marker);
-    } else {
-      window.ALLStations.addLayer(marker);
-    }
-  
+
+    // Add to ONE layer only
+    if (inACA) window.ACAStations.addLayer(marker);
+    else if (inWCAS) window.WCASStations.addLayer(marker);
+    else window.ALLStations.addLayer(marker);
   });
 
+  // -----------------------
+  // PURPLEAIR
+  // -----------------------
+  window.AppData.purpleair.forEach(p => {
+    const lat = Number(p.lat);
+    const lon = Number(p.lon);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
 
-
-  // ---------- PURPLEAIR ----------
-  AppData.purpleair.forEach(p => {
+    const inACA  = inside(ACApoly,  lat, lon);
+    const inWCAS = inside(WCASpoly, lat, lon);
 
     const aq = Number(p.eAQHI);
-    const hasAQHI = Number.isFinite(aq);
-    
-    const color = hasAQHI ? getAQHIColor(aq) : "#666666";
+    const color = Number.isFinite(aq) ? window.getAQHIColor(aq) : "#666666";
 
-
-    const marker = L.circleMarker([p.lat, p.lon], {
+    const marker = L.circleMarker([lat, lon], {
       radius: 4,
       fillColor: color,
       color: "#222",
@@ -144,39 +158,38 @@ window.renderMap = function () {
       fillOpacity: 0.85
     }).bindPopup(`
       <strong>PurpleAir</strong><br>
-      ${p.name}<br>
-      AQHI: ${aq}<br>
-      PM₂.₅: ${p.pm.toFixed(1)} µg/m³
+      ${p.name || "Unnamed"}<br>
+      AQHI: ${Number.isFinite(aq) ? aq : "--"}<br>
+      PM₂.₅: ${Number.isFinite(p.pm) ? p.pm.toFixed(1) : "--"} µg/m³
     `);
 
-    ALLPurple.addLayer(marker);
-   
-    if (inACA)  ACAPurple.addLayer(marker);
-    if (inWCAS) WCASPurple.addLayer(marker);
-    
+    // Add to All + optionally ACA/WCAS
+    window.ALLPurple.addLayer(marker);
+    if (inACA)  window.ACAPurple.addLayer(marker);
+    if (inWCAS) window.WCASPurple.addLayer(marker);
   });
 
-  // ---------- LAYER CONTROL ----------
-  L.control.layers(null, {
+  // Layer control (build once per render; remove old if needed)
+  // Optional: store ref to avoid duplicates
+  if (window._layerControl) {
+    map.removeControl(window._layerControl);
+  }
+
+  window._layerControl = L.control.layers(null, {
     "ACA Boundary": ACABoundaryLayer,
     "WCAS Boundary": WCASBoundaryLayer,
-  
-    "ACA Stations": ACAStations,
-    "ACA PurpleAir": ACAPurple,
-  
-    "WCAS Stations": WCASStations,
-    "WCAS PurpleAir": WCASPurple,
-  
-    "All Stations (AB)": ALLStations,
-    "All PurpleAir (AB)": ALLPurple
+
+    "ACA Stations": window.ACAStations,
+    "ACA PurpleAir": window.ACAPurple,
+
+    "WCAS Stations": window.WCASStations,
+    "WCAS PurpleAir": window.WCASPurple,
+
+    "All Stations (AB)": window.ALLStations,
+    "All PurpleAir (AB)": window.ALLPurple
   }, { collapsed: false }).addTo(map);
 
   console.log("Map rendered.");
 };
 
-
 window.renderStations = window.renderMap;
-window.renderPurpleAir = () => {};
-
-
-  
