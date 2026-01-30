@@ -77,48 +77,39 @@ window.renderMap = function () {
   // -----------------------
   // STATIONS
   // -----------------------
-  window.AppData.stations.forEach(st => {
+
+  window.fetchAllStationData().then(stations => {
   
-    const lat = Number(st.lat);
-    const lon = Number(st.lon);
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+    stations.forEach(st => {
   
-    const inACA  = inside(ACApoly,  lat, lon);
-    const inWCAS = inside(WCASpoly, lat, lon);
+      const lat = Number(st.lat);
+      const lon = Number(st.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
   
-    const aq = Number(st.aqhi);
-    const color = Number.isFinite(aq) ? window.getAQHIColor(aq) : "#888888";
+      const inACA  = inside(ACApoly,  lat, lon);
+      const inWCAS = inside(WCASpoly, lat, lon);
   
-    const rows = window.dataByStation[st.stationName] || [];
+      const aq = Number(st.aqhi);
+      const color = Number.isFinite(aq)
+        ? window.getAQHIColor(aq)
+        : "#888888";
   
-    const lines = rows.map(r => {
-      const u = r.Unit ? ` ${r.Unit}` : "";
-      return `${r.ParameterName}: ${r.Value}${u}`;
-    }).join("<br>");
+      const marker = L.circleMarker([lat, lon], {
+        radius: 7,
+        fillColor: color,
+        color: "#222",
+        weight: 1,
+        fillOpacity: 0.85
+      }).bindPopup(st.html);
   
-    const popupHTML = `
-      <strong>${st.stationName}</strong><br>
-      ${rows[0]?.ReadingDate || ""}<br><br>
-      ${lines}
-      <hr>
-      <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(st.stationName)}" target="_blank">
-        View historical data
-      </a>
-    `;
+      if (inACA)      window.ACAStations.addLayer(marker);
+      else if (inWCAS) window.WCASStations.addLayer(marker);
+      else            window.ALLStations.addLayer(marker);
   
-    const marker = L.circleMarker([lat, lon], {
-      radius: 7,
-      fillColor: color,
-      color: "#222",
-      weight: 1,
-      fillOpacity: 0.85
-    }).bindPopup(popupHTML);
-  
-    window.ALLStations.addLayer(marker);
-    if (inACA)  window.ACAStations.addLayer(marker);
-    if (inWCAS) window.WCASStations.addLayer(marker);
+    });
   
   });
+
 
 
   // -----------------------
