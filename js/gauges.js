@@ -98,15 +98,28 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     }).filter(r => r.StationName === station);
 
     const byParam = {};
+    
     data.forEach(r => {
       const p = r.ParameterName || "AQHI";
       byParam[p] = byParam[p] || [];
-      byParam[p].push(Number(r.Value));
+      byParam[p].push({
+        v: Number(r.Value),
+        t: new Date(r.ReadingDate)
+      });
+    });
+    
+    // SORT BY TIME
+    Object.keys(byParam).forEach(p => {
+      byParam[p].sort((a,b) => a.t - b.t);
     });
 
-    const container = document.getElementById("gauges");
 
-    Object.entries(byParam).forEach(([param, values]) => {
+    const container = document.getElementById("gauges");
+    
+    Object.entries(byParam).forEach(([param, rows]) => {
+    
+      const values = rows.map(r => r.v);
+
 
       const gid = `g_${param.replace(/\s/g,'')}`;
       const sid = `s_${param.replace(/\s/g,'')}`;
