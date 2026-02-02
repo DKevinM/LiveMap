@@ -14,9 +14,10 @@ function buildGauge(id, value, title, min, max, zones) {
       type: 'gauge',
       min: min,
       max: max,
-      progress: { show: true, width: 12 },
-      axisLine: { lineStyle: { width: 12, color: zones }},
-      pointer: { width: 4 },
+      progress: { show: true, width: 24 },
+      axisLine: { lineStyle: { width: 24, color: zones }},
+      pointer: { width: 8 },
+      radius: '90%',
       title: { fontSize: 11 },
       detail: { fontSize: 16, offsetCenter: [0, '60%'] },
       data: [{ value: value, name: title }]
