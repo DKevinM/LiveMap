@@ -124,10 +124,25 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const gid = `g_${param.replace(/\s/g,'')}`;
       const sid = `s_${param.replace(/\s/g,'')}`;
 
-      container.insertAdjacentHTML("beforeend", `
-        <div id="${gid}" class="g"></div>
-        <div id="${sid}" class="s"></div>
+
+      let targetRow = "air";
+      
+      if (param === "AQHI") targetRow = "aqhi";
+      else if ([
+        "Wind Speed",
+        "Wind Direction",
+        "Outdoor Temperature",
+        "Relative Humidity"
+      ].includes(param)) targetRow = "met";
+      
+      document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
+        <div class="gaugeBox">
+          <div id="${gid}" class="gauge"></div>
+          <div class="label">${param}</div>
+        </div>
       `);
+
+      
 
       const latest = values[values.length-1];
       const max = guideLimits[param] || 100;
