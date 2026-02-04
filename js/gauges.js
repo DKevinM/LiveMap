@@ -252,7 +252,6 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const latest = rows[rows.length-1];
 
     
-      const values = rows.map(r => r.v);
 
 
       const gid = `g_${param.replace(/\s/g,'')}`;
