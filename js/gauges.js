@@ -7,8 +7,10 @@ const station = params.get("station");
 
 document.getElementById("title").innerText = station;
 
-function buildGauge(id, value, title, min, max, zones) {
+function buildGauge(id, value, title, min, max, zones, guide) {
+
   const chart = echarts.init(document.getElementById(id));
+
   chart.setOption({
     series: [{
       type: 'gauge',
@@ -18,12 +20,39 @@ function buildGauge(id, value, title, min, max, zones) {
       axisLine: { lineStyle: { width: 24, color: zones }},
       pointer: { width: 8 },
       radius: '90%',
+
+      axisTick: {
+        distance: -30,
+        length: 10,
+        lineStyle: { width: 2 }
+      },
+
+      axisLabel: {
+        distance: 25,
+        fontSize: 10,
+        formatter: function(v) {
+          if (Math.abs(v - guide) < 0.01) {
+            return `{guide|${v}}`;
+          }
+          return v;
+        },
+        rich: {
+          guide: {
+            fontWeight: 'bold',
+            fontSize: 12,
+            color: '#000'
+          }
+        }
+      },
+
       title: { fontSize: 11 },
-      detail: { fontSize: 16, offsetCenter: [0, '60%'] },
+      detail: { show: false },
       data: [{ value: value, name: title }]
     }]
   });
 }
+
+
 
 function buildSpark(id, values) {
   const chart = echarts.init(document.getElementById(id));
@@ -60,7 +89,23 @@ const guideLimits = {
   "Wind Direction": 360
 };
 
+const gaugeMax = {
+  "Ozone": 200,
+  "Fine Particulate Matter": 200,
+  "Nitrogen Dioxide": 300,
+  "Sulphur Dioxide": 250,
+  "Hydrogen Sulphide": 20,
+  "Total Reduced Sulphur": 20,
+  "Wind Speed": 120,
+  "Wind Direction": 360,
+  "Outdoor Temperature": 40,
+  "Relative Humidity": 100,
+  "AQHI": 11
+};
+
+
 function gaugeZones(param, max) {
+
   if (param === "AQHI") {
     return [
       [1/11, "#01cbff"],
@@ -78,10 +123,29 @@ function gaugeZones(param, max) {
   }
 
   const guide = guideLimits[param] || max * 0.5;
+
+  const greenBreak  = (0.5 * guide) / max;
+  const yellowBreak = guide / max;
+
   return [
-    [guide / max, "#00c853"],
-    [1, "#d50000"]
+    [greenBreak,  "#00c853"],  // green <50% guideline
+    [yellowBreak, "#ffd600"],  // yellow 50% → guideline
+    [1,           "#d50000"]   // red > guideline
   ];
+}
+
+
+
+function parseCSV(text) {
+  const rows = text.trim().split('\n');
+  const headers = rows.shift().split(',');
+
+  return rows.map(row => {
+    const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)
+                    .map(c => c.replace(/^"|"$/g, ''));
+
+    return Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
+  });
 }
 
 
@@ -90,13 +154,9 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
   .then(r => r.text())
   .then(text => {
 
-    const rows = text.trim().split('\n');
-    const headers = rows.shift().split(',');
+    const data = parseCSV(text)
+      .filter(r => r.StationName === station);
 
-    const data = rows.map(line => {
-      const cols = line.split(',');
-      return Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
-    }).filter(r => r.StationName === station);
 
     const byParam = {};
     
@@ -139,6 +199,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
         <div class="gaugeBox">
           <div id="${gid}" class="gauge"></div>
+          <div class="value" id="val_${gid}"></div>
           <div class="label">${param}</div>
         </div>
       `);
@@ -146,9 +207,13 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       
 
       const latest = values[values.length-1];
-      const max = guideLimits[param] || 100;
+      const max = guideLimits[param] || 200;
 
-      buildGauge(gid, latest, param, 0, max, gaugeZones(param, max));
-      buildSpark(sid, values.slice(-12)); // last 6 hours (5-min)
+      const guide = guideLimits[param] || max;
+      buildGauge(gid, latest, param, 0, max, gaugeZones(param, max), guide);
+      document.getElementById(`val_${gid}`).innerHTML =
+        `<b>${latest}</b> ${param.includes("Particulate") ? "µg/m³" : "ppb"}`;
+      
+      
     });
   });
