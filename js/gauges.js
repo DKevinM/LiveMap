@@ -122,6 +122,7 @@ function gaugeZones(param, max) {
     ];
   }
 
+
   if ([
     "Wind Speed",
     "Wind Direction",
@@ -166,11 +167,14 @@ function normalizeRow(r) {
   let param = r.ParameterName;
   let units = "ppb";
 
+  
   // AQHI fix
-  if (param === "" || param === null) {
+  if (r.ParameterName === "AQHI") {
     param = "AQHI";
+    value = Number(r.Value);
     units = "";
   }
+
 
   // ppm → ppb conversion
   const ppmParams = [
@@ -276,6 +280,12 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
 
       const latest = rows[rows.length-1];
 
+      
+      if (!stationTime) {
+        stationTime = latest.t.toLocaleString("en-CA");
+      }
+
+      
       if (param === "AQHI") {
         stationTime = latest.t.toLocaleString("en-CA");
         aqhiValue = latest.v;
@@ -287,7 +297,15 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const guide = guideLimits[param] || null;
       const min   = param === "Outdoor Temperature" ? -50 : 0;
       
-      buildGauge(gid, latest.v, param, min, max, gaugeZones(param, max), guide);
+      buildGauge(
+        "g_AQHI",
+        Math.min(aqhiValue, 11),
+        "AQHI",
+        1,
+        11,
+        gaugeZones("AQHI", 11),
+        null
+      );
       
       document.getElementById(`val_${gid}`).innerHTML =
         `<b>${param === "AQHI" ? latest.v : latest.v.toFixed(2)}</b> ${latest.u}`;
