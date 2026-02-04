@@ -31,7 +31,7 @@ function buildGauge(id, value, title, min, max, zones, guide) {
         distance: 25,
         fontSize: 10,
         formatter: function(v) {
-          if (Math.abs(v - guide) < 0.01) {
+          if (guide && Math.abs(v - guide) < 0.01) {
             return `{guide|${v}}`;
           }
           return v;
@@ -247,12 +247,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     const container = document.getElementById("gauges");
     
     Object.entries(byParam).forEach(([param, rows]) => {
-    
-      rows.sort((a,b)=>a.t-b.t);
-      const latest = rows[rows.length-1];
-
-    
-
+  
 
       const gid = `g_${param.replace(/\s/g,'')}`;
       const sid = `s_${param.replace(/\s/g,'')}`;
@@ -277,18 +272,16 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       `);
 
       
-      
-      rows.sort((a,b)=>a.t-b.t);
       const latest = rows[rows.length-1];
       
       const max   = gaugeMax[param] || 200;
-      const guide = guideLimits[param] || max;
+      const guide = guideLimits[param] || null;
       const min   = param === "Outdoor Temperature" ? -50 : 0;
       
       buildGauge(gid, latest.v, param, min, max, gaugeZones(param, max), guide);
       
       document.getElementById(`val_${gid}`).innerHTML =
-        `<b>${latest.v.toFixed(2)}</b> ${latest.u}`;
+        `<b>${param === "AQHI" ? latest.v : latest.v.toFixed(2)}</b> ${latest.u}`;
 
     });
   });
