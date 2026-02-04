@@ -98,7 +98,7 @@ const gaugeMax = {
   "Total Reduced Sulphur": 20,
   "Wind Speed": 120,
   "Wind Direction": 360,
-  "Outdoor Temperature": 40,
+  "Outdoor Temperature": 50,
   "Relative Humidity": 100,
   "AQHI": 11
 };
@@ -122,6 +122,16 @@ function gaugeZones(param, max) {
     ];
   }
 
+  if ([
+    "Wind Speed",
+    "Wind Direction",
+    "Outdoor Temperature",
+    "Relative Humidity",
+    "Precipitation"
+  ].includes(param)) {
+    return [[1, "#1976d2"]];  // all blue
+  }
+  
   const guide = guideLimits[param] || max * 0.5;
 
   const greenBreak  = (0.5 * guide) / max;
@@ -150,6 +160,61 @@ function parseCSV(text) {
 
 
 
+function normalizeRow(r) {
+
+  let value = Number(r.Value);
+  let param = r.ParameterName;
+  let units = "ppb";
+
+  // AQHI fix
+  if (param === "" || param === null) {
+    param = "AQHI";
+    units = "";
+  }
+
+  // ppm → ppb conversion
+  const ppmParams = [
+    "Ozone",
+    "Nitric Oxide",
+    "Nitrogen Dioxide",
+    "Total Oxides of Nitrogen",
+    "Sulphur Dioxide",
+    "Total Reduced Sulphur",
+    "Hydrogen Sulphide"
+  ];
+
+  if (ppmParams.includes(param)) {
+    value = value * 1000;
+  }
+
+  // Meteorology (blue gauges)
+  if ([
+    "Wind Speed",
+    "Wind Direction",
+    "Outdoor Temperature",
+    "Relative Humidity",
+    "Precipitation"
+  ].includes(param)) {
+    units = "";
+  }
+
+  // PM stays µg/m³
+  if (param === "Fine Particulate Matter") {
+    units = "µg/m³";
+  }
+
+  return {
+    param,
+    value,
+    time: new Date(r.ReadingDate),
+    units
+  };
+}
+
+
+
+
+
 fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
   .then(r => r.text())
   .then(text => {
@@ -161,13 +226,17 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     const byParam = {};
     
     data.forEach(r => {
-      const p = r.ParameterName || "AQHI";
-      byParam[p] = byParam[p] || [];
-      byParam[p].push({
-        v: Number(r.Value),
-        t: new Date(r.ReadingDate)
+    
+      const n = normalizeRow(r);
+    
+      byParam[n.param] = byParam[n.param] || [];
+      byParam[n.param].push({
+        v: n.value,
+        t: n.time,
+        u: n.units
       });
     });
+
     
     // SORT BY TIME
     Object.keys(byParam).forEach(p => {
@@ -178,6 +247,10 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     const container = document.getElementById("gauges");
     
     Object.entries(byParam).forEach(([param, rows]) => {
+    
+      rows.sort((a,b)=>a.t-b.t);
+      const latest = rows[rows.length-1];
+
     
       const values = rows.map(r => r.v);
 
@@ -205,15 +278,18 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       `);
 
       
-
-      const latest = values[values.length-1];
-      const max = guideLimits[param] || 200;
-
+      
+      rows.sort((a,b)=>a.t-b.t);
+      const latest = rows[rows.length-1];
+      
+      const max   = gaugeMax[param] || 200;
       const guide = guideLimits[param] || max;
-      buildGauge(gid, latest, param, 0, max, gaugeZones(param, max), guide);
+      const min   = param === "Outdoor Temperature" ? -50 : 0;
+      
+      buildGauge(gid, latest.v, param, min, max, gaugeZones(param, max), guide);
+      
       document.getElementById(`val_${gid}`).innerHTML =
-        `<b>${latest}</b> ${param.includes("Particulate") ? "µg/m³" : "ppb"}`;
-      
-      
+        `<b>${latest.v.toFixed(2)}</b> ${latest.u}`;
+
     });
   });
