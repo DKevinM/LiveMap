@@ -246,6 +246,9 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
 
     const container = document.getElementById("gauges");
     
+    let stationTime = null;
+    let aqhiValue = null;
+    
     Object.entries(byParam).forEach(([param, rows]) => {
   
 
@@ -271,8 +274,14 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         </div>
       `);
 
-      
       const latest = rows[rows.length-1];
+
+      if (param === "AQHI") {
+        stationTime = latest.t.toLocaleString("en-CA");
+        aqhiValue = latest.v;
+        return; // do NOT draw AQHI here
+      }
+      
       
       const max   = gaugeMax[param] || 200;
       const guide = guideLimits[param] || null;
@@ -284,4 +293,34 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         `<b>${param === "AQHI" ? latest.v : latest.v.toFixed(2)}</b> ${latest.u}`;
 
     });
+
+    // ---------- HEADER ----------
+    document.getElementById("title").innerHTML = `
+      ${station}<br>
+      <span style="font-size:14px;font-weight:400">${stationTime}</span>
+    `;
+    
+    // ---------- AQHI GAUGE ----------
+    document.getElementById("aqhi").innerHTML = `
+      <div class="gaugeBox">
+        <div id="g_AQHI" class="gauge"></div>
+        <div class="value" id="val_g_AQHI"></div>
+        <div class="label">AQHI</div>
+      </div>
+    `;
+    
+    buildGauge(
+      "g_AQHI",
+      aqhiValue,
+      "AQHI",
+      0,
+      11,
+      gaugeZones("AQHI", 11),
+      null
+    );
+    
+    document.getElementById("val_g_AQHI").innerHTML =
+      `<b>${aqhiValue}</b>`;
+    
+    
   });
