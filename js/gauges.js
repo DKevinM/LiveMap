@@ -182,7 +182,7 @@ function parseCSV(text) {
 function normalizeRow(r) {
 
   let value = Number(r.Value);
-  let param = r.ParameterName;
+  let param = r.ParameterName ? r.ParameterName.trim() : "";
   let units = "ppb";
 
   
@@ -358,4 +358,5 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       document.getElementById(`val_${gid}`).innerHTML =
         `<b>${latest.v.toFixed(2)}</b> ${latest.u}`;
     });
+  }
 
