@@ -38,12 +38,15 @@ function buildGauge(id, value, title, min, max, zones, guide) {
         fontSize: 11,
         formatter: function(v) {
       
+          // ----- AQHI special behaviour -----
           if (title === "AQHI") {
             if (v === 11) return "10+";
-            return Number.isInteger(v) ? v : "";
+            if (Number.isInteger(v) && v >= 1 && v <= 10) return v;
+            return "";
           }
       
-          if (guide && Math.abs(v - guide) < 0.1) {
+          // ----- Other gauges -----
+          if (guide && Math.abs(v - guide) < 0.01) {
             return `{guide|${v}}`;
           }
       
@@ -57,6 +60,7 @@ function buildGauge(id, value, title, min, max, zones, guide) {
           }
         }
       },
+
 
 
       title: { fontSize: 11 },
