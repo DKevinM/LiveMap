@@ -16,7 +16,13 @@ function buildGauge(id, value, title, min, max, zones, guide) {
       type: 'gauge',
       min: min,
       max: max,
-      progress: { show: true, width: 24 },
+      progress: {
+        show: true,
+        width: 24,
+        itemStyle: {
+          color: (title === "AQHI") ? aqhiColor(value) : undefined
+        }
+      },
       axisLine: { lineStyle: { width: 24, color: zones }},
       pointer: { width: 8 },
       radius: '90%',
@@ -26,15 +32,22 @@ function buildGauge(id, value, title, min, max, zones, guide) {
         length: 10,
         lineStyle: { width: 2 }
       },
-
+      
       axisLabel: {
         distance: 25,
-        fontSize: 10,
+        fontSize: 11,
         formatter: function(v) {
-          if (guide && Math.abs(v - guide) < 0.01) {
+      
+          if (title === "AQHI") {
+            if (v === 11) return "10+";
+            return Number.isInteger(v) ? v : "";
+          }
+      
+          if (guide && Math.abs(v - guide) < 0.1) {
             return `{guide|${v}}`;
           }
-          return v;
+      
+          return Number.isInteger(v) ? v : "";
         },
         rich: {
           guide: {
@@ -45,6 +58,7 @@ function buildGauge(id, value, title, min, max, zones, guide) {
         }
       },
 
+
       title: { fontSize: 11 },
       detail: { show: false },
       data: [{ value: value, name: title }]
@@ -53,22 +67,20 @@ function buildGauge(id, value, title, min, max, zones, guide) {
 }
 
 
-
-function buildSpark(id, values) {
-  const chart = echarts.init(document.getElementById(id));
-  chart.setOption({
-    xAxis: { show:false },
-    yAxis: { show:false },
-    grid: { left:0,right:0,top:0,bottom:0 },
-    series: [{
-      data: values,
-      type: 'line',
-      smooth: true,
-      symbol: 'none',
-      lineStyle: { width: 2 }
-    }]
-  });
+function aqhiColor(v) {
+  if (v <= 1) return "#01cbff";
+  if (v <= 2) return "#0099cb";
+  if (v <= 3) return "#016797";
+  if (v <= 4) return "#fffe03";
+  if (v <= 5) return "#ffcb00";
+  if (v <= 6) return "#ff9835";
+  if (v <= 7) return "#fd6866";
+  if (v <= 8) return "#fe0002";
+  if (v <= 9) return "#cc0001";
+  if (v <= 10) return "#9a0100";
+  return "#640100"; // 10+
 }
+
 
 const guideLimits = {
   "Ozone": 76,
@@ -121,6 +133,7 @@ function gaugeZones(param, max) {
       [1, "#640100"]
     ];
   }
+
 
 
   if ([
