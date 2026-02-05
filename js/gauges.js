@@ -249,6 +249,10 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
     data.forEach(r => {
     
+      if (!r.ParameterName || r.ParameterName.trim() === "") {
+        r.ParameterName = "AQHI";
+      }
+    
       const n = normalizeRow(r);
     
       byParam[n.param] = byParam[n.param] || [];
@@ -258,6 +262,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         u: n.units
       });
     });
+
 
     
     // SORT BY TIME
@@ -271,76 +276,26 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     let stationTime = null;
     let aqhiValue = null;
     
+    // -------- FIRST PASS: find AQHI and time only --------
     Object.entries(byParam).forEach(([param, rows]) => {
-  
-
-      const gid = `g_${param.replace(/\s/g,'')}`;
-      const sid = `s_${param.replace(/\s/g,'')}`;
-
-
-      let targetRow = "air";
-      
-      if (param === "AQHI") targetRow = "aqhi";
-      else if ([
-        "Wind Speed",
-        "Wind Direction",
-        "Outdoor Temperature",
-        "Relative Humidity"
-      ].includes(param)) targetRow = "met";
-      
-      document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
-        <div class="gaugeBox">
-          <div id="${gid}" class="gauge"></div>
-          <div class="value" id="val_${gid}"></div>
-          <div class="label">${param}</div>
-        </div>
-      `);
-
-      const latest = rows[rows.length-1];
-
-      
+      const latest = rows[rows.length - 1];
+    
       if (!stationTime) {
         stationTime = latest.t.toLocaleString("en-CA");
       }
-
-      
+    
       if (param === "AQHI") {
-        stationTime = latest.t.toLocaleString("en-CA");
         aqhiValue = latest.v;
-        return; // do NOT draw AQHI here
       }
-      
-      
-      const max   = gaugeMax[param] || 200;
-      const guide = guideLimits[param] || null;
-      const min   = param === "Outdoor Temperature" ? -50 : 0;
-      
-      setTimeout(() => {
-        buildGauge(
-          "g_AQHI",
-          aqhiValue,
-          "AQHI",
-          1,
-          11,
-          gaugeZones("AQHI", 11),
-          null
-        );
-      
-        document.getElementById("val_g_AQHI").innerHTML =
-          `<b>${aqhiValue}</b>`;
-      }, 0);
-
-      
-      document.getElementById(`val_${gid}`).innerHTML =
-        `<b>${param === "AQHI" ? latest.v : latest.v.toFixed(2)}</b> ${latest.u}`;
-
     });
-
+    
+    
     // ---------- HEADER ----------
     document.getElementById("title").innerHTML = `
       ${station}<br>
       <span style="font-size:14px;font-weight:400">${stationTime}</span>
     `;
+    
     
     // ---------- AQHI GAUGE ----------
     document.getElementById("aqhi").innerHTML = `
@@ -365,4 +320,42 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       `<b>${aqhiValue}</b>`;
     
     
-  });
+    
+    // -------- SECOND PASS: build all OTHER gauges --------
+    Object.entries(byParam).forEach(([param, rows]) => {
+    
+      if (param === "AQHI") return; // skip
+    
+      const latest = rows[rows.length - 1];
+    
+      const gid = `g_${param.replace(/\s/g,'')}`;
+    
+      let targetRow = "air";
+    
+      if ([
+        "Wind Speed",
+        "Wind Direction",
+        "Outdoor Temperature",
+        "Relative Humidity"
+      ].includes(param)) targetRow = "met";
+    
+      document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
+        <div class="gaugeBox">
+          <div id="${gid}" class="gauge"></div>
+          <div class="value" id="val_${gid}"></div>
+          <div class="label">${param}</div>
+        </div>
+      `);
+    
+      const max   = gaugeMax[param] || 200;
+      const guide = guideLimits[param] || null;
+      const min   = param === "Outdoor Temperature" ? -50 : 0;
+    
+      setTimeout(() => {
+        buildGauge(gid, latest.v, param, min, max, gaugeZones(param, max), guide);
+      }, 0);
+    
+      document.getElementById(`val_${gid}`).innerHTML =
+        `<b>${latest.v.toFixed(2)}</b> ${latest.u}`;
+    });
+
