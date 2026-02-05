@@ -297,15 +297,21 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const guide = guideLimits[param] || null;
       const min   = param === "Outdoor Temperature" ? -50 : 0;
       
-      buildGauge(
-        "g_AQHI",
-        Math.min(aqhiValue, 11),
-        "AQHI",
-        1,
-        11,
-        gaugeZones("AQHI", 11),
-        null
-      );
+      setTimeout(() => {
+        buildGauge(
+          "g_AQHI",
+          aqhiValue,
+          "AQHI",
+          1,
+          11,
+          gaugeZones("AQHI", 11),
+          null
+        );
+      
+        document.getElementById("val_g_AQHI").innerHTML =
+          `<b>${aqhiValue}</b>`;
+      }, 0);
+
       
       document.getElementById(`val_${gid}`).innerHTML =
         `<b>${param === "AQHI" ? latest.v : latest.v.toFixed(2)}</b> ${latest.u}`;
