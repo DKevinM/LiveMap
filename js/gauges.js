@@ -39,11 +39,31 @@ function buildGauge(id, value, title, min, max, zones, guide) {
         formatter: function(v) {
       
           // ----- AQHI special behaviour -----
-          if (title === "AQHI") {
-            if (v === 11) return "10+";
-            if (Number.isInteger(v) && v >= 1 && v <= 10) return v;
-            return "";
-          }
+          splitNumber: (title === "AQHI") ? 11 : 10,
+          
+          axisLabel: {
+            distance: 25,
+            fontSize: 11,
+            interval: 0,   // IMPORTANT: don't auto-skip labels
+            formatter: function(v) {
+              if (title === "AQHI") {
+                // v will now hit 0..11
+                if (v === 0) return "0";
+                if (v === 11) return "10+";
+                if (Number.isInteger(v) && v >= 1 && v <= 10) return String(v);
+                return "";
+              }
+          
+              if (guide && Math.abs(v - guide) < 0.01) {
+                return `{guide|${v}}`;
+              }
+              return Number.isInteger(v) ? v : "";
+            },
+            rich: {
+              guide: { fontWeight: "bold", fontSize: 12, color: "#000" }
+            }
+          },
+
       
           // ----- Other gauges -----
           if (guide && Math.abs(v - guide) < 0.01) {
