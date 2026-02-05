@@ -148,16 +148,34 @@ function gaugeZones(param, max) {
 
 
 function parseCSV(text) {
-  const rows = text.trim().split('\n');
-  const headers = rows.shift().split(',');
+  const lines = text.trim().split('\n');
+  const headers = lines.shift().split(',');
 
-  return rows.map(row => {
-    const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)
-                    .map(c => c.replace(/^"|"$/g, ''));
+  return lines.map(line => {
+    const cols = [];
+    let current = '';
+    let inQuotes = false;
 
-    return Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        cols.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    cols.push(current);
+
+    return Object.fromEntries(
+      headers.map((h, i) => [h, cols[i].replace(/^"|"$/g, '')])
+    );
   });
 }
+
 
 
 
