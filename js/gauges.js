@@ -25,7 +25,9 @@ function buildGauge(id, value, title, min, max, zones, guide) {
       },
       axisLine: { lineStyle: { width: 24, color: zones }},
       pointer: { width: 8 },
-      radius: '90%',
+      radius: '95%',
+      center: ['50%', '62%'],   
+
 
       axisTick: {
         distance: -30,
