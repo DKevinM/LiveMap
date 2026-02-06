@@ -49,6 +49,33 @@
       font-weight:600;
       margin-top:6px;
     }
+    .aqhiHeader {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      align-items: center;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .aqhiText {
+      padding-left: 10px;
+    }
+    
+    #title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    #aqhiBig {
+      font-size: 72px;
+      font-weight: 800;
+      text-align: left;
+    }
+    
   </style>
     
   <meta charset="utf-8"/>
@@ -61,9 +88,16 @@
   </style>
 </head>
 <body>
+<div class="aqhiHeader">
+  <div class="aqhiText">
+    <div id="title"></div>
+    <div id="aqhiBig"></div>
+  </div>
 
-<h1 id="title"></h1>
-<div class="row aqhi" id="aqhi"></div>
+  <div class="aqhiGaugeBox">
+    <div id="g_AQHI" class="gauge"></div>
+  </div>
+</div> 
 <div class="row met" id="met"></div>
 <div class="row air" id="air"></div>
 
