@@ -319,13 +319,6 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
     
     // ---------- AQHI GAUGE ----------
-    document.getElementById("aqhi").innerHTML = `
-      <div class="gaugeBox">
-        <div id="g_AQHI" class="gauge"></div>
-        <div class="value" id="val_g_AQHI"></div>
-        <div class="label">AQHI</div>
-      </div>
-    `;
     
     buildGauge(
       "g_AQHI",
@@ -336,6 +329,13 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       gaugeZones("AQHI", 11),
       null
     );
+
+    document.getElementById("aqhiBig").innerHTML = `
+      <div style="color:${aqhiColor(aqhiValue)}">
+        AQHI ${aqhiValue}
+      </div>
+    `;
+    
     
     document.getElementById("val_g_AQHI").innerHTML =
       `<b>${aqhiValue}</b>`;
