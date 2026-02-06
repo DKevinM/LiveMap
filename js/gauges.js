@@ -199,6 +199,23 @@ function parseCSV(text) {
   });
 }
 
+const displayMap = {
+  "Outdoor Temperature": { short: "Temp", unit: "°C", dec: 1 },
+  "Relative Humidity":   { short: "RH",   unit: "%",  dec: 1 },
+  "Wind Speed":          { short: "Wind", unit: "km/h", dec: 1 },
+  "Wind Direction":      { short: "Dir",  unit: "°",  dec: 0 },
+  "Fine Particulate Matter": { short: "PM2.5", unit: "µg/m³", dec: 1 },
+  "Nitrogen Dioxide":    { short: "NO₂", unit: "ppb", dec: 1 },
+  "Nitric Oxide":        { short: "NO",  unit: "ppb", dec: 1 },
+  "Total Oxides of Nitrogen": { short: "NOx", unit: "ppb", dec: 1 },
+  "Sulphur Dioxide":     { short: "SO₂", unit: "ppb", dec: 1 },
+  "Ozone":               { short: "O₃",  unit: "ppb", dec: 1 }
+};
+
+function toCardinal(d) {
+  const dirs = ["N","NE","E","SE","S","SW","W","NW"];
+  return dirs[Math.round(d / 45) % 8];
+}
 
 
 
@@ -248,12 +265,34 @@ function normalizeRow(r) {
     units = "µg/m³";
   }
 
+  // ----- Formatting for display -----
+  let short = param;
+  let unit  = units;
+  let dec   = 1;
+  
+  if (displayMap[param]) {
+    short = displayMap[param].short;
+    unit  = displayMap[param].unit;
+    dec   = displayMap[param].dec;
+  }
+  
+  // Wind direction special case
+  if (param === "Wind Direction") {
+    value = `${Math.round(value)} (${toCardinal(value)})`;
+    unit = "";
+  } else {
+    value = Number(value).toFixed(dec);
+  }
+  
   return {
     param,
+    short,
     value,
     time: new Date(r.ReadingDate),
-    units
+    unit
   };
+
+
 }
 
 
@@ -375,11 +414,11 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const min   = param === "Outdoor Temperature" ? -50 : 0;
     
       setTimeout(() => {
-        buildGauge(gid, latest.v, param, min, max, gaugeZones(param, max), guide);
-      }, 0);
-    
-      document.getElementById(`val_${gid}`).innerHTML =
-        `<b>${latest.v.toFixed(2)}</b> ${latest.u}`;
+        buildGauge(gid, Number(latest.value), latest.short, min, max, gaugeZones(param, max), guide);
+        
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<b>${latest.value}</b> ${latest.unit}<br>${param}`;
+
     });
   })
 
