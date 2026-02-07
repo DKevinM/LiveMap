@@ -19,11 +19,11 @@ function buildCompass(id, degrees) {
       max: 360,
       startAngle: 90,
       endAngle: -270,
-      radius: '95%',
+      radius: '90%',
 
       axisLine: {
         lineStyle: {
-          width: 10,
+          width: 8,
           color: [[1, '#1976d2']]
         }
       },
@@ -172,21 +172,13 @@ function aqhiColor(v) {
 
 const guideLimits = {
   "Ozone": 76,
-  "Total Oxides of Nitrogen": 159,
-  "Nitric Oxide": 159,
   "Nitrogen Dioxide": 159,
   "Hydrogen Sulphide": 10,
-  "Total Reduced Sulphur": 10,
+  "Total Reduced Sulphur": 5,
   "Sulphur Dioxide": 172,
   "Fine Particulate Matter": 80,
-  "Total Hydrocarbons": 5,
+  "Total Hydrocarbons": 10,
   "Carbon Monoxide": 13,
-  "Non-methane Hydrocarbons": 3,
-  "Methane": 3,
-  "Outdoor Temperature": 35,
-  "Relative Humidity": 100,
-  "Wind Speed": 100,
-  "Wind Direction": 360
 };
 
 const gaugeMax = {
@@ -196,7 +188,7 @@ const gaugeMax = {
   "Sulphur Dioxide": 250,
   "Hydrogen Sulphide": 20,
   "Total Reduced Sulphur": 20,
-  "Wind Speed": 120,
+  "Wind Speed": 75,
   "Wind Direction": 360,
   "Outdoor Temperature": 50,
   "Relative Humidity": 100,
