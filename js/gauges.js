@@ -506,20 +506,13 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
       if (param === "AQHI") return;
     
-      const rows = byParam[param] || [];
-      const { latest, status } = getLatestStatus(rows, new Date(), 3);
-    
       const gid = `g_${param.replace(/\s/g,'')}`;
     
       let targetRow = "air";
-      if ([
-        "Wind Speed",
-        "Wind Direction",
-        "Outdoor Temperature",
-        "Relative Humidity"
-      ].includes(param)) targetRow = "met";
+      if (["Wind Speed","Wind Direction","Outdoor Temperature","Relative Humidity"].includes(param))
+        targetRow = "met";
     
-      // Create the box FIRST
+      // ---- ALWAYS CREATE THE GAUGE BOX ----
       document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
         <div class="gaugeBox">
           <div id="${gid}" class="gauge"></div>
@@ -528,7 +521,19 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         </div>
       `);
     
-      // Handle OFFLINE
+      const rows = byParam[param] || [];
+    
+      const { latest, status } = getLatestStatus(rows, new Date(), 3);
+    
+      // ---- NEVER REPORTED HERE ----
+      if (rows.length === 0) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">NOT INSTALLED</span>`;
+        return;
+      }
+    
+      // ---- OFFLINE ----
       if (!latest || status === "offline") {
         buildOfflineGauge(gid, param);
         document.getElementById(`val_${gid}`).innerHTML =
@@ -536,35 +541,30 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         return;
       }
     
+      // ---- STALE ----
+      if (status === "stale") {
+        document.getElementById(gid).closest(".gaugeBox").style.opacity = "0.6";
+      }
+    
       const max   = gaugeMax[param] || 200;
       const guide = guideLimits[param] || null;
       const min   = param === "Outdoor Temperature" ? -40 : 0;
     
-      // Build gauge or compass
       if (param === "Wind Direction") {
         buildCompass(gid, latest.value);
       } else {
         buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
       }
     
-      // Show stale fade if needed
-      if (status === "stale") {
-        document.getElementById(gid).closest(".gaugeBox").style.opacity = "0.6";
-      }
-    
-      // Display value + guideline
-      const disp  = formatDisplay(param, latest.value);
-      const label = guideLabel[param];
-      const updated = latest.time.toLocaleTimeString("en-CA", { hour: "2-digit", minute: "2-digit" });
+      const disp = formatDisplay(param, latest.value);
+      const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
     
       document.getElementById(`val_${gid}`).innerHTML = `
         <b>${disp.text}</b> ${disp.unit}
         <div style="font-size:11px;color:#666;margin-top:2px">
           Updated ${updated}
-          ${guide ? `<br>${label} = ${guide} ${displayMap[param]?.unit || "ppb"}` : ``}
         </div>
       `;
-    
     });
 
   })
