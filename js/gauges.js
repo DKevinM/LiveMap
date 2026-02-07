@@ -330,7 +330,6 @@ function normalizeRow(r) {
     units = "mm";
   }
 
-
   // PM stays µg/m³
   if (param === "Fine Particulate Matter") {
     units = "µg/m³";
@@ -422,9 +421,8 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
       byParam[n.param] = byParam[n.param] || [];
       byParam[n.param].push({
-        v: n.value,
-        t: n.time,
-        u: n.units
+        value: n.value,
+        time: n.time
       });
     });
 
@@ -446,11 +444,11 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const latest = rows[rows.length - 1];
     
       if (!stationTime) {
-        stationTime = latest.t.toLocaleString("en-CA");
+        stationTime = latest.time.toLocaleString("en-CA");
       }
     
       if (param === "AQHI") {
-        aqhiValue = latest.v;
+        aqhiValue = latest.value;
       }
     });
     
