@@ -509,7 +509,6 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       
 
         const disp = formatDisplay(param, latest.value);
-        const guide = guideLimits[param];
         const label = guideLabel[param];
         
         document.getElementById(`val_${gid}`).innerHTML =
