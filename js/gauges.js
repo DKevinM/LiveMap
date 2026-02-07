@@ -80,6 +80,33 @@ function buildCompass(id, degrees) {
 
 
 
+function buildOfflineGauge(id, param) {
+  const chart = echarts.init(document.getElementById(id));
+
+  chart.setOption({
+    series: [{
+      type: 'gauge',
+      min: 0,
+      max: 100,
+      axisLine: {
+        lineStyle: {
+          width: 24,
+          color: [[1, '#dddddd']]
+        }
+      },
+      pointer: { show: false },
+      axisTick: { show: false },
+      splitLine: { show: false },
+      axisLabel: { show: false },
+      detail: { show: false },
+      title: { show: false }
+    }]
+  });
+}
+
+
+
+
 
 
 function buildGauge(id, value, title, min, max, zones, guide) {
@@ -560,18 +587,14 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const disp = formatDisplay(param, latest.value);
       const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
       const label = guideLabel[param];
+      const guide = guideLimits[param];
+      const unit  = displayMap[param]?.unit || "ppb";
       
       document.getElementById(`val_${gid}`).innerHTML = `
         <b>${disp.text}</b> ${disp.unit}
-      
-        ${guide ? `
-          <div style="font-size:11px;color:#666;margin-top:2px">
-            ${label} = ${guide} ${displayMap[param]?.unit || "ppb"}
-          </div>
-        ` : ``}
-      
-        <div style="font-size:11px;color:#999;margin-top:2px">
+        <div style="font-size:11px;color:#666;margin-top:2px">
           Updated ${updated}
+          ${guide ? `<br>${label} = ${guide} ${unit}` : ``}
         </div>
       `;
 
