@@ -573,9 +573,9 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         document.getElementById(gid).closest(".gaugeBox").style.opacity = "0.6";
       }
     
-      const max   = gaugeMax[param] || 200;
-      const guide = guideLimits[param] || null;
-      const min   = param === "Outdoor Temperature" ? -40 : 0;
+      const label = guideLabel[param];
+      const unit  = displayMap[param]?.unit || "ppb";
+
     
       if (param === "Wind Direction") {
         buildCompass(gid, latest.value);
@@ -587,7 +587,6 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const disp = formatDisplay(param, latest.value);
       const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
       const label = guideLabel[param];
-      const guide = guideLimits[param];
       const unit  = displayMap[param]?.unit || "ppb";
       
       document.getElementById(`val_${gid}`).innerHTML = `
