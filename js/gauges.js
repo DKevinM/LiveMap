@@ -276,16 +276,9 @@ function normalizeRow(r) {
 
   let value = Number(r.Value);
   let param = r.ParameterName ? r.ParameterName.trim() : "";
-  let units = "ppb";
 
-  
   // AQHI fix
-  if (r.ParameterName === "AQHI") {
-    param = "AQHI";
-    value = Number(r.Value);
-    units = "";
-  }
-
+  if (!param) param = "AQHI";
 
   // ppm → ppb conversion
   const ppmParams = [
@@ -301,6 +294,14 @@ function normalizeRow(r) {
   if (ppmParams.includes(param)) {
     value = value * 1000;
   }
+
+  return {
+    param,
+    value,                         // ALWAYS numeric
+    time: new Date(r.ReadingDate)
+  };
+}
+
 
 
   // ----- Meteorology formatting -----
@@ -365,7 +366,31 @@ function normalizeRow(r) {
     unit  = displayMap[param].unit;
     dec   = displayMap[param].dec;
   }
+
+
+  function formatDisplay(param, raw) {
   
+    if (param === "Wind Direction") {
+      return {
+        text: `${Math.round(raw)}° (${toCardinal16(raw)})`,
+        unit: ""
+      };
+    }
+  
+    if (displayMap[param]) {
+      return {
+        text: Number(raw).toFixed(displayMap[param].dec),
+        unit: displayMap[param].unit
+      };
+    }
+  
+    return {
+      text: Number(raw).toFixed(1),
+      unit: "ppb"
+    };
+  }
+
+
   // Wind direction special case
   if (param === "Wind Direction") {
     value = `${Math.round(value)} (${toCardinal(value)})`;
@@ -506,15 +531,17 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
       setTimeout(() => {
         if (param === "Wind Direction") {
-          buildCompass(gid, parseFloat(latest.v));
+          buildCompass(gid, latest.value);
         } else {
-          buildGauge(gid, latest.v, param, min, max, gaugeZones(param, max), guide);
+          buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
         }
       }, 0);
+      
+      const disp = formatDisplay(param, latest.value);
+      
+      document.getElementById(`val_${gid}`).innerHTML =
+        `<b>${disp.text}</b> ${disp.unit}`;
 
-        
-        document.getElementById(`val_${gid}`).innerHTML =
-          `<b>${latest.v}</b> ${latest.u}`;
 
     });
   })
