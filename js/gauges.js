@@ -395,10 +395,8 @@ function normalizeRow(r) {
     time: new Date(r.ReadingDate),
     unit
   };
-
-
-
 }
+
 
 
 
