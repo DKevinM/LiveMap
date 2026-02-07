@@ -92,10 +92,10 @@ function buildGauge(id, value, title, min, max, zones, guide) {
       min: min,
       max: max,
       progress: {
-        show: true,
+        show: (title === "AQHI"),   // ONLY AQHI gets a fill
         width: 24,
         itemStyle: {
-          color: (title === "AQHI") ? aqhiColor(value) : undefined
+          color: aqhiColor(value)
         }
       },
       axisLine: { lineStyle: { width: 24, color: zones }},
