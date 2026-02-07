@@ -517,7 +517,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
            ${guide ? `<div style="font-size:11px;color:#666;margin-top:2px">
              ${label} = ${guide} ${displayMap[param]?.unit || "ppb"}
            </div>` : ``}`;  
-
+      }, 0); 
     });
   })
 
