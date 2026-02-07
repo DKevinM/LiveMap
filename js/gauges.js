@@ -182,10 +182,10 @@ const guideLimits = {
 };
 
 const gaugeMax = {
-  "Ozone": 200,
+  "Ozone": 120,
   "Fine Particulate Matter": 200,
-  "Nitrogen Dioxide": 300,
-  "Sulphur Dioxide": 250,
+  "Nitrogen Dioxide": 200,
+  "Sulphur Dioxide": 100,
   "Hydrogen Sulphide": 20,
   "Total Reduced Sulphur": 20,
   "Wind Speed": 75,
@@ -231,10 +231,18 @@ function gaugeZones(param, max) {
   const greenBreak  = (0.5 * guide) / max;
   const yellowBreak = guide / max;
 
+  const guidePct = guide / max;
+  const eps = 0.005;   // thickness of the guideline
+  
   return [
-    [greenBreak,  "#00c853"],  // green <50% guideline
-    [yellowBreak, "#ffd600"],  // yellow 50% → guideline
-    [1,           "#d50000"]   // red > guideline
+    [greenBreak,  "#00c853"],
+    [yellowBreak, "#ffd600"],
+  
+    // ---- THIN BLACK GUIDELINE ----
+    [guidePct - eps, "#ffd600"],
+    [guidePct + eps, "#000000"],
+  
+    [1, "#d50000"]
   ];
 }
 
