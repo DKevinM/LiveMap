@@ -356,17 +356,6 @@ function normalizeRow(r) {
   }
   
 
-  // ----- Formatting for display -----
-  let short = param;
-  let unit  = units;
-  let dec   = 1;
-  
-  if (displayMap[param]) {
-    short = displayMap[param].short;
-    unit  = displayMap[param].unit;
-    dec   = displayMap[param].dec;
-  }
-
 
   function formatDisplay(param, raw) {
   
