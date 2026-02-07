@@ -484,12 +484,13 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         } else {
           buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
         }
+      
+        const disp = formatDisplay(param, latest.value);
+      
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<b>${disp.text}</b> ${disp.unit}`;
+      
       }, 0);
-      
-      const disp = formatDisplay(param, latest.value);
-      
-      document.getElementById(`val_${gid}`).innerHTML =
-        `<b>${disp.text}</b> ${disp.unit}`;
 
 
     });
