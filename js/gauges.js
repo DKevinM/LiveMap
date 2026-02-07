@@ -185,7 +185,7 @@ const gaugeMax = {
   "Ozone": 120,
   "Fine Particulate Matter": 200,
   "Nitrogen Dioxide": 200,
-  "Sulphur Dioxide": 100,
+  "Sulphur Dioxide": 200,
   "Hydrogen Sulphide": 20,
   "Total Reduced Sulphur": 20,
   "Wind Speed": 75,
@@ -223,17 +223,14 @@ function gaugeZones(param, max) {
   }
 
   // ---- GUIDELINE PRESENT (real air pollutant logic) ----
-  const greenBreak  = (0.5 * guide) / max;
-  const yellowBreak = guide / max;
-
   const guidePct = guide / max;
+  const greenBreak  = (0.5 * guide) / max;
   const eps = 0.01;
 
   return [
     [greenBreak, "#00c853"],            // green
     [guidePct - eps, "#ffd600"],       // yellow up to guide
     [guidePct + eps, "#000000"],       // black line
-    [yellowBreak, "#ffd600"],          // yellow after line
     [1, "#d50000"]                     // red
   ];
 }
