@@ -304,56 +304,6 @@ function normalizeRow(r) {
 
 
 
-  // ----- Meteorology formatting -----
-  if (param === "Wind Direction") {
-    value = `${Math.round(value)}° (${toCardinal16(value)})`;
-    units = "";
-  }
-  
-  else if (param === "Wind Speed") {
-    value = value.toFixed(1);
-    units = "km/h";
-  }
-  
-  else if (param === "Outdoor Temperature") {
-    value = value.toFixed(1);
-    units = "°C";
-  }
-  
-  else if (param === "Relative Humidity") {
-    value = value.toFixed(1);
-    units = "%";
-  }
-  
-  else if (param === "Precipitation") {
-    value = value.toFixed(1);
-    units = "mm";
-  }
-
-  // PM stays µg/m³
-  if (param === "Fine Particulate Matter") {
-    units = "µg/m³";
-  }
-
-  // ----- Formatting for display -----
-  let short = param;
-  let unit  = units;
-  let dec   = 1;
-  
-  if (displayMap[param]) {
-    short = displayMap[param].short;
-    unit  = displayMap[param].unit;
-    dec   = displayMap[param].dec;
-  }
-  
-  // Wind direction special case
-  if (param === "Wind Direction") {
-    value = `${Math.round(value)} (${toCardinal(value)})`;
-    unit = "";
-  } else {
-    value = Number(value).toFixed(dec);
-  }
-  
 
 
   function formatDisplay(param, raw) {
