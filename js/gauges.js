@@ -327,8 +327,13 @@ function toCardinal16(deg) {
 
 function normalizeRow(r) {
 
-  let value = Number(r.Value);
+  let value = r.Value === "" ? null : Number(r.Value);
   let param = r.ParameterName ? r.ParameterName.trim() : "";
+
+  if (value === null || isNaN(value)) {
+    return null;   // skip this row completely
+  }
+  
 
   // AQHI fix
   if (!param) param = "AQHI";
@@ -383,6 +388,32 @@ function normalizeRow(r) {
 
 
 
+
+
+function getLatestStatus(rows, now = new Date(), staleHours = 3) {
+  if (!rows || rows.length === 0) return { latest: null, status: "missing", ageHours: null };
+
+  // rows already sorted by time ascending
+  const latest = rows[rows.length - 1];
+  const ageMs = now - latest.time;
+  const ageHours = ageMs / (1000 * 60 * 60);
+
+  if (!Number.isFinite(ageHours)) return { latest: null, status: "missing", ageHours: null };
+
+  // fresh enough to show
+  if (ageHours <= staleHours) {
+    // you can optionally flag "stale-but-usable" if > 1 hour
+    const status = (ageHours > 1) ? "stale" : "fresh";
+    return { latest, status, ageHours };
+  }
+
+  // too old -> offline
+  return { latest, status: "offline", ageHours };
+}
+
+
+
+
 fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
   .then(r => r.text())
   .then(text => {
@@ -400,7 +431,8 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       }
     
       const n = normalizeRow(r);
-    
+      if (!n) return;
+      
       byParam[n.param] = byParam[n.param] || [];
       byParam[n.param].push({
         value: n.value,
@@ -472,15 +504,14 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     // -------- SECOND PASS: build all OTHER gauges --------
     gaugeOrder.forEach(param => {
     
-      if (!byParam[param] || param === "AQHI") return;
+      if (param === "AQHI") return;
     
-      const rows = byParam[param];
-      const latest = rows[rows.length - 1];
+      const rows = byParam[param] || [];
+      const { latest, status } = getLatestStatus(rows, new Date(), 3);
     
       const gid = `g_${param.replace(/\s/g,'')}`;
     
       let targetRow = "air";
-    
       if ([
         "Wind Speed",
         "Wind Direction",
@@ -488,6 +519,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         "Relative Humidity"
       ].includes(param)) targetRow = "met";
     
+      // Create the box FIRST
       document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
         <div class="gaugeBox">
           <div id="${gid}" class="gauge"></div>
@@ -496,27 +528,44 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         </div>
       `);
     
+      // Handle OFFLINE
+      if (!latest || status === "offline") {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
+    
       const max   = gaugeMax[param] || 200;
       const guide = guideLimits[param] || null;
       const min   = param === "Outdoor Temperature" ? -40 : 0;
     
-      setTimeout(() => {
-        if (param === "Wind Direction") {
-          buildCompass(gid, latest.value);
-        } else {
-          buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
-        }
-      
-
-        const disp = formatDisplay(param, latest.value);
-        const label = guideLabel[param];
-        
-        document.getElementById(`val_${gid}`).innerHTML =
-          `<b>${disp.text}</b> ${disp.unit}
-           ${guide ? `<div style="font-size:11px;color:#666;margin-top:2px">
-             ${label} = ${guide} ${displayMap[param]?.unit || "ppb"}
-           </div>` : ``}`;  
-      }, 0); 
+      // Build gauge or compass
+      if (param === "Wind Direction") {
+        buildCompass(gid, latest.value);
+      } else {
+        buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
+      }
+    
+      // Show stale fade if needed
+      if (status === "stale") {
+        document.getElementById(gid).closest(".gaugeBox").style.opacity = "0.6";
+      }
+    
+      // Display value + guideline
+      const disp  = formatDisplay(param, latest.value);
+      const label = guideLabel[param];
+      const updated = latest.time.toLocaleTimeString("en-CA", { hour: "2-digit", minute: "2-digit" });
+    
+      document.getElementById(`val_${gid}`).innerHTML = `
+        <b>${disp.text}</b> ${disp.unit}
+        <div style="font-size:11px;color:#666;margin-top:2px">
+          Updated ${updated}
+          ${guide ? `<br>${label} = ${guide} ${displayMap[param]?.unit || "ppb"}` : ``}
+        </div>
+      `;
+    
     });
+
   })
 
