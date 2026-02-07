@@ -177,9 +177,20 @@ const guideLimits = {
   "Total Reduced Sulphur": 5,
   "Sulphur Dioxide": 172,
   "Fine Particulate Matter": 80,
-  "Total Hydrocarbons": 10,
   "Carbon Monoxide": 13,
 };
+
+const guideLabel = {
+  "Ozone": "AAAQO",
+  "Nitrogen Dioxide": "AAAQO",
+  "Sulphur Dioxide": "AAAQO",
+  "Hydrogen Sulphide": "AAAQO",
+  "Carbon Monoxide": "AAAQO",
+  // These are GUIDELINES
+  "Fine Particulate Matter": "AAAQG",
+  "Total Reduced Sulphur": "AAAQG"
+};
+
 
 const gaugeMax = {
   "Ozone": 120,
@@ -188,6 +199,9 @@ const gaugeMax = {
   "Sulphur Dioxide": 200,
   "Hydrogen Sulphide": 20,
   "Total Reduced Sulphur": 20,
+  "Total Hydrocarbons": 20,
+  "Methane": 20,
+  "Non Methane Hydrocarbons": 5,
   "Wind Speed": 75,
   "Wind Direction": 360,
   "Outdoor Temperature": 40,
@@ -493,13 +507,16 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
           buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
         }
       
-        const disp = formatDisplay(param, latest.value);
-      
-        document.getElementById(`val_${gid}`).innerHTML =
-          `<b>${disp.text}</b> ${disp.unit}`;
-      
-      }, 0);
 
+        const disp = formatDisplay(param, latest.value);
+        const guide = guideLimits[param];
+        const label = guideLabel[param];
+        
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<b>${disp.text}</b> ${disp.unit}
+           ${guide ? `<div style="font-size:11px;color:#666;margin-top:2px">
+             ${label} = ${guide} ${displayMap[param]?.unit || "ppb"}
+           </div>` : ``}`;  
 
     });
   })
