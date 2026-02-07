@@ -379,27 +379,6 @@ function normalizeRow(r) {
   }
 
 
-  // Wind direction special case
-  if (param === "Wind Direction") {
-    value = `${Math.round(value)} (${toCardinal(value)})`;
-    unit = "";
-  } else {
-    value = Number(value).toFixed(dec);
-  }
-  
-  return {
-    param,
-    short,
-    value,
-    time: new Date(r.ReadingDate),
-    unit
-  };
-}
-
-
-
-
-
 
 fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
   .then(r => r.text())
