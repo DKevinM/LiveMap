@@ -215,34 +215,26 @@ function gaugeZones(param, max) {
   }
 
 
+  const guide = guideLimits[param];
 
-  if ([
-    "Wind Speed",
-    "Wind Direction",
-    "Outdoor Temperature",
-    "Relative Humidity",
-    "Precipitation"
-  ].includes(param)) {
-    return [[1, "#1976d2"]];  // all blue
+  // ---- NO GUIDELINE (met data, etc) ----
+  if (!guide) {
+    return [[1, "#1976d2"]];  // solid blue, nothing fancy
   }
-  
-  const guide = guideLimits[param] || max * 0.5;
 
+  // ---- GUIDELINE PRESENT (real air pollutant logic) ----
   const greenBreak  = (0.5 * guide) / max;
   const yellowBreak = guide / max;
 
   const guidePct = guide / max;
-  const eps = 0.005;   // thickness of the guideline
-  
+  const eps = 0.01;
+
   return [
-    [greenBreak,  "#00c853"],
-    [yellowBreak, "#ffd600"],
-  
-    // ---- THIN BLACK GUIDELINE ----
-    [guidePct - eps, "#ffd600"],
-    [guidePct + eps, "#000000"],
-  
-    [1, "#d50000"]
+    [greenBreak, "#00c853"],            // green
+    [guidePct - eps, "#ffd600"],       // yellow up to guide
+    [guidePct + eps, "#000000"],       // black line
+    [yellowBreak, "#ffd600"],          // yellow after line
+    [1, "#d50000"]                     // red
   ];
 }
 
