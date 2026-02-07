@@ -51,8 +51,8 @@ function buildCompass(id, degrees) {
 
       // compass letters tight to the ring
       axisLabel: {
-        distance: 6,
-        fontSize: 12,
+        distance: 14,
+        fontSize: 11,
         fontWeight: 700,
         formatter: function(v) {
           if (v === 0)   return 'N';
