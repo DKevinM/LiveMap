@@ -390,11 +390,9 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
     // SORT BY TIME
     Object.keys(byParam).forEach(p => {
-      byParam[p].sort((a,b) => a.t - b.t);
+      byParam[p].sort((a,b) => a.time - b.time);
     });
 
-
-    const container = document.getElementById("gauges");
     
     let stationTime = null;
     let aqhiValue = null;
@@ -405,7 +403,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       if (!byParam[param]) return;
     
       const rows = byParam[param];
-
+      const latest = rows[rows.length - 1];   // <-- MISSING LINE
     
       if (!stationTime) {
         stationTime = latest.time.toLocaleString("en-CA");
@@ -415,6 +413,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         aqhiValue = latest.value;
       }
     });
+
     
     
     // ---------- HEADER ----------
@@ -449,10 +448,11 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
     
     // -------- SECOND PASS: build all OTHER gauges --------
-    Object.entries(byParam).forEach(([param, rows]) => {
+    gaugeOrder.forEach(param => {
     
-      if (param === "AQHI") return; // skip
+      if (!byParam[param] || param === "AQHI") return;
     
+      const rows = byParam[param];
       const latest = rows[rows.length - 1];
     
       const gid = `g_${param.replace(/\s/g,'')}`;
