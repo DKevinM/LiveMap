@@ -34,17 +34,23 @@ function buildCompass(id, degrees) {
 
       axisLabel: {
         formatter: function(v) {
-          if (v === 0) return 'N';
-          if (v === 90) return 'E';
+          if (v === 0)   return 'N';
+          if (v === 45)  return 'NE';
+          if (v === 90)  return 'E';
+          if (v === 135) return 'SE';
           if (v === 180) return 'S';
+          if (v === 225) return 'SW';
           if (v === 270) return 'W';
+          if (v === 315) return 'NW';
           return '';
         },
-        fontSize: 16,
-        distance: 20
+        fontSize: 11,   // smaller font
+        distance: 18
       },
 
+
       axisTick: { show: false },
+      splitNumber: 8,
       splitLine: { show: false },
 
       detail: { show: false },
@@ -119,9 +125,12 @@ function buildGauge(id, value, title, min, max, zones, guide) {
 
 
 
-      title: { fontSize: 11 },
+      title: {
+        fontSize: 13,
+        fontWeight: 700
+      },
       detail: { show: false },
-      data: [{ value: value, name: title }]
+      data: [{ value: value, name: displayMap[title]?.short || title }]
     }]
   });
 }
@@ -249,6 +258,26 @@ function parseCSV(text) {
   });
 }
 
+const gaugeOrder = [
+  // ---- AIR QUALITY ----
+  "AQHI",
+  "Ozone",
+  "Nitrogen Dioxide",
+  "Nitric Oxide",
+  "Total Oxides of Nitrogen",
+  "Sulphur Dioxide",
+  "Hydrogen Sulphide",
+  "Total Reduced Sulphur",
+  "Fine Particulate Matter",
+
+  // ---- METEOROLOGY ----
+  "Wind Speed",
+  "Wind Direction",
+  "Outdoor Temperature",
+  "Relative Humidity"
+];
+
+
 const displayMap = {
   "Outdoor Temperature": { short: "ET", unit: "°C", dec: 1 },
   "Relative Humidity":   { short: "RH",   unit: "%",  dec: 1 },
@@ -259,6 +288,8 @@ const displayMap = {
   "Nitric Oxide":        { short: "NO",  unit: "ppb", dec: 1 },
   "Total Oxides of Nitrogen": { short: "NOx", unit: "ppb", dec: 1 },
   "Sulphur Dioxide":     { short: "SO₂", unit: "ppb", dec: 1 },
+  "Hydrogen Sulphide":     { short: "H₂S", unit: "ppb", dec: 1 },
+  "Total Reduced Sulphur":   { short: "TRS", unit: "ppb", dec: 1 },
   "Ozone":               { short: "O₃",  unit: "ppb", dec: 1 }
 };
 
@@ -369,8 +400,12 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     let aqhiValue = null;
     
     // -------- FIRST PASS: find AQHI and time only --------
-    Object.entries(byParam).forEach(([param, rows]) => {
-      const latest = rows[rows.length - 1];
+    gaugeOrder.forEach(param => {
+    
+      if (!byParam[param]) return;
+    
+      const rows = byParam[param];
+
     
       if (!stationTime) {
         stationTime = latest.time.toLocaleString("en-CA");
