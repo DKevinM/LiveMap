@@ -7,6 +7,56 @@ const station = params.get("station");
 
 document.getElementById("title").innerText = station;
 
+
+function buildCompass(id, degrees) {
+
+  const chart = echarts.init(document.getElementById(id));
+
+  chart.setOption({
+    series: [{
+      type: 'gauge',
+      min: 0,
+      max: 360,
+      startAngle: 90,
+      endAngle: -270,
+
+      axisLine: {
+        lineStyle: {
+          width: 8,
+          color: [[1, '#1976d2']]
+        }
+      },
+
+      pointer: {
+        length: '70%',
+        width: 6
+      },
+
+      axisLabel: {
+        formatter: function(v) {
+          if (v === 0) return 'N';
+          if (v === 90) return 'E';
+          if (v === 180) return 'S';
+          if (v === 270) return 'W';
+          return '';
+        },
+        fontSize: 16,
+        distance: 20
+      },
+
+      axisTick: { show: false },
+      splitLine: { show: false },
+
+      detail: { show: false },
+
+      data: [{ value: degrees }]
+    }]
+  });
+}
+
+
+
+
 function buildGauge(id, value, title, min, max, zones, guide) {
 
   const chart = echarts.init(document.getElementById(id));
@@ -200,7 +250,7 @@ function parseCSV(text) {
 }
 
 const displayMap = {
-  "Outdoor Temperature": { short: "Temp", unit: "°C", dec: 1 },
+  "Outdoor Temperature": { short: "ET", unit: "°C", dec: 1 },
   "Relative Humidity":   { short: "RH",   unit: "%",  dec: 1 },
   "Wind Speed":          { short: "Wind", unit: "km/h", dec: 1 },
   "Wind Direction":      { short: "Dir",  unit: "°",  dec: 0 },
@@ -212,9 +262,12 @@ const displayMap = {
   "Ozone":               { short: "O₃",  unit: "ppb", dec: 1 }
 };
 
-function toCardinal(d) {
-  const dirs = ["N","NE","E","SE","S","SW","W","NW"];
-  return dirs[Math.round(d / 45) % 8];
+function toCardinal16(deg) {
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
+                "S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  const d = ((Number(deg) % 360) + 360) % 360;
+  const ix = Math.floor((d + 11.25) / 22.5) % 16;
+  return dirs[ix];
 }
 
 
@@ -249,21 +302,58 @@ function normalizeRow(r) {
     value = value * 1000;
   }
 
-  // Meteorology (blue gauges)
-  if ([
-    "Wind Speed",
-    "Wind Direction",
-    "Outdoor Temperature",
-    "Relative Humidity",
-    "Precipitation"
-  ].includes(param)) {
+
+  // ----- Meteorology formatting -----
+  if (param === "Wind Direction") {
+    value = `${Math.round(value)}° (${toCardinal16(value)})`;
     units = "";
   }
+  
+  else if (param === "Wind Speed") {
+    value = value.toFixed(1);
+    units = "km/h";
+  }
+  
+  else if (param === "Outdoor Temperature") {
+    value = value.toFixed(1);
+    units = "°C";
+  }
+  
+  else if (param === "Relative Humidity") {
+    value = value.toFixed(1);
+    units = "%";
+  }
+  
+  else if (param === "Precipitation") {
+    value = value.toFixed(1);
+    units = "mm";
+  }
+
 
   // PM stays µg/m³
   if (param === "Fine Particulate Matter") {
     units = "µg/m³";
   }
+
+  // ----- Formatting for display -----
+  let short = param;
+  let unit  = units;
+  let dec   = 1;
+  
+  if (displayMap[param]) {
+    short = displayMap[param].short;
+    unit  = displayMap[param].unit;
+    dec   = displayMap[param].dec;
+  }
+  
+  // Wind direction special case
+  if (param === "Wind Direction") {
+    value = `${Math.round(value)} (${toCardinal(value)})`;
+    unit = "";
+  } else {
+    value = Number(value).toFixed(dec);
+  }
+  
 
   // ----- Formatting for display -----
   let short = param;
@@ -291,6 +381,7 @@ function normalizeRow(r) {
     time: new Date(r.ReadingDate),
     unit
   };
+
 
 
 }
@@ -414,10 +505,16 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const min   = param === "Outdoor Temperature" ? -50 : 0;
     
       setTimeout(() => {
-        buildGauge(gid, Number(latest.value), latest.short, min, max, gaugeZones(param, max), guide);
+        if (param === "Wind Direction") {
+          buildCompass(gid, parseFloat(latest.v));
+        } else {
+          buildGauge(gid, latest.v, param, min, max, gaugeZones(param, max), guide);
+        }
+      }, 0);
+
         
         document.getElementById(`val_${gid}`).innerHTML =
-          `<b>${latest.value}</b> ${latest.unit}<br>${param}`;
+          `<b>${latest.v}</b> ${latest.u}`;
 
     });
   })
