@@ -190,7 +190,7 @@ const gaugeMax = {
   "Total Reduced Sulphur": 20,
   "Wind Speed": 75,
   "Wind Direction": 360,
-  "Outdoor Temperature": 50,
+  "Outdoor Temperature": 40,
   "Relative Humidity": 100,
   "AQHI": 11
 };
@@ -487,7 +487,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
       const max   = gaugeMax[param] || 200;
       const guide = guideLimits[param] || null;
-      const min   = param === "Outdoor Temperature" ? -50 : 0;
+      const min   = param === "Outdoor Temperature" ? -40 : 0;
     
       setTimeout(() => {
         if (param === "Wind Direction") {
