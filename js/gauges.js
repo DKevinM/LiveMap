@@ -556,15 +556,25 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
       }
     
+
       const disp = formatDisplay(param, latest.value);
       const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
-    
+      const label = guideLabel[param];
+      
       document.getElementById(`val_${gid}`).innerHTML = `
         <b>${disp.text}</b> ${disp.unit}
-        <div style="font-size:11px;color:#666;margin-top:2px">
+      
+        ${guide ? `
+          <div style="font-size:11px;color:#666;margin-top:2px">
+            ${label} = ${guide} ${displayMap[param]?.unit || "ppb"}
+          </div>
+        ` : ``}
+      
+        <div style="font-size:11px;color:#999;margin-top:2px">
           Updated ${updated}
         </div>
       `;
+
     });
 
   })
