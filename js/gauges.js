@@ -19,20 +19,41 @@ function buildCompass(id, degrees) {
       max: 360,
       startAngle: 90,
       endAngle: -270,
+      radius: '95%',
 
       axisLine: {
         lineStyle: {
-          width: 8,
+          width: 10,
           color: [[1, '#1976d2']]
         }
       },
 
-      pointer: {
-        length: '70%',
-        width: 6
+      // major tick marks every 45°
+      splitNumber: 8,
+      splitLine: {
+        length: 14,
+        lineStyle: {
+          width: 3,
+          color: '#333'
+        }
       },
 
+      // small tick marks every 11.25°
+      axisTick: {
+        show: true,
+        splitNumber: 4,
+        length: 8,
+        lineStyle: {
+          width: 1,
+          color: '#666'
+        }
+      },
+
+      // compass letters tight to the ring
       axisLabel: {
+        distance: 6,
+        fontSize: 12,
+        fontWeight: 700,
         formatter: function(v) {
           if (v === 0)   return 'N';
           if (v === 45)  return 'NE';
@@ -43,22 +64,20 @@ function buildCompass(id, degrees) {
           if (v === 270) return 'W';
           if (v === 315) return 'NW';
           return '';
-        },
-        fontSize: 11,   // smaller font
-        distance: 18
+        }
       },
 
-
-      axisTick: { show: false },
-      splitNumber: 8,
-      splitLine: { show: false },
+      pointer: {
+        length: '70%',
+        width: 6
+      },
 
       detail: { show: false },
-
       data: [{ value: degrees }]
     }]
   });
 }
+
 
 
 
