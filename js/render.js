@@ -162,7 +162,7 @@ window.renderMap = async function () {
       <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
         View historical data</a><br>
       <a href="/LiveMap/gauges.html?station=${encodeURIComponent(stationName)}" target="_blank">
-        View gauges & trends</a>
+        View gauges</a>
 
     `;
   
