@@ -1,95 +1,92 @@
 import os
-import numpy as np
+import math
+import requests
 import pandas as pd
-import matplotlib.pyplot as plt
+from datetime import datetime, timedelta, timezone
 
-# -------- SETTINGS --------
-INPUT_CSV = "data/last6h.csv"
-OUTPUT_DIR = "roses"
-POLLUTANT = "Fine Particulate Matter"   # change to "AQHI" or "Ozone" etc
-WD_COL = "Wind Direction"
-WS_COL = "Wind Speed"
-BIN_SIZE = 10  # degrees
-PERCENTILE = 0.90  # P90 rose (very informative)
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+HEADERS = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": f"Bearer {SUPABASE_KEY}"
+}
 
-# -------- LOAD DATA --------
-df = pd.read_csv(INPUT_CSV)
+TABLE = "aqhi_data"   # change if needed
 
-# Clean column names just in case
-df.columns = df.columns.str.strip()
+POLLUTANTS = {
+    "PM2.5": "PM25",
+    "Nitrogen Dioxide": "NO2",
+    "Ozone": "O3"
+}
 
-# Ensure numeric
-df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
-df[WD_COL] = pd.to_numeric(df[WD_COL], errors="coerce")
-
-# -------- FUNCTION TO BUILD ROSE --------
-def build_rose(station_df, station_name):
-    bins = np.arange(0, 360 + BIN_SIZE, BIN_SIZE)
-
-    station_df["dir_bin"] = pd.cut(
-        station_df[WD_COL],
-        bins=bins,
-        right=False,
-        include_lowest=True
-    )
-
-    rose = (
-        station_df.groupby("dir_bin")["Value"]
-        .quantile(PERCENTILE)
-        .reset_index()
-    )
-
-    # Bin centers for plotting
-    centers = [b.left + BIN_SIZE / 2 for b in rose["dir_bin"]]
-    theta = np.deg2rad(centers)
-    values = rose["Value"].values
-
-    # Normalize for color scale
-    vmax = np.nanmax(values)
-    colors = plt.cm.inferno(values / vmax if vmax > 0 else values)
-
-    fig = plt.figure(figsize=(6, 6), dpi=200)
-    ax = fig.add_subplot(111, polar=True)
-
-    bars = ax.bar(
-        theta,
-        values,
-        width=np.deg2rad(BIN_SIZE),
-        bottom=0,
-        color=colors,
-        edgecolor="none"
-    )
-
-    ax.set_theta_zero_location("N")
-    ax.set_theta_direction(-1)
-    ax.set_axis_off()
-
-    outfile = os.path.join(OUTPUT_DIR, f"{station_name}.png")
-    plt.savefig(outfile, transparent=True, bbox_inches="tight", pad_inches=0)
-    plt.close()
-    print(f"Built rose for {station_name}")
+BINS = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
+        "S","SSW","SW","WSW","W","WNW","NW","NNW"]
 
 
-# -------- BUILD ROSES FOR EACH STATION --------
-stations = df["StationName"].unique()
+def dir_to_bin(deg):
+    d = (deg + 11.25) % 360
+    return BINS[int(d // 22.5)]
 
-for station in stations:
-    sdf = df[
-        (df["StationName"] == station) &
-        (df["ParameterName"] == POLLUTANT)
-    ].copy()
 
-    # Need wind data too
-    wind = df[
-        (df["StationName"] == station) &
-        (df["ParameterName"] == WD_COL)
-    ][["ReadingDate", "Value"]].rename(columns={"Value": WD_COL})
+def fetch_last24():
+    since = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
 
-    sdf = sdf.merge(wind, on="ReadingDate", how="inner")
+    url = f"{SUPABASE_URL}/rest/v1/{TABLE}"
+    params = {
+        "select": "station,parameter,value,wind_dir,lat,lon,time",
+        "time": f"gte.{since}"
+    }
 
-    if len(sdf) < 10:
-        continue
+    r = requests.get(url, headers=HEADERS, params=params)
+    r.raise_for_status()
+    return pd.DataFrame(r.json())
 
-    build_rose(sdf, station.replace(" ", "_"))
+
+def build_rose(df, pollutant_name):
+    df = df[df["parameter"] == pollutant_name].copy()
+    df = df.dropna(subset=["value", "wind_dir"])
+
+    df["bin"] = df["wind_dir"].apply(dir_to_bin)
+
+    roses = []
+
+    for station, g in df.groupby("station"):
+        lat = g["lat"].iloc[0]
+        lon = g["lon"].iloc[0]
+
+        means = g.groupby("bin")["value"].mean().to_dict()
+
+        props = {b: round(means.get(b, 0), 2) for b in BINS}
+        props["station"] = station
+        props["max"] = max(props.values())
+
+        roses.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [lon, lat]
+            },
+            "properties": props
+        })
+
+    return {
+        "type": "FeatureCollection",
+        "features": roses
+    }
+
+
+def main():
+    df = fetch_last24()
+
+    for name, short in POLLUTANTS.items():
+        geo = build_rose(df, name)
+        with open(f"rose_{short}.geojson", "w") as f:
+            import json
+            json.dump(geo, f)
+
+    print("Roses built:", datetime.now())
+
+
+if __name__ == "__main__":
+    main()
