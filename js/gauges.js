@@ -226,9 +226,10 @@ const gaugeMax = {
   "Sulphur Dioxide": 200,
   "Hydrogen Sulphide": 20,
   "Total Reduced Sulphur": 20,
-  "Total Hydrocarbons": 20,
-  "Methane": 20,
-  "Non Methane Hydrocarbons": 5,
+  "Carbon Monoxide": 20
+  "Total Hydrocarbons": 10,
+  "Methane": 10,
+  "Non-methane Hydrocarbons": 10,
   "Wind Speed": 75,
   "Wind Direction": 360,
   "Outdoor Temperature": 40,
@@ -321,7 +322,7 @@ const gaugeOrder = [
   "Carbon Monoxide",
   "Total Hydrocarbons",
   "Methane",
-  "Non Methane Hydrocarbons",
+  "Non-methane Hydrocarbons",
 
   // ---- METEOROLOGY ----
   "Wind Speed",
@@ -347,7 +348,7 @@ const displayMap = {
   "Carbon Monoxide":     { short: "CO",  unit: "ppm", dec: 2 },
   "Total Hydrocarbons":   { short: "THC", unit: "ppm", dec: 2 },
   "Methane":             { short: "CH₄", unit: "ppm", dec: 2 },
-  "Non Methane Hydrocarbons": { short: "NMHC", unit: "ppm", dec: 2 }
+  "Non-methane Hydrocarbons": { short: "NMHC", unit: "ppm", dec: 2 }
 };
 
 function toCardinal16(deg) {
