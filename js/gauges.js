@@ -226,7 +226,7 @@ const gaugeMax = {
   "Sulphur Dioxide": 200,
   "Hydrogen Sulphide": 20,
   "Total Reduced Sulphur": 20,
-  "Carbon Monoxide": 20
+  "Carbon Monoxide": 20,
   "Total Hydrocarbons": 10,
   "Methane": 10,
   "Non-methane Hydrocarbons": 10,
