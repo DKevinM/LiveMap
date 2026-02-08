@@ -574,7 +574,6 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       }
     
       const label = guideLabel[param];
-      const unit  = displayMap[param]?.unit || "ppb";
 
     
       if (param === "Wind Direction") {
