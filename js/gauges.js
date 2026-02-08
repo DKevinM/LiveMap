@@ -319,9 +319,9 @@ const gaugeOrder = [
   "Total Reduced Sulphur",
   "Fine Particulate Matter",
   "Carbon Monoxide",
-  "Total Hydrocarbon",
+  "Total Hydrocarbons",
   "Methane",
-  "Non Methane Hydrocarbon",
+  "Non Methane Hydrocarbons",
 
   // ---- METEOROLOGY ----
   "Wind Speed",
@@ -343,11 +343,11 @@ const displayMap = {
   "Sulphur Dioxide":     { short: "SO₂", unit: "ppb", dec: 1 },
   "Hydrogen Sulphide":     { short: "H₂S", unit: "ppb", dec: 1 },
   "Total Reduced Sulphur":   { short: "TRS", unit: "ppb", dec: 1 },
-  "Ozone":               { short: "O₃",  unit: "ppb", dec: 1 }
-  "Carbon Monoxide":     { short: "CO",  unit: "ppm", dec: 2 }
-  "Total Hydrocarbon":   { short: "THC",  unit: "ppm", dec: 2 }
-  "Methane":             { short: "CH₄",  unit: "ppm", dec: 2 }
-  "Non Methane Hydrocarbon":  { short: "NMHC",  unit: "ppm", dec: 2 }
+  "Ozone":               { short: "O₃",  unit: "ppb", dec: 1 },
+  "Carbon Monoxide":     { short: "CO",  unit: "ppm", dec: 2 },
+  "Total Hydrocarbons":   { short: "THC", unit: "ppm", dec: 2 },
+  "Methane":             { short: "CH₄", unit: "ppm", dec: 2 },
+  "Non Methane Hydrocarbons": { short: "NMHC", unit: "ppm", dec: 2 }
 };
 
 function toCardinal16(deg) {
@@ -491,9 +491,11 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
       if (!byParam[param]) return;
     
-      const rows = byParam[param];
-      const latest = rows[rows.length - 1];   // <-- MISSING LINE
-    
+      const rows = byParam[param] || [];
+      if (rows.length === 0) return;   // <-- skip entirely (no tile)
+
+      const latest = rows[rows.length - 1];
+      
       if (!stationTime) {
         stationTime = latest.time.toLocaleString("en-CA");
       }
@@ -548,6 +550,8 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         targetRow = "met";
     
       // ---- ALWAYS CREATE THE GAUGE BOX ----
+      const rows = byParam[param] || [];
+      if (rows.length === 0) return; 
       document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
         <div class="gaugeBox">
           <div id="${gid}" class="gauge"></div>
@@ -557,7 +561,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       `);
     
       const rows = byParam[param] || [];
-    
+      if (rows.length === 0) return;   // <-- skip entirely (no tile)
       const { latest, status } = getLatestStatus(rows, new Date(), 3);
 
       
