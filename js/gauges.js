@@ -551,14 +551,11 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const rows = byParam[param] || [];
     
       const { latest, status } = getLatestStatus(rows, new Date(), 3);
-    
+
+      
       // ---- NEVER REPORTED HERE ----
-      if (rows.length === 0) {
-        buildOfflineGauge(gid, param);
-        document.getElementById(`val_${gid}`).innerHTML =
-          `<span style="color:#999;font-weight:700">NOT INSTALLED</span>`;
-        return;
-      }
+      if (rows.length === 0) return;
+      
     
       // ---- OFFLINE ----
       if (!latest || status === "offline") {
@@ -570,7 +567,8 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
       // ---- STALE ----
       if (status === "stale") {
-        document.getElementById(gid).closest(".gaugeBox").style.opacity = "0.6";
+        document.getElementById(gid).closest(".gaugeBox")
+          .style.filter = "grayscale(40%) brightness(0.9)"; 
       }
     
       
