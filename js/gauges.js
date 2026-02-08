@@ -586,14 +586,13 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
 
       const disp = formatDisplay(param, latest.value);
       const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
-      const label = guideLabel[param];
       const unit  = displayMap[param]?.unit || "ppb";
       
       document.getElementById(`val_${gid}`).innerHTML = `
         <b>${disp.text}</b> ${disp.unit}
         <div style="font-size:11px;color:#666;margin-top:2px">
           Updated ${updated}
-          ${guide ? `<br>${label} = ${guide} ${unit}` : ``}
+          ${guide ? `<br>${guideLabel[param]} = ${guide} ${unit}` : ``}
         </div>
       `;
 
