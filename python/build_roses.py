@@ -44,8 +44,8 @@ def fetch_last24():
         headers["Range"] = f"{start}-{start+step-1}"
 
         params = {
-            "select": "station,parameter,value,wind_dir,lat,lon,time",
-            "time": f"gte.{since}"
+            "select": "StationName,ParameterName,Value,ReadingDate",
+            "ReadingDate": f"gte.{since}"
         }
 
         r = requests.get(url, headers=headers, params=params)
@@ -60,6 +60,13 @@ def fetch_last24():
 
     return pd.DataFrame(all_rows)
 
+
+def fetch_stations():
+    url = f"{SUPABASE_URL}/rest/v1/stations"
+    r = requests.get(url, headers=HEADERS)
+    r.raise_for_status()
+    return pd.DataFrame(r.json())[["StationName","Latitude","Longitude"]]
+    
 
 # -------- ROSE BUILDER --------
 def build_rose(df, pollutant_name):
