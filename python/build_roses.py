@@ -1,5 +1,5 @@
 import os
-import math
+import json
 import requests
 import pandas as pd
 from datetime import datetime, timedelta, timezone
@@ -12,7 +12,7 @@ HEADERS = {
     "Authorization": f"Bearer {SUPABASE_KEY}"
 }
 
-TABLE = "aqhi_data"   # change if needed
+TABLE = "aqhi_data"
 
 POLLUTANTS = {
     "PM2.5": "PM25",
@@ -29,20 +29,38 @@ def dir_to_bin(deg):
     return BINS[int(d // 22.5)]
 
 
+# -------- PROPER PAGED SUPABASE PULL --------
 def fetch_last24():
     since = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
-
     url = f"{SUPABASE_URL}/rest/v1/{TABLE}"
-    params = {
-        "select": "station,parameter,value,wind_dir,lat,lon,time",
-        "time": f"gte.{since}"
-    }
 
-    r = requests.get(url, headers=HEADERS, params=params)
-    r.raise_for_status()
-    return pd.DataFrame(r.json())
+    all_rows = []
+    start = 0
+    step = 1000
+
+    while True:
+        headers = HEADERS.copy()
+        headers["Range"] = f"{start}-{start+step-1}"
+
+        params = {
+            "select": "station,parameter,value,wind_dir,lat,lon,time",
+            "time": f"gte.{since}"
+        }
+
+        r = requests.get(url, headers=headers, params=params)
+        r.raise_for_status()
+        chunk = r.json()
+
+        if not chunk:
+            break
+
+        all_rows.extend(chunk)
+        start += step
+
+    return pd.DataFrame(all_rows)
 
 
+# -------- ROSE BUILDER --------
 def build_rose(df, pollutant_name):
     df = df[df["parameter"] == pollutant_name].copy()
     df = df.dropna(subset=["value", "wind_dir"])
@@ -56,10 +74,15 @@ def build_rose(df, pollutant_name):
         lon = g["lon"].iloc[0]
 
         means = g.groupby("bin")["value"].mean().to_dict()
+        freq  = g["bin"].value_counts(normalize=True).to_dict()
 
         props = {b: round(means.get(b, 0), 2) for b in BINS}
+
+        for b in BINS:
+            props[f"{b}_freq"] = round(freq.get(b, 0), 3)
+
         props["station"] = station
-        props["max"] = max(props.values())
+        props["max"] = max([v for k, v in props.items() if k in BINS])
 
         roses.append({
             "type": "Feature",
@@ -76,16 +99,22 @@ def build_rose(df, pollutant_name):
     }
 
 
+# -------- MAIN --------
 def main():
     df = fetch_last24()
 
+    OUTPUT_DIR = "../LiveMap/data"
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
     for name, short in POLLUTANTS.items():
         geo = build_rose(df, name)
-        with open(f"rose_{short}.geojson", "w") as f:
-            import json
+
+        out_path = os.path.join(OUTPUT_DIR, f"rose_{short}.geojson")
+
+        with open(out_path, "w") as f:
             json.dump(geo, f)
 
-    print("Roses built:", datetime.now())
+        print("Wrote:", out_path)
 
 
 if __name__ == "__main__":
