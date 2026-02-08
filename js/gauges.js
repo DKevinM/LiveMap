@@ -318,6 +318,10 @@ const gaugeOrder = [
   "Hydrogen Sulphide",
   "Total Reduced Sulphur",
   "Fine Particulate Matter",
+  "Carbon Monoxide",
+  "Total Hydrocarbon",
+  "Methane",
+  "Non Methane Hydrocarbon",
 
   // ---- METEOROLOGY ----
   "Wind Speed",
@@ -340,6 +344,10 @@ const displayMap = {
   "Hydrogen Sulphide":     { short: "H₂S", unit: "ppb", dec: 1 },
   "Total Reduced Sulphur":   { short: "TRS", unit: "ppb", dec: 1 },
   "Ozone":               { short: "O₃",  unit: "ppb", dec: 1 }
+  "Carbon Monoxide":     { short: "CO",  unit: "ppm", dec: 2 }
+  "Total Hydrocarbon":   { short: "THC",  unit: "ppm", dec: 2 }
+  "Methane":             { short: "CH₄",  unit: "ppm", dec: 2 }
+  "Non Methane Hydrocarbon":  { short: "NMHC",  unit: "ppm", dec: 2 }
 };
 
 function toCardinal16(deg) {
