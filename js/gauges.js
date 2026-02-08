@@ -573,15 +573,18 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
         document.getElementById(gid).closest(".gaugeBox").style.opacity = "0.6";
       }
     
-      const label = guideLabel[param];
-
-    
+      
+      const max   = gaugeMax[param] || 200;
+      const guide = guideLimits[param] || null;
+      const min   = param === "Outdoor Temperature" ? -40 : 0;
+      
       if (param === "Wind Direction") {
         buildCompass(gid, latest.value);
       } else {
         buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
       }
-    
+
+
 
       const disp = formatDisplay(param, latest.value);
       const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
