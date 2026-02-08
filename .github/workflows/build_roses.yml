@@ -27,7 +27,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
-          python scripts/build_roses.py
+          python python/build_roses.py
 
       - name: Commit GeoJSON outputs
         run: |
