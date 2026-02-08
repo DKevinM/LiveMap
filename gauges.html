@@ -3,11 +3,35 @@
 <head>
 
   <style>
+    .topnav {
+      position: fixed;
+      top: 14px;
+      left: 16px;
+      z-index: 1000;
+    }
+    
+    .backlink {
+      background: #e9eef2;
+      color: #000;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: 0.2s;
+    }
+    
+    .backlink {
+      border: 1px solid #c9d3db;
+    }
+    
     body {
       font-family: system-ui, sans-serif;
       background:#f2f6f8;
       margin:0;
       padding:20px;
+      padding-top: 50px;
     }
   
     h1 {
@@ -104,6 +128,10 @@
   <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 <body>
+<div class="topnav">
+  <a href="index.html" class="backlink">← Back to AQHI Map</a>
+</div>
+  
 <div class="aqhiHeader">
   <div class="aqhiText">
     <div id="title"></div>
