@@ -221,7 +221,7 @@ const guideLabel = {
 
 const gaugeMax = {
   "Ozone": 120,
-  "Fine Particulate Matter": 200,
+  "Fine Particulate Matter": 160,
   "Nitrogen Dioxide": 200,
   "Sulphur Dioxide": 200,
   "Hydrogen Sulphide": 20,
