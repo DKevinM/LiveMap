@@ -551,6 +551,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
       // ---- ALWAYS CREATE THE GAUGE BOX ----
       const rows = byParam[param] || [];
+      const { latest, status } = getLatestStatus(rows, new Date(), 3);
       if (rows.length === 0) return; 
       document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
         <div class="gaugeBox">
@@ -559,10 +560,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
           <div class="label">${param}</div>
         </div>
       `);
-    
-      const rows = byParam[param] || [];
-      if (rows.length === 0) return;   // <-- skip entirely (no tile)
-      const { latest, status } = getLatestStatus(rows, new Date(), 3);
+
 
       
       // ---- NEVER REPORTED HERE ----
