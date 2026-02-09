@@ -50,7 +50,7 @@ def fetch_last24():
 
     params = {
         "select": "StationName,ParameterName,Value,ReadingDate",
-        "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Ozone,Wind Direction)",
+        "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Ozone,Wind Direction,Wind Speed)",
         "ReadingDate": f"gte.{since}",
         "order": "ReadingDate.asc"
     }
@@ -106,54 +106,46 @@ def fetch_stations():
 # -------- ROSE BUILDER --------
 def build_rose(df, pollutant_name, stations):
 
-    # Separate pollutant and wind direction
-    # --- Pull the three required parameters ---
-    pol  = df[df["ParameterName"] == pollutant_name].copy()
-    wdir = df[df["ParameterName"] == "Wind Direction"].copy()
-    wspd = df[df["ParameterName"] == "Wind Speed"].copy()
-    
-    # --- First merge pollutant with wind direction ---
-    merged = pd.merge(
-        pol,
-        wdir,
-        on=["StationName","ReadingDate"],
-        suffixes=("_pol","_wdir")
-    )
-    
-    # --- Then merge in wind speed ---
-    merged = pd.merge(
-        merged,
-        wspd,
-        on=["StationName","ReadingDate"]
-    )
-    
-    merged = merged.dropna(subset=["Value_pol","Value_wdir","Value"])
-    
-    # Rename wind speed column for clarity
-    merged = merged.rename(columns={"Value": "Value_ws"})
-    
-    # --- Create bins ---
-    merged["dir_bin"] = merged["Value_wdir"].apply(dir_to_bin)
-    merged["spd_bin"] = merged["Value_ws"].apply(speed_bin)
+    # ---- Pivot parameters into columns by hour ----
+    pivot = df.pivot_table(
+        index=["StationName", "hour"],
+        columns="ParameterName",
+        values="Value",
+        aggfunc="mean"
+    ).reset_index()
 
+    # Must have all three
+    pivot = pivot.dropna(subset=[
+        pollutant_name,
+        "Wind Direction",
+        "Wind Speed"
+    ])
+
+    # ---- Create bins ----
+    pivot["dir_bin"] = pivot["Wind Direction"].apply(dir_to_bin)
+    pivot["spd_bin"] = pivot["Wind Speed"].apply(speed_bin)
 
     roses = []
 
-    for station, g in merged.groupby("StationName"):
+    for station, g in pivot.groupby("StationName"):
 
         lat = stations.loc[stations.StationName == station, "Latitude"].iloc[0]
         lon = stations.loc[stations.StationName == station, "Longitude"].iloc[0]
 
-        means = g.groupby("bin")["Value_pol"].mean().to_dict()
-        freq  = g["bin"].value_counts(normalize=True).to_dict()
+        # 2D matrix: dir x speed
+        matrix = g.groupby(["dir_bin","spd_bin"])[pollutant_name].mean()
 
-        props = {b: round(means.get(b, 0), 2) for b in BINS}
+        props = {}
+        max_val = 0
 
-        for b in BINS:
-            props[f"{b}_freq"] = round(freq.get(b, 0), 3)
+        for d in BINS:
+            for s in ["calm","low","med","high"]:
+                val = matrix.get((d,s), 0)
+                props[f"{d}_{s}"] = round(val,2)
+                max_val = max(max_val, val)
 
         props["station"] = station
-        props["max"] = max([v for k, v in props.items() if k in BINS])
+        props["max"] = max_val
 
         roses.append({
             "type": "Feature",
@@ -171,9 +163,12 @@ def build_rose(df, pollutant_name, stations):
 
 
 
+
 # -------- MAIN --------
 def main():
     df = fetch_last24()
+    df["hour"] = df["ReadingDate"].dt.floor("H")
+
     stations = fetch_stations()
 
     
