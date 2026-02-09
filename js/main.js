@@ -89,9 +89,50 @@ window.bootstrap = async function () {
     await renderPurpleAir();
   }
 
+  // ---------------- ROSES ----------------
+  await loadRose("PM25");
+  await loadRose("NO2");
+  await loadRose("O3");
+  
+
+  
   console.log("Application ready.");
 };
 
 window.addEventListener("load", bootstrap);
 
 
+// ================= ROSE LAYERS =================
+let roseLayers = {};
+
+async function loadRose(type) {
+
+  const res = await fetch(`data/rose_${type}.geojson`);
+  const geo = await res.json();
+
+  const layer = L.geoJSON(geo, {
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: L.divIcon({
+          className: '',
+          html: buildRoseSVG(feature.properties),
+          iconSize: [60,60]
+        })
+      });
+    }
+  });
+
+  roseLayers[type] = layer;
+
+  layerControl.addOverlay(layer, `Rose ${type}`);
+}
+
+function buildRoseSVG(p) {
+  // simple placeholder — we improve next
+  return `<div style="
+    width:60px;height:60px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.6);
+    border:2px solid #333;">
+  </div>`;
+}
