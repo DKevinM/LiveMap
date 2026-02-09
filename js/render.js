@@ -244,7 +244,7 @@ window.renderMap = async function () {
     "WCAS PurpleAir": window.WCASPurple,
 
     "All Stations (AB)": window.ALLStations,
-    "All PurpleAir (AB)": window.ALLPurple
+    "All PurpleAir (AB)": window.ALLPurple,
 
     "Rose PM2.5": window.RosePM25,
     "Rose NO₂": window.RoseNO2,
