@@ -32,6 +32,16 @@ def dir_to_bin(deg):
     return BINS[ix]
 
 
+def speed_bin(ws):
+    ws = float(ws)
+    if ws < 2: return "calm"
+    if ws < 20: return "low"
+    if ws < 40: return "med"
+    return "high"
+
+
+
+
 # -------- PROPER PAGED SUPABASE PULL --------
 def fetch_last24():
     since = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
@@ -97,20 +107,35 @@ def fetch_stations():
 def build_rose(df, pollutant_name, stations):
 
     # Separate pollutant and wind direction
-    pol = df[df["ParameterName"] == pollutant_name].copy()
-    wind = df[df["ParameterName"] == "Wind Direction"].copy()
-
-    # Merge on time + station
+    # --- Pull the three required parameters ---
+    pol  = df[df["ParameterName"] == pollutant_name].copy()
+    wdir = df[df["ParameterName"] == "Wind Direction"].copy()
+    wspd = df[df["ParameterName"] == "Wind Speed"].copy()
+    
+    # --- First merge pollutant with wind direction ---
     merged = pd.merge(
         pol,
-        wind,
+        wdir,
         on=["StationName","ReadingDate"],
-        suffixes=("_pol","_wind")
+        suffixes=("_pol","_wdir")
     )
+    
+    # --- Then merge in wind speed ---
+    merged = pd.merge(
+        merged,
+        wspd,
+        on=["StationName","ReadingDate"]
+    )
+    
+    merged = merged.dropna(subset=["Value_pol","Value_wdir","Value"])
+    
+    # Rename wind speed column for clarity
+    merged = merged.rename(columns={"Value": "Value_ws"})
+    
+    # --- Create bins ---
+    merged["dir_bin"] = merged["Value_wdir"].apply(dir_to_bin)
+    merged["spd_bin"] = merged["Value_ws"].apply(speed_bin)
 
-    merged = merged.dropna(subset=["Value_pol","Value_wind"])
-
-    merged["bin"] = merged["Value_wind"].apply(dir_to_bin)
 
     roses = []
 
