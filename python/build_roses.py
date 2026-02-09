@@ -16,9 +16,11 @@ HEADERS = {
 TABLE = "aqhi_data"
 
 POLLUTANTS = {
-    "PM2.5": "PM25",
+    "Fine Particulate Matter": "PM25",
     "Nitrogen Dioxide": "NO2",
-    "Ozone": "O3"
+    "Ozone": "O3",
+    "Wind Speed": "ws",
+    "Wind Direction": "wd"
 }
 
 BINS = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
