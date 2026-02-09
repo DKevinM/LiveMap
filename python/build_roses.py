@@ -18,9 +18,7 @@ TABLE = "aqhi_data"
 POLLUTANTS = {
     "Fine Particulate Matter": "PM25",
     "Nitrogen Dioxide": "NO2",
-    "Ozone": "O3",
-    "Wind Speed": "ws",
-    "Wind Direction": "wd"
+    "Ozone": "O3"
 }
 
 BINS = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
@@ -28,8 +26,10 @@ BINS = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
 
 
 def dir_to_bin(deg):
-    d = (deg + 11.25) % 360
-    return BINS[int(d // 22.5)]
+    d = float(deg)
+    d = ((d % 360) + 360) % 360      # forces into [0,360)
+    ix = int(((d + 11.25) // 22.5) % 16)
+    return BINS[ix]
 
 
 # -------- PROPER PAGED SUPABASE PULL --------
