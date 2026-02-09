@@ -40,7 +40,9 @@ def fetch_last24():
 
     params = {
         "select": "StationName,ParameterName,Value,ReadingDate",
-        "ReadingDate": f"gte.{since}"
+        "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Ozone,Wind Direction)",
+        "ReadingDate": f"gte.{since}",
+        "order": "ReadingDate.asc"
     }
 
     all_rows = []
@@ -69,16 +71,25 @@ def fetch_last24():
 
 
 
+
 def fetch_stations():
     url = f"{SUPABASE_URL}/rest/v1/stations"
-    r = requests.get(url, headers=HEADERS)
+
+    params = {
+        "select": "StationName,Latitude,Longitude"
+    }
+
+    r = requests.get(url, headers=HEADERS, params=params)
     r.raise_for_status()
 
     df = pd.DataFrame(r.json())
-    print(df.columns)     # <---- ADD THIS
-    print(df.head())      # <---- ADD THIS
+
+    # Force exactly what we expect
+    df = df.rename(columns=str.strip)
+    df = df[["StationName", "Latitude", "Longitude"]]
 
     return df
+
 
 
 
@@ -140,7 +151,10 @@ def main():
     df = fetch_last24()
     stations = fetch_stations()
 
-    OUTPUT_DIR = "../data"
+    
+    OUTPUT_DIR = "data"
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 
     for name, short in POLLUTANTS.items():
         geo = build_rose(df, name, stations)
