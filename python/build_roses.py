@@ -75,7 +75,10 @@ def fetch_stations():
     r.raise_for_status()
 
     df = pd.DataFrame(r.json())
-    return df[["StationName","Latitude","Longitude"]]
+    print(df.columns)     # <---- ADD THIS
+    print(df.head())      # <---- ADD THIS
+
+    return df
 
 
 
