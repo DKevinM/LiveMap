@@ -9,6 +9,10 @@ window.WCASStations = window.WCASStations || L.layerGroup();
 window.WCASPurple   = window.WCASPurple   || L.layerGroup();
 window.ALLStations  = window.ALLStations  || L.layerGroup();
 window.ALLPurple    = window.ALLPurple    || L.layerGroup();
+window.RosePM25 = window.RosePM25 || L.layerGroup();
+window.RoseNO2  = window.RoseNO2  || L.layerGroup();
+window.RoseO3   = window.RoseO3   || L.layerGroup();
+
 
 let ACApoly = null;
 let WCASpoly = null;
@@ -217,6 +221,12 @@ window.renderMap = async function () {
     if (inWCAS) window.WCASPurple.addLayer(marker);
   });
 
+
+
+  await loadRoses();
+
+  
+  
   // Layer control (build once per render; remove old if needed)
   // Optional: store ref to avoid duplicates
   if (window._layerControl) {
@@ -235,9 +245,55 @@ window.renderMap = async function () {
 
     "All Stations (AB)": window.ALLStations,
     "All PurpleAir (AB)": window.ALLPurple
+
+    "Rose PM2.5": window.RosePM25,
+    "Rose NO₂": window.RoseNO2,
+    "Rose O₃": window.RoseO3,
+
   }, { collapsed: false }).addTo(map);
 
   console.log("Map rendered.");
 };
+
+
+
+
+async function loadRoses() {
+
+  const types = [
+    { key: "PM25", layer: window.RosePM25 },
+    { key: "NO2",  layer: window.RoseNO2  },
+    { key: "O3",   layer: window.RoseO3   }
+  ];
+
+  for (const t of types) {
+    t.layer.clearLayers();
+
+    const res = await fetch(`data/rose_${t.key}.geojson`);
+    const geo = await res.json();
+
+    L.geoJSON(geo, {
+      pointToLayer: function(feature, latlng) {
+        return L.marker(latlng, {
+          icon: L.divIcon({
+            className: '',
+            html: buildRoseSVG(feature.properties),
+            iconSize: [60,60]
+          })
+        });
+      }
+    }).addTo(t.layer);
+  }
+}
+
+function buildRoseSVG(p) {
+  return `<div style="
+    width:60px;height:60px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.6);
+    border:2px solid #333;">
+  </div>`;
+}
+
 
 window.renderStations = window.renderMap;
