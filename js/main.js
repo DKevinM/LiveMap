@@ -1,3 +1,13 @@
+// NUCLEAR CLEANUP OF OLD DIVICONS
+function purgeZombieDivIcons(map) {
+  map.eachLayer(layer => {
+    if (layer instanceof L.Marker && layer.options.icon instanceof L.DivIcon) {
+      map.removeLayer(layer);
+    }
+  });
+}
+
+
 function buildRoseSVG(p) {
 
   const bins = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
@@ -42,13 +52,17 @@ let roseLayers = {};
 
 async function loadRose(type) {
 
+  if (roseLayers[type]) {
+    window.map.removeLayer(roseLayers[type]);
+  }
+
   const res = await fetch(`data/rose_${type}.geojson`);
   const geo = await res.json();
 
   const layer = L.geoJSON(geo, {
     pointToLayer: function(feature, latlng) {
 
-      const marker = L.marker(latlng, {
+      return L.marker(latlng, {
         icon: L.divIcon({
           className: '',
           html: buildRoseSVG(feature.properties),
@@ -56,25 +70,12 @@ async function loadRose(type) {
           iconAnchor: [60,60]
         })
       });
-
-      const p = feature.properties;
-
-      marker.bindTooltip(`
-        <b>${p.station}</b><br>
-        Max: ${p.max}
-      `);
-
-      return marker;
     }
   });
 
   roseLayers[type] = layer;
-
-  layer.addTo(window.map);   // << THIS IS WHAT WAS MISSING
+  layer.addTo(window.map);
 }
-
-
-
 
 
 
@@ -88,6 +89,8 @@ window.bootstrap = async function () {
   }
   
   await initMap();
+
+  purgeZombieDivIcons(window.map);
 
   if (!window.AppData?.ready) {
     console.error("AppData.ready missing");
