@@ -3,61 +3,39 @@ function buildRoseSVG(p) {
   const bins = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
                 "S","SSW","SW","WSW","W","WNW","NW","NNW"];
 
-  const speeds = ["low","med","high"];   // ignore calm for display
-
-  const R = 28;
+  const max = p.max || 1;
+  const R = 55;                 // ← BIGGER RADIUS
   let paths = "";
 
   bins.forEach((b,i) => {
 
-    let startR = 0;
+    const val = p[b] || 0;
+    const r = (val / max) * R;
 
-    speeds.forEach((s,layer) => {
+    const a1 = (i * 22.5 - 90) * Math.PI/180;
+    const a2 = ((i+1)*22.5 - 90) * Math.PI/180;
 
-      const key = `${b}_${s}`;
-      const val = p[key] || 0;
+    const x1 = 60 + r * Math.cos(a1);
+    const y1 = 60 + r * Math.sin(a1);
+    const x2 = 60 + r * Math.cos(a2);
+    const y2 = 60 + r * Math.sin(a2);
 
-      // scale thickness by value
-      const thickness = val * 0.4;   // adjust scale later
-      const endR = startR + thickness;
-
-      const angle = (i * 22.5 - 90) * Math.PI/180;
-      const next  = ((i+1)*22.5 - 90) * Math.PI/180;
-
-      const x1 = 30 + startR * Math.cos(angle);
-      const y1 = 30 + startR * Math.sin(angle);
-      const x2 = 30 + endR   * Math.cos(angle);
-      const y2 = 30 + endR   * Math.sin(angle);
-
-      const x3 = 30 + endR   * Math.cos(next);
-      const y3 = 30 + endR   * Math.sin(next);
-      const x4 = 30 + startR * Math.cos(next);
-      const y4 = 30 + startR * Math.sin(next);
-
-      const color =
-        layer === 0 ? "rgba(255,200,0,0.7)" :
-        layer === 1 ? "rgba(255,120,0,0.7)" :
-                      "rgba(255,0,0,0.7)";
-
-      paths += `
-        <path d="
-          M ${x1},${y1}
-          L ${x2},${y2}
-          A ${endR},${endR} 0 0,1 ${x3},${y3}
-          L ${x4},${y4}
-          A ${startR},${startR} 0 0,0 ${x1},${y1}
-          Z"
-          fill="${color}">
-        </path>`;
-
-      startR = endR;
-
-    });
-
+    paths += `
+      <path d="M60,60 L${x1},${y1} A${r},${r} 0 0,1 ${x2},${y2} Z"
+            fill="rgba(220,30,30,0.85)"
+            stroke="#222"
+            stroke-width="0.5"/>
+    `;
   });
 
-  return `<svg width="60" height="60">${paths}</svg>`;
+  return `
+    <svg width="120" height="120" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="58" fill="rgba(255,255,255,0.85)" stroke="#333" stroke-width="2"/>
+      ${paths}
+    </svg>
+  `;
 }
+
 
 
 
