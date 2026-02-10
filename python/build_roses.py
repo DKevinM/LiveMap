@@ -112,9 +112,15 @@ def build_rose(df, pollutant_name, stations):
     wspd = df[df["ParameterName"] == "Wind Speed"].copy()
     
     # sort for merge_asof
-    pol  = pol.sort_values("ReadingDate")
-    wdir = wdir.sort_values("ReadingDate")
-    wspd = wspd.sort_values("ReadingDate")
+    pol  = df[df["ParameterName"] == pollutant_name].copy()
+    pol  = pol.rename(columns={"Value": "Value_pol"})
+    
+    wdir = df[df["ParameterName"] == "Wind Direction"].copy()
+    wdir = wdir.rename(columns={"Value": "Value_wdir"})
+    
+    wspd = df[df["ParameterName"] == "Wind Speed"].copy()
+    wspd = wspd.rename(columns={"Value": "Value_ws"})
+
     
     # attach nearest wind direction
     merged = pd.merge_asof(
