@@ -167,7 +167,8 @@ def build_rose(df, pollutant_name, stations):
 # -------- MAIN --------
 def main():
     df = fetch_last24()
-    df["hour"] = df["ReadingDate"].dt.floor("H")
+    df["hour"] = df["ReadingDate"].dt.floor("h")
+
 
     stations = fetch_stations()
 
