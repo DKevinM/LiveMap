@@ -43,39 +43,28 @@ def speed_bin(ws):
 
 
 # -------- PROPER PAGED SUPABASE PULL --------
-def fetch_last24():
-    since = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+
+def fetch_last48():
+    now = datetime.now(timezone.utc)
+    since = now - timedelta(hours=48)
 
     url = f"{SUPABASE_URL}/rest/v1/{TABLE}"
 
     params = {
         "select": "StationName,ParameterName,Value,ReadingDate",
         "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Ozone,Wind Direction,Wind Speed)",
-        "ReadingDate": f"gte.{since}",
-        "order": "ReadingDate.asc"
+        "ReadingDate": f"gte.{since.isoformat()}",
+        "order": "ReadingDate"
     }
 
-    all_rows = []
-    start = 0
-    step = 1000
+    r = requests.get(url, headers=HEADERS, params=params)
+    r.raise_for_status()
 
-    while True:
-        headers = HEADERS.copy()
-        headers["Range"] = f"{start}-{start+step-1}"
-
-        r = requests.get(url, headers=headers, params=params)
-        r.raise_for_status()
-
-        chunk = r.json()
-        if not chunk:
-            break
-
-        all_rows.extend(chunk)
-        start += step
-
-    df = pd.DataFrame(all_rows)
+    df = pd.DataFrame(r.json())
     df["ReadingDate"] = pd.to_datetime(df["ReadingDate"])
     df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
+
+    print("Rows pulled:", len(df))
 
     return df
 
