@@ -120,6 +120,13 @@ function clearAllLayers() {
 
 
 window.renderMap = async function () {
+  // KILL ALL ORPHAN MARKERS FROM OLD ROSE CODE
+  map.eachLayer(function (layer) {
+    if (layer instanceof L.Marker && layer.options?.icon?.options?.html?.includes('border-radius')) {
+      map.removeLayer(layer);
+    }
+  });  
+  
   await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
 
   const map = window.map;
