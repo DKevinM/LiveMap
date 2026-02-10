@@ -357,7 +357,7 @@ async function loadRoses() {
         return L.marker(latlng, {
           icon: L.divIcon({
             className: '',
-            html: buildRoseSVG(p),
+            html: window.buildRoseSVG(p),
             iconSize: [120,120]
           })
         });  
