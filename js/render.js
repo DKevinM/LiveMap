@@ -63,14 +63,21 @@ function clearAllLayers() {
   
     const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
                   "S","SSW","SW","WSW","W","WNW","NW","NNW"];
-  
     const speeds = ["calm","low","med","high"];
-    const colors = {
-      calm: "#c6dbef",
-      low:  "#6baed6",
-      med:  "#2171b5",
-      high: "#08306b"
-    };
+    const colors = { calm:"#c6dbef", low:"#6baed6", med:"#2171b5", high:"#08306b" };
+  
+    // ---- compute max if missing / wrong ----
+    let computedMax = 0;
+    for (const d of dirs) {
+      for (const s of speeds) {
+        const v = Number(p[`${d}_${s}`] ?? 0);
+        if (Number.isFinite(v)) computedMax = Math.max(computedMax, v);
+      }
+    }
+    const max = Number.isFinite(Number(p.max)) && Number(p.max) > 0 ? Number(p.max) : computedMax;
+  
+    // ---- if no data, return empty so NOTHING draws ----
+    if (!max || max <= 0) return "";
   
     const R = 55;
     const cx = 60, cy = 60;
@@ -80,11 +87,14 @@ function clearAllLayers() {
       let startR = 0;
   
       speeds.forEach(s => {
-        const val = p[`${d}_${s}`] || 0;
-        const r = (val / p.max) * R;
+        const val = Number(p[`${d}_${s}`] ?? 0);
+        if (!Number.isFinite(val) || val <= 0) return; // skip zeros
   
-        const a1 = (i * 22.5 - 90) * Math.PI/180;
-        const a2 = ((i+1)*22.5 - 90) * Math.PI/180;
+        const r = (val / max) * R;
+        if (r <= 0) return;
+  
+        const a1 = (i * 22.5 - 90) * Math.PI / 180;
+        const a2 = ((i + 1) * 22.5 - 90) * Math.PI / 180;
   
         const x1 = cx + (startR + r) * Math.cos(a1);
         const y1 = cy + (startR + r) * Math.sin(a1);
@@ -96,15 +106,15 @@ function clearAllLayers() {
         const x4 = cx + startR * Math.cos(a1);
         const y4 = cy + startR * Math.sin(a1);
   
-        paths += `
-          <path d="M${x4},${y4} L${x1},${y1} A${startR+r},${startR+r} 0 0,1 ${x2},${y2} L${x3},${y3} Z"
-                fill="${colors[s]}"
-                stroke="#222"
-                stroke-width="0.4"/>`;
+        paths += `<path d="M${x4},${y4} L${x1},${y1} A${startR+r},${startR+r} 0 0,1 ${x2},${y2} L${x3},${y3} Z"
+                        fill="${colors[s]}" stroke="#222" stroke-width="0.4"/>`;
   
         startR += r;
       });
     });
+  
+    // If we never added any petals (keys mismatch), return "" so no circle appears
+    if (!paths) return "";
   
     return `
       <svg width="60" height="60" viewBox="0 0 120 120" style="pointer-events:none">
@@ -113,6 +123,7 @@ function clearAllLayers() {
       </svg>
     `;
   };
+
 
 
 
@@ -349,18 +360,18 @@ async function loadRoses() {
 
     L.geoJSON(geo, {
       pointToLayer: function(feature, latlng) {
-
-        const p = feature.properties;
-        
-        if (!p.max || p.max < 3) return null;   // <-- DO NOT DRAW EMPTY ROSES
-        
+        const p = feature.properties || {};
+      
+        const html = window.buildRoseSVG(p);
+        if (!html) return L.layerGroup(); // safe “nothing”
+      
         return L.marker(latlng, {
           icon: L.divIcon({
-            className: '',
-            html: window.buildRoseSVG(p),
-            iconSize: [120,120]
+            className: 'rose-icon',
+            html: html,
+            iconSize: [120, 120]
           })
-        });  
+        });
       }
     }).addTo(t.layer);
   }
