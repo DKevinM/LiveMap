@@ -354,6 +354,7 @@ async function loadRoses() {
         });  
       }
     }).addTo(t.layer);
+    t.layer.clearLayers(); 
   }
 }
 
