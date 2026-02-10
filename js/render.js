@@ -222,6 +222,71 @@ window.renderMap = async function () {
   });
 
 
+  // -----------------------
+  // build roses
+  // -----------------------
+  function buildRoseSVG(p) {
+  
+    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
+                  "S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  
+    const speeds = ["calm","low","med","high"];
+    const colors = {
+      calm: "#c6dbef",
+      low:  "#6baed6",
+      med:  "#2171b5",
+      high: "#08306b"
+    };
+  
+    const R = 55;
+    const cx = 60, cy = 60;
+    let paths = "";
+  
+    dirs.forEach((d, i) => {
+  
+      let startR = 0;
+  
+      speeds.forEach(s => {
+  
+        const val = p[`${d}_${s}`] || 0;
+        const r = (val / p.max) * R;
+  
+        const a1 = (i * 22.5 - 90) * Math.PI/180;
+        const a2 = ((i+1)*22.5 - 90) * Math.PI/180;
+  
+        const x1 = cx + (startR + r) * Math.cos(a1);
+        const y1 = cy + (startR + r) * Math.sin(a1);
+        const x2 = cx + (startR + r) * Math.cos(a2);
+        const y2 = cy + (startR + r) * Math.sin(a2);
+  
+        const x3 = cx + startR * Math.cos(a2);
+        const y3 = cy + startR * Math.sin(a2);
+        const x4 = cx + startR * Math.cos(a1);
+        const y4 = cy + startR * Math.sin(a1);
+  
+        paths += `
+          <path d="M${x4},${y4} L${x1},${y1} A${startR+r},${startR+r} 0 0,1 ${x2},${y2} L${x3},${y3} Z"
+                fill="${colors[s]}"
+                stroke="#222"
+                stroke-width="0.4"/>`;
+  
+        startR += r;
+  
+      });
+    });
+  
+    return `
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="58" fill="white" stroke="#333" stroke-width="2"/>
+        ${paths}
+      </svg>
+    `;
+  }
+
+
+
+
+  
 
   await loadRoses();
 
