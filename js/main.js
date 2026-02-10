@@ -37,6 +37,45 @@ function buildRoseSVG(p) {
 }
 
 
+// ================= ROSE LAYERS =================
+let roseLayers = {};
+
+async function loadRose(type) {
+
+  const res = await fetch(`data/rose_${type}.geojson`);
+  const geo = await res.json();
+
+  const layer = L.geoJSON(geo, {
+    pointToLayer: function(feature, latlng) {
+
+      const marker = L.marker(latlng, {
+        icon: L.divIcon({
+          className: '',
+          html: buildRoseSVG(feature.properties),
+          iconSize: [120,120],
+          iconAnchor: [60,60]
+        })
+      });
+
+      const p = feature.properties;
+
+      marker.bindTooltip(`
+        <b>${p.station}</b><br>
+        Max: ${p.max}
+      `);
+
+      return marker;
+    }
+  });
+
+  roseLayers[type] = layer;
+
+  layer.addTo(window.map);   // << THIS IS WHAT WAS MISSING
+}
+
+
+
+
 
 
 window.bootstrap = async function () {
@@ -47,9 +86,6 @@ window.bootstrap = async function () {
     console.error("initMap missing");
     return;
   }
-
-
-
   
   await initMap();
 
@@ -68,7 +104,11 @@ window.bootstrap = async function () {
   if (window.renderPurpleAir) {
     await renderPurpleAir();
   }
-
+  
+  await loadRose("PM25");
+  await loadRose("NO2");
+  await loadRose("O3");
+  
   console.log("Application ready.");
 };
 
