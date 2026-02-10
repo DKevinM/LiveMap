@@ -120,16 +120,18 @@ function clearAllLayers() {
 
 
 window.renderMap = async function () {
+  const map = window.map;   
+
   // KILL ALL ORPHAN MARKERS FROM OLD ROSE CODE
   map.eachLayer(function (layer) {
-    if (layer instanceof L.Marker && layer.options?.icon?.options?.html?.includes('border-radius')) {
+    if (layer instanceof L.Marker && layer.options.icon instanceof L.DivIcon) {
       map.removeLayer(layer);
     }
-  });  
+  });
+ 
   
   await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
 
-  const map = window.map;
   if (!map) {
     console.error("renderMap: window.map missing");
     return;
@@ -361,7 +363,6 @@ async function loadRoses() {
         });  
       }
     }).addTo(t.layer);
-    t.layer.clearLayers(); 
   }
 }
 
