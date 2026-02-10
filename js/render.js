@@ -286,14 +286,6 @@ async function loadRoses() {
   }
 }
 
-function buildRoseSVG(p) {
-  return `<div style="
-    width:60px;height:60px;
-    border-radius:50%;
-    background:rgba(255,255,255,0.6);
-    border:2px solid #333;">
-  </div>`;
-}
 
 
 window.renderStations = window.renderMap;
