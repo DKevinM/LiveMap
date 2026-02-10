@@ -287,5 +287,5 @@ async function loadRoses() {
 }
 
 
-
+buildRoseSVG = window.buildRoseSVG;
 window.renderStations = window.renderMap;
