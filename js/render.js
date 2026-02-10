@@ -355,13 +355,18 @@ async function loadRoses() {
 
     L.geoJSON(geo, {
       pointToLayer: function(feature, latlng) {
+
+        const p = feature.properties;
+        
+        if (!p.max || p.max < 3) return null;   // <-- DO NOT DRAW EMPTY ROSES
+        
         return L.marker(latlng, {
           icon: L.divIcon({
             className: '',
-            html: buildRoseSVG(feature.properties),
-            iconSize: [60,60]
+            html: buildRoseSVG(p),
+            iconSize: [120,120]
           })
-        });
+        });  
       }
     }).addTo(t.layer);
   }
