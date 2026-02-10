@@ -287,21 +287,6 @@ window.renderMap = async function () {
   // build roses
   // -----------------------
 
-  window.RosePM25.addTo(map);
-  window.RoseNO2.addTo(map);
-  window.RoseO3.addTo(map);
-  
-  map.removeLayer(window.RosePM25);
-  map.removeLayer(window.RoseNO2);
-  map.removeLayer(window.RoseO3);
-
-
-  
-
-
-
-
-
   
 
   await loadRoses();
