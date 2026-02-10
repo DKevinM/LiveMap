@@ -179,7 +179,7 @@ def build_rose(df, pollutant_name, stations):
 
 # -------- MAIN --------
 def main():
-    df = fetch_last24()
+    df = fetch_last48()
 
 
     stations = fetch_stations()
