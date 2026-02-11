@@ -149,7 +149,11 @@ window.renderMap = async function () {
   }
 
   clearAllLayers();
-
+  
+  while (!window.AppData?.purpleair || !window.dataByStation) {
+    await new Promise(r => setTimeout(r, 50));
+  }
+    
 
   // -----------------------
   // STATIONS
