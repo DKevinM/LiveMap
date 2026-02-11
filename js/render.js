@@ -346,6 +346,3 @@ window.renderMap = async function () {
     }
   }
 
-
-
-window.renderStations = window.renderMap;
