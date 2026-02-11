@@ -160,8 +160,8 @@ async function loadPurpleAir() {
   const records = Array.isArray(json) ? json : (json.data || []);
 
   return records.map(r => ({
-    lat: Number(r.lat ?? r.Latitude),
-    lon: Number(r.lon ?? r.Longitude),
+    lat: Number(r.latitude),
+    lon: Number(r.longitude),
     pm: Number(r.pm_corr),
     eAQHI: Math.floor(Number(r.pm_corr)/10)+1,
     name: r.name || `Sensor ${r.sensor_index ?? ""}`
