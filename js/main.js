@@ -6,6 +6,8 @@ window.bootstrap = async function () {
   await AppData.ready;
   await window.dataReady;
 
+  await window.buildDataStructures();
+  
   await window.renderMap();   // ← the real renderer
 
   console.log("Application ready.");
