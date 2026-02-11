@@ -169,11 +169,15 @@ async function loadPurpleAir() {
 }
 
 // ---------------- READY ----------------
-window.AppData.ready = Promise.all([
-  window.dataReady,
-  window.fetchAllStationData(),
-  loadPurpleAir()
-]).then(([_, stations, purple]) => {
+window.AppData.ready = (async () => {
+
+  await window.dataReady; 
+
+  const stations = await window.fetchAllStationData();
+  const purple   = await loadPurpleAir();
+
   AppData.stations = stations;
   AppData.purpleair = purple;
-});
+
+})();
+
