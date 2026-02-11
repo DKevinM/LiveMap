@@ -345,7 +345,7 @@ window.renderMap = async function () {
   
       t.layer.clearLayers();
   
-      const res = await fetch(`${location.origin}/LiveMap/data/rose_${t.key}.geojson`);
+      const res = await fetch(`data/rose_${t.key}.geojson`);
       const geo = await res.json();
   
       geo.features.forEach(f => {
