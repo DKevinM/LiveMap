@@ -112,6 +112,9 @@ function clearAllLayers() {
 window.renderMap = async function () {
   const map = window.map;   
 
+  await window.AppData.ready; 
+  await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
+  
   // ENSURE LAYERS ARE ATTACHED ONCE
   if (!window._layersAttached) {
   
@@ -129,12 +132,12 @@ window.renderMap = async function () {
   
     ACABoundaryLayer.addTo(map);
     WCASBoundaryLayer.addTo(map);
-  
+      
     window._layersAttached = true;
   }
   
   
-  await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
+
 
   if (!map) {
     console.error("renderMap: window.map missing");
@@ -295,6 +298,11 @@ window.renderMap = async function () {
   }
 
   await loadRoses();
+
+  map.addLayer(window.RosePM25);
+  map.addLayer(window.RoseNO2);
+  map.addLayer(window.RoseO3);
+  map.addLayer(window.ALLPurple);
   
   window._layerControl = L.control.layers(null, {
     "ACA Boundary": ACABoundaryLayer,
