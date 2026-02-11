@@ -301,7 +301,7 @@ window.renderMap = async function () {
     map.removeControl(window._layerControl);
   }
 
-  await loadRoses();
+  setTimeout(loadRoses, 0);
 
   map.addLayer(window.RosePM25);
   map.addLayer(window.RoseNO2);
