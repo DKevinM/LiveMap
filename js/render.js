@@ -56,73 +56,52 @@ function clearAllLayers() {
   window.ACAPurple.clearLayers();
   window.WCASPurple.clearLayers();
   window.ALLPurple.clearLayers();
+
+  window.RosePM25.clearLayers();
+  window.RoseNO2.clearLayers();
+  window.RoseO3.clearLayers();
 }
 
 
-  window.buildRoseSVG = function(p) {
+
+  function drawRose(latlng, p, layer) {
   
     const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
                   "S","SSW","SW","WSW","W","WNW","NW","NNW"];
-    const speeds = ["calm","low","med","high"];
-    const colors = { calm:"#c6dbef", low:"#6baed6", med:"#2171b5", high:"#08306b" };
   
-    // ---- compute max if missing / wrong ----
-    let computedMax = 0;
-    for (const d of dirs) {
-      for (const s of speeds) {
-        const v = Number(p[`${d}_${s}`] ?? 0);
-        if (Number.isFinite(v)) computedMax = Math.max(computedMax, v);
-      }
-    }
-    const max = Number.isFinite(Number(p.max)) && Number(p.max) > 0 ? Number(p.max) : computedMax;
+    const max = p.max || 1;
+    const R = 0.12; // degrees radius (~10km at AB scale, tweak)
   
-    // ---- if no data, return empty so NOTHING draws ----
-    if (!max || max <= 0) return "";
+    dirs.forEach((d,i) => {
+      const val = Number(p[d] || 0);
+      if (val <= 0) return;
   
-    const R = 55;
-    const cx = 60, cy = 60;
-    let paths = "";
+      const r = (val / max) * R;
   
-    dirs.forEach((d, i) => {
-      let startR = 0;
+      const a1 = (i * 22.5 - 90) * Math.PI/180;
+      const a2 = ((i+1)*22.5 - 90) * Math.PI/180;
   
-      speeds.forEach(s => {
-        const val = Number(p[`${d}_${s}`] ?? 0);
-        if (!Number.isFinite(val) || val <= 0) return; // skip zeros
+      const lat = latlng.lat;
+      const lon = latlng.lng;
   
-        const r = (val / max) * R;
-        if (r <= 0) return;
+      const p1 = [
+        lat + r * Math.sin(a1),
+        lon + r * Math.cos(a1)
+      ];
+      const p2 = [
+        lat + r * Math.sin(a2),
+        lon + r * Math.cos(a2)
+      ];
   
-        const a1 = (i * 22.5 - 90) * Math.PI / 180;
-        const a2 = ((i + 1) * 22.5 - 90) * Math.PI / 180;
-  
-        const x1 = cx + (startR + r) * Math.cos(a1);
-        const y1 = cy + (startR + r) * Math.sin(a1);
-        const x2 = cx + (startR + r) * Math.cos(a2);
-        const y2 = cy + (startR + r) * Math.sin(a2);
-  
-        const x3 = cx + startR * Math.cos(a2);
-        const y3 = cy + startR * Math.sin(a2);
-        const x4 = cx + startR * Math.cos(a1);
-        const y4 = cy + startR * Math.sin(a1);
-  
-        paths += `<path d="M${x4},${y4} L${x1},${y1} A${startR+r},${startR+r} 0 0,1 ${x2},${y2} L${x3},${y3} Z"
-                        fill="${colors[s]}" stroke="#222" stroke-width="0.4"/>`;
-  
-        startR += r;
-      });
+      L.polygon([latlng, p1, p2], {
+        color: "#222",
+        weight: 0.5,
+        fillColor: "#d62728",
+        fillOpacity: 0.7
+      }).addTo(layer);
     });
-  
-    // If we never added any petals (keys mismatch), return "" so no circle appears
-    if (!paths) return "";
-  
-    return `
-      <svg width="60" height="60" viewBox="0 0 120 120" style="pointer-events:none">
-        <circle cx="60" cy="60" r="58" fill="white" stroke="#333" stroke-width="2"/>
-        ${paths}
-      </svg>
-    `;
-  };
+  }
+
 
 
 
@@ -133,13 +112,27 @@ function clearAllLayers() {
 window.renderMap = async function () {
   const map = window.map;   
 
-  // KILL ALL ORPHAN MARKERS FROM OLD ROSE CODE
-  map.eachLayer(function (layer) {
-    if (layer instanceof L.Marker && layer.options.icon instanceof L.DivIcon) {
-      map.removeLayer(layer);
-    }
-  });
- 
+  // ENSURE LAYERS ARE ATTACHED ONCE
+  if (!window._layersAttached) {
+  
+    window.ACAStations.addTo(map);
+    window.WCASStations.addTo(map);
+    window.ALLStations.addTo(map);
+  
+    window.ACAPurple.addTo(map);
+    window.WCASPurple.addTo(map);
+    window.ALLPurple.addTo(map);
+  
+    window.RosePM25.addTo(map);
+    window.RoseNO2.addTo(map);
+    window.RoseO3.addTo(map);
+  
+    ACABoundaryLayer.addTo(map);
+    WCASBoundaryLayer.addTo(map);
+  
+    window._layersAttached = true;
+  }
+  
   
   await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
 
@@ -153,14 +146,6 @@ window.renderMap = async function () {
   }
 
   clearAllLayers();
-
-  // Add base overlay layers (default ON)
-  window.ALLStations.addTo(map);
-  window.ALLPurple.addTo(map);
-
-  // Optional: boundaries default ON
-  ACABoundaryLayer.addTo(map);
-  WCASBoundaryLayer.addTo(map);
 
 
   // -----------------------
@@ -303,22 +288,14 @@ window.renderMap = async function () {
   });
 
 
-  // -----------------------
-  // build roses
-  // -----------------------
-
-  
-
-  await loadRoses();
-
-  
-  
   // Layer control (build once per render; remove old if needed)
   // Optional: store ref to avoid duplicates
   if (window._layerControl) {
     map.removeControl(window._layerControl);
   }
 
+  await loadRoses();
+  
   window._layerControl = L.control.layers(null, {
     "ACA Boundary": ACABoundaryLayer,
     "WCAS Boundary": WCASBoundaryLayer,
@@ -343,39 +320,32 @@ window.renderMap = async function () {
 
 
 
-
-async function loadRoses() {
-
-  const types = [
-    { key: "PM25", layer: window.RosePM25 },
-    { key: "NO2",  layer: window.RoseNO2  },
-    { key: "O3",   layer: window.RoseO3   }
-  ];
-
-  for (const t of types) {
-    t.layer.clearLayers();
-
-    const res = await fetch(`data/rose_${t.key}.geojson`);
-    const geo = await res.json();
-
-    L.geoJSON(geo, {
-      pointToLayer: function(feature, latlng) {
-        const p = feature.properties || {};
-      
-        const html = window.buildRoseSVG(p);
-        if (!html) return L.layerGroup(); // safe “nothing”
-      
-        return L.marker(latlng, {
-          icon: L.divIcon({
-            className: 'rose-icon',
-            html: html,
-            iconSize: [120, 120]
-          })
-        });
-      }
-    }).addTo(t.layer);
+  // roses
+  async function loadRoses() {
+  
+    const types = [
+      { key: "PM25", layer: window.RosePM25 },
+      { key: "NO2",  layer: window.RoseNO2  },
+      { key: "O3",   layer: window.RoseO3   }
+    ];
+  
+    for (const t of types) {
+  
+      t.layer.clearLayers();
+  
+      const res = await fetch(`data/rose_${t.key}.geojson`);
+      const geo = await res.json();
+  
+      geo.features.forEach(f => {
+        const latlng = L.latLng(
+          f.geometry.coordinates[1],
+          f.geometry.coordinates[0]
+        );
+        drawRose(latlng, f.properties, t.layer);
+      });
+    }
   }
-}
+
 
 
 window.renderStations = window.renderMap;
