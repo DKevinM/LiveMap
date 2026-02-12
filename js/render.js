@@ -64,43 +64,58 @@ function clearAllLayers() {
 
 
 
+
   function drawRose(latlng, p, layer) {
-  
-    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
-                  "S","SSW","SW","WSW","W","WNW","NW","NNW"];
-  
-    const max = p.max || 1;
-    const R = 0.12; // degrees radius (~10km at AB scale, tweak)
-  
-    dirs.forEach((d,i) => {
-      const val = Number(p[d] || 0);
+
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
+                "S","SSW","SW","WSW","W","WNW","NW","NNW"];
+
+  const bins = [
+    { suffix: "_low",  color: "#9ecae1" },
+    { suffix: "_med",  color: "#3182bd" },
+    { suffix: "_high", color: "#08519c" }
+  ];
+
+  const max = Number(p.max) || 1;
+  const R = 0.2;
+
+  dirs.forEach((d, i) => {
+
+    let cumulative = 0;
+
+    bins.forEach(bin => {
+
+      const val = Number(p[d + bin.suffix] || 0);
       if (val <= 0) return;
-  
-      const r = (val / max) * R;
-  
-      const a1 = (i * 22.5 - 90) * Math.PI/180;
-      const a2 = ((i+1)*22.5 - 90) * Math.PI/180;
-  
+
+      const r1 = (cumulative / max) * R;
+      const r2 = ((cumulative + val) / max) * R;
+
+      cumulative += val;
+
+      const a1 = (i * 22.5 - 90) * Math.PI / 180;
+      const a2 = ((i + 1) * 22.5 - 90) * Math.PI / 180;
+
       const lat = latlng.lat;
       const lon = latlng.lng;
-  
-      const p1 = [
-        lat + r * Math.sin(a1),
-        lon + r * Math.cos(a1)
-      ];
-      const p2 = [
-        lat + r * Math.sin(a2),
-        lon + r * Math.cos(a2)
-      ];
-  
-      L.polygon([latlng, p1, p2], {
+
+      const p1 = [lat + r1 * Math.sin(a1), lon + r1 * Math.cos(a1)];
+      const p2 = [lat + r2 * Math.sin(a1), lon + r2 * Math.cos(a1)];
+      const p3 = [lat + r2 * Math.sin(a2), lon + r2 * Math.cos(a2)];
+      const p4 = [lat + r1 * Math.sin(a2), lon + r1 * Math.cos(a2)];
+
+      L.polygon([p1, p2, p3, p4], {
         color: "#222",
         weight: 0.5,
-        fillColor: "#d62728",
+        fillColor: bin.color,
         fillOpacity: 0.7
       }).addTo(layer);
+
     });
-  }
+
+  });
+}
+
 
 
 
