@@ -115,23 +115,21 @@ def fetch_stations():
 def build_rose(df, pollutant_name, stations):
 
     # ---- Pivot parameters into columns by hour ----
-    pol  = df[df["ParameterName"] == pollutant_name].copy()
-    wdir = df[df["ParameterName"] == "Wind Direction"].copy()
-    wspd = df[df["ParameterName"] == "Wind Speed"].copy()
-    
-    # sort for merge_asof
-    pol  = pol.rename(columns={"Value": "Value_pol"})
+    pol = df[df["ParameterName"] == pollutant_name].copy()
+    pol = pol.rename(columns={"Value": "Value_pol"})
     
     wdir = df[df["ParameterName"] == "Wind Direction"].copy()
     wdir = wdir.rename(columns={"Value": "Value_wdir"})
     
     wspd = df[df["ParameterName"] == "Wind Speed"].copy()
     wspd = wspd.rename(columns={"Value": "Value_ws"})
-
-
+    
+    # ---- REQUIRED FOR merge_asof ----
     pol  = pol.sort_values(["StationName", "ReadingDate"])
     wdir = wdir.sort_values(["StationName", "ReadingDate"])
     wspd = wspd.sort_values(["StationName", "ReadingDate"])
+
+
 
     
     # attach nearest wind direction
