@@ -65,56 +65,68 @@ function clearAllLayers() {
 
 
 
+
+  
   function drawRose(latlng, p, layer) {
-
-  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
-                "S","SSW","SW","WSW","W","WNW","NW","NNW"];
-
-  const bins = [
-    { suffix: "_low",  color: "#9ecae1" },
-    { suffix: "_med",  color: "#3182bd" },
-    { suffix: "_high", color: "#08519c" }
-  ];
-
-  const max = Number(p.max) || 1;
-  const R = 0.2;
-
-  dirs.forEach((d, i) => {
-
-    let cumulative = 0;
-
-    bins.forEach(bin => {
-
-      const val = Number(p[d + bin.suffix] || 0);
-      if (val <= 0) return;
-
-      const r1 = (cumulative / max) * R;
-      const r2 = ((cumulative + val) / max) * R;
-
-      cumulative += val;
-
-      const a1 = (i * 22.5 - 90) * Math.PI / 180;
-      const a2 = ((i + 1) * 22.5 - 90) * Math.PI / 180;
-
-      const lat = latlng.lat;
-      const lon = latlng.lng;
-
-      const p1 = [lat + r1 * Math.sin(a1), lon + r1 * Math.cos(a1)];
-      const p2 = [lat + r2 * Math.sin(a1), lon + r2 * Math.cos(a1)];
-      const p3 = [lat + r2 * Math.sin(a2), lon + r2 * Math.cos(a2)];
-      const p4 = [lat + r1 * Math.sin(a2), lon + r1 * Math.cos(a2)];
-
-      L.polygon([p1, p2, p3, p4], {
-        color: "#222",
-        weight: 0.5,
-        fillColor: bin.color,
-        fillOpacity: 0.7
-      }).addTo(layer);
-
+  
+    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
+                  "S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  
+    const bins = [
+      { suffix: "_calm", color: "#d9f0ff" },
+      { suffix: "_low",  color: "#9ecae1" },
+      { suffix: "_med",  color: "#3182bd" },
+      { suffix: "_high", color: "#08519c" }
+    ];
+  
+    const max = Number(p.max) || 1;
+    const R = 0.18;   // degrees (~15–20km at AB latitude)
+  
+    dirs.forEach((d, i) => {
+  
+      let cumulative = 0;
+  
+      bins.forEach(bin => {
+  
+        const val = Number(p[d + bin.suffix] || 0);
+        if (val <= 0) return;
+  
+        const r1 = (cumulative / max) * R;
+        const r2 = ((cumulative + val) / max) * R;
+        cumulative += val;
+  
+        const a1 = (i * 22.5 - 90) * Math.PI/180;
+        const a2 = ((i+1) * 22.5 - 90) * Math.PI/180;
+  
+        const lat = latlng.lat;
+        const lon = latlng.lng;
+  
+        const p1 = [lat + r1 * Math.sin(a1), lon + r1 * Math.cos(a1)];
+        const p2 = [lat + r2 * Math.sin(a1), lon + r2 * Math.cos(a1)];
+        const p3 = [lat + r2 * Math.sin(a2), lon + r2 * Math.cos(a2)];
+        const p4 = [lat + r1 * Math.sin(a2), lon + r1 * Math.cos(a2)];
+  
+        const poly = L.polygon([p1, p2, p3, p4], {
+          color: "#333",
+          weight: 0.4,
+          fillColor: bin.color,
+          fillOpacity: 0.8
+        });
+  
+        poly.bindTooltip(
+          `${d} ${bin.suffix.replace("_","")}<br>
+           Value: ${val}<br>
+           Max: ${max}`
+        );
+  
+        poly.addTo(layer);
+  
+      });
+  
     });
+  }
 
-  });
-}
+
 
 
 
@@ -301,7 +313,12 @@ window.renderMap = async function () {
       ${p.name || "Unnamed"}<br>
       AQHI: ${Number.isFinite(aq) ? aq : "--"}<br>
       PM₂.₅: ${Number.isFinite(p.pm) ? p.pm.toFixed(1) : "--"} µg/m³
-    `);
+      <hr>
+      <a href="/LiveMap/purple_history.html?sensor=${encodeURIComponent(p.name)}" target="_blank">
+        View historical data
+      </a>
+    `)
+
 
     // Add to All + optionally ACA/WCAS
     window.ALLPurple.addLayer(marker);
