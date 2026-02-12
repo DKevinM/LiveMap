@@ -125,9 +125,10 @@ def build_rose(df, pollutant_name, stations):
     wspd = wspd.rename(columns={"Value": "Value_ws"})
     
     # ---- REQUIRED FOR merge_asof ----
-    pol  = pol.sort_values(["StationName", "ReadingDate"]).reset_index(drop=True)
-    wdir = wdir.sort_values(["StationName", "ReadingDate"]).reset_index(drop=True)
-    wspd = wspd.sort_values(["StationName", "ReadingDate"]).reset_index(drop=True)
+    pol  = pol.sort_values(["ReadingDate", "StationName"]).reset_index(drop=True)
+    wdir = wdir.sort_values(["ReadingDate", "StationName"]).reset_index(drop=True)
+    wspd = wspd.sort_values(["ReadingDate", "StationName"]).reset_index(drop=True)
+
 
 
     print(pol[["StationName","ReadingDate"]].head(10))
