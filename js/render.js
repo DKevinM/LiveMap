@@ -301,11 +301,12 @@ window.renderMap = async function () {
     map.removeControl(window._layerControl);
   }
 
-  setTimeout(loadRoses, 0);
+  await loadRoses();
 
-  map.addLayer(window.RosePM25);
-  map.addLayer(window.RoseNO2);
-  map.addLayer(window.RoseO3);
+
+
+
+  
   map.addLayer(window.ALLPurple);
   
   window._layerControl = L.control.layers(null, {
@@ -335,6 +336,8 @@ window.renderMap = async function () {
   // roses
   async function loadRoses() {
   
+    console.log("Loading roses...");
+  
     const types = [
       { key: "PM25", layer: window.RosePM25 },
       { key: "NO2",  layer: window.RoseNO2  },
@@ -343,10 +346,15 @@ window.renderMap = async function () {
   
     for (const t of types) {
   
-      t.layer.clearLayers();
+      console.log("Fetching", t.key);
   
       const res = await fetch(`data/rose_${t.key}.geojson`);
+      console.log(t.key, "status:", res.status);
+  
       const geo = await res.json();
+      console.log(t.key, "features:", geo.features?.length);
+  
+      t.layer.clearLayers();
   
       geo.features.forEach(f => {
         const latlng = L.latLng(
@@ -355,6 +363,11 @@ window.renderMap = async function () {
         );
         drawRose(latlng, f.properties, t.layer);
       });
+  
+      console.log(t.key, "layer count:", t.layer.getLayers().length);
     }
+  
+    console.log("Roses done.");
   }
+
 
