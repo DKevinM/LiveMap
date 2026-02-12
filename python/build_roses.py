@@ -173,15 +173,20 @@ def build_rose(df, pollutant_name, stations):
 
         props = {}
         max_val = 0
-
+        
         for d in BINS:
             for s in ["calm","low","med","high"]:
                 val = matrix.get((d,s), 0)
                 props[f"{d}_{s}"] = round(val, 2)
                 max_val = max(max_val, val)
-
+        
+        # ---- SAFETY GUARD ----
+        if max_val == 0:
+            max_val = 1
+        
         props["station"] = station
         props["max"] = max_val
+
 
         roses.append({
             "type": "Feature",
