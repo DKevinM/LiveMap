@@ -50,23 +50,42 @@ def fetch_last48():
 
     url = f"{SUPABASE_URL}/rest/v1/{TABLE}"
 
-    params = {
-        "select": "StationName,ParameterName,Value,ReadingDate",
-        "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Ozone,Wind Direction,Wind Speed)",
-        "ReadingDate": f"gte.{since.isoformat()}",
-        "order": "ReadingDate"
-    }
+    all_rows = []
+    start = 0
+    page_size = 1000
 
-    r = requests.get(url, headers=HEADERS, params=params)
-    r.raise_for_status()
+    while True:
+        headers = HEADERS.copy()
+        headers["Range"] = f"{start}-{start+page_size-1}"
 
-    df = pd.DataFrame(r.json())
+        params = {
+            "select": "StationName,ParameterName,Value,ReadingDate",
+            "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Ozone,Wind Direction,Wind Speed)",
+            "ReadingDate": f"gte.{since.isoformat()}",
+            "order": "ReadingDate"
+        }
+
+        r = requests.get(url, headers=headers, params=params)
+        r.raise_for_status()
+        rows = r.json()
+
+        if not rows:
+            break
+
+        all_rows.extend(rows)
+
+        if len(rows) < page_size:
+            break
+
+        start += page_size
+
+    df = pd.DataFrame(all_rows)
     df["ReadingDate"] = pd.to_datetime(df["ReadingDate"])
     df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
 
     print("Rows pulled:", len(df))
-
     return df
+
 
 
 
@@ -101,7 +120,6 @@ def build_rose(df, pollutant_name, stations):
     wspd = df[df["ParameterName"] == "Wind Speed"].copy()
     
     # sort for merge_asof
-    pol  = df[df["ParameterName"] == pollutant_name].copy()
     pol  = pol.rename(columns={"Value": "Value_pol"})
     
     wdir = df[df["ParameterName"] == "Wind Direction"].copy()
@@ -109,6 +127,11 @@ def build_rose(df, pollutant_name, stations):
     
     wspd = df[df["ParameterName"] == "Wind Speed"].copy()
     wspd = wspd.rename(columns={"Value": "Value_ws"})
+
+
+    pol  = pol.sort_values(["StationName", "ReadingDate"])
+    wdir = wdir.sort_values(["StationName", "ReadingDate"])
+    wspd = wspd.sort_values(["StationName", "ReadingDate"])
 
     
     # attach nearest wind direction
@@ -118,7 +141,7 @@ def build_rose(df, pollutant_name, stations):
         on="ReadingDate",
         by="StationName",
         suffixes=("_pol","_wdir"),
-        tolerance=pd.Timedelta("10min"),
+        tolerance=pd.Timedelta("30min"),
         direction="nearest"
     )
     
@@ -129,7 +152,7 @@ def build_rose(df, pollutant_name, stations):
         on="ReadingDate",
         by="StationName",
         suffixes=("","_ws"),
-        tolerance=pd.Timedelta("10min"),
+        tolerance=pd.Timedelta("30min"),
         direction="nearest"
     )
     
@@ -146,7 +169,7 @@ def build_rose(df, pollutant_name, stations):
         lon = stations.loc[stations.StationName == station, "Longitude"].iloc[0]
 
         # 2D matrix: dir x speed
-        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].mean()
+        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].sum()
 
         props = {}
         max_val = 0
