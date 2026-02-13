@@ -21,14 +21,13 @@ POLLUTANTS = {
     "Ozone": "O3"
 }
 
-BINS = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
-        "S","SSW","SW","WSW","W","WNW","NW","NNW"]
+BINS = ["N","NE","E","SE","S","SW","W","NW"]
 
 
 def dir_to_bin(deg):
     d = float(deg)
     d = ((d % 360) + 360) % 360      # forces into [0,360)
-    ix = int(((d + 11.25) // 22.5) % 16)
+    ix = int(((d + 22.5) // 45) % 8)
     return BINS[ix]
 
 
@@ -170,7 +169,8 @@ def build_rose(df, pollutant_name, stations):
         lon = stations.loc[stations.StationName == station, "Longitude"].iloc[0]
 
         # 2D matrix: dir x speed
-        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].sum()
+        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].mean() 
+        
 
         props = {}
         max_val = 0
