@@ -101,7 +101,7 @@ function clearAllLayers() {
     
     // Radius in METERS (not degrees)
     const zoomScale = Math.pow(2, map.getZoom() - 8);
-    const R = 20 * zoomScale;
+    const R = 10 * zoomScale;
 
   
 
