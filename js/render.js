@@ -104,57 +104,50 @@ function clearAllLayers() {
     const R = 30 * zoomScale;
 
   
-    dirs.forEach((d, i) => {
-  
-      let cumulative = 0;
-  
-      bins.forEach(bin => {
-  
-        const val = Number(p[d + bin.suffix] || 0);
-        if (val <= 0) return;
-  
-        const r1 = (cumulative / total) * R;
-        const r2 = ((cumulative + val) / total) * R;
-        
-        cumulative += val;
-  
-        const angle1 = (i * 45 - 90) * Math.PI/180;
-        const angle2 = ((i+1) * 45 - 90) * Math.PI/180;
-  
-        const center = map.project(latlng);
-  
-        const p1 = map.unproject([
-          center.x + r1 * Math.cos(angle1),
-          center.y + r1 * Math.sin(angle1)
-        ]);
-  
-        const p2 = map.unproject([
-          center.x + r2 * Math.cos(angle1),
-          center.y + r2 * Math.sin(angle1)
-        ]);
-  
-        const p3 = map.unproject([
-          center.x + r2 * Math.cos(angle2),
-          center.y + r2 * Math.sin(angle2)
-        ]);
-  
-        const p4 = map.unproject([
-          center.x + r1 * Math.cos(angle2),
-          center.y + r1 * Math.sin(angle2)
-        ]);
-  
-        L.polygon([p1, p2, p3, p4], {
-          color: "#333",
-          weight: 0.4,
-          fillColor: bin.color,
-          fillOpacity: 0.8
-        })
-        .bindTooltip(`${d} ${bin.suffix.replace("_","")}<br>Value: ${val}${unit}`)
-        .addTo(layer);
-  
-      });
+
+    // find max mean concentration for scaling
+    let maxVal = 0;
+    dirs.forEach(d => {
+      const v = Number(p[`${d}_mean`] || 0);
+      if (v > maxVal) maxVal = v;
     });
-  }
+    if (maxVal === 0) maxVal = 1;
+    
+    dirs.forEach((d, i) => {
+    
+      const val = Number(p[`${d}_mean`] || 0);
+      if (val <= 0) return;
+    
+      const r = (val / maxVal) * R;
+    
+      const angle1 = (i * 45 - 90) * Math.PI/180;
+      const angle2 = ((i+1) * 45 - 90) * Math.PI/180;
+    
+      const center = map.project(latlng);
+    
+      const p1 = map.unproject([center.x, center.y]);
+    
+      const p2 = map.unproject([
+        center.x + r * Math.cos(angle1),
+        center.y + r * Math.sin(angle1)
+      ]);
+    
+      const p3 = map.unproject([
+        center.x + r * Math.cos(angle2),
+        center.y + r * Math.sin(angle2)
+      ]);
+    
+      L.polygon([p1, p2, p3], {
+        color: "#333",
+        weight: 0.5,
+        fillColor: "#3182bd",
+        fillOpacity: 0.8
+      })
+      .bindTooltip(`${d}<br>Mean: ${val.toFixed(1)} ${unit}`)
+      .addTo(layer);
+    
+    });
+
 
 
 
