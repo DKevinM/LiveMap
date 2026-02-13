@@ -101,7 +101,7 @@ function clearAllLayers() {
     
     // Radius in METERS (not degrees)
     const zoomScale = Math.pow(2, map.getZoom() - 8);
-    const R = 30 * zoomScale;
+    const R = 20 * zoomScale;
 
   
 
@@ -381,6 +381,7 @@ window.renderMap = async function () {
 };
 
 
+
   function buildRoseTable(p, pollutant) {
   
     let unit = "";
@@ -391,24 +392,59 @@ window.renderMap = async function () {
     const dirs = ["N","NE","E","SE","S","SW","W","NW"];
     const bins = ["calm","low","med","high"];
   
-    let html = `<strong>${p.station}</strong><br>`;
-    html += `<table style="border-collapse:collapse;font-size:12px;">`;
-    html += `<tr><th>Dir</th><th>Calm</th><th>Low</th><th>Med</th><th>High</th></tr>`;
+    let html = `
+      <div style="min-width:260px">
+        <strong>${p.station || "Station"}</strong><br>
+        <small>${p.period || "Last 7 Days"} – ${p.pollutant || pollutant}</small>
+        <br><br>
+        <table style="
+          border-collapse: collapse;
+          width:100%;
+          font-size:12px;
+          text-align:center;
+        ">
+          <tr style="background:#f0f0f0;">
+            <th style="border:1px solid #ccc;padding:4px;">Dir</th>
+            <th style="border:1px solid #ccc;padding:4px;">Calm</th>
+            <th style="border:1px solid #ccc;padding:4px;">Low</th>
+            <th style="border:1px solid #ccc;padding:4px;">Med</th>
+            <th style="border:1px solid #ccc;padding:4px;">High</th>
+          </tr>
+    `;
   
     dirs.forEach(d => {
-      html += `<tr><td><b>${d}</b></td>`;
+      html += `<tr>`;
+      html += `<td style="border:1px solid #ccc;padding:4px;"><b>${d}</b></td>`;
+  
       bins.forEach(b => {
         const val = Number(p[`${d}_${b}`] || 0);
-        html += `<td>${val.toFixed(1)}</td>`;
+        html += `<td style="border:1px solid #ccc;padding:4px;">
+                  ${val.toFixed(1)}
+                 </td>`;
       });
+  
       html += `</tr>`;
     });
   
     html += `</table><br>`;
-    html += `Units: ${unit}`;
+  
+    html += `
+      <div style="font-size:12px">
+        <b>Summary:</b><br>
+        Period: ${p.start_date} → ${p.end_date}<br>
+        Overall Mean: ${Number(p.overall_mean || 0).toFixed(1)} ${unit}<br>
+        Predominant Direction: <b>${p.dominant_dir || "--"}</b>
+        (${Number(p.dominant_value || 0).toFixed(1)} ${unit},
+        ${Number(p.dominant_percent || 0).toFixed(1)}%)<br>
+        Calm Conditions: ${Number(p.calm_percent || 0).toFixed(1)}%<br>
+        Total Samples: ${p.n_total || 0}
+      </div>
+    </div>
+    `;
   
     return html;
   }
+
 
 
 
