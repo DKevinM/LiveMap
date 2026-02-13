@@ -85,7 +85,7 @@ function clearAllLayers() {
     if (pollutant === "NO2")  unit = " ppb";
     if (pollutant === "O3")   unit = " ppb";
   
-    const max = Number(p.max) || 1;
+    const total = Number(p.total) || 1;
   
     // Radius in METERS (not degrees)
     const R = 500;  
@@ -99,8 +99,9 @@ function clearAllLayers() {
         const val = Number(p[d + bin.suffix] || 0);
         if (val <= 0) return;
   
-        const r1 = (cumulative / max) * R;
-        const r2 = ((cumulative + val) / max) * R;
+        const r1 = (cumulative / total) * R;
+        const r2 = ((cumulative + val) / total) * R;
+        
         cumulative += val;
   
         const angle1 = (i * 45 - 90) * Math.PI/180;
