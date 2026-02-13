@@ -46,7 +46,7 @@ def speed_bin(ws):
 
 def fetch_last48():
     now = datetime.now(timezone.utc)
-    since = now - timedelta(hours=48)
+    since = now - timedelta(hours=168)
 
     url = f"{SUPABASE_URL}/rest/v1/{TABLE}"
 
@@ -186,7 +186,7 @@ def build_rose(df, pollutant_name, stations):
             max_val = 1
         
         props["station"] = station
-        props["max"] = max_val
+        props["max"] = float(max_val)
 
 
         roses.append({
