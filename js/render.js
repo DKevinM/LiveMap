@@ -67,10 +67,11 @@ function clearAllLayers() {
 
 
   
-  function drawRose(latlng, p, layer) {
+  function drawRose(latlng, p, layer, pollutant) {
   
-    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
-                  "S","SSW","SW","WSW","W","WNW","NW","NNW"];
+    const map = window.map;
+  
+    const dirs = ["N","NE","E","SE","S","SW","W","NW"];
   
     const bins = [
       { suffix: "_calm", color: "#d9f0ff" },
@@ -79,8 +80,15 @@ function clearAllLayers() {
       { suffix: "_high", color: "#08519c" }
     ];
   
+    let unit = "";
+    if (pollutant === "PM25") unit = " µg/m³";
+    if (pollutant === "NO2")  unit = " ppb";
+    if (pollutant === "O3")   unit = " ppb";
+  
     const max = Number(p.max) || 1;
-    const R = 0.18;   // degrees (~15–20km at AB latitude)
+  
+    // Radius in METERS (not degrees)
+    const R = 12000;  // 12 km max size
   
     dirs.forEach((d, i) => {
   
@@ -95,36 +103,44 @@ function clearAllLayers() {
         const r2 = ((cumulative + val) / max) * R;
         cumulative += val;
   
-        const a1 = (i * 22.5 - 90) * Math.PI/180;
-        const a2 = ((i+1) * 22.5 - 90) * Math.PI/180;
+        const angle1 = (i * 45 - 90) * Math.PI/180;
+        const angle2 = ((i+1) * 45 - 90) * Math.PI/180;
   
-        const lat = latlng.lat;
-        const lon = latlng.lng;
+        const center = map.project(latlng);
   
-        const p1 = [lat + r1 * Math.sin(a1), lon + r1 * Math.cos(a1)];
-        const p2 = [lat + r2 * Math.sin(a1), lon + r2 * Math.cos(a1)];
-        const p3 = [lat + r2 * Math.sin(a2), lon + r2 * Math.cos(a2)];
-        const p4 = [lat + r1 * Math.sin(a2), lon + r1 * Math.cos(a2)];
+        const p1 = map.unproject([
+          center.x + r1 * Math.cos(angle1),
+          center.y + r1 * Math.sin(angle1)
+        ]);
   
-        const poly = L.polygon([p1, p2, p3, p4], {
+        const p2 = map.unproject([
+          center.x + r2 * Math.cos(angle1),
+          center.y + r2 * Math.sin(angle1)
+        ]);
+  
+        const p3 = map.unproject([
+          center.x + r2 * Math.cos(angle2),
+          center.y + r2 * Math.sin(angle2)
+        ]);
+  
+        const p4 = map.unproject([
+          center.x + r1 * Math.cos(angle2),
+          center.y + r1 * Math.sin(angle2)
+        ]);
+  
+        L.polygon([p1, p2, p3, p4], {
           color: "#333",
           weight: 0.4,
           fillColor: bin.color,
           fillOpacity: 0.8
-        });
-  
-        poly.bindTooltip(
-          `${d} ${bin.suffix.replace("_","")}<br>
-           Value: ${val}<br>
-           Max: ${max}`
-        );
-  
-        poly.addTo(layer);
+        })
+        .bindTooltip(`${d} ${bin.suffix.replace("_","")}<br>Value: ${val}${unit}`)
+        .addTo(layer);
   
       });
-  
     });
   }
+
 
 
 
@@ -378,28 +394,41 @@ window.renderMap = async function () {
   
     for (const t of types) {
   
-      console.log("Fetching", t.key);
-  
-      const res = await fetch(`data/rose_${t.key}.geojson`);
-      console.log(t.key, "status:", res.status);
-  
-      const geo = await res.json();
-      console.log(t.key, "features:", geo.features?.length);
-  
       t.layer.clearLayers();
   
+      const res = await fetch(`data/rose_${t.key}.geojson`);
+      const geo = await res.json();
+  
       geo.features.forEach(f => {
+  
         const latlng = L.latLng(
           f.geometry.coordinates[1],
           f.geometry.coordinates[0]
         );
-        drawRose(latlng, f.properties, t.layer);
+  
+        // draw wedges
+        drawRose(latlng, f.properties, t.layer, t.key);
+  
+        // add center marker for popup
+        const centerMarker = L.circleMarker(latlng, {
+          radius: 4,
+          fillColor: "#000",
+          color: "#000",
+          weight: 1,
+          fillOpacity: 1
+        });
+  
+        centerMarker.bindPopup(
+          buildRoseTable(f.properties, t.key)
+        );
+  
+        centerMarker.addTo(t.layer);
       });
   
-      console.log(t.key, "layer count:", t.layer.getLayers().length);
     }
   
     console.log("Roses done.");
   }
+
 
 
