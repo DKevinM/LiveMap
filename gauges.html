@@ -129,8 +129,22 @@
 </head>
 <body>
 <div class="topnav">
-  <a href="index.html" class="backlink">← Back to AQHI Map</a>
+  <a href="#" class="backlink" onclick="goBack(event)">
+    ← Back to AQHI Map
+  </a>
 </div>
+
+<script>
+function goBack(e) {
+  e.preventDefault();
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = "index.html";
+  }
+}
+</script>
+
   
 <div class="aqhiHeader">
   <div class="aqhiText">
