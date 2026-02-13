@@ -84,11 +84,23 @@ function clearAllLayers() {
     if (pollutant === "PM25") unit = " µg/m³";
     if (pollutant === "NO2")  unit = " ppb";
     if (pollutant === "O3")   unit = " ppb";
-  
-    const total = Number(p.total) || 1;
-  
+
+
+    let total = 0;
+    dirs.forEach(d => {
+      bins.forEach(b => {
+        total += Number(p[`${d}_${b}`] || 0);
+      });
+    });
+    if (total === 0) total = 1;
+    
+    const total = Number(p.grand_total) || 1;
+
+    
     // Radius in METERS (not degrees)
-    const R = 50;  
+    const zoomScale = Math.pow(2, map.getZoom() - 8);
+    const R = 30 * zoomScale;
+
   
     dirs.forEach((d, i) => {
   
