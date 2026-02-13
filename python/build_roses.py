@@ -210,7 +210,7 @@ def build_rose(df, pollutant_name, stations):
             props["start_date"] = g["ReadingDate"].min().strftime("%Y-%m-%d %H:%M")
             props["end_date"]   = g["ReadingDate"].max().strftime("%Y-%m-%d %H:%M")
             
-            direction_means = {d: props[f"{d}_mean"] for d in BINS}
+            direction_means = {d: props.get(f"{d}_mean", 0) for d in BINS}
             dominant = max(direction_means, key=direction_means.get)
             
             props["dominant_dir"] = dominant
