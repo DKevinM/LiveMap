@@ -10,7 +10,7 @@ window.WCASPurple   = window.WCASPurple   || L.layerGroup();
 window.ALLStations  = window.ALLStations  || L.layerGroup();
 window.ALLPurple    = window.ALLPurple    || L.layerGroup();
 window.roseRegionFilter = "WCAS";   // "ALL", "ACA", "WCAS", "OTHER"
-window.roseVisible = true;
+window.roseVisible = false;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
 window.RoseO3   = window.RoseO3   || L.layerGroup();
@@ -398,7 +398,7 @@ window.renderMap = async function () {
     
         div.innerHTML = `
           <b>Roses</b><br>
-          <label><input type="checkbox" id="roseToggle" checked> Show</label><br>
+          <label><input type="checkbox" id="roseToggle"> Show</label><br>
           <label><input type="radio" name="roseRegion" value="ALL"> All</label>
           <label><input type="radio" name="roseRegion" value="ACA"> ACA</label><br>
           <label><input type="radio" name="roseRegion" value="WCAS" checked> WCAS</label>
