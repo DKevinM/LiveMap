@@ -169,7 +169,9 @@ def build_rose(df, pollutant_name, stations):
         lon = stations.loc[stations.StationName == station, "Longitude"].iloc[0]
 
         # 2D matrix: dir x speed
-        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].sum()
+        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].mean()
+        counts = g.groupby(["dir_bin","spd_bin"])["Value_pol"].size()
+
         
         total_val = matrix.sum()
         
@@ -177,33 +179,29 @@ def build_rose(df, pollutant_name, stations):
         
         sector_totals = {}
         
-        for d in BINS:
-        
-            sector_total = 0
-        
-            for s in ["calm","low","med","high"]:
-                val = matrix.get((d,s), 0)
-                props[f"{d}_{s}"] = round(val, 2)
-                sector_total += val
-        
-            sector_totals[d] = sector_total
-            props[f"{d}_total"] = round(sector_total, 2)
-        
-        # overall total pollutant load
-        props["grand_total"] = round(total_val, 2)
-        
-        # dominant sector
-        if total_val > 0:
-            dominant = max(sector_totals, key=sector_totals.get)
-            props["dominant"] = dominant
-            props["dominant_percent"] = round(
-                sector_totals[dominant] / total_val * 100,
-                1
-            )
-        else:
-            props["dominant"] = None
-            props["dominant_percent"] = 0
 
+        for d in BINS:
+            sector_total = 0  # <-- don't use "total" for mean roses (doesn't mean anything)
+            for s in ["calm","low","med","high"]:
+                val = float(matrix.get((d,s), 0) or 0)
+                n   = int(counts.get((d,s), 0) or 0)
+        
+                props[f"{d}_{s}"] = round(val, 2)       # mean concentration in that bin
+                props[f"{d}_{s}_n"] = n                 # optional counts
+        
+            # optional: a direction-level mean across speeds, weighted by counts
+            wsum = 0.0
+            nsum = 0
+            for s in ["calm","low","med","high"]:
+                v = float(matrix.get((d,s), 0) or 0)
+                n = int(counts.get((d,s), 0) or 0)
+                wsum += v * n
+                nsum += n
+            props[f"{d}_mean"] = round(wsum/nsum, 2) if nsum else 0
+            props[f"{d}_n"] = nsum
+            
+            props["overall_mean"] = round(g["Value_pol"].mean(), 2)
+            props["n_total"] = int(len(g))
 
 
 
