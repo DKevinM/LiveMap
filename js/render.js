@@ -145,13 +145,6 @@ function clearAllLayers() {
 
 
 
-
-
-
-
-
-
-
 window.renderMap = async function () {
   const map = window.map;   
 
@@ -378,6 +371,38 @@ window.renderMap = async function () {
 
   console.log("Map rendered.");
 };
+
+
+  function buildRoseTable(p, pollutant) {
+  
+    let unit = "";
+    if (pollutant === "PM25") unit = "µg/m³";
+    if (pollutant === "NO2")  unit = "ppb";
+    if (pollutant === "O3")   unit = "ppb";
+  
+    const dirs = ["N","NE","E","SE","S","SW","W","NW"];
+    const bins = ["calm","low","med","high"];
+  
+    let html = `<strong>${p.station}</strong><br>`;
+    html += `<table style="border-collapse:collapse;font-size:12px;">`;
+    html += `<tr><th>Dir</th><th>Calm</th><th>Low</th><th>Med</th><th>High</th></tr>`;
+  
+    dirs.forEach(d => {
+      html += `<tr><td><b>${d}</b></td>`;
+      bins.forEach(b => {
+        const val = Number(p[`${d}_${b}`] || 0);
+        html += `<td>${val.toFixed(1)}</td>`;
+      });
+      html += `</tr>`;
+    });
+  
+    html += `</table><br>`;
+    html += `Units: ${unit}`;
+  
+    return html;
+  }
+
+
 
 
 
