@@ -85,16 +85,18 @@ function clearAllLayers() {
     if (pollutant === "NO2")  unit = " ppb";
     if (pollutant === "O3")   unit = " ppb";
 
-
-    let total = 0;
-    dirs.forEach(d => {
-      bins.forEach(b => {
-        total += Number(p[`${d}_${b}`] || 0);
-      });
-    });
-    if (total === 0) total = 1;
     
-    const total = Number(p.grand_total) || 1;
+    let total = Number(p.grand_total);
+    
+    if (!Number.isFinite(total) || total <= 0) {
+      total = 0;
+      dirs.forEach(d => {
+        bins.forEach(bin => {
+          total += Number(p[d + bin.suffix] || 0);
+        });
+      });
+      if (total === 0) total = 1;
+    }
 
     
     // Radius in METERS (not degrees)
