@@ -203,7 +203,16 @@ def build_rose(df, pollutant_name, stations):
             props["overall_mean"] = round(g["Value_pol"].mean(), 2)
             props["n_total"] = int(len(g))
 
+            props["station"] = station
+            props["pollutant"] = pollutant_name
+            props["period"] = "Last 7 Days"
 
+            
+            direction_means = {d: props[f"{d}_mean"] for d in BINS}
+            dominant = max(direction_means, key=direction_means.get)
+            
+            props["dominant_dir"] = dominant
+            props["dominant_value"] = round(direction_means[dominant], 2)
 
 
         roses.append({
