@@ -164,20 +164,26 @@ window.renderMap = async function () {
   // ENSURE LAYERS ARE ATTACHED ONCE
   if (!window._layersAttached) {
   
-    // Show WCAS only at startup
+    // ---- Show WCAS only ----
     window.WCASStations.addTo(map);
     window.WCASPurple.addTo(map);
-  
-    window.RosePM25.addTo(map);
-    window.RoseNO2.addTo(map);
-    window.RoseO3.addTo(map);
-  
     WCASBoundaryLayer.addTo(map);
   
-    // Do NOT auto-add ACA or ALL layers
-      
+    // ---- Roses: PM2.5 only ----
+    window.RosePM25.addTo(map);
+  
+    // Do NOT auto-add:
+    // ACAStations
+    // ACAPurple
+    // ALLStations
+    // ALLPurple
+    // RoseNO2
+    // RoseO3
+    // ACABoundary
+  
     window._layersAttached = true;
   }
+
   
 
   if (!map) {
@@ -353,7 +359,7 @@ window.renderMap = async function () {
 
 
   
-  map.addLayer(window.ALLPurple);
+  // map.addLayer(window.ALLPurple);
   
   window._layerControl = L.control.layers(null, {
     "ACA Boundary": ACABoundaryLayer,
