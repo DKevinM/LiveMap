@@ -120,8 +120,8 @@ function clearAllLayers() {
     
       const r = (val / maxVal) * R;
     
-      const angle1 = (i * 45 - 90) * Math.PI/180;
-      const angle2 = ((i+1) * 45 - 90) * Math.PI/180;
+      const angle1 = (i * 45 - 22.5 - 90) * Math.PI/180;
+      const angle2 = ((i+1) * 45 - 22.5 - 90) * Math.PI/180;
     
       const center = map.project(latlng);
     
