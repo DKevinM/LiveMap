@@ -148,7 +148,7 @@ function clearAllLayers() {
     
     });
 
-
+  }
 
 
 
