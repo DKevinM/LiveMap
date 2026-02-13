@@ -160,6 +160,8 @@ window.renderMap = async function () {
 
   await window.AppData.ready; 
   await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
+
+  clearAllLayers();
   
   // ENSURE LAYERS ARE ATTACHED ONCE
   if (!window._layersAttached) {
@@ -195,7 +197,7 @@ window.renderMap = async function () {
     return;
   }
 
-  clearAllLayers();
+
   
   while (!window.AppData?.purpleair || !window.dataByStation) {
     await new Promise(r => setTimeout(r, 50));
@@ -387,6 +389,9 @@ window.renderMap = async function () {
     
       RoseControl.onAdd = function () {
         const div = L.DomUtil.create("div", "leaflet-bar");
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
+        
         div.style.background = "white";
         div.style.padding = "6px";
         div.style.fontSize = "12px";
@@ -394,9 +399,9 @@ window.renderMap = async function () {
         div.innerHTML = `
           <b>Roses</b><br>
           <label><input type="checkbox" id="roseToggle" checked> Show</label><br>
-          <label><input type="radio" name="roseRegion" value="ALL" checked> All</label><br>
+          <label><input type="radio" name="roseRegion" value="ALL"> All</label>
           <label><input type="radio" name="roseRegion" value="ACA"> ACA</label><br>
-          <label><input type="radio" name="roseRegion" value="WCAS"> WCAS</label><br>
+          <label><input type="radio" name="roseRegion" value="WCAS" checked> WCAS</label>
           <label><input type="radio" name="roseRegion" value="OTHER"> Other</label>
         `;
     
@@ -498,7 +503,9 @@ window.renderMap = async function () {
 
   // roses
   async function loadRoses() {
-  
+
+    const map = window.map;
+
     console.log("Loading roses...");
   
     const types = [
@@ -515,9 +522,13 @@ window.renderMap = async function () {
       const geo = await res.json();
   
       geo.features.forEach(f => {
-      
+
+        const bounds = map.getBounds();
         const lat = f.geometry.coordinates[1];
         const lon = f.geometry.coordinates[0];
+        
+        if (!bounds.contains([lat, lon])) return;
+        
       
         const inACA  = inside(ACApoly,  lat, lon);
         const inWCAS = inside(WCASpoly, lat, lon);
