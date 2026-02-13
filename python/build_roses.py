@@ -212,11 +212,12 @@ def build_rose(df, pollutant_name, stations):
             
             direction_means = {d: props.get(f"{d}_mean", 0) for d in BINS}
             dominant = max(direction_means, key=direction_means.get)
-            
+
+
             props["dominant_dir"] = dominant
             props["dominant_value"] = round(direction_means[dominant], 2)
 
-            dir_counts = {d: props[f"{d}_n"] for d in BINS}
+            dir_counts      = {d: props.get(f"{d}_n", 0)    for d in BINS}
             total_counts = sum(dir_counts.values())
             
             if total_counts > 0:
