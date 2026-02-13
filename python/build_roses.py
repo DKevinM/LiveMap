@@ -169,23 +169,41 @@ def build_rose(df, pollutant_name, stations):
         lon = stations.loc[stations.StationName == station, "Longitude"].iloc[0]
 
         # 2D matrix: dir x speed
-        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].mean()
-        total_val = g["Value_pol"].sum()      
-
+        matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].sum()
+        
+        total_val = matrix.sum()
+        
         props = {}
         
+        sector_totals = {}
+        
         for d in BINS:
+        
+            sector_total = 0
+        
             for s in ["calm","low","med","high"]:
                 val = matrix.get((d,s), 0)
                 props[f"{d}_{s}"] = round(val, 2)
+                sector_total += val
         
-        total_val = g["Value_pol"].sum()
+            sector_totals[d] = sector_total
+            props[f"{d}_total"] = round(sector_total, 2)
         
-        if total_val == 0:
-            total_val = 1
+        # overall total pollutant load
+        props["grand_total"] = round(total_val, 2)
         
-        props["station"] = station
-        props["total"] = float(total_val)
+        # dominant sector
+        if total_val > 0:
+            dominant = max(sector_totals, key=sector_totals.get)
+            props["dominant"] = dominant
+            props["dominant_percent"] = round(
+                sector_totals[dominant] / total_val * 100,
+                1
+            )
+        else:
+            props["dominant"] = None
+            props["dominant_percent"] = 0
+
 
 
 
