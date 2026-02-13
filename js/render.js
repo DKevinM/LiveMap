@@ -88,7 +88,7 @@ function clearAllLayers() {
     const total = Number(p.total) || 1;
   
     // Radius in METERS (not degrees)
-    const R = 500;  
+    const R = 50;  
   
     dirs.forEach((d, i) => {
   
