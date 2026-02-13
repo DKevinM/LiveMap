@@ -9,7 +9,7 @@ window.WCASStations = window.WCASStations || L.layerGroup();
 window.WCASPurple   = window.WCASPurple   || L.layerGroup();
 window.ALLStations  = window.ALLStations  || L.layerGroup();
 window.ALLPurple    = window.ALLPurple    || L.layerGroup();
-window.roseRegionFilter = "ALL";   // "ALL", "ACA", "WCAS", "OTHER"
+window.roseRegionFilter = "WCAS";   // "ALL", "ACA", "WCAS", "OTHER"
 window.roseVisible = true;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
@@ -164,26 +164,21 @@ window.renderMap = async function () {
   // ENSURE LAYERS ARE ATTACHED ONCE
   if (!window._layersAttached) {
   
-    window.ACAStations.addTo(map);
+    // Show WCAS only at startup
     window.WCASStations.addTo(map);
-    window.ALLStations.addTo(map);
-  
-    window.ACAPurple.addTo(map);
     window.WCASPurple.addTo(map);
-    window.ALLPurple.addTo(map);
   
     window.RosePM25.addTo(map);
     window.RoseNO2.addTo(map);
     window.RoseO3.addTo(map);
   
-    ACABoundaryLayer.addTo(map);
     WCASBoundaryLayer.addTo(map);
+  
+    // Do NOT auto-add ACA or ALL layers
       
     window._layersAttached = true;
   }
   
-  
-
 
   if (!map) {
     console.error("renderMap: window.map missing");
