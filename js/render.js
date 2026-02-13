@@ -88,7 +88,7 @@ function clearAllLayers() {
     const max = Number(p.max) || 1;
   
     // Radius in METERS (not degrees)
-    const R = 12000;  // 12 km max size
+    const R = 500;  
   
     dirs.forEach((d, i) => {
   
