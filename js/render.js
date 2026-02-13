@@ -9,6 +9,8 @@ window.WCASStations = window.WCASStations || L.layerGroup();
 window.WCASPurple   = window.WCASPurple   || L.layerGroup();
 window.ALLStations  = window.ALLStations  || L.layerGroup();
 window.ALLPurple    = window.ALLPurple    || L.layerGroup();
+window.roseRegionFilter = "ALL";   // "ALL", "ACA", "WCAS", "OTHER"
+window.roseVisible = true;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
 window.RoseO3   = window.RoseO3   || L.layerGroup();
@@ -377,6 +379,49 @@ window.renderMap = async function () {
 
   }, { collapsed: false }).addTo(map);
 
+    // ---- ROSE FILTER CONTROL ----
+    if (!window._roseControlAdded) {
+    
+      const RoseControl = L.control({ position: "topright" });
+    
+      RoseControl.onAdd = function () {
+        const div = L.DomUtil.create("div", "leaflet-bar");
+        div.style.background = "white";
+        div.style.padding = "6px";
+        div.style.fontSize = "12px";
+    
+        div.innerHTML = `
+          <b>Roses</b><br>
+          <label><input type="checkbox" id="roseToggle" checked> Show</label><br>
+          <label><input type="radio" name="roseRegion" value="ALL" checked> All</label><br>
+          <label><input type="radio" name="roseRegion" value="ACA"> ACA</label><br>
+          <label><input type="radio" name="roseRegion" value="WCAS"> WCAS</label><br>
+          <label><input type="radio" name="roseRegion" value="OTHER"> Other</label>
+        `;
+    
+        return div;
+      };
+    
+      RoseControl.addTo(map);
+    
+      // Wire up events
+      document.addEventListener("change", e => {
+    
+        if (e.target.id === "roseToggle") {
+          window.roseVisible = e.target.checked;
+          renderMap();
+        }
+    
+        if (e.target.name === "roseRegion") {
+          window.roseRegionFilter = e.target.value;
+          renderMap();
+        }
+    
+      });
+    
+      window._roseControlAdded = true;
+    }
+  
   console.log("Map rendered.");
 };
 
@@ -469,6 +514,19 @@ window.renderMap = async function () {
       const geo = await res.json();
   
       geo.features.forEach(f => {
+      
+        const lat = f.geometry.coordinates[1];
+        const lon = f.geometry.coordinates[0];
+      
+        const inACA  = inside(ACApoly,  lat, lon);
+        const inWCAS = inside(WCASpoly, lat, lon);
+      
+        if (!window.roseVisible) return;
+      
+        if (window.roseRegionFilter === "ACA" && !inACA) return;
+        if (window.roseRegionFilter === "WCAS" && !inWCAS) return;
+        if (window.roseRegionFilter === "OTHER" && (inACA || inWCAS)) return;
+
   
         const latlng = L.latLng(
           f.geometry.coordinates[1],
