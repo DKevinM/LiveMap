@@ -207,6 +207,8 @@ def build_rose(df, pollutant_name, stations):
             props["pollutant"] = pollutant_name
             props["period"] = "Last 7 Days"
 
+            props["start_date"] = g["ReadingDate"].min().strftime("%Y-%m-%d %H:%M")
+            props["end_date"]   = g["ReadingDate"].max().strftime("%Y-%m-%d %H:%M")
             
             direction_means = {d: props[f"{d}_mean"] for d in BINS}
             dominant = max(direction_means, key=direction_means.get)
@@ -214,6 +216,28 @@ def build_rose(df, pollutant_name, stations):
             props["dominant_dir"] = dominant
             props["dominant_value"] = round(direction_means[dominant], 2)
 
+            dir_counts = {d: props[f"{d}_n"] for d in BINS}
+            total_counts = sum(dir_counts.values())
+            
+            if total_counts > 0:
+                props["dominant_percent"] = round(
+                    (dir_counts[dominant] / total_counts) * 100, 1
+                )
+            else:
+                props["dominant_percent"] = 0
+
+
+            calm_total = 0
+            for d in BINS:
+                calm_total += int(counts.get((d, "calm"), 0) or 0)
+            
+            if total_counts > 0:
+                props["calm_percent"] = round(
+                    (calm_total / total_counts) * 100, 1
+                )
+            else:
+                props["calm_percent"] = 0
+        
 
         roses.append({
             "type": "Feature",
