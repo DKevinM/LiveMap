@@ -18,7 +18,7 @@ TABLE = "aqhi_data"
 POLLUTANTS = {
     "Fine Particulate Matter": "PM25",
     "Nitrogen Dioxide": "NO2",
-    "Ozone": "O3"
+    "Sulphur Dioxide": "SO2"
 }
 
 BINS = ["N","NE","E","SE","S","SW","W","NW"]BINS = [
@@ -65,7 +65,7 @@ def fetch_last48():
 
         params = {
             "select": "StationName,ParameterName,Value,ReadingDate",
-            "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Ozone,Wind Direction,Wind Speed)",
+            "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Sulphur Dioxide,Wind Direction,Wind Speed)",
             "ReadingDate": f"gte.{since.isoformat()}",
             "order": "ReadingDate"
         }
