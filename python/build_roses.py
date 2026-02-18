@@ -21,7 +21,7 @@ POLLUTANTS = {
     "Sulphur Dioxide": "SO2"
 }
 
-BINS = ["N","NE","E","SE","S","SW","W","NW"]BINS = [
+BINS = [
     "N","NNE","NE","ENE",
     "E","ESE","SE","SSE",
     "S","SSW","SW","WSW",
