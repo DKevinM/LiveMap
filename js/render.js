@@ -175,9 +175,8 @@ function clearAllLayers() {
         cumulativeRadius += r;
     
       });
-    
     });
-
+  }
 
 
 
@@ -207,7 +206,7 @@ window.renderMap = async function () {
     // ALLStations
     // ALLPurple
     // RoseNO2
-    // RoseO3
+    // RoseSO2
     // ACABoundary
   
     window._layersAttached = true;
@@ -405,7 +404,7 @@ window.renderMap = async function () {
 
     "Rose PM2.5": window.RosePM25,
     "Rose NO₂": window.RoseNO2,
-    "Rose O₃": window.RoseO3,
+    "Rose SO₂": window.RoseSO2,
 
   }, { collapsed: false }).addTo(map);
 
@@ -538,7 +537,7 @@ window.renderMap = async function () {
     const types = [
       { key: "PM25", layer: window.RosePM25 },
       { key: "NO2",  layer: window.RoseNO2  },
-      { key: "O3",   layer: window.RoseO3   }
+      { key: "SO2",   layer: window.RoseSO2   }
     ];
   
     for (const t of types) {
