@@ -21,14 +21,20 @@ POLLUTANTS = {
     "Ozone": "O3"
 }
 
-BINS = ["N","NE","E","SE","S","SW","W","NW"]
+BINS = ["N","NE","E","SE","S","SW","W","NW"]BINS = [
+    "N","NNE","NE","ENE",
+    "E","ESE","SE","SSE",
+    "S","SSW","SW","WSW",
+    "W","WNW","NW","NNW"
+]
 
 
 def dir_to_bin(deg):
     d = float(deg)
-    d = ((d % 360) + 360) % 360      # forces into [0,360)
-    ix = int(((d + 22.5) // 45) % 8)
+    d = ((d % 360) + 360) % 360
+    ix = int(((d + 11.25) // 22.5) % 16)
     return BINS[ix]
+
 
 
 def speed_bin(ws):
