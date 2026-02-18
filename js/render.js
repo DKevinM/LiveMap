@@ -464,9 +464,10 @@ window.renderMap = async function () {
     let unit = "";
     if (pollutant === "PM25") unit = "µg/m³";
     if (pollutant === "NO2")  unit = "ppb";
-    if (pollutant === "O3")   unit = "ppb";
+    if (pollutant === "SO2")   unit = "ppb";
   
-    const dirs = ["N","NE","E","SE","S","SW","W","NW"];
+    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+
     const bins = ["calm","low","med","high"];
   
     let html = `
