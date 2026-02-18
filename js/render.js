@@ -182,13 +182,13 @@ function clearAllLayers() {
           "_high": "High (>25 km/h)"
         };        
         
-        .bindTooltip(
+        wedge.bindTooltip(
           `${pollutantLabel}<br>
            ${d} – ${speedText[bin.suffix]}<br>
            ${val.toFixed(1)} ${unit}`
-        )
+        );
                    
-        .addTo(layer);
+        wedge.addTo(layer);
     
         cumulativeRadius += r;
     
