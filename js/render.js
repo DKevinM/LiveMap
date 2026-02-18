@@ -132,67 +132,68 @@ function clearAllLayers() {
     
       let cumulativeRadius = 0;
     
+
       bins.forEach(bin => {
-    
+      
         const val = Number(p[`${d}${bin.suffix}`] || 0);
         if (val <= 0) return;
-    
-        // scale based on global max if desired
+      
         const r = (val / maxVal) * R;
-    
+      
         const innerRadius = cumulativeRadius;
         const outerRadius = cumulativeRadius + r;
-    
+      
         const p1 = map.unproject([
           center.x + innerRadius * Math.cos(angle1),
           center.y + innerRadius * Math.sin(angle1)
         ]);
-    
+      
         const p2 = map.unproject([
           center.x + outerRadius * Math.cos(angle1),
           center.y + outerRadius * Math.sin(angle1)
         ]);
-    
+      
         const p3 = map.unproject([
           center.x + outerRadius * Math.cos(angle2),
           center.y + outerRadius * Math.sin(angle2)
         ]);
-    
+      
         const p4 = map.unproject([
           center.x + innerRadius * Math.cos(angle2),
           center.y + innerRadius * Math.sin(angle2)
         ]);
-    
-        L.polygon([p1, p2, p3, p4], {
+      
+        const wedge = L.polygon([p1, p2, p3, p4], {
           color: "#333",
           weight: 0.4,
           fillColor: bin.color,
           fillOpacity: 0.75
         });
-        
+      
         const pollutantLabel =
           pollutant === "PM25" ? "PM₂.₅" :
           pollutant === "NO2"  ? "NO₂"  :
           pollutant === "SO2"  ? "SO₂"  : pollutant;
-
+      
         const speedText = {
           "_calm": "Calm (<2 km/h)",
           "_low":  "Low (2–10 km/h)",
           "_med":  "Medium (10–25 km/h)",
           "_high": "High (>25 km/h)"
-        };        
-        
+        };
+      
         wedge.bindTooltip(
           `${pollutantLabel}<br>
            ${d} – ${speedText[bin.suffix]}<br>
            ${val.toFixed(1)} ${unit}`
         );
-                   
+      
         wedge.addTo(layer);
-    
+      
         cumulativeRadius += r;
-    
+      
       });
+
     });
   }
 
