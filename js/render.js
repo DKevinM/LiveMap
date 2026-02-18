@@ -167,8 +167,9 @@ function clearAllLayers() {
           color: "#333",
           weight: 0.4,
           fillColor: bin.color,
-          fillOpacity: 0.85
-        })
+          fillOpacity: 0.75
+        });
+        
         const pollutantLabel =
           pollutant === "PM25" ? "PM₂.₅" :
           pollutant === "NO2"  ? "NO₂"  :
