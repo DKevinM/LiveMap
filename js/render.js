@@ -169,7 +169,24 @@ function clearAllLayers() {
           fillColor: bin.color,
           fillOpacity: 0.85
         })
-        .bindTooltip(`${d} ${bin.suffix.replace("_","")}<br>${val.toFixed(1)} ${unit}`)
+        const pollutantLabel =
+          pollutant === "PM25" ? "PM₂.₅" :
+          pollutant === "NO2"  ? "NO₂"  :
+          pollutant === "SO2"  ? "SO₂"  : pollutant;
+
+        const speedText = {
+          "_calm": "Calm (<2 km/h)",
+          "_low":  "Low (2–10 km/h)",
+          "_med":  "Medium (10–25 km/h)",
+          "_high": "High (>25 km/h)"
+        };        
+        
+        .bindTooltip(
+          `${pollutantLabel}<br>
+           ${d} – ${speedText[bin.suffix]}<br>
+           ${val.toFixed(1)} ${unit}`
+        )
+                   
         .addTo(layer);
     
         cumulativeRadius += r;
