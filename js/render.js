@@ -13,7 +13,7 @@ window.roseRegionFilter = "WCAS";   // "ALL", "ACA", "WCAS", "OTHER"
 window.roseVisible = false;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
-window.RoseO3   = window.RoseO3   || L.layerGroup();
+window.RoseSO2   = window.RoseSO2   || L.layerGroup();
 
 
 let ACApoly = null;
@@ -61,7 +61,7 @@ function clearAllLayers() {
 
   window.RosePM25.clearLayers();
   window.RoseNO2.clearLayers();
-  window.RoseO3.clearLayers();
+  window.RoseSO2.clearLayers();
 }
 
 
@@ -73,19 +73,19 @@ function clearAllLayers() {
   
     const map = window.map;
   
-    const dirs = ["N","NE","E","SE","S","SW","W","NW"];
+    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
   
     const bins = [
-      { suffix: "_calm", color: "#d9f0ff" },
-      { suffix: "_low",  color: "#9ecae1" },
-      { suffix: "_med",  color: "#3182bd" },
-      { suffix: "_high", color: "#08519c" }
+      { suffix: "_calm", color: "#9ecae1" },   // medium light blue
+      { suffix: "_low",  color: "#91cf60" },   // green
+      { suffix: "_med",  color: "#fc8d59" },   // orange
+      { suffix: "_high", color: "#a50026" }    // deep red
     ];
   
     let unit = "";
     if (pollutant === "PM25") unit = " µg/m³";
     if (pollutant === "NO2")  unit = " ppb";
-    if (pollutant === "O3")   unit = " ppb";
+    if (pollutant === "SO2")   unit = " ppb";
 
     
     let total = Number(p.grand_total);
@@ -110,47 +110,74 @@ function clearAllLayers() {
     // find max mean concentration for scaling
     let maxVal = 0;
     dirs.forEach(d => {
-      const v = Number(p[`${d}_mean`] || 0);
-      if (v > maxVal) maxVal = v;
+      bins.forEach(bin => {
+        const v = Number(p[`${d}${bin.suffix}`] || 0);
+        if (v > maxVal) maxVal = v;
+      });
     });
     if (maxVal === 0) maxVal = 1;
+
     
+
     dirs.forEach((d, i) => {
     
-      const val = Number(p[`${d}_mean`] || 0);
-      if (val <= 0) return;
+      const sectorCount = dirs.length;
+      const step = 360 / sectorCount;
+      const half = step / 2;
     
-      const r = (val / maxVal) * R;
-    
-      const angle1 = (i * 45 - 22.5 - 90) * Math.PI/180;
-      const angle2 = ((i+1) * 45 - 22.5 - 90) * Math.PI/180;
+      const angle1 = (i * step - half - 90) * Math.PI/180;
+      const angle2 = ((i+1) * step - half - 90) * Math.PI/180;
     
       const center = map.project(latlng);
     
-      const p1 = map.unproject([center.x, center.y]);
+      let cumulativeRadius = 0;
     
-      const p2 = map.unproject([
-        center.x + r * Math.cos(angle1),
-        center.y + r * Math.sin(angle1)
-      ]);
+      bins.forEach(bin => {
     
-      const p3 = map.unproject([
-        center.x + r * Math.cos(angle2),
-        center.y + r * Math.sin(angle2)
-      ]);
+        const val = Number(p[`${d}${bin.suffix}`] || 0);
+        if (val <= 0) return;
     
-      L.polygon([p1, p2, p3], {
-        color: "#333",
-        weight: 0.5,
-        fillColor: "#3182bd",
-        fillOpacity: 0.8
-      })
-      .bindTooltip(`${d}<br>Mean: ${val.toFixed(1)} ${unit}`)
-      .addTo(layer);
+        // scale based on global max if desired
+        const r = (val / maxVal) * R;
+    
+        const innerRadius = cumulativeRadius;
+        const outerRadius = cumulativeRadius + r;
+    
+        const p1 = map.unproject([
+          center.x + innerRadius * Math.cos(angle1),
+          center.y + innerRadius * Math.sin(angle1)
+        ]);
+    
+        const p2 = map.unproject([
+          center.x + outerRadius * Math.cos(angle1),
+          center.y + outerRadius * Math.sin(angle1)
+        ]);
+    
+        const p3 = map.unproject([
+          center.x + outerRadius * Math.cos(angle2),
+          center.y + outerRadius * Math.sin(angle2)
+        ]);
+    
+        const p4 = map.unproject([
+          center.x + innerRadius * Math.cos(angle2),
+          center.y + innerRadius * Math.sin(angle2)
+        ]);
+    
+        L.polygon([p1, p2, p3, p4], {
+          color: "#333",
+          weight: 0.4,
+          fillColor: bin.color,
+          fillOpacity: 0.85
+        })
+        .bindTooltip(`${d} ${bin.suffix.replace("_","")}<br>${val.toFixed(1)} ${unit}`)
+        .addTo(layer);
+    
+        cumulativeRadius += r;
+    
+      });
     
     });
 
-  }
 
 
 
