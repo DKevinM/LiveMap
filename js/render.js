@@ -205,8 +205,14 @@ window.renderMap = async function () {
 
   await window.AppData.ready; 
   await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
-
+  
   clearAllLayers();
+  
+  // render PurpleAir
+  if (window.renderPurpleAir) {
+    await window.renderPurpleAir();
+  }
+  
   
   // ENSURE LAYERS ARE ATTACHED ONCE
   if (!window._layersAttached) {
