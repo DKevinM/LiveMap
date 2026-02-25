@@ -369,6 +369,8 @@ window.renderMap = async function () {
     const aq = Number(p.eAQHI);
     const color = Number.isFinite(aq) ? window.getAQHIColor(aq) : "#666666";
 
+    console.log(window.AppData.purpleair[0]);
+    
     const marker = L.circleMarker([lat, lon], {
       radius: 4,
       fillColor: color,
