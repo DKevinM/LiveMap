@@ -237,14 +237,12 @@ window.renderMap = async function () {
     console.error("renderMap: window.map missing");
     return;
   }
-  if (!window.AppData?.stations || !window.AppData?.purpleair) {
+  if (!window.AppData?.stations) {
     console.error("renderMap: AppData missing stations/purpleair");
     return;
   }
-
-
   
-  while (!window.AppData?.purpleair || !window.dataByStation) {
+  while (!window.dataByStation) {
     await new Promise(r => setTimeout(r, 50));
   }
     
@@ -354,7 +352,7 @@ window.renderMap = async function () {
 
 
 
-
+/*
   // -----------------------
   // PURPLEAIR
   // -----------------------
@@ -405,7 +403,7 @@ window.renderMap = async function () {
 
   await loadRoses();
 
-
+*/
 
 
   
