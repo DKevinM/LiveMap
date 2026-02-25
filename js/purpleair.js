@@ -50,7 +50,7 @@ window.renderPurpleAir = async function () {
       PM₂.₅ (corr): ${pm.toFixed(1)} µg/m³
       <hr>
       ${sensorIndex != null ? `
-        <a href="/AQHI.forecast/history/sensor_compare.html?sensor_index=${sensorIndex}" target="_blank">
+        <a href="/ACA_Community/blob/main/history/sensor_compare.html?sensor_index=${sensorIndex}" target="_blank">
           View historical PM2.5
         </a>` : ""}
     `);
