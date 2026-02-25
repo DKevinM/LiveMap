@@ -381,7 +381,7 @@ window.renderMap = async function () {
       AQHI: ${Number.isFinite(aq) ? aq : "--"}<br>
       PM₂.₅: ${Number.isFinite(p.pm) ? p.pm.toFixed(1) : "--"} µg/m³
       <hr>
-      <a href="/ACA_Community/blob/main/history/sensor_compare.html?sensor=${encodeURIComponent(p.name)}" target="_blank">
+      <a href="/ACA_Community/main/history/sensor_compare.html?sensor=${encodeURIComponent(p.name)}" target="_blank">
         View historical data
       </a>
     `)
