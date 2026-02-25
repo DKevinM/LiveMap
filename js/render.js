@@ -381,12 +381,12 @@ window.renderMap = async function () {
       AQHI: ${Number.isFinite(aq) ? aq : "--"}<br>
       PM₂.₅: ${Number.isFinite(p.pm) ? p.pm.toFixed(1) : "--"} µg/m³
       <hr>
-      <a href="/ACA_Community/main/history/sensor_compare.html?sensor=${encodeURIComponent(p.name)}" target="_blank">
+      <a href="/ACA_Community/history/sensor_compare.html?sensor_index=${encodeURIComponent(p.name)}" target="_blank">
         View historical data
       </a>
     `)
        // <a href="/LiveMap/purple_history.html?sensor=${encodeURIComponent(p.name)}" target="_blank">   
-
+      // https://dkevinm.github.io/ACA_Community/history/sensor_compare.html?sensor_index=27741
     
     // Add to All + optionally ACA/WCAS
     window.ALLPurple.addLayer(marker);
