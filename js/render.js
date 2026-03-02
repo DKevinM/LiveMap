@@ -17,17 +17,17 @@ window.RoseSO2   = window.RoseSO2   || L.layerGroup();
 
 
 window.stationImages = {
-  "Breton": "images/stations/Breton.jpg",
-  "Carrot Creek": "images/stations/Carrot Creek.jpg",
-  "Drayton Valley": "images/stations/Drayton Valley.jpg",
-  "Edson": "images/stations/Edson.jpg",
-  "Genesee": "images/stations/Genesee.jpg",
-  "Hinton-Drinnan": "images/stations/Hinton-Drinnan.jpg",
-  "Hinton-Hillcrest": "images/stations/Hinton-Hillcrest.jpg",
-  "Jasper": "images/stations/Jasper.jpg",
-  "Meadows": "images/stations/Meadows.jpg",
-  "Steeper": "images/stations/Steeper.jpg",
-  "Wagner": "images/stations/Wagner.jpg"
+  "Breton": "images/Breton.jpg",
+  "Carrot Creek": "images/Carrot Creek.jpg",
+  "Drayton Valley": "images/Drayton Valley.jpg",
+  "Edson": "images/Edson.jpg",
+  "Genesee": "images/Genesee.jpg",
+  "Hinton-Drinnan": "images/Hinton-Drinnan.jpg",
+  "Hinton-Hillcrest": "images/Hinton-Hillcrest.jpg",
+  "Jasper": "images/Jasper.jpg",
+  "Meadows": "images/Meadows.jpg",
+  "Steeper": "images/Steeper.jpg",
+  "Wagner": "images/Wagner.jpg"
 };
 
 
