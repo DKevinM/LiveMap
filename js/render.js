@@ -479,6 +479,17 @@ window.renderMap = async function () {
     
       window._roseControlAdded = true;
     }
+
+
+  // ---- ROSES ----
+  if (window.roseVisible) {
+    await loadRoses();
+  } else {
+    // ensure they disappear when unchecked
+    window.RosePM25.clearLayers();
+    window.RoseNO2.clearLayers();
+    window.RoseSO2.clearLayers();
+  }
   
   console.log("Map rendered.");
 };
