@@ -411,6 +411,11 @@ window.renderMap = async function () {
 
 */
 
+  
+  if (window._layerControl) {
+    map.removeControl(window._layerControl);
+    window._layerControl = null;
+  }  
 
   
   // map.addLayer(window.ALLPurple);
