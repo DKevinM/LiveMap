@@ -16,6 +16,21 @@ window.RoseNO2  = window.RoseNO2  || L.layerGroup();
 window.RoseSO2   = window.RoseSO2   || L.layerGroup();
 
 
+window.stationImages = {
+  "Breton": "images/stations/Breton.jpg",
+  "Carrot Creek": "images/stations/Carrot Creek.jpg",
+  "Drayton Valley": "images/stations/Drayton Valley.jpg",
+  "Edson": "images/stations/Edson.jpg",
+  "Genesee": "images/stations/Genesee.jpg",
+  "Hinton-Drinnan": "images/stations/Hinton-Drinnan.jpg",
+  "Hinton-Hillcrest": "images/stations/Hinton-Hillcrest.jpg",
+  "Jasper": "images/stations/Jasper.jpg",
+  "Meadows": "images/stations/Meadows.jpg",
+  "Steeper": "images/stations/Steeper.jpg",
+  "Wagner": "images/stations/Wagner.jpg"
+};
+
+
 let ACApoly = null;
 let WCASpoly = null;
 
@@ -328,11 +343,21 @@ window.renderMap = async function () {
         const label = r.Shortform || r.ParameterName;
         return `${label}: ${r.Value}${u}`;
       });
-  
+
+
+    const imgPath = window.stationImages[stationName];
+    
+    const imageHTML = imgPath
+      ? `<br><img src="${imgPath}" 
+               style="width:100%;max-width:260px;border-radius:6px;margin-top:6px;">`
+      : "";
+
+    
     const popupHTML = `
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br><br>
       ${[...linesFirst, ...linesRest].join("<br>")}
+      ${imageHTML}
       <hr>
       <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
         View historical data</a><br>
