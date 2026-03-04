@@ -367,35 +367,42 @@ window.renderMap = async function () {
     `;
   
     const marker = L.circleMarker([lat, lon], {
-      radius: 15,
+      radius: 18,
       fillColor: color,
       color: "#222",
       weight: 2,
       fillOpacity: 0.85
     }).bindPopup(popupHTML);
     
-    if (aqhi !== null && aqhi !== undefined && aqhi !== "") {
+    // choose which layer the marker belongs to
+    let targetLayer;
+    if (inACA) targetLayer = window.ACAStations;
+    else if (inWCAS) targetLayer = window.WCASStations;
+    else targetLayer = window.ALLStations;
+    
+    targetLayer.addLayer(marker);
+    
+    // add AQHI number inside circle
+    if (Number.isFinite(aqhiVal)) {
     
       const label = L.marker([lat, lon], {
         icon: L.divIcon({
           className: "aqhi-label",
-          html: aqhi,
+          html: aqhiVal,
           iconSize: [30, 30],
           iconAnchor: [15, 15]
         }),
         interactive: false
       });
     
-      label.addTo(layerGroup);
-    }    
+      targetLayer.addLayer(label);
+    }  
 
     
     if (inACA) window.ACAStations.addLayer(marker);
     else if (inWCAS) window.WCASStations.addLayer(marker);
     else window.ALLStations.addLayer(marker);
   });
-
-
 
 
 
