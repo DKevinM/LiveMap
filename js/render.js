@@ -367,13 +367,29 @@ window.renderMap = async function () {
     `;
   
     const marker = L.circleMarker([lat, lon], {
-      radius: 7,
+      radius: 15,
       fillColor: color,
       color: "#222",
-      weight: 1,
+      weight: 2,
       fillOpacity: 0.85
     }).bindPopup(popupHTML);
-  
+    
+    if (aqhi !== null && aqhi !== undefined && aqhi !== "") {
+    
+      const label = L.marker([lat, lon], {
+        icon: L.divIcon({
+          className: "aqhi-label",
+          html: aqhi,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
+        }),
+        interactive: false
+      });
+    
+      label.addTo(layerGroup);
+    }    
+
+    
     if (inACA) window.ACAStations.addLayer(marker);
     else if (inWCAS) window.WCASStations.addLayer(marker);
     else window.ALLStations.addLayer(marker);
