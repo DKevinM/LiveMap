@@ -15,6 +15,8 @@ window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
 window.RoseSO2   = window.RoseSO2   || L.layerGroup();
 
+window.eAQHIStations = window.eAQHIStations || L.layerGroup();
+
 
 window.stationImages = {
   "Breton": "images/Breton.jpg",
@@ -77,9 +79,42 @@ function clearAllLayers() {
   window.RosePM25.clearLayers();
   window.RoseNO2.clearLayers();
   window.RoseSO2.clearLayers();
+
+  window.eAQHIStations.clearLayers();
 }
 
 
+
+function loadEstimatedAQHI() {
+  fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
+    .then(r => r.json())
+    .then(data => {
+      window.eAQHIStations.clearLayers();
+      data.forEach(st => {
+        const color = getColor(st.AQHI);
+        const marker = L.circleMarker([st.lat, st.lon], {
+          radius: 7,
+          fillColor: color,
+          color: "#000",
+          weight: 1,
+          fillOpacity: 0.9,
+          dashArray: "4,3"   // dashed outline = estimated
+        });
+        marker.bindPopup(`
+          <b>${st.station}</b><br>
+          Estimated AQHI: <b>${st.AQHI}</b><br>
+          PM2.5 (PurpleAir): ${st.pm25_est} µg/m³<br>
+          O3 (3h): ${st.o3_3h} ppb<br>
+          NO2 (3h): ${st.no2_3h} ppb<br>
+          Sensors used: ${st.purpleair_sensor_count}<br>
+          <i>Estimated from nearby PurpleAir</i>
+        `);
+        marker.addTo(window.eAQHIStations);
+      });
+      console.log("Loaded estimated AQHI:", data.length);
+    })
+    .catch(err => console.error("eAQHI load error", err));
+}
 
 
 
@@ -222,6 +257,8 @@ window.renderMap = async function () {
   await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
   
   clearAllLayers();
+  
+  loadEstimatedAQHI();  
   
   // render PurpleAir
   if (window.renderPurpleAir) {
@@ -478,6 +515,8 @@ window.renderMap = async function () {
     "WCAS Stations": window.WCASStations,
     "WCAS PurpleAir": window.WCASPurple,
 
+    "Estimated AQHI": window.eAQHIStations,
+    
     "All Stations (AB)": window.ALLStations,
     "All PurpleAir (AB)": window.ALLPurple,
 
