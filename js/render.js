@@ -85,7 +85,7 @@ function clearAllLayers() {
 
 
 
-function () {
+ffunction loadEstimatedAQHI() {
   fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
     .then(r => r.json())
     .then(data => {
@@ -100,6 +100,7 @@ function () {
           fillOpacity: 0.9,
           dashArray: "4,3"   // dashed outline = estimated
         });
+
         marker.bindPopup(`
           <b>${st.station}</b><br>
           Estimated AQHI: <b>${st.AQHI}</b><br>
