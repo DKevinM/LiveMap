@@ -85,7 +85,7 @@ function clearAllLayers() {
 
 
 
-ffunction loadEstimatedAQHI() {
+function loadEstimatedAQHI() {
   fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
     .then(r => r.json())
     .then(data => {
