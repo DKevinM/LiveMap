@@ -85,13 +85,13 @@ function clearAllLayers() {
 
 
 
-function loadEstimatedAQHI() {
+function () {
   fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
     .then(r => r.json())
     .then(data => {
       window.eAQHIStations.clearLayers();
       data.forEach(st => {
-        const color = getColor(st.AQHI);
+        const color = window.getAQHIColor(st.AQHI);
         const marker = L.circleMarker([st.lat, st.lon], {
           radius: 7,
           fillColor: color,
