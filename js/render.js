@@ -98,8 +98,9 @@ function loadEstimatedAQHI() {
           color: "#000",
           weight: 1,
           fillOpacity: 0.85,
-          dashArray: "4,3"   // dashed outline = estimated
-        }).bindPopup(st.AQHI);
+          dashArray: "4,3"
+        });
+
 
       
         marker.bindPopup(`
@@ -112,6 +113,20 @@ function loadEstimatedAQHI() {
           <i>Estimated from nearby PurpleAir</i>
         `);
         marker.addTo(window.eAQHIStations);
+        
+        // add AQHI number label
+        const label = L.marker([st.lat, st.lon], {
+          icon: L.divIcon({
+            className: "aqhi-label",
+            html: st.AQHI,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+          }),
+          interactive: false
+        });
+        
+        label.addTo(window.eAQHIStations);
+        
       });
       console.log("Loaded estimated AQHI:", data.length);
     })
@@ -438,9 +453,9 @@ window.renderMap = async function () {
     }  
 
     
-    if (inACA) window.ACAStations.addLayer(marker);
-    else if (inWCAS) window.WCASStations.addLayer(marker);
-    else window.ALLStations.addLayer(marker);
+   // if (inACA) window.ACAStations.addLayer(marker);
+   // else if (inWCAS) window.WCASStations.addLayer(marker);
+   // else window.ALLStations.addLayer(marker);
   });
 
 
