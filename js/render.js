@@ -93,14 +93,15 @@ function loadEstimatedAQHI() {
       data.forEach(st => {
         const color = window.getAQHIColor(st.AQHI);
         const marker = L.circleMarker([st.lat, st.lon], {
-          radius: 7,
+          radius: 18,
           fillColor: color,
           color: "#000",
           weight: 1,
-          fillOpacity: 0.9,
+          fillOpacity: 0.85,
           dashArray: "4,3"   // dashed outline = estimated
-        });
+        }).bindPopup(st.AQHI);
 
+      
         marker.bindPopup(`
           <b>${st.station}</b><br>
           Estimated AQHI: <b>${st.AQHI}</b><br>
