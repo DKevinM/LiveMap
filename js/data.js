@@ -26,6 +26,7 @@ window.getAQHIColor = function (val) {
   return "#640100";
 };
 
+window.getColor = window.getAQHIColor;
 
 const unitsLookup = {
   "AQHI": "",
