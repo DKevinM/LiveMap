@@ -1,14 +1,13 @@
-window.addEventListener("load", () => {
+window.onload = function () {
 
   const mapDiv = document.getElementById("map");
-
   console.log("Map div check:", mapDiv);
 
   if (!mapDiv) {
-    console.error("Map div STILL not found — stopping.");
+    alert("MAP DIV NOT FOUND");
     return;
   }
 
   initMap();
 
-});
+};
