@@ -9,7 +9,6 @@ window.buildStationPopup = function (rows) {
   }).join("<br>");
 };
 
-html: window.buildStationPopup(rows)
 
 window.AppData = {
   stations: [],
@@ -146,8 +145,10 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
 // ---------------- STATIONS FOR MAP ----------------
 window.fetchAllStationData = async function () {
   await window.dataReady;
+
   const stationNames = Object.keys(dataByStation);
-  const stations = stationNames.map(name => {
+
+  return stationNames.map(name => {
     const rows = dataByStation[name];
     const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
 
@@ -155,11 +156,11 @@ window.fetchAllStationData = async function () {
       stationName: name,
       lat: Number(rows[0].Latitude),
       lon: Number(rows[0].Longitude),
-      aqhi: aqhiRow ? aqhiRow.Value : "NA"
+      aqhi: aqhiRow ? aqhiRow.Value : "NA",
+      rows: rows,  
+      html: window.buildStationPopup(rows)  
     };
   });
-
-  return stations;
 };
 
 
