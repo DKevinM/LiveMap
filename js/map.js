@@ -1,3 +1,5 @@
+console.log("map.js loaded");
+
 window.initMap = function () {
 
   if (window.map) {
