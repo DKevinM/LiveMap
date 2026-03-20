@@ -6,21 +6,27 @@ window.initMap = function () {
   // CONFIG-BASED MAP SETUP
   // ----------------------------
   if (window.APP_CONFIG?.lockBounds) {
-
+  
     map = L.map("map", {
       minZoom: window.APP_CONFIG.minZoom || 6,
       maxZoom: window.APP_CONFIG.maxZoom || 13,
       maxBounds: window.APP_CONFIG.bounds,
       maxBoundsViscosity: 1.0
     });
-
+  
     map.fitBounds(window.APP_CONFIG.bounds);
-
+  
   } else {
-
-    // default behaviour (your current setup)
-    map = L.map("map").setView([53.53, -113.30], 7);
-
+  
+    // DEFAULT = ALBERTA
+    const albertaBounds = [
+      [48.9, -120.0],
+      [60.0, -110.0]
+    ];
+  
+    map = L.map("map");
+    map.fitBounds(albertaBounds);
+  
   }
 
   window.map = map;
