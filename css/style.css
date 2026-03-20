@@ -25,7 +25,8 @@ html, body {
 #map {
   height: 100%;
   width: 100%;
-  background: #eef2f6;   /* fallback only */
+  background: #eef2f6;
+  min-height: 400px; 
 }
 
 /* Right control panel */
