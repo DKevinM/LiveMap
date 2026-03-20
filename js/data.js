@@ -134,9 +134,9 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
   });
 
 // ---------------- STATIONS FOR MAP ----------------
-window.fetchAllStationData = function () {
+window.fetchAllStationData = async function () {
+  await window.dataReady;
   const stationNames = Object.keys(dataByStation);
-
   const stations = stationNames.map(name => {
     const rows = dataByStation[name];
     const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
@@ -149,8 +149,9 @@ window.fetchAllStationData = function () {
     };
   });
 
-  return Promise.resolve(stations);
+  return stations;
 };
+
 
 // ---------------- PURPLEAIR ----------------
 async function loadPurpleAir() {
