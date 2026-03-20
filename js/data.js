@@ -18,8 +18,19 @@ window.AppData = {
 
 // ---------------- AQHI COLOUR ----------------
 window.getAQHIColor = function (val) {
-  if (String(val).trim() === "10+") return "#640100";
-  const v = Math.round(Number(val));
+  if (val === null || val === undefined) return "#D3D3D3";
+
+  const s = String(val).trim();
+
+  if (s === "" || s === "NA" || s === "NaN" || s === "null" || s === "undefined") {
+    return "#D3D3D3";
+  }
+
+  if (s === "10+") return "#640100";
+
+  const v = Math.round(Number(s));
+
+  if (!isFinite(v)) return "#D3D3D3";
   if (v < 1)  return "#D3D3D3";
   if (v === 1) return "#01cbff";
   if (v === 2) return "#0099cb";
@@ -31,6 +42,7 @@ window.getAQHIColor = function (val) {
   if (v === 8) return "#fe0002";
   if (v === 9) return "#cc0001";
   if (v === 10) return "#9a0100";
+
   return "#640100";
 };
 
