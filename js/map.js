@@ -1,5 +1,9 @@
 window.initMap = function () {
 
+  if (window.map) {
+    window.map.remove();
+  }
+  
   let map;
 
   // ----------------------------
@@ -39,12 +43,31 @@ window.initMap = function () {
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
 
-  // ----------------------------
-  // LAYERS
-  // ----------------------------
-  window.markerGroup = L.layerGroup().addTo(map);
-  window.paLayer     = L.layerGroup().addTo(map);
+// ----------------------------
+// LAYERS (CENTRALIZED)
+// ----------------------------
+window.layers = {
+  stations: L.layerGroup().addTo(map),
+  purpleair: L.layerGroup().addTo(map),
+  grid: L.layerGroup().addTo(map),
+  forecast: L.layerGroup().addTo(map)
+};
 
-  console.log("Map ready");
+console.log("Map ready");
+
+// ----------------------------
+// LOAD MODULES (SAFE CALLS)
+// ----------------------------
+if (window.loadStations) {
+  window.loadStations();
+}
+
+if (window.APP_CONFIG?.showPurpleAir && window.loadPurpleAir) {
+  window.loadPurpleAir();
+}
+
+if (window.APP_CONFIG?.showAQHIGrid && window.loadGrid) {
+  window.loadGrid();
+}
 
 };
