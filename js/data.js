@@ -2,6 +2,15 @@
 let dataByStation = {};
 window.dataByStation = dataByStation;
 
+
+window.buildStationPopup = function (rows) {
+  return rows.map(r => {
+    return `<b>${r.Shortform}</b>: ${r.Value}${r.Units}`;
+  }).join("<br>");
+};
+
+html: window.buildStationPopup(rows)
+
 window.AppData = {
   stations: [],
   purpleair: [],
