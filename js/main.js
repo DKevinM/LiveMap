@@ -1,8 +1,14 @@
 window.addEventListener("load", () => {
-  initMap();
-});
 
-window.addEventListener("load", () => {
-  console.log("Map div:", document.getElementById("map"));
+  const mapDiv = document.getElementById("map");
+
+  console.log("Map div check:", mapDiv);
+
+  if (!mapDiv) {
+    console.error("Map div STILL not found — stopping.");
+    return;
+  }
+
   initMap();
+
 });
