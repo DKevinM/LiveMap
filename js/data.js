@@ -3,11 +3,27 @@ let dataByStation = {};
 window.dataByStation = dataByStation;
 
 
+
 window.buildStationPopup = function (rows) {
-  return rows.map(r => {
+
+  const content = rows.map(r => {
     return `<b>${r.Shortform}</b>: ${r.Value}${r.Units}`;
   }).join("<br>");
+
+  const stationName = rows[0]?.StationName || "Unknown";
+
+  return content + `
+    <br><br>
+    <a href="#" onclick="if(window.buildFullGaugePanel){ window.buildFullGaugePanel({ StationName: '${stationName.replace(/'/g, "\\'")}' }); } return false;">
+      View Gauges
+    </a>
+    &nbsp;|&nbsp;
+    <a href="https://dkevinm.github.io/AB_datapull/" target="_blank">
+      Historical Data
+    </a>
+  `;
 };
+
 
 
 window.AppData = {
