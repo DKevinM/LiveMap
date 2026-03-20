@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   const mapDiv = document.getElementById("map");
   console.log("Map div check:", mapDiv);
 
@@ -8,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  initMap();
+  if (typeof window.initMap !== "function") {
+    console.error("initMap is not available");
+    return;
+  }
 
+  window.initMap();
 });
