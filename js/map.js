@@ -56,9 +56,13 @@ window.initMap = function () {
 
   console.log("Map ready");
 
-  if (window.loadStations) {
-    window.loadStations();
-  }
+  console.log("Calling loadStations...");
+    if (window.loadStations) {
+      window.loadStations();
+    } else {
+      console.error("loadStations not found");
+    }
+
 
   if (window.APP_CONFIG?.showPurpleAir && window.loadPurpleAir) {
     window.loadPurpleAir();
