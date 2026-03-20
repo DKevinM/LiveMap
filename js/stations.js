@@ -35,7 +35,19 @@ window.loadStations = async function () {
   // ----------------------------
   allStations.forEach(st => {
 
-    const color = getColor(String(st.aqhi || "NA"));
+    let aqhiVal = st.aqhi;
+    
+    if (!isFinite(aqhiVal)) {
+      aqhiVal = "NA";
+    } else {
+      aqhiVal = Math.round(aqhiVal);
+    
+      if (aqhiVal > 10) {
+        aqhiVal = "10+";
+      }
+    }
+    
+    const color = getColor(aqhiVal);    
 
     const marker = L.circleMarker([st.lat, st.lon], {
       radius: 7,
