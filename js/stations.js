@@ -1,21 +1,38 @@
-window.renderStations = async function () {
+window.loadStations = async function () {
 
-  console.log("Rendering stations…");
+  console.log("Loading stations…");
 
+  // ----------------------------
+  // SAFETY CHECKS
+  // ----------------------------
   if (!window.fetchAllStationData) {
-    console.error("fetchAllStationData not available yet.");
+    console.error("fetchAllStationData not available.");
     return;
   }
 
+  if (!window.layers?.stations) {
+    console.error("Stations layer not initialized.");
+    return;
+  }
+
+  // ----------------------------
+  // FETCH DATA
+  // ----------------------------
   const allStations = await window.fetchAllStationData();
 
-  if (!window.map || !window.markerGroup) {
-    console.error("Map not ready for stations.");
+  if (!allStations || allStations.length === 0) {
+    console.warn("No station data available.");
     return;
   }
 
-  window.markerGroup.clearLayers();
+  // ----------------------------
+  // CLEAR EXISTING
+  // ----------------------------
+  window.layers.stations.clearLayers();
 
+  // ----------------------------
+  // RENDER STATIONS
+  // ----------------------------
   allStations.forEach(st => {
 
     const color = getColor(String(st.aqhi || "NA"));
@@ -28,8 +45,11 @@ window.renderStations = async function () {
       fillOpacity: 0.85
     })
     .bindPopup(st.html)
-    .addTo(window.markerGroup);
+    .addTo(window.layers.stations);
 
+    // ----------------------------
+    // CLICK HANDLER
+    // ----------------------------
     marker.on("click", () => {
       if (window.buildFullGaugePanel) {
         window.buildFullGaugePanel({
@@ -38,7 +58,9 @@ window.renderStations = async function () {
         });
       }
     });
+
   });
 
-  console.log("Stations rendered.");
+  console.log("Stations loaded:", allStations.length);
+
 };
