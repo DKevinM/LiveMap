@@ -136,10 +136,6 @@ def build_rose(df, pollutant_name, stations):
 
 
 
-    print(f"Building rose for {pollutant_name} ({len(merged)} rows after merge)")
-
-
-    
     # attach nearest wind direction
     merged = pd.merge_asof(
         pol,
@@ -163,6 +159,8 @@ def build_rose(df, pollutant_name, stations):
     )
     
     merged = merged.dropna(subset=["Value_pol","Value_wdir","Value_ws"])
+
+    print(f"Building rose for {pollutant_name} ({len(merged)} rows after merge)")
     
     merged["dir_bin"] = merged["Value_wdir"].apply(dir_to_bin)
     merged["spd_bin"] = merged["Value_ws"].apply(speed_bin)
