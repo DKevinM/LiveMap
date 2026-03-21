@@ -55,7 +55,11 @@ window.initMap = function () {
   };
 
   console.log("Map ready");
+	
   console.log("Calling renderMap...");
-  if (window.renderMap) {  
+  if (window.renderMap) {
+    window.renderMap();
+  } else {
+    console.error("renderMap not found");
   }
 };
