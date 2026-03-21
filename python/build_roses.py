@@ -40,8 +40,8 @@ def dir_to_bin(deg):
 def speed_bin(ws):
     ws = float(ws)
     if ws < 2: return "calm"
-    if ws < 20: return "low"
-    if ws < 40: return "med"
+    if ws < 10: return "low"
+    if ws < 25: return "med"
     return "high"
 
 
@@ -136,7 +136,7 @@ def build_rose(df, pollutant_name, stations):
 
 
 
-    print(pol[["StationName","ReadingDate"]].head(10))
+    print(f"Building rose for {pollutant_name} ({len(merged)} rows after merge)")
 
 
     
@@ -206,23 +206,19 @@ def build_rose(df, pollutant_name, stations):
             props[f"{d}_mean"] = round(wsum/nsum, 2) if nsum else 0
             props[f"{d}_n"] = nsum
             
+	
+            # Summary stats computed once after all directions are populated
             props["overall_mean"] = round(g["Value_pol"].mean(), 2)
             props["n_total"] = int(len(g))
-
             props["station"] = station
             props["pollutant"] = pollutant_name
             props["period"] = "Last 7 Days"
-
             props["start_date"] = g["ReadingDate"].min().strftime("%Y-%m-%d %H:%M")
             props["end_date"]   = g["ReadingDate"].max().strftime("%Y-%m-%d %H:%M")
-            
             direction_means = {d: props.get(f"{d}_mean", 0) for d in BINS}
             dominant = max(direction_means, key=direction_means.get)
-
-
             props["dominant_dir"] = dominant
-            props["dominant_value"] = round(direction_means[dominant], 2)
-
+            props["dominant_value"] = round(direction_means[dominant], 2)            
             dir_counts      = {d: props.get(f"{d}_n", 0)    for d in BINS}
             total_counts = sum(dir_counts.values())
             
@@ -232,20 +228,17 @@ def build_rose(df, pollutant_name, stations):
                 )
             else:
                 props["dominant_percent"] = 0
-
-
-            calm_total = 0
-            for d in BINS:
-                calm_total += int(counts.get((d, "calm"), 0) or 0)
+     
+	
+        calm_total = sum(int(counts.get((d, "calm"), 0) or 0) for d in BINS)
+        if total_counts > 0:
+            props["calm_percent"] = round(
+                (calm_total / total_counts) * 100, 1
+            )
+        else:
+            props["calm_percent"] = 0
             
-            if total_counts > 0:
-                props["calm_percent"] = round(
-                    (calm_total / total_counts) * 100, 1
-                )
-            else:
-                props["calm_percent"] = 0
         
-
         roses.append({
             "type": "Feature",
             "geometry": {
