@@ -9,7 +9,7 @@ window.WCASStations = window.WCASStations || L.layerGroup();
 window.WCASPurple   = window.WCASPurple   || L.layerGroup();
 window.ALLStations  = window.ALLStations  || L.layerGroup();
 window.ALLPurple    = window.ALLPurple    || L.layerGroup();
-window.roseRegionFilter = "WCAS";   // "ALL", "ACA", "WCAS", "OTHER"
+window.roseRegionFilter = window.APP_CONFIG?.airshed || "ALL";  // "ALL", "ACA", "WCAS", "OTHER"
 window.roseVisible = false;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
@@ -289,22 +289,26 @@ window.renderMap = async function () {
   // ENSURE LAYERS ARE ATTACHED ONCE
   if (!window._layersAttached) {
   
-    // ---- Show WCAS only ----
-    window.WCASStations.addTo(map);
-    window.WCASPurple.addTo(map);
-    WCASBoundaryLayer.addTo(map);
+
+
+    const airshed = window.APP_CONFIG?.airshed;
+    if (airshed === "ACA") {
+      window.ACAStations.addTo(map);
+      window.ACAPurple.addTo(map);
+      ACABoundaryLayer.addTo(map);
+    } else if (airshed === "WCAS") {
+      window.WCASStations.addTo(map);
+      window.WCASPurple.addTo(map);
+      WCASBoundaryLayer.addTo(map);
+    } else {
+      // Default (provincial): show all Alberta stations
+      window.ALLStations.addTo(map);
+      window.ALLPurple.addTo(map);
+    }
   
     // ---- Roses: PM2.5 only ----
     window.RosePM25.addTo(map);
   
-    // Do NOT auto-add:
-    // ACAStations
-    // ACAPurple
-    // ALLStations
-    // ALLPurple
-    // RoseNO2
-    // RoseSO2
-    // ACABoundary
   
     window._layersAttached = true;
   }
@@ -558,14 +562,16 @@ window.renderMap = async function () {
         div.style.background = "white";
         div.style.padding = "6px";
         div.style.fontSize = "12px";
+
+        const roseDefault = window.APP_CONFIG?.airshed || "ALL";        
     
         div.innerHTML = `
           <b>Roses</b><br>
           <label><input type="checkbox" id="roseToggle"> Show</label><br>
-          <label><input type="radio" name="roseRegion" value="ALL"> All</label>
-          <label><input type="radio" name="roseRegion" value="ACA"> ACA</label><br>
-          <label><input type="radio" name="roseRegion" value="WCAS" checked> WCAS</label>
-          <label><input type="radio" name="roseRegion" value="OTHER"> Other</label>
+          <label><input type="radio" name="roseRegion" value="ALL" ${roseDefault === "ALL" ? "checked" : ""}> All</label>
+          <label><input type="radio" name="roseRegion" value="ACA" ${roseDefault === "ACA" ? "checked" : ""}> ACA</label><br>
+          <label><input type="radio" name="roseRegion" value="WCAS" ${roseDefault === "WCAS" ? "checked" : ""}> WCAS</label>
+          <label><input type="radio" name="roseRegion" value="OTHER" ${roseDefault === "OTHER" ? "checked" : ""}> Other</label>
         `;
     
         return div;
