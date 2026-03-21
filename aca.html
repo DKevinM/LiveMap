@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Live Air Quality Platform – Alberta</title>
+  <title>Alberta Capital Airshed – Air Quality</title>
   <meta charset="utf-8"/>
 
-  <!-- Provincial map config (must be BEFORE scripts) -->
+  <!-- ACA airshed config (must be BEFORE scripts) -->
   <script>
     window.APP_CONFIG = {
-      airshed: "ALL"
+      airshed: "ACA",
+
+      bounds: [
+        [52.7, -114.5],   // SW – a little padding around the ACA boundary
+        [55.2, -112.0]    // NE
+      ],
+
+      lockBounds: true,
+      minZoom: 7,
+      maxZoom: 15
     };
   </script>
 
@@ -18,9 +27,8 @@
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
-
-  
 </head>
+
 <body>
 <div id="modal" class="modal">
   <div class="modal-content">
@@ -28,12 +36,11 @@
     <div id="modal-body"></div>
   </div>
 </div>
-  
 
 <div id="header">
-  Live Air Quality Monitoring – Alberta
+  Alberta Capital Airshed – Air Quality
   <span class="nav-links">
-    <a href="aca.html">ACA</a>
+    <a href="index.html">← Alberta</a>
     <a href="wcas.html">WCAS</a>
   </span>
 </div>
@@ -44,16 +51,14 @@
     <div id="station-gauges"></div>
   </div>
 </div>
-  
 
-<script src="js/data.js" defer></script>  
-<script src="js/stations.js" defer></script>  
+<script src="js/data.js" defer></script>
+<script src="js/stations.js" defer></script>
 <script src="js/map.js" defer></script>
-<script src="js/render.js" defer></script>  
+<script src="js/render.js" defer></script>
 <script src="js/purpleair.js" defer></script>
 <script src="js/ui.js" defer></script>
 <script src="js/main.js"></script>
-
 
 </body>
 </html>
