@@ -87,7 +87,10 @@ function clearAllLayers() {
 
 function loadEstimatedAQHI() {
   fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
     .then(data => {
       window.eAQHIStations.clearLayers();
       data.forEach(st => {
@@ -316,10 +319,9 @@ window.renderMap = async function () {
     console.error("renderMap: AppData missing stations/purpleair");
     return;
   }
+
   
-  while (!window.dataByStation) {
-    await new Promise(r => setTimeout(r, 50));
-  }
+  await window.dataReady;
     
 
   // -----------------------
@@ -687,12 +689,24 @@ window.renderMap = async function () {
       { key: "SO2",   layer: window.RoseSO2   }
     ];
   
-    for (const t of types) {
+    // Clear all rose layers upfront
+    types.forEach(t => t.layer.clearLayers());
+    // Fetch all GeoJSON files in parallel
+    const results = await Promise.all(
+      types.map(t =>
+        fetch(`data/rose_${t.key}.geojson`)
+          .then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status} loading rose_${t.key}.geojson`);
+            return r.json();
+          })
+          .then(geo => ({ t, geo }))
+          .catch(err => { console.error(err); return null; })
+      )
+    );
+    results.forEach(item => {
+      if (!item) return;
+      const { t, geo } = item;    
   
-      t.layer.clearLayers();
-  
-      const res = await fetch(`data/rose_${t.key}.geojson`);
-      const geo = await res.json();
   
       geo.features.forEach(f => {
 
@@ -736,8 +750,7 @@ window.renderMap = async function () {
   
         centerMarker.addTo(t.layer);
       });
-  
-    }
+    });  
   
     console.log("Roses done.");
   }
