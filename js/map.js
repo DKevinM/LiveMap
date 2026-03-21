@@ -56,19 +56,10 @@ window.initMap = function () {
 
   console.log("Map ready");
 
-  console.log("Calling loadStations...");
-    if (window.loadStations) {
-      window.loadStations();
-    } else {
-      console.error("loadStations not found");
-    }
-
-
-  if (window.APP_CONFIG?.showPurpleAir && window.loadPurpleAir) {
-    window.loadPurpleAir();
-  }
-
-  if (window.APP_CONFIG?.showAQHIGrid && window.loadGrid) {
-    window.loadGrid();
+  console.log("Calling renderMap...");
+  if (window.renderMap) {
+    window.renderMap();
+  } else {
+    console.error("renderMap not found");
   }
 };

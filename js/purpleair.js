@@ -14,6 +14,7 @@ window.renderPurpleAir = async function () {
   if (!window.map) throw new Error("Map not initialized");
 
   const res = await fetch(PURPLE_URL);
+  if (!res.ok) throw new Error(`PurpleAir fetch failed: HTTP ${res.status}`);
   const data = await res.json();
 
   const records = Array.isArray(data)
