@@ -700,7 +700,7 @@ window.renderMap = async function () {
             return r.json();
           })
           .then(geo => ({ t, geo }))
-          .catch(err => { console.error(err); return null; })
+          .catch(err => { console.error(`Failed to load rose_${t.key}.geojson:`, err); return null; })
       )
     );
     results.forEach(item => {
