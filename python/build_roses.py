@@ -230,7 +230,7 @@ def build_rose(df, pollutant_name, stations):
                 props["dominant_percent"] = 0
      
 	
-        calm_total = sum(int(counts.get((d, "calm"), 0) or 0) for d in BINS)
+        calm_total = sum(int(counts.get((d, "calm"), 0)) for d in BINS)
         if total_counts > 0:
             props["calm_percent"] = round(
                 (calm_total / total_counts) * 100, 1
