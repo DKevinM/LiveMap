@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Live Air Quality Platform</title>
+  <title>Live Air Quality Platform – Alberta</title>
   <meta charset="utf-8"/>
 
+  <!-- Provincial map config (must be BEFORE scripts) -->
+  <script>
+    window.APP_CONFIG = {
+      airshed: "ALL"
+    };
+  </script>
+
+  
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
@@ -23,7 +31,14 @@
 </div>
   
 
-<div id="header">Live Air Quality Monitoring</div>
+<div id="header">
+  Live Air Quality Monitoring – Alberta
+  <span class="nav-links">
+    <a href="aca.html">ACA</a>
+    <a href="wcas.html">WCAS</a>
+  </span>
+</div>
+  
 
 <div id="app">
   <div id="map"></div>
