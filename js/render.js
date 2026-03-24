@@ -419,7 +419,7 @@ window.renderMap = async function () {
       ${[...linesFirst, ...linesRest].join("<br>")}
       ${imageHTML}
       <hr>
-      <a href="/AQHI.forecast/history/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
+      <a href="https://dkevinm.github.io/AB_datapull/web/station_compare.html?station=${stationName}" target="_blank">
         View historical data</a><br>
       <a href="/LiveMap/gauges.html?station=${encodeURIComponent(stationName)}" target="_blank">
         View gauges</a>
@@ -465,59 +465,6 @@ window.renderMap = async function () {
   });
 
 
-
-/*
-  // -----------------------
-  // PURPLEAIR
-  // -----------------------
-  window.AppData.purpleair.forEach(p => {
-    const lat = Number(p.lat);
-    const lon = Number(p.lon);
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-
-    const inACA  = inside(ACApoly,  lat, lon);
-    const inWCAS = inside(WCASpoly, lat, lon);
-
-    const aq = Number(p.eAQHI);
-    const color = Number.isFinite(aq) ? window.getAQHIColor(aq) : "#666666";
-
-    console.log(window.AppData.purpleair[0]);
-    
-    const marker = L.circleMarker([lat, lon], {
-      radius: 4,
-      fillColor: color,
-      color: "#222",
-      weight: 0.5,
-      fillOpacity: 0.85
-    }).bindPopup(`
-      <strong>PurpleAir</strong><br>
-      ${p.name || "Unnamed"}<br>
-      AQHI: ${Number.isFinite(aq) ? aq : "--"}<br>
-      PM₂.₅: ${Number.isFinite(p.pm) ? p.pm.toFixed(1) : "--"} µg/m³
-      <hr>
-      <a href="/ACA_Community/history/sensor_compare.html?sensor_index=${p.sensor_index}" target="_blank">
-        View historical data
-      </a>
-    `)
-       // <a href="/LiveMap/purple_history.html?sensor=${encodeURIComponent(p.name)}" target="_blank">   
-      // https://dkevinm.github.io/ACA_Community/history/sensor_compare.html?sensor_index=27741
-    
-    // Add to All + optionally ACA/WCAS
-    window.ALLPurple.addLayer(marker);
-    if (inACA)  window.ACAPurple.addLayer(marker);
-    if (inWCAS) window.WCASPurple.addLayer(marker);
-  });
-
-
-  // Layer control (build once per render; remove old if needed)
-  // Optional: store ref to avoid duplicates
-  if (window._layerControl) {
-    map.removeControl(window._layerControl);
-  }
-
-  await loadRoses();
-
-*/
 
   
   if (window._layerControl) {
