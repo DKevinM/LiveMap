@@ -5184,7 +5184,7 @@
     "Longitude":-113.527
   },
   {
-    "Value":null,
+    "Value":0.003,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5192,7 +5192,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":9.2,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5200,7 +5200,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":70.0,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5208,7 +5208,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":0.19,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Carbon Monoxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5216,7 +5216,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5224,7 +5224,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":0.003,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5232,7 +5232,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":-9.4,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5240,7 +5240,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":99.5,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5264,7 +5264,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5272,7 +5272,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":0.017,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -5280,7 +5280,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":14.0,
     "StationName":"Calgary Central Inglewood",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7872,7 +7872,7 @@
     "Longitude":-114.008836
   },
   {
-    "Value":null,
+    "Value":0.009,
     "StationName":"Calgary Southeast",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7880,7 +7880,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Calgary Southeast",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7896,7 +7896,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Calgary Southeast",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7904,7 +7904,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":0.014,
     "StationName":"Calgary Southeast",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7912,7 +7912,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":11.1,
     "StationName":"Calgary Southeast",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7920,7 +7920,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":-8.9,
     "StationName":"Calgary Southeast",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7928,7 +7928,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Calgary Southeast",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7936,7 +7936,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Calgary Southeast",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7944,7 +7944,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":50.0,
     "StationName":"Calgary Southeast",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7952,7 +7952,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":2.1,
     "StationName":"Calgary Southeast",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7960,7 +7960,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":2.1,
     "StationName":"Calgary Southeast",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7968,7 +7968,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":9.9,
     "StationName":"Calgary Southeast",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7976,7 +7976,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Calgary Southeast",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -7984,7 +7984,7 @@
     "Longitude":-113.969742
   },
   {
-    "Value":null,
+    "Value":0.007,
     "StationName":"Calgary Southeast",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10760,7 +10760,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":-9.9,
     "StationName":"Calgary Varsity",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10768,7 +10768,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":8.5,
     "StationName":"Calgary Varsity",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10776,7 +10776,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":8.5,
     "StationName":"Calgary Varsity",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10784,7 +10784,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":0.016,
     "StationName":"Calgary Varsity",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10792,7 +10792,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Calgary Varsity",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10800,7 +10800,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Calgary Varsity",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10816,7 +10816,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":0.007,
     "StationName":"Calgary Varsity",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10824,7 +10824,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":86.8,
     "StationName":"Calgary Varsity",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10840,7 +10840,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":0.006,
     "StationName":"Calgary Varsity",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -10856,7 +10856,7 @@
     "Longitude":-114.138994
   },
   {
-    "Value":null,
+    "Value":68.0,
     "StationName":"Calgary Varsity",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29376,7 +29376,7 @@
     "Longitude":-110.2330575
   },
   {
-    "Value":null,
+    "Value":6.0,
     "StationName":"Caroline",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29384,7 +29384,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":6.3,
     "StationName":"Caroline",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29392,7 +29392,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":45.0,
     "StationName":"Caroline",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29400,7 +29400,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":-12.0,
     "StationName":"Caroline",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29408,7 +29408,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":2.3,
     "StationName":"Caroline",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29416,7 +29416,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Caroline",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29424,7 +29424,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Caroline",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29432,7 +29432,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Caroline",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29440,7 +29440,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Caroline",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29448,7 +29448,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":0.02,
     "StationName":"Caroline",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29456,7 +29456,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Caroline",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29464,7 +29464,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":0.005,
     "StationName":"Caroline",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -29472,7 +29472,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":87.2,
     "StationName":"Caroline",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31872,7 +31872,7 @@
     "Longitude":-114.7
   },
   {
-    "Value":null,
+    "Value":0.166,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Carbon Monoxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31880,7 +31880,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31888,7 +31888,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31896,7 +31896,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":0.013,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31904,7 +31904,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31912,7 +31912,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":15.0,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31920,7 +31920,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":-8.5,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31928,7 +31928,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":87.0,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31936,7 +31936,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31944,7 +31944,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":2.3,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31952,7 +31952,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Solar Radiation",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31960,7 +31960,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31968,7 +31968,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":50.0,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -31976,7 +31976,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":6.8,
     "StationName":"Medicine Hat - Crescent Heights",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34560,7 +34560,7 @@
     "Longitude":-110.6811172
   },
   {
-    "Value":null,
+    "Value":136.0,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34568,7 +34568,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":2.26,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34576,7 +34576,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":0.25,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Carbon Monoxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34584,7 +34584,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":-19.9,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34600,7 +34600,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":68.0,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34608,7 +34608,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":0.008,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34616,7 +34616,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34624,7 +34624,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":0.017,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34632,7 +34632,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":8.8,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34640,7 +34640,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34648,7 +34648,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":1.6,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34656,7 +34656,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -34664,7 +34664,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":0.025,
     "StationName":"Grande Prairie - Henry Pirker",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -37248,7 +37248,7 @@
     "Longitude":-118.8077555
   },
   {
-    "Value":null,
+    "Value":4.4,
     "StationName":"Smoky Heights",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -37256,7 +37256,7 @@
     "Longitude":-118.275
   },
   {
-    "Value":null,
+    "Value":5.2,
     "StationName":"Smoky Heights",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -37264,7 +37264,7 @@
     "Longitude":-118.275
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Smoky Heights",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -37272,7 +37272,7 @@
     "Longitude":-118.275
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Smoky Heights",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -37280,7 +37280,7 @@
     "Longitude":-118.275
   },
   {
-    "Value":null,
+    "Value":325.0,
     "StationName":"Smoky Heights",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -37288,7 +37288,7 @@
     "Longitude":-118.275
   },
   {
-    "Value":null,
+    "Value":-20.7,
     "StationName":"Smoky Heights",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38400,7 +38400,7 @@
     "Longitude":-118.275
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Beaverlodge",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38408,7 +38408,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":5.2,
     "StationName":"Beaverlodge",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38416,7 +38416,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Beaverlodge",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38424,7 +38424,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":-18.5,
     "StationName":"Beaverlodge",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38432,7 +38432,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":179.0,
     "StationName":"Beaverlodge",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38440,7 +38440,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":0.007,
     "StationName":"Beaverlodge",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38448,7 +38448,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":78.2,
     "StationName":"Beaverlodge",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38456,7 +38456,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":0.6,
     "StationName":"Beaverlodge",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38464,7 +38464,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Beaverlodge",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38472,7 +38472,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":0.014,
     "StationName":"Beaverlodge",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -38480,7 +38480,7 @@
     "Longitude":-119.3968
   },
   {
-    "Value":null,
+    "Value":0.007,
     "StationName":"Beaverlodge",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50112,7 +50112,7 @@
     "Longitude":-114.4199
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50120,7 +50120,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.01,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50128,7 +50128,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":-18.4,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50136,7 +50136,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":2.04,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50144,7 +50144,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50152,7 +50152,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.009,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50160,7 +50160,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":12.3,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50168,7 +50168,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":45.3,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50176,7 +50176,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.009,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50184,7 +50184,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":10.3,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50192,7 +50192,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":330.0,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50200,7 +50200,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.2,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Carbon Monoxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50208,7 +50208,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50216,7 +50216,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -50224,7 +50224,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Fort McMurray Athabasca Valley",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -52992,7 +52992,7 @@
     "Longitude":-111.3902
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McKay",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53000,7 +53000,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McKay",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53008,7 +53008,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":6.0,
     "StationName":"Fort McKay",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53016,7 +53016,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":0.013,
     "StationName":"Fort McKay",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53024,7 +53024,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":52.5,
     "StationName":"Fort McKay",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53032,7 +53032,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":0.013,
     "StationName":"Fort McKay",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53040,7 +53040,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":2.1,
     "StationName":"Fort McKay",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53056,7 +53056,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":5.3,
     "StationName":"Fort McKay",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53064,7 +53064,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McKay",
     "ParameterName":"Ammonia",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53080,7 +53080,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":0.015,
     "StationName":"Fort McKay",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53088,7 +53088,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":302.0,
     "StationName":"Fort McKay",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53096,7 +53096,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Fort McKay",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53104,7 +53104,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":2.1,
     "StationName":"Fort McKay",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53112,7 +53112,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McKay",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53120,7 +53120,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Fort McKay",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -53128,7 +53128,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":-21.1,
     "StationName":"Fort McKay",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -56448,7 +56448,7 @@
     "Longitude":-111.640504
   },
   {
-    "Value":null,
+    "Value":-19.9,
     "StationName":"Mildred Lake",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -56456,7 +56456,7 @@
     "Longitude":-111.5631
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Mildred Lake",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -56464,7 +56464,7 @@
     "Longitude":-111.5631
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Mildred Lake",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -56472,7 +56472,7 @@
     "Longitude":-111.5631
   },
   {
-    "Value":null,
+    "Value":2.05,
     "StationName":"Mildred Lake",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -56480,7 +56480,7 @@
     "Longitude":-111.5631
   },
   {
-    "Value":null,
+    "Value":46.8,
     "StationName":"Mildred Lake",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -57792,7 +57792,7 @@
     "Longitude":-111.5631
   },
   {
-    "Value":null,
+    "Value":2.08,
     "StationName":"Buffalo Viewpoint",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -57800,7 +57800,7 @@
     "Longitude":-111.5926
   },
   {
-    "Value":null,
+    "Value":6.3,
     "StationName":"Buffalo Viewpoint",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -57816,7 +57816,7 @@
     "Longitude":-111.5926
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Buffalo Viewpoint",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -57832,7 +57832,7 @@
     "Longitude":-111.5926
   },
   {
-    "Value":null,
+    "Value":51.4,
     "StationName":"Buffalo Viewpoint",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -57840,7 +57840,7 @@
     "Longitude":-111.5926
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Buffalo Viewpoint",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -57848,7 +57848,7 @@
     "Longitude":-111.5926
   },
   {
-    "Value":null,
+    "Value":-20.8,
     "StationName":"Buffalo Viewpoint",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -59328,7 +59328,7 @@
     "Longitude":-111.5926
   },
   {
-    "Value":null,
+    "Value":-20.1,
     "StationName":"Mannix",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -59336,7 +59336,7 @@
     "Longitude":-111.482
   },
   {
-    "Value":null,
+    "Value":51.3,
     "StationName":"Mannix",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -59344,7 +59344,7 @@
     "Longitude":-111.482
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Mannix",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -59352,7 +59352,7 @@
     "Longitude":-111.482
   },
   {
-    "Value":null,
+    "Value":2.02,
     "StationName":"Mannix",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -59368,7 +59368,7 @@
     "Longitude":-111.482
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Mannix",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60680,7 +60680,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":0.017,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60688,7 +60688,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":-19.7,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60696,7 +60696,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":10.2,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60704,7 +60704,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60712,7 +60712,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60720,7 +60720,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60728,7 +60728,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":51.9,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60736,7 +60736,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":6.0,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60744,7 +60744,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60752,7 +60752,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":346.0,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60760,7 +60760,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":2.06,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60768,7 +60768,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -60776,7 +60776,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Fort McMurray Patricia McInnes",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63360,7 +63360,7 @@
     "Longitude":-111.476596
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63368,7 +63368,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":51.5,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63376,7 +63376,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":-22.5,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63384,7 +63384,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":293.0,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63392,7 +63392,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Fort Chipewyan",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63400,7 +63400,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":9.3,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63408,7 +63408,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":0.019,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63416,7 +63416,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63424,7 +63424,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63440,7 +63440,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":6.3,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -63448,7 +63448,7 @@
     "Longitude":-111.1764
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort Chipewyan",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -65720,7 +65720,7 @@
     "Longitude":-111.5996
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Barge Landing",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -65728,7 +65728,7 @@
     "Longitude":-111.5996
   },
   {
-    "Value":null,
+    "Value":2.43,
     "StationName":"Barge Landing",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -65736,7 +65736,7 @@
     "Longitude":-111.5996
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Barge Landing",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -65760,7 +65760,7 @@
     "Longitude":-111.5996
   },
   {
-    "Value":null,
+    "Value":-20.6,
     "StationName":"Barge Landing",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -65768,7 +65768,7 @@
     "Longitude":-111.5996
   },
   {
-    "Value":null,
+    "Value":53.7,
     "StationName":"Barge Landing",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -67008,7 +67008,7 @@
     "Longitude":-111.5996
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Lower Camp",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -67016,7 +67016,7 @@
     "Longitude":-111.5007492
   },
   {
-    "Value":null,
+    "Value":2.08,
     "StationName":"Lower Camp",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -67024,7 +67024,7 @@
     "Longitude":-111.5007492
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Lower Camp",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -67032,7 +67032,7 @@
     "Longitude":-111.5007492
   },
   {
-    "Value":null,
+    "Value":-20.5,
     "StationName":"Lower Camp",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -67040,7 +67040,7 @@
     "Longitude":-111.5007492
   },
   {
-    "Value":null,
+    "Value":4.0,
     "StationName":"Lower Camp",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -67048,7 +67048,7 @@
     "Longitude":-111.5007492
   },
   {
-    "Value":null,
+    "Value":301.0,
     "StationName":"Lower Camp",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -67056,7 +67056,7 @@
     "Longitude":-111.5007492
   },
   {
-    "Value":null,
+    "Value":51.5,
     "StationName":"Lower Camp",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68352,7 +68352,7 @@
     "Longitude":-111.5007492
   },
   {
-    "Value":null,
+    "Value":310.0,
     "StationName":"Fort McKay South",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68360,7 +68360,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McKay South",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68368,7 +68368,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":-24.2,
     "StationName":"Fort McKay South",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68376,7 +68376,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McKay South",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68384,7 +68384,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":0.01,
     "StationName":"Fort McKay South",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68392,7 +68392,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":0.01,
     "StationName":"Fort McKay South",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68400,7 +68400,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort McKay South",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68408,7 +68408,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":3.7,
     "StationName":"Fort McKay South",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68416,7 +68416,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":0.012,
     "StationName":"Fort McKay South",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68424,7 +68424,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":2.12,
     "StationName":"Fort McKay South",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68432,7 +68432,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":9.9,
     "StationName":"Fort McKay South",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68440,7 +68440,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":67.7,
     "StationName":"Fort McKay South",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -68448,7 +68448,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Fort McKay South",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70848,7 +70848,7 @@
     "Longitude":-111.6424
   },
   {
-    "Value":null,
+    "Value":9.1,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70864,7 +70864,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.08,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Carbon Monoxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70872,7 +70872,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70880,7 +70880,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":6.4,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70888,7 +70888,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":-12.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70896,7 +70896,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70904,7 +70904,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70912,7 +70912,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.003,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70920,7 +70920,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70928,7 +70928,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":79.4,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70936,7 +70936,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.021,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70944,7 +70944,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.003,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70952,7 +70952,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70960,7 +70960,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":42.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -70968,7 +70968,7 @@
     "Longitude":-113.793438
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Red Deer - Riverside",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88896,7 +88896,7 @@
     "Longitude":-111.5026
   },
   {
-    "Value":null,
+    "Value":-18.5,
     "StationName":"Anzac",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88904,7 +88904,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Anzac",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88912,7 +88912,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":0.009,
     "StationName":"Anzac",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88920,7 +88920,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":307.0,
     "StationName":"Anzac",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88928,7 +88928,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":56.6,
     "StationName":"Anzac",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88936,7 +88936,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":2.05,
     "StationName":"Anzac",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88944,7 +88944,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Anzac",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88952,7 +88952,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":0.005,
     "StationName":"Anzac",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88960,7 +88960,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":7.3,
     "StationName":"Anzac",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88968,7 +88968,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Anzac",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88976,7 +88976,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":12.1,
     "StationName":"Anzac",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88984,7 +88984,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Anzac",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -88992,7 +88992,7 @@
     "Longitude":-111.038056
   },
   {
-    "Value":null,
+    "Value":0.009,
     "StationName":"Anzac",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93512,7 +93512,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93520,7 +93520,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":41.0,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93528,7 +93528,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93536,7 +93536,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93544,7 +93544,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93560,7 +93560,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":5.0,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93568,7 +93568,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93576,7 +93576,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":0.021,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93584,7 +93584,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":83.9,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93592,7 +93592,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93608,7 +93608,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":9.0,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -93616,7 +93616,7 @@
     "Longitude":-113.765439
   },
   {
-    "Value":null,
+    "Value":-12.4,
     "StationName":"Red Deer - Lancaster",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -106944,7 +106944,7 @@
     "Longitude":-113.6119166
   },
   {
-    "Value":null,
+    "Value":0.012,
     "StationName":"Stony Mountain",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -106952,7 +106952,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Stony Mountain",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -106960,7 +106960,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Stony Mountain",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -106968,7 +106968,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Stony Mountain",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -106976,7 +106976,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":-16.4,
     "StationName":"Stony Mountain",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -106984,7 +106984,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":2.21,
     "StationName":"Stony Mountain",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -106992,7 +106992,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":2.21,
     "StationName":"Stony Mountain",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107000,7 +107000,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Stony Mountain",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107008,7 +107008,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":7.8,
     "StationName":"Stony Mountain",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107016,7 +107016,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":53.2,
     "StationName":"Stony Mountain",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107032,7 +107032,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Stony Mountain",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107040,7 +107040,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":14.0,
     "StationName":"Stony Mountain",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107048,7 +107048,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":6.0,
     "StationName":"Stony Mountain",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107056,7 +107056,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Stony Mountain",
     "ParameterName":"Solar Radiation",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107064,7 +107064,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Stony Mountain",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -107072,7 +107072,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Stony Mountain",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110208,7 +110208,7 @@
     "Longitude":-111.17269
   },
   {
-    "Value":null,
+    "Value":5.8,
     "StationName":"Conklin Community",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110216,7 +110216,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Conklin Community",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110224,7 +110224,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Conklin Community",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110232,7 +110232,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":2.08,
     "StationName":"Conklin Community",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110240,7 +110240,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":-16.7,
     "StationName":"Conklin Community",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110248,7 +110248,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Conklin Community",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110256,7 +110256,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Conklin Community",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110264,7 +110264,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Conklin Community",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110272,7 +110272,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.01,
     "StationName":"Conklin Community",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110280,7 +110280,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.005,
     "StationName":"Conklin Community",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110288,7 +110288,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Conklin Community",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110296,7 +110296,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":2.08,
     "StationName":"Conklin Community",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110304,7 +110304,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":51.8,
     "StationName":"Conklin Community",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110312,7 +110312,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.005,
     "StationName":"Conklin Community",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -110320,7 +110320,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":5.6,
     "StationName":"Conklin Community",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113088,7 +113088,7 @@
     "Longitude":-111.078872
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113096,7 +113096,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":0.008,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113104,7 +113104,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113112,7 +113112,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":0.008,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113120,7 +113120,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":-20.9,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113128,7 +113128,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113136,7 +113136,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":4.1,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113144,7 +113144,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":55.1,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113152,7 +113152,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":22.0,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -113160,7 +113160,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":2.46,
     "StationName":"Brion-MacKay River",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115008,7 +115008,7 @@
     "Longitude":-112.089167
   },
   {
-    "Value":null,
+    "Value":2.4,
     "StationName":"Wapasu",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115016,7 +115016,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":-21.9,
     "StationName":"Wapasu",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115024,7 +115024,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":56.5,
     "StationName":"Wapasu",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115032,7 +115032,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":35.0,
     "StationName":"Wapasu",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115048,7 +115048,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Wapasu",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115056,7 +115056,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":0.01,
     "StationName":"Wapasu",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115064,7 +115064,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":4.7,
     "StationName":"Wapasu",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115072,7 +115072,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Wapasu",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115080,7 +115080,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":0.01,
     "StationName":"Wapasu",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115088,7 +115088,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":0.012,
     "StationName":"Wapasu",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -115096,7 +115096,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":6.1,
     "StationName":"Wapasu",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117312,7 +117312,7 @@
     "Longitude":-111.0385833
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Janvier",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117320,7 +117320,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":0.006,
     "StationName":"Janvier",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117328,7 +117328,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Janvier",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117336,7 +117336,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":2.07,
     "StationName":"Janvier",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117344,7 +117344,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Janvier",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117352,7 +117352,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":6.0,
     "StationName":"Janvier",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117360,7 +117360,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":359.0,
     "StationName":"Janvier",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117368,7 +117368,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Janvier",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117376,7 +117376,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":-16.8,
     "StationName":"Janvier",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117384,7 +117384,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":0.006,
     "StationName":"Janvier",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117392,7 +117392,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Janvier",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117400,7 +117400,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":2.07,
     "StationName":"Janvier",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117408,7 +117408,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":52.2,
     "StationName":"Janvier",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117416,7 +117416,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Janvier",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -117424,7 +117424,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":7.2,
     "StationName":"Janvier",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120192,7 +120192,7 @@
     "Longitude":-110.7499
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Firebag",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120200,7 +120200,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":7.0,
     "StationName":"Firebag",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120208,7 +120208,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Firebag",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120216,7 +120216,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":-22.4,
     "StationName":"Firebag",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120224,7 +120224,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":54.3,
     "StationName":"Firebag",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120232,7 +120232,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":2.54,
     "StationName":"Firebag",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120240,7 +120240,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Firebag",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120248,7 +120248,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Firebag",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120256,7 +120256,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Firebag",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -120264,7 +120264,7 @@
     "Longitude":-110.90004
   },
   {
-    "Value":null,
+    "Value":8.4,
     "StationName":"Firebag",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125568,7 +125568,7 @@
     "Longitude":-116.9406
   },
   {
-    "Value":null,
+    "Value":99.8,
     "StationName":"Airdrie",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125576,7 +125576,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":0.02,
     "StationName":"Airdrie",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125584,7 +125584,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":-10.6,
     "StationName":"Airdrie",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125592,7 +125592,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":15.3,
     "StationName":"Airdrie",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125600,7 +125600,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":55.0,
     "StationName":"Airdrie",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125608,7 +125608,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":0.005,
     "StationName":"Airdrie",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125616,7 +125616,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":0.006,
     "StationName":"Airdrie",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125624,7 +125624,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":5.8,
     "StationName":"Airdrie",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125640,7 +125640,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Airdrie",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -125648,7 +125648,7 @@
     "Longitude":-114.037677
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Airdrie",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -141120,7 +141120,7 @@
     "Longitude":-110.452637
   },
   {
-    "Value":null,
+    "Value":61.2,
     "StationName":"Waskow ohci Pimatisiwin",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -141128,7 +141128,7 @@
     "Longitude":-111.6395
   },
   {
-    "Value":null,
+    "Value":3.4,
     "StationName":"Waskow ohci Pimatisiwin",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -141144,7 +141144,7 @@
     "Longitude":-111.6395
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Waskow ohci Pimatisiwin",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -141152,7 +141152,7 @@
     "Longitude":-111.6395
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Waskow ohci Pimatisiwin",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -141160,7 +141160,7 @@
     "Longitude":-111.6395
   },
   {
-    "Value":null,
+    "Value":285.0,
     "StationName":"Waskow ohci Pimatisiwin",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -141168,7 +141168,7 @@
     "Longitude":-111.6395
   },
   {
-    "Value":null,
+    "Value":-21.6,
     "StationName":"Waskow ohci Pimatisiwin",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142464,7 +142464,7 @@
     "Longitude":-111.6395
   },
   {
-    "Value":null,
+    "Value":2.11,
     "StationName":"Fort Hills",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142472,7 +142472,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":0.037,
     "StationName":"Fort Hills",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142480,7 +142480,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":308.0,
     "StationName":"Fort Hills",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142488,7 +142488,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":0.007,
     "StationName":"Fort Hills",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142496,7 +142496,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":57.4,
     "StationName":"Fort Hills",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142504,7 +142504,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":2.11,
     "StationName":"Fort Hills",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142512,7 +142512,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort Hills",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142520,7 +142520,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort Hills",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142528,7 +142528,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fort Hills",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142536,7 +142536,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":28.0,
     "StationName":"Fort Hills",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142544,7 +142544,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":3.6,
     "StationName":"Fort Hills",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142552,7 +142552,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":-21.3,
     "StationName":"Fort Hills",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -142560,7 +142560,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":0.03,
     "StationName":"Fort Hills",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -144960,7 +144960,7 @@
     "Longitude":-111.63969
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -144968,7 +144968,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -144976,7 +144976,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -144984,7 +144984,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":-16.8,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -144992,7 +144992,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":61.2,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -145000,7 +145000,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":29.0,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -145008,7 +145008,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -145016,7 +145016,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":4.9,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -145024,7 +145024,7 @@
     "Longitude":-110.9759926
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Jackfish 2\/3",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148416,7 +148416,7 @@
     "Longitude":-111.44853
   },
   {
-    "Value":null,
+    "Value":2.46,
     "StationName":"Surmont 2",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148424,7 +148424,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":319.0,
     "StationName":"Surmont 2",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148432,7 +148432,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":0.007,
     "StationName":"Surmont 2",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148440,7 +148440,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Surmont 2",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148448,7 +148448,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Surmont 2",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148456,7 +148456,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":52.8,
     "StationName":"Surmont 2",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148464,7 +148464,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":8.7,
     "StationName":"Surmont 2",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148472,7 +148472,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":0.007,
     "StationName":"Surmont 2",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148480,7 +148480,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Surmont 2",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148488,7 +148488,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":4.6,
     "StationName":"Surmont 2",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -148496,7 +148496,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":-17.6,
     "StationName":"Surmont 2",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150528,7 +150528,7 @@
     "Longitude":-110.9091168
   },
   {
-    "Value":null,
+    "Value":27.4,
     "StationName":"Ells River",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150536,7 +150536,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Ells River",
     "ParameterName":"Solar Radiation",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150544,7 +150544,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Ells River",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150552,7 +150552,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":0.155,
     "StationName":"Ells River",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150560,7 +150560,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":58.4,
     "StationName":"Ells River",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150568,7 +150568,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Ells River",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150576,7 +150576,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":0.106,
     "StationName":"Ells River",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150584,7 +150584,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":268.0,
     "StationName":"Ells River",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150592,7 +150592,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":2.08,
     "StationName":"Ells River",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150600,7 +150600,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":0.048,
     "StationName":"Ells River",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150608,7 +150608,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":2.08,
     "StationName":"Ells River",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150616,7 +150616,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":-22.7,
     "StationName":"Ells River",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150624,7 +150624,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Ells River",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -150632,7 +150632,7 @@
     "Longitude":-111.722081
   },
   {
-    "Value":null,
+    "Value":3.1,
     "StationName":"Ells River",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163008,7 +163008,7 @@
     "Longitude":-117.5846086
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Fox Creek",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163016,7 +163016,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":3.4,
     "StationName":"Fox Creek",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163024,7 +163024,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":0.01,
     "StationName":"Fox Creek",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163032,7 +163032,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":-16.5,
     "StationName":"Fox Creek",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163040,7 +163040,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":350.0,
     "StationName":"Fox Creek",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163048,7 +163048,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fox Creek",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163056,7 +163056,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":0.002,
     "StationName":"Fox Creek",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163064,7 +163064,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Fox Creek",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163072,7 +163072,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":5.0,
     "StationName":"Fox Creek",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163080,7 +163080,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Fox Creek",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -163088,7 +163088,7 @@
     "Longitude":-116.80948
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Fox Creek",
     "ParameterName":"Hydrogen Sulphide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170112,7 +170112,7 @@
     "Longitude":-112.816501
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Happy Valley",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170120,7 +170120,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":-23.2,
     "StationName":"Happy Valley",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170128,7 +170128,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Happy Valley",
     "ParameterName":"Non-methane Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170136,7 +170136,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Happy Valley",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170144,7 +170144,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":4.2,
     "StationName":"Happy Valley",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170152,7 +170152,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":243.0,
     "StationName":"Happy Valley",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170160,7 +170160,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Happy Valley",
     "ParameterName":"Sulphur Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170168,7 +170168,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Happy Valley",
     "ParameterName":"Total Reduced Sulphur",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170176,7 +170176,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":0.015,
     "StationName":"Happy Valley",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170192,7 +170192,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":2.21,
     "StationName":"Happy Valley",
     "ParameterName":"Total Hydrocarbons",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170200,7 +170200,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":4.8,
     "StationName":"Happy Valley",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170208,7 +170208,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Happy Valley",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170216,7 +170216,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":2.21,
     "StationName":"Happy Valley",
     "ParameterName":"Methane",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -170224,7 +170224,7 @@
     "Longitude":-119.086667
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Happy Valley",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174912,7 +174912,7 @@
     "Longitude":-111.218823
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Brooks Meadowplace",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174920,7 +174920,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174928,7 +174928,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174936,7 +174936,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":0.02,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174944,7 +174944,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":6.7,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174952,7 +174952,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174960,7 +174960,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":84.4,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174968,7 +174968,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":11.3,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174976,7 +174976,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":42.0,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -174984,7 +174984,7 @@
     "Longitude":-111.863769
   },
   {
-    "Value":null,
+    "Value":-8.2,
     "StationName":"Brooks Meadowplace",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -180936,7 +180936,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":5.1,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -180944,7 +180944,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":80.0,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -180952,7 +180952,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -180960,7 +180960,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":0.4,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -180968,7 +180968,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":0.018,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -180976,7 +180976,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -180984,7 +180984,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":0.009,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -180992,7 +180992,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":77.3,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -181000,7 +181000,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Hanna Library (Airpointer)",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T22:00:00-06:00",
@@ -182592,7 +182592,7 @@
     "Longitude":-111.928226
   },
   {
-    "Value":null,
+    "Value":1.0,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182600,7 +182600,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":10.5,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182608,7 +182608,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":0.018,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182616,7 +182616,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":85.5,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Relative Humidity",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182624,7 +182624,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182632,7 +182632,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":56.0,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182640,7 +182640,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":-6.4,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182648,7 +182648,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182656,7 +182656,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":0.001,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -182664,7 +182664,7 @@
     "Longitude":-112.64222
   },
   {
-    "Value":null,
+    "Value":2.5,
     "StationName":"Raymond (Airpointer)",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195264,7 +195264,7 @@
     "Longitude":-113.237639
   },
   {
-    "Value":null,
+    "Value":-9.2,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Outdoor Temperature",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195272,7 +195272,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":11.6,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Wind Speed",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195280,7 +195280,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":0.0,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Nitric Oxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195288,7 +195288,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":2.0,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":null,
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195296,7 +195296,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Total Oxides of Nitrogen",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195304,7 +195304,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":0.004,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Nitrogen Dioxide",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195312,7 +195312,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":54.0,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Wind Direction",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195320,7 +195320,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":0.021,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Ozone",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
@@ -195328,7 +195328,7 @@
     "Longitude":-114.490938
   },
   {
-    "Value":null,
+    "Value":9.8,
     "StationName":"Cochrane-Mitford Park",
     "ParameterName":"Fine Particulate Matter",
     "ReadingDate":"2026-03-25T23:00:00-06:00",
