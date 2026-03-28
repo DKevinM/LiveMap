@@ -202,7 +202,7 @@ async function loadPurpleAir() {
   return records.map(r => ({
     lat: Number(r.latitude),
     lon: Number(r.longitude),
-    pm: Number(r.pm_corr),
+    pm: isFinite(r.pm_corr) ? Number(r.pm_corr) : null,
     eAQHI: Math.floor(Number(r.pm_corr)/10)+1,
     name: r.name || `Sensor ${r.sensor_index ?? ""}`
   }));
@@ -239,7 +239,7 @@ window.stationsFCReady = (async () => {
 
     window.STATIONS_FC = {
       type: "FeatureCollection",
-      features: (AppData.stations || []).map(s => ({
+      features: (window.AppData.stations || []).map(s => ({
         type: "Feature",
         properties: s,
         geometry: {
@@ -263,7 +263,7 @@ window.purpleFCReady = (async () => {
 
     window.PURPLE_FC = {
       type: "FeatureCollection",
-      features: (AppData.purpleair || []).map(p => ({
+      features: (window.AppData.purpleair || []).map(p => ({
         type: "Feature",
         properties: p,
         geometry: {
@@ -281,8 +281,8 @@ window.purpleFCReady = (async () => {
 })();
 
 // ---------------- NPRI FC ----------------
-// ⚠️ You need to decide where this file lives in LiveMap
-window.npriFCReady = fetch("./data/NPRI.geojson")
+//  
+window.npriFCReady = fetch("../data/NPRI.geojson")
   .then(r => r.json())
   .then(j => {
     window.NPRI_FC = j;
