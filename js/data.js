@@ -221,3 +221,74 @@ window.AppData.ready = (async () => {
 
 })();
 
+
+
+// ======================================================
+// ORIGIN / TRAJECTORY SUPPORT (ADD THIS BLOCK)
+// ======================================================
+
+// Global FeatureCollections (used by origin.html)
+window.STATIONS_FC = { type: "FeatureCollection", features: [] };
+window.PURPLE_FC   = { type: "FeatureCollection", features: [] };
+window.NPRI_FC     = { type: "FeatureCollection", features: [] };
+
+// ---------------- STATIONS FC ----------------
+window.stationsFCReady = (async () => {
+  try {
+    await window.AppData.ready;
+
+    window.STATIONS_FC = {
+      type: "FeatureCollection",
+      features: (AppData.stations || []).map(s => ({
+        type: "Feature",
+        properties: s,
+        geometry: {
+          type: "Point",
+          coordinates: [s.lon, s.lat]
+        }
+      }))
+    };
+
+    console.log("[LiveMap] STATIONS_FC:", window.STATIONS_FC.features.length);
+
+  } catch (e) {
+    console.error("stationsFCReady failed", e);
+  }
+})();
+
+// ---------------- PURPLE FC ----------------
+window.purpleFCReady = (async () => {
+  try {
+    await window.AppData.ready;
+
+    window.PURPLE_FC = {
+      type: "FeatureCollection",
+      features: (AppData.purpleair || []).map(p => ({
+        type: "Feature",
+        properties: p,
+        geometry: {
+          type: "Point",
+          coordinates: [p.lon, p.lat]
+        }
+      }))
+    };
+
+    console.log("[LiveMap] PURPLE_FC:", window.PURPLE_FC.features.length);
+
+  } catch (e) {
+    console.error("purpleFCReady failed", e);
+  }
+})();
+
+// ---------------- NPRI FC ----------------
+// ⚠️ You need to decide where this file lives in LiveMap
+window.npriFCReady = fetch("./data/NPRI.geojson")
+  .then(r => r.json())
+  .then(j => {
+    window.NPRI_FC = j;
+    console.log("[LiveMap] NPRI_FC:", j.features.length);
+  })
+  .catch(e => {
+    console.error("NPRI load failed", e);
+    window.NPRI_FC = { type: "FeatureCollection", features: [] };
+  });
