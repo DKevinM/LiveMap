@@ -1,4 +1,4 @@
-export async function handleMapClick(lat, lng, map) {
+window.handleMapClick = async function(lat, lng, map) {
 
   let weatherData = null;
   let weatherHtml = "";
