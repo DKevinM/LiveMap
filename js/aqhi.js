@@ -1,8 +1,8 @@
 // ===============================
-// community_aqhi.js  (CLEAN VERSION)
+//   aqhi.js
 // ===============================
 
-window.communityAQHI = { current: null, forecast: null };
+window.aqhiData = { current: null, forecast: null };
 
 function safeRound(val) {
   if (val === null || val === undefined || val === "") return null;
@@ -67,7 +67,7 @@ function getLabel(p, idx) {
 }
 
 // ================= LOAD DATA =================
-async function loadcommunityAQHI() {
+async function loadAQHI() {
 
   const [obs, fc] = await Promise.all([
     fetch("https://raw.githubusercontent.com/DKevinM/CAN_AQHI/main/data/aqhi_observations.geojson").then(r => r.json()),
@@ -92,15 +92,15 @@ async function loadcommunityAQHI() {
     new Date(a.forecast_datetime)
   );
 
-  window.communityAQHI.current = obsCal.length ? {
+  window.aqhiData.current = obsCal.length ? {
     station: obsCal[0].name,
     value: safeRound(obsCal[0].aqhi),
     time: obsCal[0].observed || obsCal[0].observation_datetime
   } : null;
 
-  window.communityAQHI.forecast = fcCal.length ? fcCal[0] : null;
+  window.aqhiData.forecast = fcCal.length ? fcCal[0] : null;
 
-  console.log("community AQHI LOADED:", window.communityAQHI);
+  console.log("community AQHI LOADED:", window.aqhiData);
 }
 
 
@@ -132,12 +132,12 @@ async function findClosestCommunityName(lat, lng) {
 
 
 
-async function loadcommunityFromAB(clickLat, clickLng) {
+async function loadAQHIFromAB(clickLat, clickLng) {
 
     const name = await findClosestCommunityName(clickLat, clickLng);
   
     const url =
-    "https://data.environment.alberta.ca/EdwServices/aqhi/odata/CommunityAqhis?$format=json";
+    "https://data.environment.alberta.ca/EdwServices/aqhi/odata/aqhiDatas?$format=json";
   
     const r = await fetch(url);
     const data = await r.json();
@@ -151,7 +151,7 @@ async function loadcommunityFromAB(clickLat, clickLng) {
       return;
     }
   
-    window.communityAQHI = {
+    window.aqhiData = {
       current: {
         station: match.CommunityName,
         value: Number(match.Aqhi),
@@ -168,9 +168,9 @@ async function loadcommunityFromAB(clickLat, clickLng) {
 
 
 // ================= DRAW PANEL =================
-function drawcommunityPanel() {
+function drawAQHIPanel() {
 
-  const C = window.communityAQHI;
+  const C = window.aqhiData;
   if (!C || !C.current) return;
 
   const v0 = Math.round(C.current.value);
@@ -270,7 +270,7 @@ function drawcommunityPanel() {
   <hr style="margin:10px 0;">
 
   `;
-  document.getElementById("community-content").innerHTML = html;
+  document.getElementById("aqhi-content").innerHTML = html;
 }
 
 
@@ -333,7 +333,7 @@ window.renderPanelWeather = renderPanelWeather;
 
 
 window.updatePanelLocation = function(address, lat, lng) {
-  const panel = document.getElementById("community-panel");
+  const panel = document.getElementById("aqhi-panel");
   if (!panel) return;
 
   let loc = panel.querySelector(".loc-line");
@@ -356,17 +356,17 @@ window.updatePanelLocation = function(address, lat, lng) {
 
 
 // ================= BOOTSTRAP =================
-window.refreshcommunityPanel = async function () {
-  drawcommunityPanel();
+window.refreshAQHIPanel = async function () {
+  drawAQHIPanel();
 };
 
-window.updateCommunityAQHIFromClick = async function(lat, lng) {
-  await loadcommunityFromAB(lat, lng);
+window.updateAQHIFromClick = async function(lat, lng) {
+  await loadAQHIFromAB(lat, lng);
 
   // Save existing weather block BEFORE panel redraw
   const existingWeather = document.getElementById("panel-weather")?.innerHTML;
 
-  drawcommunityPanel();
+  drawAQHIPanel();
 
   // Put the weather BACK after redraw
   if (existingWeather) {
