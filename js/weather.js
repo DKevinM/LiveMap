@@ -4,8 +4,24 @@ function degToCardinal(deg) {
   return dirs[idx];
 }
 
+window.lastWeather = null;
+window.lastWeatherTime = 0;
+window.lastWeatherLat = null;
+window.lastWeatherLng = null;
 
 window.fetchWeather = async function(lat, lng) {
+
+  const now = Date.now();
+
+  // ---- CACHE (5 minutes, location-aware) ----
+  if (
+    window.lastWeather &&
+    (now - window.lastWeatherTime < 5 * 60 * 1000) &&
+    Math.abs(window.lastWeatherLat - lat) < 0.05 &&
+    Math.abs(window.lastWeatherLng - lng) < 0.05
+  ) {
+    return window.lastWeather;
+  }
 
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
@@ -16,6 +32,13 @@ window.fetchWeather = async function(lat, lng) {
   try {
     const r = await fetch(url);
     const data = await r.json();
+
+    // ---- SAVE CACHE ----
+    window.lastWeather = data;
+    window.lastWeatherTime = now;
+    window.lastWeatherLat = lat;
+    window.lastWeatherLng = lng;
+
     return data;
 
   } catch (e) {
@@ -24,8 +47,10 @@ window.fetchWeather = async function(lat, lng) {
   }
 };
 
-
 window.extractCurrentWeather = function (data) {
+
+  if (!data || !data.hourly || !data.hourly.time) return null;
+
   const now = new Date();
   let i = 0;
 
@@ -33,6 +58,8 @@ window.extractCurrentWeather = function (data) {
     if (new Date(data.hourly.time[i]) >= now) break;
     i++;
   }
+
+  if (i >= data.hourly.time.length) i = data.hourly.time.length - 1;
 
   return {
     time: now.toLocaleString("en-CA", { timeZone: "America/Edmonton" }),
