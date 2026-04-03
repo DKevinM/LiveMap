@@ -3,12 +3,7 @@ window.handleMapClick = async function(lat, lng, map) {
   let weatherData = null;
   let weatherHtml = "";
 
-  function getPurpleAirList() {
-    if (Array.isArray(window.purpleAirSensors) && window.purpleAirSensors.length) {
-      return window.purpleAirSensors;
-    }
-    return [];
-  }
+
 
   // ---- 1) Marker at clicked point ----
   const marker = L.marker([lat, lng]);
@@ -57,6 +52,27 @@ window.handleMapClick = async function(lat, lng, map) {
 
   // ---- 4) WEATHER ----
   weatherData = await window.fetchWeather(lat, lng);
+  const current = window.extractCurrentWeather(weatherData);
+  
+  if (current && window.renderPanelWeather) {
+    window.renderPanelWeather(current);
+  }
+  
+  //  ADD THIS BLOCK RIGHT HERE
+  if (current) {
+    weatherHtml = `
+      <div style="font-weight:600; margin:8px 0 3px;">
+        Current Weather
+      </div>
+      <table style="width:100%; font-size:11px;">
+        <tr><td>Temp</td><td>${Math.round(current.temp)} °C</td></tr>
+        <tr><td>RH</td><td>${Math.round(current.rh)} %</td></tr>
+        <tr><td>Wind</td><td>${Math.round(current.wind)} km/h ${degToCardinal(current.dir)}</td></tr>
+        <tr><td>Precip</td><td>${current.precip.toFixed(1)} mm</td></tr>
+        <tr><td>UV</td><td>${Math.round(current.uv)}</td></tr>
+      </table>
+    `;
+  }
 
   // ---- AQHI UPDATE (NEW) ----
   if (typeof window.updateAQHIFromClick === "function") {
@@ -68,17 +84,15 @@ window.handleMapClick = async function(lat, lng, map) {
   let closestPA = [];
 
   try {
-    const paList = getPurpleAirList();
-
+    const paList = window.AppData?.purpleair || [];
+    
     closestPA = paList
       .map(s => ({
-        name: s.SensorName || s.Label || s.name || "PurpleAir",
-        pm: s.PM2_5 || s.pm25 || s.pm2_5 || null,
-        lat: Number(s.Latitude ?? s.lat),
-        lng: Number(s.Longitude ?? s.lng),
-        dist_km: getDistance(lat, lng,
-          Number(s.Latitude ?? s.lat),
-          Number(s.Longitude ?? s.lng)) / 1000
+        name: s.name || "PurpleAir",
+        pm: s.pm ?? null,
+        lat: Number(s.lat),
+        lng: Number(s.lon),
+        dist_km: getDistance(lat, lng, Number(s.lat), Number(s.lon)) / 1000
       }))
       .filter(s => isFinite(s.lat) && isFinite(s.lng))
       .sort((a,b) => a.dist_km - b.dist_km)
