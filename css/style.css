@@ -10,6 +10,7 @@ html, body {
 
 /* Top header (if used) */
 #header {
+  margin: 0;
   background: #0b5ed7;
   color: white;
   padding: 10px;
@@ -40,15 +41,13 @@ html, body {
 
 /* Main app layout */
 #app {
-  height: 100%;
-  width: 100%;
-  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 /* Map fills left side */
 #map {
-  height: 100%;
-  width: 100%;
+  display: block;
 }
 
 /* Right control panel */
