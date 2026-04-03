@@ -17,3 +17,8 @@ window.getDistance = function(lat1, lon1, lat2, lon2) {
 
   return R * c; // meters
 };
+
+// ---------- OPTIONAL HELPER ----------
+window.getDistanceKm = function(lat1, lon1, lat2, lon2) {
+  return window.getDistance(lat1, lon1, lat2, lon2) / 1000;
+};
