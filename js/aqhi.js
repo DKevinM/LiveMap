@@ -193,6 +193,9 @@ function drawAQHIPanel() {
   const categories = [...new Set(values.map(getAQHICategory))];
 
   
+
+
+  
   function buildLegendRow(cat) {
     const styles = {
       low:      { color: "#009966", label: "1–3 Low: Ideal air quality for outdoor activities" },
@@ -211,14 +214,14 @@ function drawAQHIPanel() {
   }
 
   
-  const html = `
-
   const legendHTML = `
     <div style="margin-top:8px; font-size:11px; line-height:1.3;">
       ${categories.map(buildLegendRow).join("")}
     </div>
   `;
 
+  
+  const html = `
 
   <div style="font-size:16px; font-weight:700;">
     ${C.current.station} Air Quality (AQHI)
