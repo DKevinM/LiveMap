@@ -13,4 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.initMap();
+
+  console.log("Map initialized successfully");
 });
