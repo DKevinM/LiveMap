@@ -12,8 +12,7 @@ window.handleMapClick = async function(lat, lng, map) {
 
   // ---- 1) Marker at clicked point ----
   const marker = L.marker([lat, lng]);
-  markerGroup.addLayer(marker);
-  existingMarkers.push(marker);
+  window.layers.stations.addLayer(marker);
 
   // ---- 2) TWO CLOSEST AQHI STATIONS ----
   const closestStations = Object.values(dataByStation)
@@ -37,8 +36,7 @@ window.handleMapClick = async function(lat, lng, map) {
       weight: 3,
       fillOpacity: 0.8
     });
-    markerGroup.addLayer(circle);
-    stationMarkers.push(circle);
+    window.layers.stations.addLayer(circle);
   });
 
   // ---- 3) REVERSE GEOCODE ----
