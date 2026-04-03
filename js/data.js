@@ -1,7 +1,5 @@
 // ---------------- GLOBALS ----------------
-let dataByStation = {};
-window.dataByStation = dataByStation;
-
+window.dataByStation = {};
 
 
 window.buildStationPopup = function (rows) {
@@ -211,10 +209,12 @@ async function loadPurpleAir() {
 // ---------------- READY ----------------
 window.AppData.ready = (async () => {
 
-  await window.dataReady; 
-
-  const stations = await window.fetchAllStationData();
-  const purple   = await loadPurpleAir();
+  await window.dataReady;
+  
+  const [stations, purple] = await Promise.all([
+    window.fetchAllStationData(),
+    loadPurpleAir()
+  ]);
 
   AppData.stations = stations;
   AppData.purpleair = purple;
