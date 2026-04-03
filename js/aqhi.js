@@ -174,6 +174,9 @@ async function loadAQHIFromAB(clickLat, clickLng) {
 
 
 
+
+
+
 // ================= DRAW PANEL =================
 function drawAQHIPanel() {
 
@@ -188,21 +191,16 @@ function drawAQHIPanel() {
   const values = [v0, fToday, fTonight, fTomorrow].filter(v => v != null);
   
   const categories = [...new Set(values.map(getAQHICategory))];
+
   
-  const html = `
-
-
   function buildLegendRow(cat) {
-  
     const styles = {
-      low:      { color: "#009966", label: "1–3 Low: Ideal air quality" },
-      moderate: { color: "#ffde33", label: "4–6 Moderate: Reduce if symptoms" },
-      high:     { color: "#ff9933", label: "7–10 High: Reduce outdoor activity" },
-      veryhigh: { color: "#cc0033", label: "10+ Very High: Avoid exertion" }
+      low:      { color: "#009966", label: "1–3 Low: Ideal air quality for outdoor activities" },
+      moderate: { color: "#ffde33", label: "4–6 Moderate: No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation" },
+      high:     { color: "#ff9933", label: "7–10 High: Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation" },
+      veryhigh: { color: "#cc0033", label: "10+ Very High: Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation" }
     };
-  
     const s = styles[cat];
-  
     return `
       <div style="display:flex; align-items:center; gap:6px;">
         <span style="width:10px;height:10px;background:${s.color};
@@ -211,7 +209,10 @@ function drawAQHIPanel() {
       </div>
     `;
   }
+
   
+  const html = `
+
   const legendHTML = `
     <div style="margin-top:8px; font-size:11px; line-height:1.3;">
       ${categories.map(buildLegendRow).join("")}
@@ -262,34 +263,7 @@ function drawAQHIPanel() {
     </div>
   </div>
 
-  <div style="
-    margin-top:8px;
-    font-size:11px;
-    line-height:1.3;
-  ">
-  
-    <div style="display:flex; align-items:center; gap:6px;">
-      <span style="width:10px;height:10px;background:#009966;border-radius:50%;display:inline-block;"></span>
-      <b>1–3 Low:</b> Ideal air quality for outdoor activities
-    </div>
-  
-    <div style="display:flex; align-items:center; gap:6px;">
-      <span style="width:10px;height:10px;background:#ffde33;border-radius:50%;display:inline-block;"></span>
-      <b>4–6 Moderate:</b> No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation
-    </div>
-  
-    <div style="display:flex; align-items:center; gap:6px;">
-      <span style="width:10px;height:10px;background:#ff9933;border-radius:50%;display:inline-block;"></span>
-      <b>7–10 High:</b> Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation
-    </div>
-  
-    <div style="display:flex; align-items:center; gap:6px;">
-      <span style="width:10px;height:10px;background:#cc0033;border-radius:50%;display:inline-block;"></span>
-      <b>10+ Very High:</b> Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation
-    </div>
-  
-  </div>
-
+  ${legendHTML}
 
   <div style="margin-top:10px;">
     <strong>Last updated:</strong> ${new Date(C.current.time).toLocaleString()}
