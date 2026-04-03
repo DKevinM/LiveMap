@@ -9,7 +9,7 @@ window.WCASStations = window.WCASStations || L.layerGroup();
 window.WCASPurple   = window.WCASPurple   || L.layerGroup();
 window.ALLStations  = window.ALLStations  || L.layerGroup();
 window.ALLPurple    = window.ALLPurple    || L.layerGroup();
-window.roseRegionFilter = window.APP_CONFIG?.airshed || "ALL";  // "ALL", "ACA", "WCAS", "OTHER"
+
 window.roseVisible = false;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
@@ -273,8 +273,12 @@ function loadEstimatedAQHI() {
 window.renderMap = async function () {
   const map = window.map;   
 
-  await window.AppData.ready; 
-  await Promise.all([window.dataReady, acaBoundaryReady, wcasBoundaryReady]);
+  await Promise.all([
+    window.AppData.ready,
+    window.dataReady,
+    acaBoundaryReady,
+    wcasBoundaryReady
+  ]);
   
   clearAllLayers();
   
@@ -291,24 +295,27 @@ window.renderMap = async function () {
   
 
 
+    // ALWAYS show Alberta
+    window.ALLStations.addTo(map);
+    window.ALLPurple.addTo(map);
+    
+    // OPTIONAL overlays based on config
     const airshed = window.APP_CONFIG?.airshed;
+    
     if (airshed === "ACA") {
-      window.ACAStations.addTo(map);
-      window.ACAPurple.addTo(map);
-      ACABoundaryLayer.addTo(map);
-    } else if (airshed === "WCAS") {
-      window.WCASStations.addTo(map);
-      window.WCASPurple.addTo(map);
-      WCASBoundaryLayer.addTo(map);
-    } else {
-      // Default (provincial): show all Alberta stations
-      window.ALLStations.addTo(map);
-      window.ALLPurple.addTo(map);
+      if (window.APP_CONFIG?.showACABoundary) {
+        ACABoundaryLayer.addTo(map);
+      }
+    }
+    
+    if (airshed === "WCAS") {
+      if (window.APP_CONFIG?.showWCASBoundary) {
+        WCASBoundaryLayer.addTo(map);
+      }
     }
   
     // ---- Roses: PM2.5 only ----
-    window.RosePM25.addTo(map);
-  
+     
   
     window._layersAttached = true;
   }
@@ -340,9 +347,7 @@ window.renderMap = async function () {
     const lon = Number(rows[0].Longitude);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
   
-    const inACA  = inside(ACApoly,  lat, lon);
-    const inWCAS = inside(WCASpoly, lat, lon);
-  
+ 
     // AQHI value for color
     const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
     const aqhiVal = aqhiRow ? Number(aqhiRow.Value) : NaN;
@@ -435,12 +440,10 @@ window.renderMap = async function () {
     }).bindPopup(popupHTML);
     
     // choose which layer the marker belongs to
-    let targetLayer;
-    if (inACA) targetLayer = window.ACAStations;
-    else if (inWCAS) targetLayer = window.WCASStations;
-    else targetLayer = window.ALLStations;
+    // ALWAYS add to Alberta layer
+    window.ALLStations.addLayer(marker);
     
-    targetLayer.addLayer(marker);
+    
     
     // add AQHI number inside circle
     if (Number.isFinite(aqhiVal)) {
@@ -455,13 +458,10 @@ window.renderMap = async function () {
         interactive: false
       });
     
-      targetLayer.addLayer(label);
+      window.ALLStations.addLayer(label);
+      
     }  
 
-    
-   // if (inACA) window.ACAStations.addLayer(marker);
-   // else if (inWCAS) window.WCASStations.addLayer(marker);
-   // else window.ALLStations.addLayer(marker);
   });
 
 
@@ -478,12 +478,6 @@ window.renderMap = async function () {
   window._layerControl = L.control.layers(null, {
     "ACA Boundary": ACABoundaryLayer,
     "WCAS Boundary": WCASBoundaryLayer,
-
-    "ACA Stations": window.ACAStations,
-    "ACA PurpleAir": window.ACAPurple,
-
-    "WCAS Stations": window.WCASStations,
-    "WCAS PurpleAir": window.WCASPurple,
 
     "Estimated AQHI": window.eAQHIStations,
     
@@ -514,11 +508,7 @@ window.renderMap = async function () {
     
         div.innerHTML = `
           <b>Roses</b><br>
-          <label><input type="checkbox" id="roseToggle"> Show</label><br>
-          <label><input type="radio" name="roseRegion" value="ALL" ${roseDefault === "ALL" ? "checked" : ""}> All</label>
-          <label><input type="radio" name="roseRegion" value="ACA" ${roseDefault === "ACA" ? "checked" : ""}> ACA</label><br>
-          <label><input type="radio" name="roseRegion" value="WCAS" ${roseDefault === "WCAS" ? "checked" : ""}> WCAS</label>
-          <label><input type="radio" name="roseRegion" value="OTHER" ${roseDefault === "OTHER" ? "checked" : ""}> Other</label>
+          <label><input type="checkbox" id="roseToggle"> Show</label>
         `;
     
         return div;
@@ -533,12 +523,7 @@ window.renderMap = async function () {
           window.roseVisible = e.target.checked;
           renderMap();
         }
-    
-        if (e.target.name === "roseRegion") {
-          window.roseRegionFilter = e.target.value;
-          renderMap();
-        }
-    
+        
       });
     
       window._roseControlAdded = true;
@@ -670,14 +655,7 @@ window.renderMap = async function () {
         if (!bounds.contains([lat, lon])) return;
         
       
-        const inACA  = inside(ACApoly,  lat, lon);
-        const inWCAS = inside(WCASpoly, lat, lon);
-      
         if (!window.roseVisible) return;
-      
-        if (window.roseRegionFilter === "ACA" && !inACA) return;
-        if (window.roseRegionFilter === "WCAS" && !inWCAS) return;
-        if (window.roseRegionFilter === "OTHER" && (inACA || inWCAS)) return;
 
   
         const latlng = L.latLng(
