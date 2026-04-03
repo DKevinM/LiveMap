@@ -42,6 +42,18 @@ window.initMap = function () {
 
   window.map = map;
 
+	// ----------------------------
+	// CLICK HANDLER (NEW)
+	// ----------------------------
+	map.on("click", function(e) {
+	  if (typeof window.handleMapClick === "function") {
+		window.handleMapClick(e.latlng.lat, e.latlng.lng, map);
+	  } else {
+		console.error("handleMapClick not found");
+	  }
+	});
+	
+
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
     attribution: "&copy; OpenStreetMap contributors"
