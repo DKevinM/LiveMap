@@ -137,7 +137,7 @@ async function loadAQHIFromAB(clickLat, clickLng) {
     const name = await findClosestCommunityName(clickLat, clickLng);
   
     const url =
-    "https://data.environment.alberta.ca/EdwServices/aqhi/odata/aqhiDatas?$format=json";
+    "https://data.environment.alberta.ca/EdwServices/aqhi/odata/CommunityAqhis?$format=json";
   
     const r = await fetch(url);
     const data = await r.json();
