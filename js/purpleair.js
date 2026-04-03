@@ -56,6 +56,12 @@ window.renderPurpleAir = async function () {
         </a>` : ""}
     `);
 
+
+    if (!window.ALLPurple) return;
+
+    marker.addTo(window.ALLPurple);
+    
+/*
     // --- Add to layer system ---
     if (!window.ALLPurple) return;
 
@@ -66,6 +72,6 @@ window.renderPurpleAir = async function () {
 
     if (inACA)  marker.addTo(window.ACAPurple);
     if (inWCAS) marker.addTo(window.WCASPurple);
-
+*/
   });
 };
