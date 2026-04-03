@@ -23,6 +23,14 @@ html, body {
   justify-content: space-between;
 }
 
+.leaflet-control-container {
+  background: transparent !important;
+}
+
+.leaflet-control {
+  background: transparent !important;
+  box-shadow: none !important;
+}
 
 
 /* Main app layout */
