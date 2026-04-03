@@ -490,45 +490,6 @@ window.renderMap = async function () {
 
   }, { collapsed: false }).addTo(map);
 
-    // ---- ROSE FILTER CONTROL ----
-    if (!window._roseControlAdded) {
-    
-      const RoseControl = L.control({ position: "topright" });
-    
-      RoseControl.onAdd = function () {
-        const div = L.DomUtil.create("div", "leaflet-bar");
-        L.DomEvent.disableClickPropagation(div);
-        L.DomEvent.disableScrollPropagation(div);
-        
-        div.style.background = "white";
-        div.style.padding = "6px";
-        div.style.fontSize = "12px";
-
-        const roseDefault = window.APP_CONFIG?.airshed || "ALL";        
-    
-        div.innerHTML = `
-          <b>Roses</b><br>
-          <label><input type="checkbox" id="roseToggle"> Show</label>
-        `;
-    
-        return div;
-      };
-    
-      RoseControl.addTo(map);
-    
-      // Wire up events
-      document.addEventListener("change", e => {
-    
-        if (e.target.id === "roseToggle") {
-          window.roseVisible = e.target.checked;
-          renderMap();
-        }
-        
-      });
-    
-      window._roseControlAdded = true;
-    }
-
 
   // ---- ROSES ----
   if (window.roseVisible) {
