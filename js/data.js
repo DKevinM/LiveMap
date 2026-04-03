@@ -282,7 +282,7 @@ window.purpleFCReady = (async () => {
 
 // ---------------- NPRI FC ----------------
 //  
-window.npriFCReady = fetch("../data/NPRI.geojson")
+window.npriFCReady = fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output/NPRI.geojson")
   .then(r => r.json())
   .then(j => {
     window.NPRI_FC = j;
