@@ -99,6 +99,13 @@ window.handleMapClick = async function(lat, lng, map) {
     console.warn("Weather fetch failed", e);
   }
 
+
+  // ---- AQHI UPDATE (NEW) ----
+  if (typeof window.updateAQHIFromClick === "function") {
+    window.updateAQHIFromClick(lat, lng);
+  }  
+
+  
   // ---- 5) PURPLEAIR ----
   let closestPA = [];
 
