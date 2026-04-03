@@ -1,73 +1,15 @@
-function buildPopupWeatherTable(data) {
-  const now = new Date();
-  let i = 0;
+export async function handleMapClick(lat, lng, map) {
 
-  while (i < data.hourly.time.length) {
-    if (new Date(data.hourly.time[i]) >= now) break;
-    i++;
-  }
-
-  let rows = "";
-  for (let j = 0; j < 6; j++) {
-    const t = new Date(data.hourly.time[i + j]);
-    rows += `
-      <tr>
-        <td>${t.toLocaleTimeString("en-CA",{hour:"2-digit",minute:"2-digit"})}</td>
-        <td>${Math.round(data.hourly.temperature_2m[i+j])}°C</td>
-        <td>${Math.round(data.hourly.wind_speed_10m[i+j])} km/h 
-            ${degToCardinal(data.hourly.wind_direction_10m[i+j])}</td>
-        <td>${data.hourly.precipitation[i+j].toFixed(1)} mm</td>
-        <td>${Math.round(data.hourly.uv_index[i+j])}</td>
-      </tr>
-    `;
-  }
-
-  return `
-    <div style="margin-top:10px;">
-      <div style="font-weight:600; margin-bottom:6px;">
-        Weather (next 6 hours)
-      </div>
-      <table style="width:100%; font-size:11px; border-collapse:collapse;">
-        <thead>
-          <tr style="border-bottom:1px solid #ccc;">
-            <th align="left">Time</th>
-            <th align="left">Temp</th>
-            <th align="left">Wind</th>
-            <th align="left">Precip</th>
-            <th align="left">UV</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows}
-        </tbody>
-      </table>
-    </div>
-  `;
-}
-
-
-
-
-
-
-async function renderClickData(lat, lng, map) {
   let weatherData = null;
   let weatherHtml = "";
 
-  
-function getPurpleAirList() {
-  if (Array.isArray(window.purpleAirSensors) && window.purpleAirSensors.length) {
-    return window.purpleAirSensors;
+  function getPurpleAirList() {
+    if (Array.isArray(window.purpleAirSensors) && window.purpleAirSensors.length) {
+      return window.purpleAirSensors;
+    }
+    return [];
   }
-  return [];
-}
 
-
-
-
-
-
-  
   // ---- 1) Marker at clicked point ----
   const marker = L.marker([lat, lng]);
   markerGroup.addLayer(marker);
@@ -87,7 +29,6 @@ function getPurpleAirList() {
     .sort((a,b) => a.dist_km - b.dist_km)
     .slice(0,2);
 
-  // draw circles for those stations
   closestStations.forEach(st => {
     const circle = L.circleMarker([st.lat, st.lng], {
       radius: 15,
@@ -100,80 +41,70 @@ function getPurpleAirList() {
     stationMarkers.push(circle);
   });
 
-
-
-
-
-
-  // ---- 3c) REVERSE GEOCODE CLICK LOCATION ----
+  // ---- 3) REVERSE GEOCODE ----
   let addressText = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
-  
+
   try {
     const r = await fetch(
-      `https://nominatim.openstreetmap.org/reverse` +
-      `?lat=${lat}&lon=${lng}&format=json`
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
     );
     const geo = await r.json();
-  
+
     if (geo && geo.display_name) {
       addressText = geo.display_name;
     }
   } catch (e) {
     console.warn("Reverse geocoding failed", e);
   }
-  
-  
-  
-// ---- 3) WEATHER (panel + popup use same fetch) ----
-try {
-  const r = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
-    `&hourly=temperature_2m,relative_humidity_2m,precipitation,cloudcover,` +
-    `wind_speed_10m,wind_direction_10m,wind_gusts_10m,uv_index` +
-    `&timezone=America%2FEdmonton`
-  );
 
-  weatherData = await r.json();
-  weatherHtml = buildPopupWeatherTable(weatherData);
+  // ---- 4) WEATHER ----
+  try {
+    const r = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
+      `&hourly=temperature_2m,relative_humidity_2m,precipitation,cloudcover,` +
+      `wind_speed_10m,wind_direction_10m,wind_gusts_10m,uv_index` +
+      `&timezone=America%2FEdmonton`
+    );
 
-  // ONLY THIS — NOTHING ELSE
-  if (window.renderPanelWeather && weatherData) {
-    const now = new Date();
-    let i = 0;
-  
-    while (i < weatherData.hourly.time.length) {
-      if (new Date(weatherData.hourly.time[i]) >= now) break;
-      i++;
+    weatherData = await r.json();
+
+    if (window.buildWeatherTable) {
+      weatherHtml = window.buildWeatherTable(weatherData);
     }
-  
-    const currentWeather = {
-      temp: Math.round(weatherData.hourly.temperature_2m[i]),
-      rh: Math.round(weatherData.hourly.relative_humidity_2m[i]),
-      precip: weatherData.hourly.precipitation[i].toFixed(1),
-      cloud: Math.round(weatherData.hourly.cloudcover[i]),
-      uv: weatherData.hourly.uv_index[i].toFixed(1),
-      wind: Math.round(weatherData.hourly.wind_speed_10m[i]),
-      gust: Math.round(weatherData.hourly.wind_gusts_10m[i]),
-      dir: weatherData.hourly.wind_direction_10m[i]
-    };
-  
-    window.renderPanelWeather(currentWeather, lat, lng);
+
+    if (window.renderPanelWeather && weatherData) {
+      const now = new Date();
+      let i = 0;
+
+      while (i < weatherData.hourly.time.length) {
+        if (new Date(weatherData.hourly.time[i]) >= now) break;
+        i++;
+      }
+
+      const currentWeather = {
+        temp: Math.round(weatherData.hourly.temperature_2m[i]),
+        rh: Math.round(weatherData.hourly.relative_humidity_2m[i]),
+        precip: weatherData.hourly.precipitation[i].toFixed(1),
+        cloud: Math.round(weatherData.hourly.cloudcover[i]),
+        uv: weatherData.hourly.uv_index[i].toFixed(1),
+        wind: Math.round(weatherData.hourly.wind_speed_10m[i]),
+        gust: Math.round(weatherData.hourly.wind_gusts_10m[i]),
+        dir: weatherData.hourly.wind_direction_10m[i]
+      };
+
+      window.renderPanelWeather(currentWeather, lat, lng);
+    }
+
+  } catch (e) {
+    console.warn("Weather fetch failed", e);
   }
 
-
-} catch (e) {
-  console.warn("Weather fetch failed", e);
-}
-
-  
-
-
-  // ---- 4) THREE CLOSEST PURPLEAIR (FIXED DISTANCE LOGIC) ---- 
+  // ---- 5) PURPLEAIR ----
   let closestPA = [];
-  
+
   try {
     const paList = getPurpleAirList();
-  
+
     closestPA = paList
       .map(s => ({
         name: s.SensorName || s.Label || s.name || "PurpleAir",
@@ -187,19 +118,12 @@ try {
       .filter(s => isFinite(s.lat) && isFinite(s.lng))
       .sort((a,b) => a.dist_km - b.dist_km)
       .slice(0,3);
-  
+
   } catch (e) {
     console.warn("PurpleAir nearest lookup failed:", e);
   }
-  
 
-
-
-
- 
-  
-
-  // ---- 5) CLICK POPUP TABLE ----
+  // ---- 6) POPUP ----
   const stRows = closestStations.map(s => `
     <tr>
       <td>${s.station}</td>
@@ -221,47 +145,35 @@ try {
 
   const popupHtml = `
     <div style="font-size:12px; line-height:1.25;">
-  
       <div style="font-weight:700; margin-bottom:6px;">
         Nearest stations & sensors
       </div>
-  
+
       <div style="font-weight:600; margin:6px 0 3px;">
         AQHI stations (2)
       </div>
       <table style="width:100%; font-size:11px;">
-        <tr>
-          <th align="left">Station</th>
-          <th align="left">AQHI</th>
-          <th align="left">Dist</th>
-        </tr>
         ${stRows}
       </table>
-  
+
       <div style="font-weight:600; margin:8px 0 3px;">
         PurpleAir (3)
       </div>
       <table style="width:100%; font-size:11px;">
-        <tr><th align="left">Sensor</th><th align="left">PM2.5 (μg/m³)</th><th align="left">Dist</th></tr>
         ${paRows}
       </table>
-      
-      ${weatherHtml}
 
-  
+      ${weatherHtml}
     </div>
   `;
 
-  // Push address into AQHI panel (same panel as weather)
   if (typeof window.updatePanelLocation === "function") {
     window.updatePanelLocation(addressText, lat, lng);
   }
-
 
   marker.bindPopup(popupHtml, {
     maxWidth: 420,
     minWidth: 380,
     autoPanPadding: [20, 20]
   }).openPopup();
-
 }
