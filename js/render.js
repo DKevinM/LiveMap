@@ -68,6 +68,33 @@ function inside(poly, lat, lon) {
 }
 
 
+function loadFireSmokeLayer(url, layer) {
+  fetch(url)
+    .then(r => r.json())
+    .then(geo => {
+      layer.clearLayers();
+      L.geoJSON(geo, {
+        style: f => ({
+          fillColor: getSmokeColor(f.properties.pm25),
+          fillOpacity: 0.4,
+          color: "none"
+        })
+      }).addTo(layer);
+      console.log("Loaded FireSmoke:", url);
+    })
+    .catch(e => console.error("FireSmoke load failed:", e));
+}
+
+
+function getSmokeColor(pm) {
+  if (pm < 5) return "#009966";
+  if (pm < 10) return "#ffde33";
+  if (pm < 25) return "#ff9933";
+  if (pm < 50) return "#cc0033";
+  return "#660000";
+}
+
+
 // clear layers (so re-render doesn’t duplicate)
 function clearAllLayers() {
   window.ACAStations.clearLayers();
