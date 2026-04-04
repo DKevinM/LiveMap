@@ -487,6 +487,11 @@ window.renderMap = async function () {
     "Rose PM2.5": window.RosePM25,
     "Rose NO₂": window.RoseNO2,
     "Rose SO₂": window.RoseSO2,
+  
+    "FireSmoke (Now)": window.layers.firesmoke_now,
+    "FireSmoke (+6h)": window.layers.firesmoke_6h,
+    "FireSmoke (+12h)": window.layers.firesmoke_12h,
+    "FireSmoke (+24h)": window.layers.firesmoke_24h    
 
   }, { collapsed: false }).addTo(map);
 
