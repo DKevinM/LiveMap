@@ -1,3 +1,54 @@
+function buildPopupWeatherTable(data) {
+  const now = new Date();
+  let i = 0;
+
+  while (i < data.hourly.time.length) {
+    if (new Date(data.hourly.time[i]) >= now) break;
+    i++;
+  }
+
+  let rows = "";
+  for (let j = 0; j < 6; j++) {
+    const t = new Date(data.hourly.time[i + j]);
+    rows += `
+      <tr>
+        <td>${t.toLocaleTimeString("en-CA",{hour:"2-digit",minute:"2-digit"})}</td>
+        <td>${Math.round(data.hourly.temperature_2m[i+j])}°C</td>
+        <td>${Math.round(data.hourly.wind_speed_10m[i+j])} km/h 
+            ${degToCardinal(data.hourly.wind_direction_10m[i+j])}</td>
+        <td>${data.hourly.precipitation[i+j].toFixed(1)} mm</td>
+        <td>${Math.round(data.hourly.uv_index[i+j])}</td>
+      </tr>
+    `;
+  }
+
+  return `
+    <div style="margin-top:10px;">
+      <div style="font-weight:600; margin-bottom:6px;">
+        Weather (next 6 hours)
+      </div>
+      <table style="width:100%; font-size:11px; border-collapse:collapse;">
+        <thead>
+          <tr style="border-bottom:1px solid #ccc;">
+            <th align="left">Time</th>
+            <th align="left">Temp</th>
+            <th align="left">Wind</th>
+            <th align="left">Precip</th>
+            <th align="left">UV</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+
+
+
+
 window.handleMapClick = async function(lat, lng, map) {
 
   let weatherData = null;
@@ -11,15 +62,21 @@ window.handleMapClick = async function(lat, lng, map) {
 
   // ---- 2) TWO CLOSEST AQHI STATIONS ----
   const closestStations = Object.values(dataByStation)
-    .map(arr => arr.find(d => d.ParameterName === "AQHI") || arr[0])
-    .map(r => ({
-      station: r.StationName,
-      lat: Number(r.Latitude),
-      lng: Number(r.Longitude),
-      aqhi: (r.Value == null || r.Value === "" ? null : Math.round(Number(r.Value))),
-      dist_km: getDistance(lat, lng, r.Latitude, r.Longitude) / 1000
-    }))
-    .filter(s => isFinite(s.lat) && isFinite(s.lng))
+    .map(arr => {
+      const aqhiRow = arr.find(d => d.ParameterName === "AQHI");
+      if (!aqhiRow) return null;
+  
+      return {
+        station: aqhiRow.StationName,
+        lat: Number(aqhiRow.Latitude),
+        lng: Number(aqhiRow.Longitude),
+        aqhi: (aqhiRow.Value == null || aqhiRow.Value === "")
+          ? null
+          : Math.round(Number(aqhiRow.Value)),
+        dist_km: getDistance(lat, lng, aqhiRow.Latitude, aqhiRow.Longitude) / 1000
+      };
+    })
+    .filter(s => s && isFinite(s.lat) && isFinite(s.lng))
     .sort((a,b) => a.dist_km - b.dist_km)
     .slice(0,2);
 
@@ -57,22 +114,13 @@ window.handleMapClick = async function(lat, lng, map) {
   if (current && window.renderPanelWeather) {
     window.renderPanelWeather(current);
   }
+
   
-  //  ADD THIS BLOCK RIGHT HERE
-  if (current) {
-    weatherHtml = `
-      <div style="font-weight:600; margin:8px 0 3px;">
-        Current Weather
-      </div>
-      <table style="width:100%; font-size:11px;">
-        <tr><td>Temp</td><td>${Math.round(current.temp)} °C</td></tr>
-        <tr><td>RH</td><td>${Math.round(current.rh)} %</td></tr>
-        <tr><td>Wind</td><td>${Math.round(current.wind)} km/h ${degToCardinal(current.dir)}</td></tr>
-        <tr><td>Precip</td><td>${current.precip.toFixed(1)} mm</td></tr>
-        <tr><td>UV</td><td>${Math.round(current.uv)}</td></tr>
-      </table>
-    `;
+  if (weatherData) {
+    weatherHtml = buildPopupWeatherTable(weatherData);
   }
+
+
 
   // ---- AQHI UPDATE (NEW) ----
   if (typeof window.updateAQHIFromClick === "function") {
@@ -106,45 +154,73 @@ window.handleMapClick = async function(lat, lng, map) {
   const stRows = closestStations.map(s => `
     <tr>
       <td>${s.station}</td>
-      <td>${s.aqhi ?? "—"}</td>
-      <td>${s.dist_km.toFixed(1)} km</td>
+      <td style="text-align:center;">${s.aqhi ?? "—"}</td>
+      <td style="text-align:right;">${s.dist_km.toFixed(1)} km</td>
     </tr>
   `).join("");
-
-  const paRows = (closestPA.length
-    ? closestPA
-    : [{name:"(PurpleAir not loaded)", pm:"—", dist_km:0}]
-  ).map(p => `
+  
+  const stTable = `
+    <table style="width:100%; font-size:11px;">
+      <thead>
+        <tr>
+          <th align="left">Station</th>
+          <th align="center">AQHI</th>
+          <th align="right">Dist</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${stRows}
+      </tbody>
+    </table>
+  `;
+  
+  const paRows = closestPA.map(p => `
     <tr>
       <td>${p.name}</td>
-      <td>${(p.pm == null ? "—" : Number(p.pm).toFixed(1))}</td>
-      <td>${p.dist_km ? p.dist_km.toFixed(1)+" km" : ""}</td>
+      <td>${p.pm == null ? "—" : Number(p.pm).toFixed(1)}</td>
+      <td>${p.dist_km.toFixed(1)} km</td>
     </tr>
   `).join("");
+  
+  const paTable = `
+    <table style="width:100%; font-size:11px;">
+      <thead>
+        <tr>
+          <th align="left">Sensor</th>
+          <th align="left">PM2.5 (µg/m³)</th>
+          <th align="right">Dist</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${paRows}
+      </tbody>
+    </table>
+  `;
 
   const popupHtml = `
     <div style="font-size:12px; line-height:1.25;">
+  
       <div style="font-weight:700; margin-bottom:6px;">
         Nearest stations & sensors
       </div>
-
+  
       <div style="font-weight:600; margin:6px 0 3px;">
         AQHI stations (2)
       </div>
-      <table style="width:100%; font-size:11px;">
-        ${stRows}
-      </table>
-
+      ${stTable}
+  
       <div style="font-weight:600; margin:8px 0 3px;">
         PurpleAir (3)
       </div>
-      <table style="width:100%; font-size:11px;">
-        ${paRows}
-      </table>
-
+      ${paTable}
+  
       ${weatherHtml}
+  
     </div>
   `;
+
+
+  
 
   if (typeof window.updatePanelLocation === "function") {
     window.updatePanelLocation(addressText, lat, lng);
