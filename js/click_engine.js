@@ -154,7 +154,9 @@ window.handleMapClick = async function(lat, lng, map) {
   const stRows = closestStations.map(s => `
     <tr>
       <td>${s.station}</td>
-      <td style="text-align:center;">${s.aqhi ?? "—"}</td>
+      <td style="text-align:center;">
+        ${isFinite(s.aqhi) ? s.aqhi : "—"}
+      </td>
       <td style="text-align:right;">${s.dist_km.toFixed(1)} km</td>
     </tr>
   `).join("");
