@@ -40,6 +40,7 @@ let WCASpoly = null;
 const ACABoundaryLayer  = L.layerGroup();
 const WCASBoundaryLayer = L.layerGroup();
 
+const baseURL = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output";
 
 const acaBoundaryReady = fetch("data/ACA.geojson")
   .then(r => r.json())
@@ -283,6 +284,12 @@ window.renderMap = async function () {
   clearAllLayers();
   
   loadEstimatedAQHI();  
+  
+  loadFireSmokeLayer(`${baseURL}/firesmoke_now.geojson`, window.layers.firesmoke_now);
+  loadFireSmokeLayer(`${baseURL}/firesmoke_6h.geojson`, window.layers.firesmoke_6h);
+  loadFireSmokeLayer(`${baseURL}/firesmoke_12h.geojson`, window.layers.firesmoke_12h);
+  loadFireSmokeLayer(`${baseURL}/firesmoke_24h.geojson`, window.layers.firesmoke_24h);
+    
   
   // render PurpleAir
   if (window.renderPurpleAir) {
