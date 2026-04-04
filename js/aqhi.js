@@ -11,6 +11,14 @@ function getAQHICategory(v) {
   return "veryhigh";
 }
 
+
+function safeAQHI(v) {
+  if (v == null || isNaN(v)) return "—";
+  if (v > 10) return "10+";
+  return Math.round(v);
+}
+
+
 function safeRound(val) {
   if (val === null || val === undefined || val === "") return null;
   const n = Number(val);
@@ -233,7 +241,7 @@ function drawAQHIPanel() {
       <div style="background:${getColor(v0)}; width:70px; height:40px;
            margin:auto; display:flex; align-items:center; justify-content:center;
            font-weight:bold; border:1px solid #333;">
-        ${v0}
+        ${safeAQHI(v0)}
       </div>
       <div style="font-size:12px;">Current</div>
     </div>
