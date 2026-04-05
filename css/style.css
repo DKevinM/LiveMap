@@ -128,7 +128,12 @@ html, body {
   z-index: 1000;
   background: rgba(255,255,255,0.95);
   padding: 10px;
+  font-size: 14px;
   border-radius: 8px;
+}
+
+#panel * {
+  font-size: 14px;
 }
 
 /* Legend */
