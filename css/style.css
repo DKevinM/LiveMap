@@ -52,6 +52,24 @@ html, body {
 
 
 
+/* HEADER LOOK */
+#aqhi-header {
+  background: #e6e6e6;
+  padding: 6px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+/* COLLAPSED STATE */
+#aqhi-panel.collapsed #aqhi-content {
+  display: none;
+}
+
+
+
 /* PANEL BASE */
 #panel {
   width: 360px;
@@ -128,12 +146,12 @@ html, body {
   z-index: 1000;
   background: rgba(255,255,255,0.95);
   padding: 10px;
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 8px;
 }
 
 #panel * {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* Legend */
