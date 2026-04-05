@@ -206,10 +206,10 @@ function drawAQHIPanel() {
   
   function buildLegendRow(cat) {
     const styles = {
-      low:      { color: "#009966", label: "1–3 Low: Ideal air quality for outdoor activities" },
-      moderate: { color: "#ffde33", label: "4–6 Moderate: No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation" },
-      high:     { color: "#ff9933", label: "7–10 High: Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation" },
-      veryhigh: { color: "#cc0033", label: "10+ Very High: Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation" }
+      low:      { color: "#016797", label: "1–3 Low: Ideal air quality for outdoor activities" },
+      moderate: { color: "#016797", label: "4–6 Moderate: No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation" },
+      high:     { color: "#016797", label: "7–10 High: Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation" },
+      veryhigh: { color: "#016797", label: "10+ Very High: Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation" }
     };
     const s = styles[cat];
     return `
