@@ -196,6 +196,40 @@ function aqhiColor(v) {
   return "#640100"; // 10+
 }
 
+function getAQHIMessage(aqhi) {
+  if (!isFinite(aqhi)) return null;
+  if (aqhi <= 3) {
+    return {
+      level: "Low",
+      range: "1 - 3",
+      atRisk: "Enjoy your usual outdoor activities.",
+      general: "Ideal air quality for outdoor activities."
+    };
+  }
+  if (aqhi <= 6) {
+    return {
+      level: "Moderate",
+      range: "4 - 6",
+      atRisk: "Consider reducing or rescheduling strenuous activities outdoors if you are experiencing symptoms.",
+      general: "No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation."
+    };
+  }
+  if (aqhi <= 10) {
+    return {
+      level: "High",
+      range: "7 - 10",
+      atRisk: "Reduce or reschedule strenuous activities outdoors. Children and the elderly should also take it easy.",
+      general: "Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation."
+    };
+  }
+  return {
+    level: "Very High",
+    range: "10+",
+    atRisk: "Avoid strenuous activities outdoors. Children and the elderly should also avoid outdoor physical exertion.",
+    general: "Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation."
+  };
+}
+
 
 const guideLimits = {
   "Ozone": 76,
@@ -526,6 +560,47 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       gaugeZones("AQHI", 11),
       null
     );
+
+    const msg = getAQHIMessage(aqhiValue);
+    
+    if (msg) {
+      document.getElementById("aqhiMessage").innerHTML = `
+        <div style="
+          margin-top:12px;
+          padding:10px;
+          background:#f5f5f5;
+          border-radius:8px;
+          line-height:1.35;
+        ">
+    
+          <div style="
+            font-weight:700;
+            color:${aqhiColor(aqhiValue)};
+            margin-bottom:6px;
+          ">
+            ${msg.level} Risk (AQHI ${msg.range})
+          </div>
+    
+          <div style="font-size:14px; margin-bottom:6px;">
+            <b>At Risk Population:</b><br>
+            ${msg.atRisk}
+          </div>
+    
+          <div style="font-size:14px;">
+            <b>General Population:</b><br>
+            ${msg.general}
+          </div>
+    
+        </div>
+      `;
+    } else {
+      document.getElementById("aqhiMessage").innerHTML = `
+        <div style="margin-top:12px; color:#999;">
+          AQHI not available for this station
+        </div>
+      `;
+    }
+    
 
     document.getElementById("aqhiBig").innerHTML = `
       <div style="color:${aqhiColor(aqhiValue)}">
