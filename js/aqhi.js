@@ -5,6 +5,17 @@
 window.aqhiData = { current: null, forecast: null };
 
 function getAQHICategory(v) {
+  // ---- INVALID / MISSING ----
+  if (
+    v === null ||
+    v === undefined ||
+    v === "" ||
+    v === "NA" ||
+    !isFinite(Number(v))
+  ) {
+    return null; 
+  }
+  v = Number(v);
   if (v <= 3) return "low";
   if (v <= 6) return "moderate";
   if (v <= 10) return "high";
