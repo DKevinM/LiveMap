@@ -50,10 +50,13 @@ function buildPopupWeatherTable(data) {
 
 
 window.handleMapClick = async function(lat, lng, map) {
-
+// ---- CLEAR PREVIOUS CLICK STATE ----
+if (window.layers?.stations) {
+  window.layers.stations.clearLayers();
+}
+  
   let weatherData = null;
   let weatherHtml = "";
-
 
 
   // ---- 1) Marker at clicked point ----
