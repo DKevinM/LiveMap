@@ -9,23 +9,15 @@ window.showStationModal = function (station) {
 
 // ---------------- PANEL TOGGLE ----------------
 document.addEventListener("DOMContentLoaded", () => {
-  const panel = document.getElementById("panel");
+  const panel = document.getElementById("aqhi-panel");
+  const header = document.getElementById("aqhi-header");
 
-  // create button dynamically (no need to touch HTML again)
-  const header = document.createElement("div");
-  header.id = "panel-header";
+  if (!panel || !header) return;
 
-  const toggle = document.createElement("button");
-  toggle.id = "togglePanel";
-  toggle.textContent = "⮜";
+  // start collapsed (optional — matches your "tap to expand")
+  panel.classList.add("collapsed");
 
-  header.appendChild(toggle);
-
-  // insert header at top of panel
-  panel.prepend(header);
-
-  toggle.addEventListener("click", () => {
+  header.addEventListener("click", () => {
     panel.classList.toggle("collapsed");
-    toggle.textContent = panel.classList.contains("collapsed") ? "⮞" : "⮜";
   });
 });
