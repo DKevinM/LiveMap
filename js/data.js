@@ -127,7 +127,12 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
     
       // ---- FIX 2: numeric value ----
       let v = parseFloat(e.Value);
-      if (!isFinite(v)) return;
+      
+      if (!isFinite(v)) {
+        e.Value = null;
+      } else {
+        e.Value = v;
+      }
     
       // ---- FIX 3: ppm → ppb conversion (what your working script does) ----
       if ([
