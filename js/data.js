@@ -187,7 +187,9 @@ window.fetchAllStationData = async function () {
       stationName: name,
       lat: Number(rows[0].Latitude),
       lon: Number(rows[0].Longitude),
-      aqhi: aqhiRow ? aqhiRow.Value : "NA",
+      aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
+        ? aqhiRow.Value
+        : null,
       rows: rows,  
       html: window.buildStationPopup(rows)  
     };
