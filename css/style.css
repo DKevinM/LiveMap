@@ -51,6 +51,44 @@ html, body {
 }
 
 
+
+/* PANEL BASE */
+#panel {
+  width: 360px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  background: white;
+  position: relative;
+}
+
+/* COLLAPSED STATE */
+#panel.collapsed {
+  width: 40px;
+}
+
+/* HEADER (small toggle strip) */
+#panel-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px;
+}
+
+/* BUTTON */
+#togglePanel {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 16px;
+}
+
+/* HIDE CONTENT WHEN COLLAPSED */
+#panel.collapsed #aqhi-panel,
+#panel.collapsed #station-gauges {
+  display: none;
+}
+
+
+
 /* Main app layout */
 #app {
   height: calc(100vh - 52px);  /* subtract header height */
