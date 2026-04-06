@@ -133,6 +133,9 @@ if (window.layers?.stations) {
   if (typeof window.updateAQHIFromClick === "function") {
     window.updateAQHIFromClick(lat, lng);
   }  
+  if (typeof window.drawAQHIPanel === "function") {
+    window.drawAQHIPanel();
+  }  
 
   
   // ---- 5) PURPLEAIR ----
