@@ -50,14 +50,19 @@ function buildPopupWeatherTable(data) {
 
 
 window.handleMapClick = async function(lat, lng, map) {
-if (typeof window.clearSelection === "function") {
-  window.clearSelection();
-}
+  if (typeof window.clearSelection === "function") {
+    window.clearSelection();
+  }
+  if (typeof window.updateAQHIFromClick === "function") {
+    await window.updateAQHIFromClick(lat, lng);
+  } else {
+    console.error("updateAQHIFromClick not found");
+  }  
   
-// ---- CLEAR PREVIOUS CLICK STATE ----
-if (window.layers?.stations) {
-  window.layers.stations.clearLayers();
-}
+  // ---- CLEAR PREVIOUS CLICK STATE ----
+  if (window.layers?.stations) {
+    window.layers.stations.clearLayers();
+  }
   
   let weatherData = null;
   let weatherHtml = "";
