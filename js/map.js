@@ -54,6 +54,25 @@ window.initMap = function () {
 	});
 	
 
+	map.on("overlayadd", async function(e) {
+	
+	  let group = null;
+	
+	  if (e.name.includes("Blend")) {
+	    group = e.name.replace("AQHI ", "").replace(" Blend", "") + "_BLEND";
+	  } else {
+	    group = e.name.replace("AQHI ", "");
+	  }
+	
+	  if (window.AQHI_GROUPS[group]) {
+	    await loadAQHIGroup(group);
+	    map.addLayer(window.layers.aqhi[group]);
+	  }
+	
+	});
+	
+
+	
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
     attribution: "&copy; OpenStreetMap contributors"
