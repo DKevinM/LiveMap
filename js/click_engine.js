@@ -51,14 +51,13 @@ function buildPopupWeatherTable(data) {
 
 window.handleMapClick = async function(lat, lng, map) {
 
-  
   if (typeof window.clearSelection === "function") {
     window.clearSelection();
     const panel = document.getElementById("panel");
     if (panel) panel.classList.remove("collapsed");
   }
   if (typeof window.updateAQHIFromClick === "function") {
-    await window.updateAQHIFromClick(lat, lng);
+    // await window.updateAQHIFromClick(lat, lng);
   } else {
     console.error("updateAQHIFromClick not found");
   }  
@@ -66,11 +65,9 @@ window.handleMapClick = async function(lat, lng, map) {
 
   
   // ---- CLEAR PREVIOUS CLICK STATE ----
-  Object.values(window.layers || {}).forEach(layer => {
-    if (layer && typeof layer.clearLayers === "function") {
-      layer.clearLayers();
-    }
-  });
+  if (window.layers?.stations) {
+    window.layers.stations.clearLayers();
+  }
   
   let weatherData = null;
   let weatherHtml = "";
@@ -78,7 +75,12 @@ window.handleMapClick = async function(lat, lng, map) {
 
   // ---- 1) Marker at clicked point ----
   const marker = L.marker([lat, lng]);
-  window.layers.stations.addLayer(marker);
+  if (window.layers?.stations) {
+    window.layers.stations.addLayer(marker);
+  }  
+  if (window.layers?.stations) {
+    window.layers.stations.addLayer(circle);
+  }  
 
   // ---- 2) TWO CLOSEST AQHI STATIONS ----
   const closestStations = Object.values(dataByStation)
@@ -104,32 +106,27 @@ window.handleMapClick = async function(lat, lng, map) {
     const circle = L.circleMarker([st.lat, st.lng], {
       radius: 15,
       color: "#000",
-      fillColor: getColor(st.aqhi),
+      fillColor: isFinite(st.aqhi) ? getColor(st.aqhi) : "#999",
       weight: 3,
       fillOpacity: 0.8
     });
     window.layers.stations.addLayer(circle);
   });
 
+  
+
   // ==============================
   // UPDATE LEFT AQHI PANEL
   // ==============================
   if (closestStations && closestStations.length > 0) {
     const s = closestStations[0];
-  
-    const aqhiVal = isFinite(Number(s.aqhi)) ? Number(s.aqhi) : null;
-  
-    // AQHI value
+    const aqhiVal = (s.aqhi !== null && isFinite(s.aqhi)) ? s.aqhi : null;
     const aqhiEl = document.getElementById("aqhi-current");
     if (aqhiEl) aqhiEl.textContent = aqhiVal !== null ? aqhiVal : "—";
-  
-    // 🔥 FIXES "Grande Prairie stuck"
     const titleEl = document.getElementById("panel-title");
     if (titleEl) {
       titleEl.textContent = `${s.station || "Unknown"} Air Quality (AQHI)`;
     }
-  
-    // timestamp (you don’t currently store it → safe fallback)
     const timeEl = document.getElementById("aqhi-updated");
     if (timeEl) {
       timeEl.textContent = "Latest available";
