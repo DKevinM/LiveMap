@@ -157,7 +157,9 @@ window.AQHI_GROUPS = {
 
 
 
+window.ACTIVE_REGIONS = ["Alberta", "ACA", "WCAS"];
 
+window.ACTIVE_TYPES = ["CURRENT", "BLEND"];
 
 
 
