@@ -42,6 +42,11 @@ let WCASpoly = null;
 
 async function loadAQHIGroup(groupName) {
 
+  const files = window.AQHI_GROUPS[groupName];
+  const layerGroup = window.layers.aqhi[groupName];
+
+  if (!files || !layerGroup) return;
+
   layerGroup.clearLayers();
 
   for (const file of files) {
@@ -67,11 +72,6 @@ async function loadAQHIGroup(groupName) {
 }
 
 
-window.ACTIVE_AIRSHEDS = ["ACA", "WCAS"]; 
-
-Object.keys(window.AQHI_GROUPS).forEach(group => {
-  window.layers.aqhi[group] = L.layerGroup(); 
-});
 
 
 // Boundary layers (toggleable)
