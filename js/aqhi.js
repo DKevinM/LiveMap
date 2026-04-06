@@ -198,7 +198,7 @@ async function loadAQHIFromAB(clickLat, clickLng) {
 
 // ================= DRAW PANEL =================
 function drawAQHIPanel() {
-
+  console.log("DRAW PANEL RUNNING", window.aqhiData);
   const C = window.aqhiData;
   if (!C) return;
 
