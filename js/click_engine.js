@@ -130,12 +130,10 @@ if (window.layers?.stations) {
 
 
   // ---- AQHI UPDATE (NEW) ----
-  if (typeof window.updateAQHIFromClick === "function") {
-    window.updateAQHIFromClick(lat, lng);
-  }  
-  if (typeof window.drawAQHIPanel === "function") {
-    window.drawAQHIPanel();
-  }  
+  window.updateAQHIFromClick = async function(lat, lng) {
+    await loadAQHIFromAB(lat, lng);
+    drawAQHIPanel();  
+  };
 
   
   // ---- 5) PURPLEAIR ----
