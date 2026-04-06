@@ -203,11 +203,12 @@ function drawAQHIPanel() {
   if (!C || !C.current) return;
 
   const v0 = safeRound(C.current.value);
-  const fToday = Math.round(C.forecast.today);
-  const fTonight = Math.round(C.forecast.tonight);
-  const fTomorrow = Math.round(C.forecast.tomorrow);
+  const fToday = safeRound(C.forecast?.today);
+  const fTonight = safeRound(C.forecast?.tonight);
+  const fTomorrow = safeRound(C.forecast?.tomorrow);
 
-  const values = [v0, fToday, fTonight, fTomorrow].filter(v => v != null);
+  const values = [v0, fToday, fTonight, fTomorrow]
+    .filter(v => isFinite(v));
   
   const categories = [...new Set(
     values
@@ -257,7 +258,7 @@ function drawAQHIPanel() {
   <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-top:10px;">
 
     <div style="text-align:center;">
-      <div style="background:${getColor(v0)}; width:70px; height:40px;
+      <div style="background:${isFinite(v0) ? getColor(v0) : "#ccc"}; width:70px; height:40px;
            margin:auto; display:flex; align-items:center; justify-content:center;
            font-weight:bold; border:1px solid #333;">
         ${safeAQHI(v0)}
