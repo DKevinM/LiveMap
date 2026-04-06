@@ -2,6 +2,13 @@
 // render.js
 // =======================
 
+window.layers.aqhi = {};
+
+Object.keys(window.AQHI_GROUPS).forEach(group => {
+  window.layers.aqhi[group] = L.layerGroup(); 
+});
+
+
 // --- Shared Layer Groups (available to all scripts) ---
 window.ACAStations  = window.ACAStations  || L.layerGroup();
 window.ACAPurple    = window.ACAPurple    || L.layerGroup();
