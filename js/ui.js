@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!panel || !header) return;
 
-  // start collapsed (optional — matches your "tap to expand")
-  panel.classList.add("collapsed");
+
 
   header.addEventListener("click", () => {
     panel.classList.toggle("collapsed");
