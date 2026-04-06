@@ -200,9 +200,9 @@ async function loadAQHIFromAB(clickLat, clickLng) {
 function drawAQHIPanel() {
 
   const C = window.aqhiData;
-  if (!C || !C.current) return;
+  if (!C) return;
 
-  const v0 = safeRound(C.current.value);
+  const v0 = safeRound(C.current?.value);
   const fToday = safeRound(C.forecast?.today);
   const fTonight = safeRound(C.forecast?.tonight);
   const fTomorrow = safeRound(C.forecast?.tomorrow);
