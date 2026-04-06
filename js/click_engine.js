@@ -133,12 +133,6 @@ window.handleMapClick = async function(lat, lng, map) {
   }
 
 
-
-  // ---- AQHI UPDATE (NEW) ----
-  if (typeof window.updateAQHIFromClick === "function") {
-    window.updateAQHIFromClick(lat, lng);
-  }  
-
   
   // ---- 5) PURPLEAIR ----
   let closestPA = [];
