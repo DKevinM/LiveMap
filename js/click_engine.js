@@ -50,19 +50,27 @@ function buildPopupWeatherTable(data) {
 
 
 window.handleMapClick = async function(lat, lng, map) {
+
+  
   if (typeof window.clearSelection === "function") {
     window.clearSelection();
+    const panel = document.getElementById("panel");
+    if (panel) panel.classList.remove("collapsed");
   }
   if (typeof window.updateAQHIFromClick === "function") {
     await window.updateAQHIFromClick(lat, lng);
   } else {
     console.error("updateAQHIFromClick not found");
   }  
+
+
   
   // ---- CLEAR PREVIOUS CLICK STATE ----
-  if (window.layers?.stations) {
-    window.layers.stations.clearLayers();
-  }
+  Object.values(window.layers || {}).forEach(layer => {
+    if (layer && typeof layer.clearLayers === "function") {
+      layer.clearLayers();
+    }
+  });
   
   let weatherData = null;
   let weatherHtml = "";
@@ -103,6 +111,35 @@ window.handleMapClick = async function(lat, lng, map) {
     window.layers.stations.addLayer(circle);
   });
 
+  // ==============================
+  // UPDATE LEFT AQHI PANEL
+  // ==============================
+  if (closestStations && closestStations.length > 0) {
+    const s = closestStations[0];
+  
+    const aqhiVal = isFinite(Number(s.aqhi)) ? Number(s.aqhi) : null;
+  
+    // AQHI value
+    const aqhiEl = document.getElementById("aqhi-current");
+    if (aqhiEl) aqhiEl.textContent = aqhiVal !== null ? aqhiVal : "—";
+  
+    // 🔥 FIXES "Grande Prairie stuck"
+    const titleEl = document.getElementById("panel-title");
+    if (titleEl) {
+      titleEl.textContent = `${s.station || "Unknown"} Air Quality (AQHI)`;
+    }
+  
+    // timestamp (you don’t currently store it → safe fallback)
+    const timeEl = document.getElementById("aqhi-updated");
+    if (timeEl) {
+      timeEl.textContent = "Latest available";
+    }
+  }
+
+
+
+
+  
   // ---- 3) REVERSE GEOCODE ----
   let addressText = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
 
