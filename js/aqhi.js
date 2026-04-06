@@ -168,14 +168,15 @@ async function loadAQHIFromAB(clickLat, clickLng) {
     const r = await fetch(url);
     const data = await r.json();
   
-    let match = data.value.find(c =>
+    const match = data.value.find(c =>
       c.CommunityName.toLowerCase() === name.toLowerCase()
     );
+  
     if (!match) {
-      console.warn("No Alberta match — using fallback");
-      match = data.value[0];  
+      console.error("No Alberta match for:", name);
+      return;
     }
-      
+  
     window.aqhiData = {
       current: {
         station: match.CommunityName,
@@ -197,7 +198,7 @@ async function loadAQHIFromAB(clickLat, clickLng) {
 
 // ================= DRAW PANEL =================
 function drawAQHIPanel() {
-  console.log("DRAW PANEL RUNNING", window.aqhiData);
+
   const C = window.aqhiData;
   if (!C) return;
 
