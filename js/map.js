@@ -118,7 +118,7 @@ window.initMap = function () {
 	
 	});
 	
-	L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+	// L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
 	
 };
