@@ -101,11 +101,7 @@ html, body {
   font-size: 16px;
 }
 
-/* HIDE CONTENT WHEN COLLAPSED */
-#panel.collapsed #aqhi-panel,
-#panel.collapsed #station-gauges {
-  display: none;
-}
+
 
 
 
