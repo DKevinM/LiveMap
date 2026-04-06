@@ -10,7 +10,7 @@ function getAQHICategory(v) {
     v === null ||
     v === undefined ||
     v === "" ||
-    v === "NA" ||
+    v === "NaN" ||
     !isFinite(Number(v))
   ) {
     return null; 
