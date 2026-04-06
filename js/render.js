@@ -36,6 +36,38 @@ window.stationImages = {
 let ACApoly = null;
 let WCASpoly = null;
 
+
+
+async function loadAQHIGroup(groupName, layerGroup) {
+  const files = window.AQHI_GROUPS[groupName];
+  layerGroup.clearLayers();
+  for (const file of files) {
+    const url = `https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output/${file}`;
+    const res = await fetch(url);
+    const geojson = await res.json();
+    const layer = L.geoJSON(geojson, {
+      style: f => {
+        const v = f.properties?.aqhi;
+        return {
+          fillColor: isFinite(v) ? getColor(v) : "#999",
+          color: "#444",
+          weight: 0.5,
+          fillOpacity: 0.6
+        };
+      }
+    });
+    layerGroup.addLayer(layer);
+  }
+}
+
+
+window.layers.aqhi = {};
+
+Object.keys(window.AQHI_GROUPS).forEach(group => {
+  window.layers.aqhi[group] = L.layerGroup(); 
+});
+
+
 // Boundary layers (toggleable)
 const ACABoundaryLayer  = L.layerGroup();
 const WCASBoundaryLayer = L.layerGroup();
