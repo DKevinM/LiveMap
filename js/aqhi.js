@@ -202,7 +202,7 @@ function drawAQHIPanel() {
   const C = window.aqhiData;
   if (!C) return;
 
-  const v0 = safeRound(C.current?.value);
+  const v0 = safeRound(C.current?.value);  
   const fToday = safeRound(C.forecast?.today);
   const fTonight = safeRound(C.forecast?.tonight);
   const fTomorrow = safeRound(C.forecast?.tomorrow);
@@ -252,7 +252,7 @@ function drawAQHIPanel() {
   const html = `
 
   <div style="font-size:16px; font-weight:700;">
-    ${C.current.station} Air Quality (AQHI)
+    ${C.current?.station || "AQHI Not Available"} Air Quality (AQHI)
   </div>
 
   <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-top:10px;">
@@ -297,7 +297,7 @@ function drawAQHIPanel() {
   ${legendHTML}
 
   <div style="margin-top:10px;">
-    <strong>Last updated:</strong> ${new Date(C.current.time).toLocaleString()}
+    <strong>Last updated:</strong> ${C.current?.time ? new Date(C.current.time).toLocaleString() : "Not available"}
   </div>
 
 
