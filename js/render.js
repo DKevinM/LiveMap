@@ -38,13 +38,18 @@ let WCASpoly = null;
 
 
 
-async function loadAQHIGroup(groupName, layerGroup) {
+async function loadAQHIGroup(groupName) {
   const files = window.AQHI_GROUPS[groupName];
+  const layerGroup = window.layers.aqhi[groupName];
+
   layerGroup.clearLayers();
+
   for (const file of files) {
     const url = `https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output/${file}`;
+
     const res = await fetch(url);
     const geojson = await res.json();
+
     const layer = L.geoJSON(geojson, {
       style: f => {
         const v = f.properties?.aqhi;
@@ -56,10 +61,13 @@ async function loadAQHIGroup(groupName, layerGroup) {
         };
       }
     });
+
     layerGroup.addLayer(layer);
   }
 }
 
+
+window.ACTIVE_AIRSHEDS = ["ACA", "WCAS"]; 
 
 window.layers.aqhi = {};
 
