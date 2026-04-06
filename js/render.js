@@ -69,8 +69,6 @@ async function loadAQHIGroup(groupName) {
 
 window.ACTIVE_AIRSHEDS = ["ACA", "WCAS"]; 
 
-window.layers.aqhi = {};
-
 Object.keys(window.AQHI_GROUPS).forEach(group => {
   window.layers.aqhi[group] = L.layerGroup(); 
 });
@@ -339,9 +337,6 @@ function loadEstimatedAQHI() {
 
 
 window.renderMap = async function () {
-  // ==============================
-  // INIT AQHI LAYERS (RIGHT HERE)
-  // ==============================
   window.layers.aqhi = {};
 
   Object.keys(window.AQHI_GROUPS).forEach(group => {
