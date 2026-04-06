@@ -202,27 +202,35 @@ function drawAQHIPanel() {
   const C = window.aqhiData;
   if (!C || !C.current) return;
 
-  const v0 = Math.round(C.current.value);
+  const v0 = safeRound(C.current.value);
   const fToday = Math.round(C.forecast.today);
   const fTonight = Math.round(C.forecast.tonight);
   const fTomorrow = Math.round(C.forecast.tomorrow);
 
   const values = [v0, fToday, fTonight, fTomorrow].filter(v => v != null);
   
-  const categories = [...new Set(values.map(getAQHICategory))];
+  const categories = [...new Set(
+    values
+      .map(getAQHICategory)
+      .filter(c => c !== null)
+  )];
 
-  
 
 
   
   function buildLegendRow(cat) {
+    if (!cat) return "";
+  
     const styles = {
       low:      { color: "#016797", label: "1–3 Low: Ideal air quality for outdoor activities" },
-      moderate: { color: "#016797", label: "4–6 Moderate: No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation" },
-      high:     { color: "#016797", label: "7–10 High: Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation" },
-      veryhigh: { color: "#016797", label: "10+ Very High: Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation" }
+      moderate: { color: "#ffcb00", label: "4–6 Moderate: No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation" },
+      high:     { color: "#fe0002", label: "7–10 High: Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation" },
+      veryhigh: { color: "#640100", label: "10+ Very High: Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation" }
     };
+  
     const s = styles[cat];
+    if (!s) return "";
+  
     return `
       <div style="display:flex; align-items:center; gap:6px;">
         <span style="width:10px;height:10px;background:${s.color};
@@ -258,28 +266,28 @@ function drawAQHIPanel() {
     </div>
 
     <div style="text-align:center;">
-      <div style="background:${getColor(fToday)}; width:70px; height:40px;
+      <div style="background:${isFinite(fToday) ? getColor(fToday) : "#ccc"}; width:70px; height:40px;
            margin:auto; display:flex; align-items:center; justify-content:center;
            font-weight:bold; border:1px solid #333;">
-        ${fToday}
+        ${safeAQHI(fToday)}
       </div>
       <div style="font-size:11px;">Today</div>
     </div>
 
     <div style="text-align:center;">
-      <div style="background:${getColor(fTonight)}; width:70px; height:40px;
+      <div style="background:${isFinite(fTonight) ? getColor(fTonight) : "#ccc"}; width:70px; height:40px;
            margin:auto; display:flex; align-items:center; justify-content:center;
            font-weight:bold; border:1px solid #333;">
-        ${fTonight}
+        ${safeAQHI(fTonight)}
       </div>
       <div style="font-size:11px;">Tonight</div>
     </div>
 
     <div style="text-align:center;">
-      <div style="background:${getColor(fTomorrow)}; width:70px; height:40px;
+      <div style="background:${isFinite(fTomorrow) ? getColor(fTomorrow) : "#ccc"}; width:70px; height:40px;
            margin:auto; display:flex; align-items:center; justify-content:center;
            font-weight:bold; border:1px solid #333;">
-        ${fTomorrow}
+        ${safeAQHI(fTomorrow)}
       </div>
       <div style="font-size:11px;">Tomorrow</div>
     </div>
