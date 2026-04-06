@@ -2,11 +2,6 @@
 // render.js
 // =======================
 
-window.layers.aqhi = {};
-
-Object.keys(window.AQHI_GROUPS).forEach(group => {
-  window.layers.aqhi[group] = L.layerGroup(); 
-});
 
 
 // --- Shared Layer Groups (available to all scripts) ---
@@ -346,6 +341,16 @@ function loadEstimatedAQHI() {
 
 
 window.renderMap = async function () {
+  // ==============================
+  // INIT AQHI LAYERS (RIGHT HERE)
+  // ==============================
+  window.layers.aqhi = {};
+
+  Object.keys(window.AQHI_GROUPS).forEach(group => {
+    window.layers.aqhi[group] = L.layerGroup();
+  });
+
+  
   const map = window.map;   
 
   await Promise.all([
