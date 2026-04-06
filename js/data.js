@@ -104,6 +104,57 @@ const shortLookup = {
 
 
 
+window.AQHI_GROUPS = {
+  Alberta: [
+    "AQHI_Alberta.geojson"
+  ],
+
+  ACA: [
+    "AQHI_Edm.geojson",
+    "AQHI_Strathcona.geojson",
+    "AQHI_Parkland_County.geojson",
+    "AQHI_ACA_Boundary_2022.geojson"
+  ],
+
+  ACA_BLEND: [
+    "AQHI_Edm_blend.geojson",
+    "AQHI_Strathcona_blend.geojson",
+    "AQHI_Parkland_County_blend.geojson",
+    "AQHI_ACA_Boundary_2022_blend.geojson"
+  ],
+
+  WCAS: [
+    "AQHI_WCAS_2024.geojson",
+    "AQHI_Yellowhead.geojson"
+  ],
+
+  WCAS_BLEND: [
+    "AQHI_WCAS_2024_blend.geojson",
+    "AQHI_Yellowhead_blend.geojson"
+  ],
+
+  PAS: [
+    "AQHI_PAS.geojson"
+  ],
+
+  PAS_BLEND: [
+    "AQHI_PAS_blend.geojson"
+  ],
+
+   PRAMP: [
+    "AQHI_RAMP.geojson"
+  ],
+
+  PRAMP_BLEND: [
+    "AQHI_PRAMP_blend.geojson"
+  ]
+  
+};
+
+
+
+
+
 
 
 // ---------------- LOAD STATIONS (WORKING VERSION) ----------------
