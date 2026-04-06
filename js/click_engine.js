@@ -74,13 +74,7 @@ window.handleMapClick = async function(lat, lng, map) {
 
 
   // ---- 1) Marker at clicked point ----
-  const marker = L.marker([lat, lng]);
-  if (window.layers?.stations) {
-    window.layers.stations.addLayer(marker);
-  }  
-  if (window.layers?.stations) {
-    window.layers.stations.addLayer(circle);
-  }  
+
 
   // ---- 2) TWO CLOSEST AQHI STATIONS ----
   const closestStations = Object.values(dataByStation)
@@ -102,6 +96,11 @@ window.handleMapClick = async function(lat, lng, map) {
     .sort((a,b) => a.dist_km - b.dist_km)
     .slice(0,2);
 
+
+  const marker = L.marker([lat, lng]);
+  if (window.layers?.stations) {
+    window.layers.stations.addLayer(marker);
+  }
   
   closestStations.forEach(st => {
     const circle = L.circleMarker([st.lat, st.lng], {
@@ -113,7 +112,7 @@ window.handleMapClick = async function(lat, lng, map) {
     });
   
     if (window.layers?.stations) {
-      
+      window.layers.stations.addLayer(circle);
     }
   });
 
