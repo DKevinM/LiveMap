@@ -57,7 +57,7 @@ window.handleMapClick = async function(lat, lng, map) {
     if (panel) panel.classList.remove("collapsed");
   }
   if (typeof window.updateAQHIFromClick === "function") {
-    // await window.updateAQHIFromClick(lat, lng);
+    await window.updateAQHIFromClick(lat, lng);
   } else {
     console.error("updateAQHIFromClick not found");
   }  
