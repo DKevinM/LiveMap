@@ -109,6 +109,10 @@ window.AQHI_GROUPS = {
     "AQHI_Alberta.geojson"
   ],
 
+  Alberta_BLEND: [
+    "AQHI_Alberta_blend.geojson"
+  ],  
+
   ACA: [
     "AQHI_Edm.geojson",
     "AQHI_Strathcona.geojson",
