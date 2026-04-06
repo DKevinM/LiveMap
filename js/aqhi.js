@@ -168,15 +168,14 @@ async function loadAQHIFromAB(clickLat, clickLng) {
     const r = await fetch(url);
     const data = await r.json();
   
-    const match = data.value.find(c =>
+    let match = data.value.find(c =>
       c.CommunityName.toLowerCase() === name.toLowerCase()
     );
-  
     if (!match) {
-      console.error("No Alberta match for:", name);
-      return;
+      console.warn("No Alberta match — using fallback");
+      match = data.value[0];  
     }
-  
+      
     window.aqhiData = {
       current: {
         station: match.CommunityName,
