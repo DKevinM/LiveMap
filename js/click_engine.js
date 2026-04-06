@@ -102,6 +102,7 @@ window.handleMapClick = async function(lat, lng, map) {
     .sort((a,b) => a.dist_km - b.dist_km)
     .slice(0,2);
 
+  
   closestStations.forEach(st => {
     const circle = L.circleMarker([st.lat, st.lng], {
       radius: 15,
@@ -110,7 +111,10 @@ window.handleMapClick = async function(lat, lng, map) {
       weight: 3,
       fillOpacity: 0.8
     });
-    window.layers.stations.addLayer(circle);
+  
+    if (window.layers?.stations) {
+      
+    }
   });
 
   
