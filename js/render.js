@@ -41,8 +41,6 @@ let WCASpoly = null;
 
 
 async function loadAQHIGroup(groupName) {
-  const files = window.AQHI_GROUPS[groupName];
-  const layerGroup = window.layers.aqhi[groupName];
 
   layerGroup.clearLayers();
 
@@ -560,7 +558,7 @@ window.renderMap = async function () {
 
   
   // map.addLayer(window.ALLPurple);
-  
+/*  
   window._layerControl = L.control.layers(null, {
     "ACA Boundary": ACABoundaryLayer,
     "WCAS Boundary": WCASBoundaryLayer,
@@ -580,7 +578,7 @@ window.renderMap = async function () {
     "FireSmoke (+24h)": window.layers.firesmoke_24h    
 
   }, { collapsed: false }).addTo(map);
-
+*/
 
   // ---- ROSES ----
   if (window.roseVisible) {
