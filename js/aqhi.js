@@ -200,15 +200,14 @@ async function loadAQHIFromAB(clickLat, clickLng) {
 function drawAQHIPanel() {
 
   const C = window.aqhiData;
-  if (!C) return;
+  if (!C || !C.current) return;
 
-  const v0 = safeRound(C.current?.value);  
-  const fToday = safeRound(C.forecast?.today);
-  const fTonight = safeRound(C.forecast?.tonight);
-  const fTomorrow = safeRound(C.forecast?.tomorrow);
+  const v0 = safeRound(C.current.value);
+  const fToday = Math.round(C.forecast.today);
+  const fTonight = Math.round(C.forecast.tonight);
+  const fTomorrow = Math.round(C.forecast.tomorrow);
 
-  const values = [v0, fToday, fTonight, fTomorrow]
-    .filter(v => isFinite(v));
+  const values = [v0, fToday, fTonight, fTomorrow].filter(v => v != null);
   
   const categories = [...new Set(
     values
@@ -252,13 +251,13 @@ function drawAQHIPanel() {
   const html = `
 
   <div style="font-size:16px; font-weight:700;">
-    ${C.current?.station || "AQHI Not Available"} Air Quality (AQHI)
+    ${C.current.station} Air Quality (AQHI)
   </div>
 
   <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-top:10px;">
 
     <div style="text-align:center;">
-      <div style="background:${isFinite(v0) ? getColor(v0) : "#ccc"}; width:70px; height:40px;
+      <div style="background:${getColor(v0)}; width:70px; height:40px;
            margin:auto; display:flex; align-items:center; justify-content:center;
            font-weight:bold; border:1px solid #333;">
         ${safeAQHI(v0)}
@@ -297,7 +296,7 @@ function drawAQHIPanel() {
   ${legendHTML}
 
   <div style="margin-top:10px;">
-    <strong>Last updated:</strong> ${C.current?.time ? new Date(C.current.time).toLocaleString() : "Not available"}
+    <strong>Last updated:</strong> ${new Date(C.current.time).toLocaleString()}
   </div>
 
 
