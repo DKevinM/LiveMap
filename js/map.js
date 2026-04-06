@@ -78,4 +78,28 @@ window.initMap = function () {
   } else {
     console.error("renderMap not found");
   }
+
+	// ==============================
+	// AQHI LAYER CONTROL (NEW)
+	// ==============================
+	const overlays = {};
+	
+	window.ACTIVE_REGIONS = ["Alberta", "ACA", "WCAS"];
+	window.ACTIVE_TYPES = ["CURRENT", "BLEND"];
+	
+	window.ACTIVE_REGIONS.forEach(region => {
+	
+	  if (window.ACTIVE_TYPES.includes("CURRENT")) {
+	    overlays[`AQHI ${region}`] = window.layers.aqhi?.[region];
+	  }
+	
+	  if (window.ACTIVE_TYPES.includes("BLEND")) {
+	    overlays[`AQHI ${region} Blend`] = window.layers.aqhi?.[region + "_BLEND"];
+	  }
+	
+	});
+	
+	L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+
+	
 };
