@@ -400,8 +400,26 @@ function normalizeRow(r) {
   let value = r.Value === "" ? null : Number(r.Value);
   let param = r.ParameterName ? r.ParameterName.trim() : "";
 
+  // ---- HANDLE INVALID VALUES ----
   if (value === null || isNaN(value)) {
-    return null;   // skip this row completely
+    return null;   // still drop true garbage
+  }
+  
+  // ---- FIX NEGATIVES (air data only) ----
+  const noNegativeParams = [
+    "Nitric Oxide",
+    "Nitrogen Dioxide",
+    "Total Oxides of Nitrogen",
+    "Ozone",
+    "Sulphur Dioxide",
+    "Hydrogen Sulphide",
+    "Total Reduced Sulphur",
+    "Fine Particulate Matter",
+    "Carbon Monoxide"
+  ];
+  
+  if (noNegativeParams.includes(param) && value < 0) {
+    value = 0;   // clamp instead of losing data
   }
   
 
