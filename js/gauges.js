@@ -549,68 +549,85 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     `;
     
     
+
     // ---------- AQHI GAUGE ----------
     
-    buildGauge(
-      "g_AQHI",
-      aqhiValue,
-      "AQHI",
-      0,
-      11,
-      gaugeZones("AQHI", 11),
-      null
-    );
-
-    const msg = getAQHIMessage(aqhiValue);
+    // Check if AQHI is valid
+    const isValidAQHI = Number.isFinite(aqhiValue);
     
-    if (msg) {
-      document.getElementById("aqhiMessage").innerHTML = `
-        <div style="
-          margin-top:12px;
-          padding:10px;
-          background:#f5f5f5;
-          border-radius:8px;
-          line-height:1.35;
-        ">
+    if (!isValidAQHI) {
     
-          <div style="
-            font-weight:700;
-            color:${aqhiColor(aqhiValue)};
-            margin-bottom:6px;
-          ">
-            ${msg.level} Risk (AQHI ${msg.range})
-          </div>
+      // ---- GREY GAUGE ----
+      buildOfflineGauge("g_AQHI", "AQHI");
     
-          <div style="font-size:14px; margin-bottom:6px;">
-            <b>At Risk Population:</b><br>
-            ${msg.atRisk}
-          </div>
+      document.getElementById("val_g_AQHI").innerHTML =
+        `<span style="color:#999;font-weight:700">N/A</span>`;
     
-          <div style="font-size:14px;">
-            <b>General Population:</b><br>
-            ${msg.general}
-          </div>
-    
+      document.getElementById("aqhiBig").innerHTML = `
+        <div style="color:#999">
+          AQHI —
         </div>
       `;
+    
+      // ---- NO MESSAGE ----
+      document.getElementById("aqhiMessage").innerHTML = "";
+    
     } else {
-      document.getElementById("aqhiMessage").innerHTML = `
-        <div style="margin-top:12px; color:#999;">
-          AQHI not available for this station
+    
+      // ---- NORMAL AQHI ----
+      buildGauge(
+        "g_AQHI",
+        aqhiValue,
+        "AQHI",
+        0,
+        11,
+        gaugeZones("AQHI", 11),
+        null
+      );
+    
+      const msg = getAQHIMessage(aqhiValue);
+    
+      if (msg) {
+        document.getElementById("aqhiMessage").innerHTML = `
+          <div style="
+            margin-top:12px;
+            padding:10px;
+            background:#f5f5f5;
+            border-radius:8px;
+            line-height:1.35;
+          ">
+    
+            <div style="
+              font-weight:700;
+              color:${aqhiColor(aqhiValue)};
+              margin-bottom:6px;
+            ">
+              ${msg.level} Risk (AQHI ${msg.range})
+            </div>
+    
+            <div style="font-size:14px; margin-bottom:6px;">
+              <b>At Risk Population:</b><br>
+              ${msg.atRisk}
+            </div>
+    
+            <div style="font-size:14px;">
+              <b>General Population:</b><br>
+              ${msg.general}
+            </div>
+    
+          </div>
+        `;
+      }
+    
+      document.getElementById("aqhiBig").innerHTML = `
+        <div style="color:${aqhiColor(aqhiValue)}">
+          AQHI ${aqhiValue}
         </div>
       `;
+    
+      document.getElementById("val_g_AQHI").innerHTML =
+        `<b>${aqhiValue}</b>`;
     }
-    
-
-    document.getElementById("aqhiBig").innerHTML = `
-      <div style="color:${aqhiColor(aqhiValue)}">
-        AQHI ${aqhiValue}
-      </div>
-    `;
-    
-    
-    document.getElementById("val_g_AQHI").innerHTML =
-      `<b>${aqhiValue}</b>`;
     
     
     
