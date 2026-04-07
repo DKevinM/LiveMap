@@ -365,9 +365,7 @@ const gaugeOrder = [
   "Relative Humidity"
 ];
 
-if (noNegativeParams.includes(param) && value < 0) {
-  value = 0;
-}
+
 
 const displayMap = {
   "Outdoor Temperature": { short: "ET", unit: "°C", dec: 1 },
