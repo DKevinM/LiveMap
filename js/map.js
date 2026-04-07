@@ -42,6 +42,22 @@ window.initMap = function () {
 
   window.map = map;
 
+	// ==============================
+	// PANEL COLLAPSE TOGGLE
+	// ==============================
+	if (!window._panelToggleInit) {
+	  const panel = document.getElementById("panel");
+	
+	  if (panel) {
+	    panel.addEventListener("click", () => {
+	      panel.classList.toggle("collapsed");
+	    });
+	  }
+	
+	  window._panelToggleInit = true;
+	}	
+
+	
 	// ----------------------------
 	// CLICK HANDLER (NEW)
 	// ----------------------------
