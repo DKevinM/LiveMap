@@ -520,24 +520,26 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
     
     let stationTime = null;
     let aqhiValue = null;
+
     
     // -------- FIRST PASS: find AQHI and time only --------
-    gaugeOrder.forEach(param => {
-    
-      if (!byParam[param]) return;
-    
+    gaugeOrder.forEach(param => {    
+      if (!byParam[param]) return;    
       const rows = byParam[param] || [];
-      if (rows.length === 0) return;   // <-- skip entirely (no tile)
-
-      const latest = rows[rows.length - 1];
-      
+      if (rows.length === 0) return;    
+      const latest = rows[rows.length - 1];    
       if (!stationTime) {
         stationTime = latest.time.toLocaleString("en-CA");
-      }
-    
-      if (param === "AQHI") {
-        aqhiValue = latest.value;
-      }
+      }    
+      if (param === "AQHI") {    
+        const { latest: aqhiLatest, status: aqhiStatus } =
+          getLatestStatus(rows, new Date(), 3);    
+        if (aqhiLatest && aqhiStatus !== "offline") {
+          aqhiValue = aqhiLatest.value;
+        } else {
+          aqhiValue = null;  // stale or missing
+        }    
+      }    
     });
 
     
