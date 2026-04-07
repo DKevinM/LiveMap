@@ -684,7 +684,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       
     
       // ---- OFFLINE ----
-      if (!latest || status === "offline") {
+      if (!latest) {
         buildOfflineGauge(gid, param);
         document.getElementById(`val_${gid}`).innerHTML =
           `<span style="color:#999;font-weight:700">OFFLINE</span>`;
