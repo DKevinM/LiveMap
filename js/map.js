@@ -61,17 +61,11 @@ window.initMap = function () {
 	// ----------------------------
 	// CLICK HANDLER (NEW)
 	// ----------------------------
-	map.on("click", function(e) {
-	  if (typeof window.handleMapClick === "function") {
-		window.handleMapClick(e.latlng.lat, e.latlng.lng, map);
-	  } else {
-		console.error("handleMapClick not found");
-	  }
-	});
-	
-
 	map.on("overlayadd", async function(e) {
 	
+	  // ==============================
+	  // DETERMINE GROUP
+	  // ==============================
 	  let group = null;
 	
 	  if (e.name.includes("Blend")) {
@@ -80,6 +74,18 @@ window.initMap = function () {
 	    group = e.name.replace("AQHI ", "");
 	  }
 	
+	  // ==============================
+	  // REMOVE OTHER AQHI LAYERS
+	  // ==============================
+	  Object.entries(window.layers.aqhi || {}).forEach(([key, layer]) => {
+	    if (layer !== e.layer) {
+	      map.removeLayer(layer);
+	    }
+	  });
+	
+	  // ==============================
+	  // LOAD + ADD SELECTED LAYER
+	  // ==============================
 	  if (window.AQHI_GROUPS[group]) {
 	    await loadAQHIGroup(group);
 	    map.addLayer(window.layers.aqhi[group]);
@@ -118,23 +124,12 @@ window.initMap = function () {
 	// AQHI LAYER CONTROL (NEW)
 	// ==============================
 	const overlays = {};
-	
-	window.ACTIVE_REGIONS = ["Alberta", "ACA", "WCAS"];
-	window.ACTIVE_TYPES = ["CURRENT", "BLEND"];
-	
-	window.ACTIVE_REGIONS.forEach(region => {
-	
-	  if (window.ACTIVE_TYPES.includes("CURRENT")) {
-	    overlays[`AQHI ${region}`] = window.layers.aqhi?.[region];
-	  }
-	
-	  if (window.ACTIVE_TYPES.includes("BLEND")) {
-	    overlays[`AQHI ${region} Blend`] = window.layers.aqhi?.[region + "_BLEND"];
-	  }
-	
+
+	["Alberta", "ACA", "WCAS"].forEach(region => {
+	  overlays[`AQHI ${region}`] = window.layers.aqhi?.[region];
+	  overlays[`AQHI ${region} Blend`] = window.layers.aqhi?.[region + "_BLEND"];
 	});
 	
-	// L.control.layers(null, overlays, { collapsed: false }).addTo(map);
-
+	L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 	
 };
