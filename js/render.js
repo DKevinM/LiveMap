@@ -56,6 +56,8 @@ async function loadAQHIGroup(groupName) {
     const geojson = await res.json();
 
     const layer = L.geoJSON(geojson, {
+      interactive: false,
+      
       style: f => {
         const v = f.properties?.aqhi;
         return {
