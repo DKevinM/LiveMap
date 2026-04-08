@@ -5,11 +5,12 @@ window.dataByStation = {};
 window.buildStationPopup = function (rows) {
 
   const content = `
-  <div style="width:220px;">
+  <div style="width:280px;">
     ${rows.map(r => `
       <div style="
         display:flex;
         justify-content:space-between;
+        gap: 20px;
         align-items:center;
         padding:2px 4px;
       ">
