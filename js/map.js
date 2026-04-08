@@ -108,7 +108,11 @@ window.initMap = function () {
 	firesmoke_now: L.layerGroup(),
 	firesmoke_6h: L.layerGroup(),
 	firesmoke_12h: L.layerGroup(),
-	firesmoke_24h: L.layerGroup()
+	firesmoke_24h: L.layerGroup(),
+	weather_radar: L.layerGroup(),
+	weather_lightning: L.layerGroup(),
+	weather_precip: L.layerGroup(),
+	weather_wind: L.layerGroup(),	
   };
 
   console.log("Map ready");
@@ -123,12 +127,39 @@ window.initMap = function () {
 	// ==============================
 	// AQHI LAYER CONTROL (NEW)
 	// ==============================
-	const overlays = {};
+	const overlays = {
+	
+	  // ---------------- CORE DATA ----------------
+	  "Stations": window.layers.stations,
+	  "Sensors (PurpleAir)": window.layers.purpleair,
+	
+	  // ---------------- YOUR EXISTING LAYERS ----------------
+	  "Grid": window.layers.grid,
+	  "Forecast": window.layers.forecast,
 
-	["Alberta", "ACA", "WCAS"].forEach(region => {
-	  overlays[`AQHI ${region}`] = window.layers.aqhi?.[region];
-	  overlays[`AQHI ${region} Blend`] = window.layers.aqhi?.[region + "_BLEND"];
-	});
+	  // ---------------- WEATHER (NEW) ----------------
+	  "Radar": window.layers.weather_radar,
+	  "Lightning": window.layers.weather_lightning,
+	  "Satellite": window.layers.weather_satellite,
+	  "Precipitation": window.layers.weather_precip,
+	  "Wind": window.layers.weather_wind,		
+	
+	  // ---------------- FIRESMOKE ----------------
+	  "FireSmoke (Now)": window.layers.firesmoke_now,
+	  "FireSmoke (6h)": window.layers.firesmoke_6h,
+	  "FireSmoke (12h)": window.layers.firesmoke_12h,
+	  "FireSmoke (24h)": window.layers.firesmoke_24h,
+	
+	  // ---------------- AQHI ----------------
+	  "AQHI Alberta": window.layers.aqhi?.["Alberta"],
+	  "AQHI Alberta Blend": window.layers.aqhi?.["Alberta_BLEND"],
+	
+	  "AQHI ACA": window.layers.aqhi?.["ACA"],
+	  "AQHI ACA Blend": window.layers.aqhi?.["ACA_BLEND"],
+	
+	  "AQHI WCAS": window.layers.aqhi?.["WCAS"],
+	  "AQHI WCAS Blend": window.layers.aqhi?.["WCAS_BLEND"]
+	};
 	
 	L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 	
