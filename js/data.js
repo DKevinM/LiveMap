@@ -4,9 +4,18 @@ window.dataByStation = {};
 
 window.buildStationPopup = function (rows) {
 
-  const content = rows.map(r => {
-    return `<b>${r.Shortform}</b>: ${r.Value}${r.Units}`;
-  }).join("<br>");
+  const content = `
+  <table style="width:100%; border-collapse:collapse;">
+    ${rows.map(r => `
+      <tr>
+        <td style="padding:2px 6px;"><b>${r.Shortform}</b></td>
+        <td style="text-align:center; padding:2px 6px;">
+          ${r.Value ?? "NA"}${r.Units || ""}
+        </td>
+      </tr>
+    `).join("")}
+  </table>
+  `;
 
   const stationName = rows[0]?.StationName || "Unknown";
 
