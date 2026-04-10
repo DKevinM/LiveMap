@@ -112,7 +112,8 @@ window.initMap = function () {
 	weather_radar: L.layerGroup(),
 	weather_lightning: L.layerGroup(),
 	weather_precip: L.layerGroup(),
-	weather_wind: L.layerGroup(),	
+	weather_wind: L.layerGroup(),
+	weather_satellite: L.layerGroup(),
   };
 
 
