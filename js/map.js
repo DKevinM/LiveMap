@@ -116,24 +116,21 @@ window.initMap = function () {
   };
 
 
-const radarLayer = L.tileLayer(
-  "https://tilecache.rainviewer.com/v2/radar/latest/256/{z}/{x}/{y}/2/1_1.png",
-  {
-    opacity: 0.6,
-    attribution: "Radar © RainViewer"
-  }
-);
-// Attach to your layer system
-window.layers.weather_radar.addLayer(radarLayer);	
+// ---------------- WEATHER LAYERS ----------------
 
-const satelliteLayer = L.tileLayer(
-  "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
-  {
-    opacity: 0.7,
-    attribution: "NASA GIBS"
-  }
+// Radar
+const radar = L.tileLayer(
+  "https://tilecache.rainviewer.com/v2/radar/latest/256/{z}/{x}/{y}/2/1_1.png",
+  { opacity: 0.6 }
 );
-window.layers.weather_satellite.addLayer(satelliteLayer);
+window.layers.weather_radar.addLayer(radar);
+
+// Satellite
+const satellite = L.tileLayer(
+  "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
+  { opacity: 0.7 }
+);
+window.layers.weather_satellite.addLayer(satellite);
 
 
 
