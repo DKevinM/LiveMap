@@ -62,18 +62,47 @@
   Clear Selection
 </button>
   
-<script src="js/data.js" defer></script>  
-<script src="js/stations.js" defer></script>  
-  
-<script src="js/click_utils.js" defer></script> 
-<script src="js/aqhi.js" defer></script>
-<script src="js/weather.js" defer></script>
-<script src="js/click_engine.js" defer></script>
-  
+<!-- ============================= -->
+<!-- 1. DATA (NO LEAFLET) -->
+<!-- ============================= -->
+<script src="js/data.js" defer></script>
+
+<!-- ============================= -->
+<!-- 2. LAYER BUILDERS (NO DATA) -->
+<!-- ============================= -->
 <script src="js/map.js" defer></script>
-<script src="js/render.js" defer></script>  
+
+<!-- ============================= -->
+<!-- 3. DATA → LAYER RENDER -->
+<!-- ============================= -->
+<script src="js/render.js" defer></script>
 <script src="js/purpleair.js" defer></script>
+<script src="js/stations.js" defer></script>
+
+<!-- ============================= -->
+<!-- 4. AQHI SYSTEM -->
+<!-- ============================= -->
+<script src="js/aqhi.js" defer></script>
+
+<!-- ============================= -->
+<!-- 5. WEATHER -->
+<!-- ============================= -->
+<script src="js/weather.js" defer></script>
+
+<!-- ============================= -->
+<!-- 6. INTERACTION -->
+<!-- ============================= -->
+<script src="js/click_utils.js" defer></script>
+<script src="js/click_engine.js" defer></script>
+
+<!-- ============================= -->
+<!-- 7. UI -->
+<!-- ============================= -->
 <script src="js/ui.js" defer></script>
+
+<!-- ============================= -->
+<!-- 8. APP START (ALWAYS LAST) -->
+<!-- ============================= -->
 <script src="js/main.js"></script>
 
 
