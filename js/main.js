@@ -1,18 +1,35 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const mapDiv = document.getElementById("map");
-  console.log("Map div check:", mapDiv);
+window.addEventListener("load", async () => {
+  console.log("App starting...");
 
-  if (!mapDiv) {
-    console.error("MAP DIV NOT FOUND");
-    return;
+  // ----------------------------
+  // WAIT FOR ALL DATA
+  // ----------------------------
+  if (window.loadAllData) {
+    await window.loadAllData();
+  } else {
+    console.warn("loadAllData not found");
   }
 
-  if (typeof window.initMap !== "function") {
+  // ----------------------------
+  // INIT MAP
+  // ----------------------------
+  if (typeof window.initMap === "function") {
+    window.initMap();
+  } else {
     console.error("initMap is not available");
     return;
   }
 
-  window.initMap();
+  console.log("Map initialized");
 
-  console.log("Map initialized successfully");
+  // ----------------------------
+  // RENDER DATA INTO LAYERS
+  // ----------------------------
+  if (window.renderMap) {
+    window.renderMap();
+  } else {
+    console.warn("renderMap not found");
+  }
+
+  console.log("App ready");
 });
