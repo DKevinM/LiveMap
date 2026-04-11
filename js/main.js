@@ -23,6 +23,11 @@ window.addEventListener("load", async () => {
   console.log("Map initialized");
 
   // ----------------------------
+  // WAIT ONE TICK
+  // ----------------------------
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  // ----------------------------
   // RENDER DATA INTO LAYERS
   // ----------------------------
   if (window.renderMap) {
