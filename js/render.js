@@ -2,16 +2,6 @@
 // render.js
 // =======================
 
-
-
-// --- Shared Layer Groups (available to all scripts) ---
-window.ACAStations  = window.ACAStations  || L.layerGroup();
-window.ACAPurple    = window.ACAPurple    || L.layerGroup();
-window.WCASStations = window.WCASStations || L.layerGroup();
-window.WCASPurple   = window.WCASPurple   || L.layerGroup();
-window.ALLStations  = window.ALLStations  || L.layerGroup();
-window.ALLPurple    = window.ALLPurple    || L.layerGroup();
-
 window.roseVisible = false;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
@@ -348,7 +338,6 @@ window.renderMap = async function () {
 
   await Promise.all([
     window.AppData.ready,
-    window.dataReady,
     acaBoundaryReady,
     wcasBoundaryReady
   ]);
