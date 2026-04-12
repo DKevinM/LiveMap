@@ -63,42 +63,25 @@ window.initMap = function () {
 	// ----------------------------
 	map.on("overlayadd", async function(e) {
 	
-	  // ==============================
-	  // DETERMINE GROUP
-	  // ==============================
-	  let group = null;
+	  const name = e.name.replace("AQHI ", "");
+	  const group = name;
 	
-	  if (e.name.includes("Blend")) {
-	    group = e.name.replace("AQHI ", "").replace(" Blend", "") + "_BLEND";
-	  } else {
-	    group = e.name.replace("AQHI ", "");
-	  }
-	
-	  // ==============================
-	  // REMOVE OTHER AQHI LAYERS
-	  // ==============================
+	  if (!window.AQHI_GROUPS[group]) return;
+	  if (!window.layers?.aqhi) return;
+		
+	  // remove others
 	  Object.entries(window.layers.aqhi || {}).forEach(([key, layer]) => {
-	    if (layer !== e.layer) {
+	    if (key !== group && map.hasLayer(layer)) {
 	      map.removeLayer(layer);
 	    }
 	  });
 	
-	  // ==============================
-	  // LOAD + ADD SELECTED LAYER
-	  // ==============================
-	  if (window.AQHI_GROUPS[group]) {
-	    await loadAQHIGroup(group);
-	    map.addLayer(window.layers.aqhi[group]);
-	  }
-	
+	  await loadAQHIGroup(group);
+	  map.addLayer(window.layers.aqhi[group]);
 	});
-	
+		
 
-	
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: "&copy; OpenStreetMap contributors"
-  }).addTo(map);
+
 
   window.layers = {
 	stations: L.layerGroup().addTo(map),
@@ -111,83 +94,95 @@ window.initMap = function () {
 	firesmoke_12h: L.layerGroup(),
 	firesmoke_24h: L.layerGroup(),
 	weather_radar: L.layerGroup(),
+	weather_wind_u: L.layerGroup(),
 	weather_lightning: L.layerGroup(),
-	weather_precip: L.layerGroup(),
-	weather_wind: L.layerGroup(),
-	weather_satellite: L.layerGroup(),
+	weather_thunderstorm: L.layerGroup(),
   };
 
 
 // ---------------- WEATHER LAYERS ----------------
 
 // Radar
-const radar = L.tileLayer(
-  "https://tilecache.rainviewer.com/v2/radar/latest/256/{z}/{x}/{y}/2/1_1.png",
-  { opacity: 0.6 }
-);
+const radar = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+  layers: "RADAR_1KM_RRAI",
+  format: "image/png",
+  transparent: true,
+  opacity: 0.85
+});
 window.layers.weather_radar.addLayer(radar);
 
-// Satellite
-const satellite = L.tileLayer(
-  "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
-  { opacity: 0.7 }
+// Wind (U-component)
+const windU = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+  layers: "HRDPS.CONTINENTAL_UU",
+  format: "image/png",
+  transparent: true,
+  opacity: 0.7
+});
+window.layers.weather_wind_u.addLayer(windU);
+
+// Lightning
+const lightning = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+  layers: "Lightning_2.5km_Density",
+  format: "image/png",
+  transparent: true,
+  opacity: 0.85
+});
+window.layers.weather_lightning.addLayer(lightning);
+
+// Thunderstorm (3h)
+const thunder = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+  layers: "GDPS-WEonG_15km_Thunderstorm-Prob.3h",
+  format: "image/png",
+  transparent: true,
+  opacity: 0.75
+});
+window.layers.weather_thunderstorm.addLayer(thunder);
+	
+
+
+// ==============================
+// AQHI LAYER CONTROL (NEW)
+// ==============================
+const overlays = {};
+
+const osm = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  { maxZoom: 18 }
 );
-window.layers.weather_satellite.addLayer(satellite);
 
+const satelliteBase = L.tileLayer(
+  "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
+  { maxZoom: 9 }
+);
 
+// add default
+osm.addTo(map);
 
-
-
-
-
-	
-	
-  console.log("Map ready");
-	
-  console.log("Calling renderMap...");
-  if (window.renderMap) {
-    window.renderMap();
-  } else {
-    console.error("renderMap not found");
-  }
-
-	// ==============================
-	// AQHI LAYER CONTROL (NEW)
-	// ==============================
-	const overlays = {
-	
-	  // ---------------- CORE DATA ----------------
-	  "Stations": window.layers.stations,
-	  "Sensors (PurpleAir)": window.layers.purpleair,
-	
-	  // ---------------- YOUR EXISTING LAYERS ----------------
-	  "Grid": window.layers.grid,
-	  "Forecast": window.layers.forecast,
-
-	  // ---------------- WEATHER (NEW) ----------------
-	  "Radar": window.layers.weather_radar,
-	  "Lightning": window.layers.weather_lightning,
-	  "Satellite": window.layers.weather_satellite,
-	  "Precipitation": window.layers.weather_precip,
-	  "Wind": window.layers.weather_wind,		
-	
-	  // ---------------- FIRESMOKE ----------------
-	  "FireSmoke (Now)": window.layers.firesmoke_now,
-	  "FireSmoke (6h)": window.layers.firesmoke_6h,
-	  "FireSmoke (12h)": window.layers.firesmoke_12h,
-	  "FireSmoke (24h)": window.layers.firesmoke_24h,
-	
-	  // ---------------- AQHI ----------------
-	  "AQHI Alberta": window.layers.aqhi?.["Alberta"],
-	  "AQHI Alberta Blend": window.layers.aqhi?.["Alberta_BLEND"],
-	
-	  "AQHI ACA": window.layers.aqhi?.["ACA"],
-	  "AQHI ACA Blend": window.layers.aqhi?.["ACA_BLEND"],
-	
-	  "AQHI WCAS": window.layers.aqhi?.["WCAS"],
-	  "AQHI WCAS Blend": window.layers.aqhi?.["WCAS_BLEND"]
-	};
-	
-	L.control.layers(null, overlays, { collapsed: false }).addTo(map);
-	
+const baseLayers = {
+  "OpenStreetMap": osm,
+  "Satellite": satelliteBase
 };
+
+// ---------------- CORE LAYERS ----------------
+(window.APP_CONFIG?.overlays || []).forEach(key => {
+  if (window.layers[key]) {
+	const label = key
+	  .replaceAll("_", " ")
+	  .replace(/\b\w/g, c => c.toUpperCase());
+
+	overlays[label] = window.layers[key];
+  } else {
+	console.warn("Missing layer:", key);
+  }
+});
+
+// ---------------- AQHI LAYERS ----------------
+(window.APP_CONFIG?.aqhi || []).forEach(key => {
+	if (!window.layers.aqhi) {
+	  window.layers.aqhi = {};
+	}		
+	overlays["AQHI " + key] = window.layers.aqhi[key] || L.layerGroup();
+});
+
+// ---------------- ADD CONTROL ----------------
+L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
