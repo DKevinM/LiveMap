@@ -131,14 +131,17 @@ window.initMap = function () {
     { maxZoom: 18 }
   ).addTo(map);
 
-  const satelliteBase = L.tileLayer(
-    "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
-    { maxZoom: 9 }
+  const satellite = L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution: "Tiles © Esri",
+      maxZoom: 19
+    }
   );
 
   const baseLayers = {
     "OpenStreetMap": osm,
-    "Satellite": satelliteBase
+    "Satellite": satellite
   };
 
   // ----------------------------
