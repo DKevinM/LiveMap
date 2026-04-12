@@ -159,24 +159,39 @@ window.initMap = function () {
     firesmoke_24h: "FireSmoke +24h"
   };
 
+  const overlays = {};
+  
+  const labelMap = {
+    weather_radar: "Radar",
+    weather_wind_u: "Winds",
+    weather_lightning: "Lightning",
+    weather_thunderstorm: "Thunderstorm (3h)",
+    purpleair: "Sensors (PurpleAir)",
+    stations: "Stations",
+    firesmoke_now: "FireSmoke Now",
+    firesmoke_6h: "FireSmoke +6h",
+    firesmoke_12h: "FireSmoke +12h",
+    firesmoke_24h: "FireSmoke +24h"
+  };
+  
   const overlayKeys = (window.APP_CONFIG?.overlays && window.APP_CONFIG.overlays.length)
     ? window.APP_CONFIG.overlays
     : [
         "stations",
         "purpleair",
+        "weather_radar",
+        "weather_wind_u",
+        "weather_lightning",
+        "weather_thunderstorm",
         "firesmoke_now",
         "firesmoke_6h",
         "firesmoke_12h",
-        "firesmoke_24h",
-        "weather_radar",
-        "weather_lightning",
-        "weather_thunderstorm"
+        "firesmoke_24h"
       ];
-
+  
   overlayKeys.forEach(key => {
     if (window.layers[key]) {
-      const label = labelMap[key] || key.replaceAll("_", " ");
-      overlays[label] = window.layers[key];	
+      overlays[labelMap[key] || key] = window.layers[key];
     }
   });
 
@@ -186,20 +201,19 @@ window.initMap = function () {
   if (!window.layers.aqhi) {
     window.layers.aqhi = {};
   }
-
+  
   const aqhiKeys = (window.APP_CONFIG?.aqhi && window.APP_CONFIG.aqhi.length)
     ? window.APP_CONFIG.aqhi
-    : ["Alberta", "Alberta_BLEND", "ACA", "ACA_BLEND", "WCAS", "WCAS_BLEND"];
-
+    : Object.keys(window.AQHI_GROUPS);
+  
   aqhiKeys.forEach(key => {
     if (!window.layers.aqhi[key]) {
       window.layers.aqhi[key] = L.layerGroup();
     }
-    const label = key.includes("_BLEND")
-      ? `AQHI ${key.replace("_BLEND", " Blend")}`
-      : `AQHI ${key}`;
-    overlays[label] = window.layers.aqhi[key];
+    overlays["AQHI " + key] = window.layers.aqhi[key];
   });
+  
+  window._layerControl = L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
 
   // ----------------------------
   // MAP CLICK
