@@ -137,12 +137,8 @@ function getSmokeColor(pm) {
 
 // clear layers (so re-render doesn’t duplicate)
 function clearAllLayers() {
-  window.ACAStations.clearLayers();
-  window.WCASStations.clearLayers();
-  window.ALLStations.clearLayers();
-  window.ACAPurple.clearLayers();
-  window.WCASPurple.clearLayers();
-  window.ALLPurple.clearLayers();
+  if (window.layers?.stations) window.layers.stations.clearLayers();
+  if (window.layers?.purpleair) window.layers.purpleair.clearLayers();
 
   window.RosePM25.clearLayers();
   window.RoseNO2.clearLayers();
@@ -339,10 +335,12 @@ function loadEstimatedAQHI() {
 
 
 window.renderMap = async function () {
-  window.layers.aqhi = {};
+  window.layers.aqhi = window.layers.aqhi || {};
 
   Object.keys(window.AQHI_GROUPS).forEach(group => {
-    window.layers.aqhi[group] = L.layerGroup();
+    if (!window.layers.aqhi[group]) {
+      window.layers.aqhi[group] = L.layerGroup();
+    }
   });
 
   
@@ -377,8 +375,10 @@ window.renderMap = async function () {
 
 
     // ALWAYS show Alberta
-    window.ALLStations.addTo(map);
-    window.ALLPurple.addTo(map);
+    window.layers.stations.addTo(map);
+    window.layers.purpleair.addTo(map);
+    window.layers.aca_boundary = ACABoundaryLayer;
+    window.layers.wcas_boundary = WCASBoundaryLayer;
     
     // OPTIONAL overlays based on config
     const airshed = window.APP_CONFIG?.airshed;
@@ -412,20 +412,22 @@ window.renderMap = async function () {
     return;
   }
 
-  
-  await window.dataReady;
     
 
   // -----------------------
   // STATIONS
   // -----------------------
 
-  Object.entries(window.dataByStation).forEach(([stationName, rows]) => {
+  window.AppData.stations.forEach(st => {
+  
+    const stationName = st.stationName;
+    const rows = st.rows;
   
     if (!rows || !rows.length) return;
   
-    const lat = Number(rows[0].Latitude);
-    const lon = Number(rows[0].Longitude);
+  
+    const lat = st.lat;
+    const lon = st.lon;
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
   
  
@@ -522,7 +524,7 @@ window.renderMap = async function () {
     
     // choose which layer the marker belongs to
     // ALWAYS add to Alberta layer
-    window.ALLStations.addLayer(marker);
+    window.layers.stations.addLayer(marker);
     
     
     
@@ -539,7 +541,7 @@ window.renderMap = async function () {
         interactive: false
       });
     
-      window.ALLStations.addLayer(label);
+      window.layers.stations.addLayer(label);
       
     }  
 
@@ -553,29 +555,7 @@ window.renderMap = async function () {
     window._layerControl = null;
   }  
 
-  
-  // map.addLayer(window.ALLPurple);
-/*  
-  window._layerControl = L.control.layers(null, {
-    "ACA Boundary": ACABoundaryLayer,
-    "WCAS Boundary": WCASBoundaryLayer,
 
-    "Estimated AQHI": window.eAQHIStations,
-    
-    "All Stations (AB)": window.ALLStations,
-    "All PurpleAir (AB)": window.ALLPurple,
-
-    "Rose PM2.5": window.RosePM25,
-    "Rose NO₂": window.RoseNO2,
-    "Rose SO₂": window.RoseSO2,
-  
-    "FireSmoke (Now)": window.layers.firesmoke_now,
-    "FireSmoke (+6h)": window.layers.firesmoke_6h,
-    "FireSmoke (+12h)": window.layers.firesmoke_12h,
-    "FireSmoke (+24h)": window.layers.firesmoke_24h    
-
-  }, { collapsed: false }).addTo(map);
-*/
 
   // ---- ROSES ----
   if (window.roseVisible) {
