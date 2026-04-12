@@ -101,9 +101,10 @@ window.initMap = function () {
   }).addTo(map);
 
   window.layers = {
-    stations: L.layerGroup().addTo(map),
-    purpleair: L.layerGroup().addTo(map),
-    grid: L.layerGroup().addTo(map),
+	stations: L.layerGroup().addTo(map),
+	click: L.layerGroup().addTo(map), 
+	purpleair: L.layerGroup().addTo(map),
+	grid: L.layerGroup().addTo(map),
 	forecast: L.layerGroup().addTo(map),
 	firesmoke_now: L.layerGroup(),
 	firesmoke_6h: L.layerGroup(),
