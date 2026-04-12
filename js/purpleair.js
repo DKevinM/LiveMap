@@ -1,21 +1,21 @@
-// purpleair.js
-const PURPLE_URL = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/AB_PM25_map.json";
-
-function computeEAQHI(pm) {
-  if (pm == null || isNaN(pm)) return null;
-  let val = Math.floor(pm / 10) + 1;
-  if (val < 0) val = 0;
-  if (val > 10) val = 10;
-  return val;
-}
-
 window.renderPurpleAir = async function () {
 
   if (!window.map) throw new Error("Map not initialized");
 
-  const res = await fetch(PURPLE_URL);
-  if (!res.ok) throw new Error(`PurpleAir fetch failed: HTTP ${res.status}`);
-  const data = await res.json();
+  if (window.layers?.purpleair) {
+    window.layers.purpleair.clearLayers();
+  }
+
+  let data = [];
+
+  try {
+    const res = await fetch(PURPLE_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    data = await res.json();
+  } catch (err) {
+    console.error("PurpleAir load failed:", err);
+    return;
+  }
 
   const records = Array.isArray(data)
     ? data
@@ -34,9 +34,8 @@ window.renderPurpleAir = async function () {
 
     const sensorIndex = rec.sensor_index;
     const label = rec.name || (sensorIndex != null ? `Sensor ${sensorIndex}` : "Unnamed sensor");
-    const color = window.getAQHIColor(String(eAQHI));
+    const color = window.getAQHIColor(eAQHI);
 
-    // --- Create marker ---
     const marker = L.circleMarker([lat, lon], {
       radius: 5,
       fillColor: color,
@@ -56,22 +55,8 @@ window.renderPurpleAir = async function () {
         </a>` : ""}
     `);
 
+    if (!window.layers?.purpleair) return;
+    marker.addTo(window.layers.purpleair);
 
-    if (!window.ALLPurple) return;
-
-    marker.addTo(window.ALLPurple);
-    
-/*
-    // --- Add to layer system ---
-    if (!window.ALLPurple) return;
-
-    marker.addTo(window.ALLPurple);
-
-    const inACA  = inside(ACApoly, lat, lon);
-    const inWCAS = inside(WCASpoly, lat, lon);
-
-    if (inACA)  marker.addTo(window.ACAPurple);
-    if (inWCAS) marker.addTo(window.WCASPurple);
-*/
   });
 };
