@@ -145,21 +145,6 @@ window.initMap = function () {
   // OVERLAYS
   // ----------------------------
   const overlays = {};
-
-  const labelMap = {
-    weather_radar: "Radar",
-    weather_wind_u: "Wind (U-component)",
-    weather_lightning: "Lightning",
-    weather_thunderstorm: "Thunderstorm (3h)",
-    purpleair: "Sensors (PurpleAir)",
-    stations: "Stations",
-    firesmoke_now: "FireSmoke Now",
-    firesmoke_6h: "FireSmoke +6h",
-    firesmoke_12h: "FireSmoke +12h",
-    firesmoke_24h: "FireSmoke +24h"
-  };
-
-  const overlays = {};
   
   const labelMap = {
     weather_radar: "Radar",
@@ -224,8 +209,4 @@ window.initMap = function () {
     }
   });
 
-  // ----------------------------
-  // CONTROL
-  // ----------------------------
-  window._layerControl = L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
 };
