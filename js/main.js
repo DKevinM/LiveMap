@@ -1,14 +1,6 @@
 window.addEventListener("load", async () => {
   console.log("App starting...");
 
-  // ----------------------------
-  // WAIT FOR ALL DATA
-  // ----------------------------
-  if (window.loadAllData) {
-    await window.loadAllData();
-  } else {
-    console.warn("loadAllData not found");
-  }
 
   // ----------------------------
   // INIT MAP
