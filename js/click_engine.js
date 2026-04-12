@@ -51,24 +51,21 @@ function buildPopupWeatherTable(data) {
 
 window.handleMapClick = async function(lat, lng, map) {
 
+  // ---- CLEAR PREVIOUS SELECTION ----
   if (typeof window.clearSelection === "function") {
     window.clearSelection();
-    const panel = document.getElementById("panel");
-    if (panel) panel.classList.remove("collapsed");
   }
+  
+  // ---- OPEN PANEL  ----
+  const panel = document.getElementById("panel");
+  if (panel) panel.classList.remove("collapsed");
+
+  // ---- AQHI UPDATE ----
   if (typeof window.updateAQHIFromClick === "function") {
     await window.updateAQHIFromClick(lat, lng);
   } else {
     console.error("updateAQHIFromClick not found");
   }  
-
-
-  
-  // ---- CLEAR PREVIOUS CLICK STATE ----
-  click: L.layerGroup().addTo(map),
-  if (window.layers?.click) {
-    window.layers.click.clearLayers();
-  }
   
   let weatherData = null;
   let weatherHtml = "";
@@ -92,7 +89,7 @@ window.handleMapClick = async function(lat, lng, map) {
 
 
   const marker = L.marker([lat, lng]);
-  if (window.layers?.stations) {
+  if (window.layers?.click) {
     window.layers.click.addLayer(marker);
   }
   
@@ -105,7 +102,7 @@ window.handleMapClick = async function(lat, lng, map) {
       fillOpacity: 0.8
     });
   
-    if (window.layers?.stations) {
+    if (window.layers?.click) {
       window.layers.click.addLayer(circle);
     }
   });
