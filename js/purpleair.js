@@ -1,5 +1,24 @@
 const PURPLE_URL = "https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json";
 
+function computeEAQHI(pm) {
+  if (pm == null || isNaN(pm)) return null;
+
+  pm = Number(pm);
+
+  // Simple AQHI-style scaling (Canada-style approximation)
+  if (pm <= 6) return 1;
+  if (pm <= 12) return 2;
+  if (pm <= 20) return 3;
+  if (pm <= 30) return 4;
+  if (pm <= 50) return 5;
+  if (pm <= 75) return 6;
+  if (pm <= 100) return 7;
+  if (pm <= 150) return 8;
+  if (pm <= 250) return 9;
+  return 10;
+}
+
+
 window.renderPurpleAir = async function () {
 
   if (!window.map) throw new Error("Map not initialized");
@@ -24,12 +43,12 @@ window.renderPurpleAir = async function () {
     : (Array.isArray(data.data) ? data.data : []);
 
   records.forEach(rec => {
-
-    const lat = parseFloat(rec.lat ?? rec.Latitude ?? rec.latitude);
-    const lon = parseFloat(rec.lon ?? rec.Longitude ?? rec.longitude);
-    const pm  = parseFloat(rec.pm_corr);
-
-    if (!isFinite(lat) || !isFinite(lon) || !isFinite(pm)) return;
+  
+  const lat = Number(rec.latitude);
+  const lon = Number(rec.longitude);
+  const pm  = Number(rec.pm_corr);
+  
+  if (!Number.isFinite(lat) || !Number.isFinite(lon) || !Number.isFinite(pm)) return;
 
     const eAQHI = computeEAQHI(pm);
     if (eAQHI == null) return;
