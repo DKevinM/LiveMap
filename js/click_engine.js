@@ -65,8 +65,9 @@ window.handleMapClick = async function(lat, lng, map) {
 
   
   // ---- CLEAR PREVIOUS CLICK STATE ----
-  if (window.layers?.stations) {
-    window.layers.stations.clearLayers();
+  click: L.layerGroup().addTo(map),
+  if (window.layers?.click) {
+    window.layers.click.clearLayers();
   }
   
   let weatherData = null;
@@ -77,29 +78,22 @@ window.handleMapClick = async function(lat, lng, map) {
 
 
   // ---- 2) TWO CLOSEST AQHI STATIONS ----
-  const closestStations = Object.values(dataByStation)
-    .map(arr => {
-      const aqhiRow = arr.find(d => d.ParameterName === "AQHI");
-      if (!aqhiRow) return null;
-  
-      return {
-        station: aqhiRow.StationName,
-        lat: Number(aqhiRow.Latitude),
-        lng: Number(aqhiRow.Longitude),
-        aqhi: (aqhiRow.Value == null || aqhiRow.Value === "")
-          ? null
-          : Math.round(Number(aqhiRow.Value)),
-        dist_km: getDistance(lat, lng, aqhiRow.Latitude, aqhiRow.Longitude) / 1000
-      };
-    })
-    .filter(s => s && isFinite(s.lat) && isFinite(s.lng))
+  const closestStations = (window.AppData?.stations || [])
+    .map(s => ({
+      station: s.stationName,
+      lat: Number(s.lat),
+      lng: Number(s.lon),
+      aqhi: (s.aqhi !== null && isFinite(s.aqhi)) ? Math.round(s.aqhi) : null,
+      dist_km: getDistance(lat, lng, s.lat, s.lon) / 1000
+    }))
+    .filter(s => isFinite(s.lat) && isFinite(s.lng))
     .sort((a,b) => a.dist_km - b.dist_km)
     .slice(0,2);
 
 
   const marker = L.marker([lat, lng]);
   if (window.layers?.stations) {
-    window.layers.stations.addLayer(marker);
+    window.layers.click.addLayer(marker);
   }
   
   closestStations.forEach(st => {
@@ -112,7 +106,7 @@ window.handleMapClick = async function(lat, lng, map) {
     });
   
     if (window.layers?.stations) {
-      window.layers.stations.addLayer(circle);
+      window.layers.click.addLayer(circle);
     }
   });
 
@@ -161,7 +155,7 @@ window.handleMapClick = async function(lat, lng, map) {
   const current = window.extractCurrentWeather(weatherData);
   
   if (current && window.renderPanelWeather) {
-    window.renderPanelWeather(current);
+    window.renderPanelWeather(current, lat, lng, addressText);
   }
 
   
