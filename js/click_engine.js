@@ -9,14 +9,15 @@ function buildPopupWeatherTable(data) {
 
   let rows = "";
   for (let j = 0; j < 6; j++) {
-    const t = new Date(data.hourly.time[i + j]);
+  for (let j = 0; j < 6 && (i + j) < data.hourly.time.length; j++)
     rows += `
       <tr>
         <td>${t.toLocaleTimeString("en-CA",{hour:"2-digit",minute:"2-digit"})}</td>
         <td>${Math.round(data.hourly.temperature_2m[i+j])}°C</td>
         <td>${Math.round(data.hourly.wind_speed_10m[i+j])} km/h 
             ${degToCardinal(data.hourly.wind_direction_10m[i+j])}</td>
-        <td>${data.hourly.precipitation[i+j].toFixed(1)} mm</td>
+        const precip = data.hourly.precipitation[i+j];
+        <td>${precip != null ? precip.toFixed(1) : "0.0"} mm</td>
         <td>${Math.round(data.hourly.uv_index[i+j])}</td>
       </tr>
     `;
@@ -59,6 +60,9 @@ window.handleMapClick = async function(lat, lng, map) {
   // ---- OPEN PANEL  ----
   const panel = document.getElementById("panel");
   if (panel) panel.classList.remove("collapsed");
+  if (window.layers?.click) {
+    window.layers.click.clearLayers();
+  }
 
   // ---- AQHI UPDATE ----
   if (typeof window.updateAQHIFromClick === "function") {
@@ -97,7 +101,7 @@ window.handleMapClick = async function(lat, lng, map) {
     const circle = L.circleMarker([st.lat, st.lng], {
       radius: 15,
       color: "#000",
-      fillColor: isFinite(st.aqhi) ? getColor(st.aqhi) : "#999",
+      fillColor: isFinite(st.aqhi) ? window.getAQHIColor(st.aqhi) : "#999",
       weight: 3,
       fillOpacity: 0.8
     });
@@ -149,14 +153,14 @@ window.handleMapClick = async function(lat, lng, map) {
 
   // ---- 4) WEATHER ----
   weatherData = await window.fetchWeather(lat, lng);
-  const current = window.extractCurrentWeather(weatherData);
-  
-  if (current && window.renderPanelWeather) {
-    window.renderPanelWeather(current, lat, lng, addressText);
-  }
-
   
   if (weatherData) {
+    const current = window.extractCurrentWeather(weatherData);
+  
+    if (current && window.renderPanelWeather) {
+      window.renderPanelWeather(current, lat, lng, addressText);
+    }
+  
     weatherHtml = buildPopupWeatherTable(weatherData);
   }
 
