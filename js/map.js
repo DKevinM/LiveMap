@@ -45,21 +45,6 @@ window.initMap = function () {
 
   window.map = map;
 
-  // ==============================
-  // PANEL COLLAPSE TOGGLE
-  // ==============================
-  if (!window._panelToggleInit) {
-
-    const panel = document.getElementById("panel");
-
-    if (panel) {
-      panel.addEventListener("click", () => {
-        panel.classList.toggle("collapsed");
-      });
-    }
-
-    window._panelToggleInit = true;
-  }
 
   // ----------------------------
   // AQHI CLICK HANDLER
@@ -167,21 +152,31 @@ window.initMap = function () {
     weather_lightning: "Lightning",
     weather_thunderstorm: "Thunderstorm (3h)",
     purpleair: "Sensors (PurpleAir)",
-    stations: "Stations"
+    stations: "Stations",
+    firesmoke_now: "FireSmoke Now",
+    firesmoke_6h: "FireSmoke +6h",
+    firesmoke_12h: "FireSmoke +12h",
+    firesmoke_24h: "FireSmoke +24h"
   };
 
-  (window.APP_CONFIG?.overlays || []).forEach(key => {
+  const overlayKeys = (window.APP_CONFIG?.overlays && window.APP_CONFIG.overlays.length)
+    ? window.APP_CONFIG.overlays
+    : [
+        "stations",
+        "purpleair",
+        "firesmoke_now",
+        "firesmoke_6h",
+        "firesmoke_12h",
+        "firesmoke_24h",
+        "weather_radar",
+        "weather_lightning",
+        "weather_thunderstorm"
+      ];
 
+  overlayKeys.forEach(key => {
     if (window.layers[key]) {
-
-      const label = labelMap[key] || key
-        .replaceAll("_", " ")
-        .replace(/\b\w/g, c => c.toUpperCase());
-
-      overlays[label] = window.layers[key];
-
-    } else {
-      console.warn("Missing layer:", key);
+      const label = labelMap[key] || key.replaceAll("_", " ");
+      overlays[label] = window.layers[key];	
     }
   });
 
@@ -192,12 +187,31 @@ window.initMap = function () {
     window.layers.aqhi = {};
   }
 
-  (window.APP_CONFIG?.aqhi || []).forEach(key => {
-    overlays["AQHI " + key] = window.layers.aqhi[key] || L.layerGroup();
+  const aqhiKeys = (window.APP_CONFIG?.aqhi && window.APP_CONFIG.aqhi.length)
+    ? window.APP_CONFIG.aqhi
+    : ["Alberta", "Alberta_BLEND", "ACA", "ACA_BLEND", "WCAS", "WCAS_BLEND"];
+
+  aqhiKeys.forEach(key => {
+    if (!window.layers.aqhi[key]) {
+      window.layers.aqhi[key] = L.layerGroup();
+    }
+    const label = key.includes("_BLEND")
+      ? `AQHI ${key.replace("_BLEND", " Blend")}`
+      : `AQHI ${key}`;
+    overlays[label] = window.layers.aqhi[key];
+  });
+
+  // ----------------------------
+  // MAP CLICK
+  // ----------------------------
+  map.on("click", async function (e) {
+    if (typeof window.handleMapClick === "function") {
+      await window.handleMapClick(e.latlng.lat, e.latlng.lng, map);
+    }
   });
 
   // ----------------------------
   // CONTROL
   // ----------------------------
-  L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
+  window._layerControl = L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
 };
