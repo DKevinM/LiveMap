@@ -1,5 +1,5 @@
 // ---------------- GLOBALS ----------------
-window.dataByStation = {};
+window.dataByStation = Object.create(null);
 
 
 window.buildStationPopup = function (rows) {
@@ -188,6 +188,7 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
     const raw = {};
     rows.forEach(line => {
       const cols = line.split(",");
+      if (cols.length !== headers.length) return;
       const e = Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
     
       if (!e.StationName || !e.Latitude || !e.Longitude) return;
@@ -197,24 +198,21 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
         ? e.ParameterName.trim()
         : "AQHI";
     
-      // ---- FIX 2: numeric value ----
-      let v = parseFloat(e.Value);
-      
+      // ---- FIX 2: numeric value ----     
+      let v = parseFloat(e.Value);      
       if (!isFinite(v)) {
-        e.Value = null;
-      } else {
-        e.Value = v;
-      }
-    
-      // ---- FIX 3: ppm → ppb conversion (what your working script does) ----
-      if ([
+        v = null;
+      }      
+      // ppm → ppb conversion
+      if (v !== null && [
         "Ozone","Total Oxides of Nitrogen","Hydrogen Sulphide",
         "Total Reduced Sulphur","Sulphur Dioxide",
         "Nitric Oxide","Nitrogen Dioxide"
       ].includes(e.ParameterName)) {
         v *= 1000;
-      }
+      }      
       e.Value = v;
+
     
       // ---- FIX 4: Units + Shortform (missing in LiveMap) ----
       e.Units = unitsLookup[e.ParameterName] || "";
@@ -257,8 +255,8 @@ window.fetchAllStationData = async function () {
 
     return {
       stationName: name,
-      lat: Number(rows[0].Latitude),
-      lon: Number(rows[0].Longitude),
+      lat: isFinite(Number(rows[0].Latitude)) ? Number(rows[0].Latitude) : null,
+      lon: isFinite(Number(rows[0].Longitude)) ? Number(rows[0].Longitude) : null,
       aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
         ? aqhiRow.Value
         : null,
