@@ -503,42 +503,29 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
 }
 
 
-
-
-fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
-  .then(r => r.text())
-  .then(text => {
-
-    const data = parseCSV(text)
-      .filter(r => r.StationName === station);
-
-
-    const byParam = {};
-    
-    data.forEach(r => {
-    
-      if (!r.ParameterName || r.ParameterName.trim() === "") {
-        r.ParameterName = "AQHI";
-      }
-    
-      const n = normalizeRow(r);
-      if (!n) return;
-      
-      byParam[n.param] = byParam[n.param] || [];
-      byParam[n.param].push({
-        value: n.value,
-        time: n.time
-      });
+window.AppData.ready.then(() => {
+  const data = window.AppData.stations.find(s => s.stationName === station);
+  if (!data) return;
+  const rows = data.rows;
+  
+  const byParam = {};
+  rows.forEach(r => {
+    let param = r.ParameterName || r.param || "AQHI";
+    const n = normalizeRow(r);
+    if (!n) return;
+  
+    byParam[n.param] = byParam[n.param] || [];
+    byParam[n.param].push({
+      value: n.value,
+      time: n.time
     });
+  });
+  
+  Object.keys(byParam).forEach(p => {
+    byParam[p].sort((a,b) => a.time - b.time);
+  });
 
-
-    
-    // SORT BY TIME
-    Object.keys(byParam).forEach(p => {
-      byParam[p].sort((a,b) => a.time - b.time);
-    });
-
-    
+  
     let stationTime = null;
     let aqhiValue = null;
 
@@ -669,7 +656,10 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       const rows = byParam[param] || [];
       const { latest, status } = getLatestStatus(rows, new Date(), 3);
       if (rows.length === 0) return; 
-      document.getElementById(targetRow).insertAdjacentHTML("beforeend", `
+      const container = document.getElementById(targetRow);
+      if (!container) return;
+      
+      container.insertAdjacentHTML("beforeend", `
         <div class="gaugeBox">
           <div id="${gid}" class="gauge"></div>
           <div class="value" id="val_${gid}"></div>
@@ -678,10 +668,7 @@ fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.cs
       `);
 
 
-      
-      // ---- NEVER REPORTED HERE ----
-      if (rows.length === 0) return;
-      
+        
     
       // ---- OFFLINE ----
       if (!latest) {
