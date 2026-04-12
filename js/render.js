@@ -51,7 +51,7 @@ async function loadAQHIGroup(groupName) {
       style: f => {
         const v = f.properties?.aqhi;
         return {
-          fillColor: isFinite(v) ? getColor(v) : "#999",
+          fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
           color: "#444",
           weight: 0.5,
           fillOpacity: 0.6
