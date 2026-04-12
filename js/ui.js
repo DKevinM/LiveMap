@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 window.clearSelection = function () {
 
   // 1) Clear map layers (stations + circles + markers)
-  if (window.layers?.stations) {
-    window.layers.stations.clearLayers();
+  if (window.layers?.click) {
+    window.layers.click.clearLayers();
   }
 
   // 2) Clear AQHI panel
