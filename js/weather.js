@@ -23,12 +23,12 @@ window.showCurrentWeather = async function(lat, lng) {
     const html = `
       <table class="popup-weather">
         <tr><td><strong>Time</strong></td>
-            <td>${new Date(cw.time).toLocaleString("en-CA")}</td></tr>
+            <td>${new Date(cw.time).toLocaleString("en-CA", {timeZone: "America/Edmonton"})}</td></tr>
         <tr><td><strong>Temperature</strong></td>
             <td>${Math.round(cw.temperature)} °C</td></tr>
         <tr><td><strong>Wind</strong></td>
             <td>${Math.round(cw.windspeed)} km/h
-                ${degToCardinal(cw.winddirection)}</td></tr>
+                ${isFinite(cw.winddirection) ? degToCardinal(cw.winddirection) : ""}}</td></tr>
       </table>
     `;
 
@@ -72,11 +72,11 @@ function updateMiniWeather(data) {
     if (t >= now) break;
     i++;
   }
+  if (i >= data.hourly.time.length) i = data.hourly.time.length - 1;
 
-  const get = (field) => data.hourly[field][i];
 
   let forecastRows = "";
-  for (let j = 0; j < 6; j++) {
+  for (let j = 0; j < 6 && (i + j) < data.hourly.time.length; j++) {
     const t = new Date(data.hourly.time[i + j]);
     const hhmm = t.toLocaleTimeString("en-CA", {
       hour: "2-digit",
@@ -84,13 +84,18 @@ function updateMiniWeather(data) {
       timeZone: "America/Edmonton"
     });
 
+    
+    const precip = data.hourly.precipitation[i+j];
+    const temp = data.hourly.temperature_2m[i+j];
+
+    
     forecastRows += `
       <tr>
         <td>${hhmm}</td>
-        <td>${Math.round(data.hourly.temperature_2m[i+j])}°C</td>
+        <td>${isFinite(temp) ? Math.round(temp) : "--"}°C</td>
         <td>${Math.round(data.hourly.wind_speed_10m[i+j])} km/h
             ${degToCardinal(data.hourly.wind_direction_10m[i+j])}</td>
-        <td>${data.hourly.precipitation[i+j].toFixed(1)} mm</td>
+        <td>${precip != null ? precip.toFixed(1) : "0.0"} mm</td>
         <td>${Math.round(data.hourly.uv_index[i+j])}</td>
       </tr>
     `;
@@ -129,7 +134,8 @@ window.extractCurrentWeather = function (data) {
     if (new Date(data.hourly.time[i]) >= now) break;
     i++;
   }
-
+  if (i >= data.hourly.time.length) i = data.hourly.time.length - 1;
+  
   return {
     time: now.toLocaleString("en-CA", { timeZone: "America/Edmonton" }),
     temp: data.hourly.temperature_2m[i],
