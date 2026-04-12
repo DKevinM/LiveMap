@@ -1,6 +1,7 @@
 console.log("map.js loaded");
 
 window.initMap = function () {
+
   const mapDiv = document.getElementById("map");
   console.log("initMap mapDiv:", mapDiv);
 
@@ -21,6 +22,7 @@ window.initMap = function () {
   // CONFIG-BASED MAP SETUP
   // ----------------------------
   if (window.APP_CONFIG?.lockBounds) {
+
     map = L.map(mapDiv, {
       minZoom: window.APP_CONFIG.minZoom || 6,
       maxZoom: window.APP_CONFIG.maxZoom || 13,
@@ -31,6 +33,7 @@ window.initMap = function () {
     map.fitBounds(window.APP_CONFIG.bounds);
 
   } else {
+
     const albertaBounds = [
       [48.9, -120.0],
       [60.0, -110.0]
@@ -42,147 +45,159 @@ window.initMap = function () {
 
   window.map = map;
 
-	// ==============================
-	// PANEL COLLAPSE TOGGLE
-	// ==============================
-	if (!window._panelToggleInit) {
-	  const panel = document.getElementById("panel");
-	
-	  if (panel) {
-	    panel.addEventListener("click", () => {
-	      panel.classList.toggle("collapsed");
-	    });
-	  }
-	
-	  window._panelToggleInit = true;
-	}	
+  // ==============================
+  // PANEL COLLAPSE TOGGLE
+  // ==============================
+  if (!window._panelToggleInit) {
 
-	
-	// ----------------------------
-	// CLICK HANDLER (NEW)
-	// ----------------------------
-	map.on("overlayadd", async function(e) {
-	
-	  const name = e.name.replace("AQHI ", "");
-	  const group = name;
-	
-	  if (!window.AQHI_GROUPS[group]) return;
-	  if (!window.layers?.aqhi) return;
-		
-	  // remove others
-	  Object.entries(window.layers.aqhi || {}).forEach(([key, layer]) => {
-	    if (key !== group && map.hasLayer(layer)) {
-	      map.removeLayer(layer);
-	    }
-	  });
-	
-	  await loadAQHIGroup(group);
-	  map.addLayer(window.layers.aqhi[group]);
-	});
-		
+    const panel = document.getElementById("panel");
 
+    if (panel) {
+      panel.addEventListener("click", () => {
+        panel.classList.toggle("collapsed");
+      });
+    }
 
+    window._panelToggleInit = true;
+  }
 
+  // ----------------------------
+  // AQHI CLICK HANDLER
+  // ----------------------------
+  map.on("overlayadd", async function (e) {
+
+    const name = e.name.replace("AQHI ", "");
+    const group = name;
+
+    if (!window.AQHI_GROUPS[group]) return;
+    if (!window.layers?.aqhi) return;
+
+    // remove other AQHI layers
+    Object.entries(window.layers.aqhi || {}).forEach(([key, layer]) => {
+      if (key !== group && map.hasLayer(layer)) {
+        map.removeLayer(layer);
+      }
+    });
+
+    await loadAQHIGroup(group);
+    map.addLayer(window.layers.aqhi[group]);
+  });
+
+  // ----------------------------
+  // LAYER REGISTRY
+  // ----------------------------
   window.layers = {
-	stations: L.layerGroup().addTo(map),
-	click: L.layerGroup().addTo(map), 
-	purpleair: L.layerGroup().addTo(map),
-	grid: L.layerGroup().addTo(map),
-	forecast: L.layerGroup().addTo(map),
-	firesmoke_now: L.layerGroup(),
-	firesmoke_6h: L.layerGroup(),
-	firesmoke_12h: L.layerGroup(),
-	firesmoke_24h: L.layerGroup(),
-	weather_radar: L.layerGroup(),
-	weather_wind_u: L.layerGroup(),
-	weather_lightning: L.layerGroup(),
-	weather_thunderstorm: L.layerGroup(),
+    stations: L.layerGroup().addTo(map),
+    click: L.layerGroup().addTo(map),
+    purpleair: L.layerGroup().addTo(map),
+    grid: L.layerGroup().addTo(map),
+    forecast: L.layerGroup().addTo(map),
+    firesmoke_now: L.layerGroup(),
+    firesmoke_6h: L.layerGroup(),
+    firesmoke_12h: L.layerGroup(),
+    firesmoke_24h: L.layerGroup(),
+    weather_radar: L.layerGroup(),
+    weather_wind_u: L.layerGroup(),
+    weather_lightning: L.layerGroup(),
+    weather_thunderstorm: L.layerGroup()
   };
 
+  // ----------------------------
+  // WEATHER WMS LAYERS
+  // ----------------------------
 
-// ---------------- WEATHER LAYERS ----------------
+  const radar = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+    layers: "RADAR_1KM_RRAI",
+    format: "image/png",
+    transparent: true,
+    opacity: 0.85
+  });
+  window.layers.weather_radar.addLayer(radar);
 
-// Radar
-const radar = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
-  layers: "RADAR_1KM_RRAI",
-  format: "image/png",
-  transparent: true,
-  opacity: 0.85
-});
-window.layers.weather_radar.addLayer(radar);
+  const windU = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+    layers: "HRDPS.CONTINENTAL_UU",
+    format: "image/png",
+    transparent: true,
+    opacity: 0.7
+  });
+  window.layers.weather_wind_u.addLayer(windU);
 
-// Wind (U-component)
-const windU = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
-  layers: "HRDPS.CONTINENTAL_UU",
-  format: "image/png",
-  transparent: true,
-  opacity: 0.7
-});
-window.layers.weather_wind_u.addLayer(windU);
+  const lightning = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+    layers: "Lightning_2.5km_Density",
+    format: "image/png",
+    transparent: true,
+    opacity: 0.85
+  });
+  window.layers.weather_lightning.addLayer(lightning);
 
-// Lightning
-const lightning = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
-  layers: "Lightning_2.5km_Density",
-  format: "image/png",
-  transparent: true,
-  opacity: 0.85
-});
-window.layers.weather_lightning.addLayer(lightning);
+  const thunder = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+    layers: "GDPS-WEonG_15km_Thunderstorm-Prob.3h",
+    format: "image/png",
+    transparent: true,
+    opacity: 0.75
+  });
+  window.layers.weather_thunderstorm.addLayer(thunder);
 
-// Thunderstorm (3h)
-const thunder = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
-  layers: "GDPS-WEonG_15km_Thunderstorm-Prob.3h",
-  format: "image/png",
-  transparent: true,
-  opacity: 0.75
-});
-window.layers.weather_thunderstorm.addLayer(thunder);
-	
+  // ----------------------------
+  // BASE MAPS
+  // ----------------------------
+  const osm = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    { maxZoom: 18 }
+  ).addTo(map);
 
+  const satelliteBase = L.tileLayer(
+    "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
+    { maxZoom: 9 }
+  );
 
-// ==============================
-// AQHI LAYER CONTROL (NEW)
-// ==============================
-const overlays = {};
+  const baseLayers = {
+    "OpenStreetMap": osm,
+    "Satellite": satelliteBase
+  };
 
-const osm = L.tileLayer(
-  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  { maxZoom: 18 }
-);
+  // ----------------------------
+  // OVERLAYS
+  // ----------------------------
+  const overlays = {};
 
-const satelliteBase = L.tileLayer(
-  "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
-  { maxZoom: 9 }
-);
+  const labelMap = {
+    weather_radar: "Radar",
+    weather_wind_u: "Wind (U-component)",
+    weather_lightning: "Lightning",
+    weather_thunderstorm: "Thunderstorm (3h)",
+    purpleair: "Sensors (PurpleAir)",
+    stations: "Stations"
+  };
 
-// add default
-osm.addTo(map);
+  (window.APP_CONFIG?.overlays || []).forEach(key => {
 
-const baseLayers = {
-  "OpenStreetMap": osm,
-  "Satellite": satelliteBase
-};
+    if (window.layers[key]) {
 
-// ---------------- CORE LAYERS ----------------
-(window.APP_CONFIG?.overlays || []).forEach(key => {
-  if (window.layers[key]) {
-	const label = key
-	  .replaceAll("_", " ")
-	  .replace(/\b\w/g, c => c.toUpperCase());
+      const label = labelMap[key] || key
+        .replaceAll("_", " ")
+        .replace(/\b\w/g, c => c.toUpperCase());
 
-	overlays[label] = window.layers[key];
-  } else {
-	console.warn("Missing layer:", key);
+      overlays[label] = window.layers[key];
+
+    } else {
+      console.warn("Missing layer:", key);
+    }
+  });
+
+  // ----------------------------
+  // AQHI LAYERS
+  // ----------------------------
+  if (!window.layers.aqhi) {
+    window.layers.aqhi = {};
   }
-});
 
-// ---------------- AQHI LAYERS ----------------
-(window.APP_CONFIG?.aqhi || []).forEach(key => {
-	if (!window.layers.aqhi) {
-	  window.layers.aqhi = {};
-	}		
-	overlays["AQHI " + key] = window.layers.aqhi[key] || L.layerGroup();
-});
+  (window.APP_CONFIG?.aqhi || []).forEach(key => {
+    overlays["AQHI " + key] = window.layers.aqhi[key] || L.layerGroup();
+  });
 
-// ---------------- ADD CONTROL ----------------
-L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
+  // ----------------------------
+  // CONTROL
+  // ----------------------------
+  L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
+};
