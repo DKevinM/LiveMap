@@ -42,4 +42,8 @@ window.clearSelection = function () {
   // 4) Optional: clear any modal
   const modal = document.getElementById("station-panel");
   if (modal) modal.style.display = "none";
+
+  //  PANEL RESET
+  const panel = document.getElementById("panel");
+  if (panel) panel.classList.remove("collapsed");  
 };
