@@ -1,3 +1,5 @@
+const PURPLE_URL = "https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json";
+
 window.renderPurpleAir = async function () {
 
   if (!window.map) throw new Error("Map not initialized");
