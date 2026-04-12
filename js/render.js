@@ -49,7 +49,7 @@ async function loadAQHIGroup(groupName) {
       interactive: false,
       
       style: f => {
-        const v = f.properties?.aqhi;
+        const v = f.properties?.aqhi ?? f.properties?.AQHI ?? f.properties?.value ?? f.properties?.gridcode;
         return {
           fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
           color: "#444",
