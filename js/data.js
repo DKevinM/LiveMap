@@ -226,7 +226,6 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
 
 
 // ---------------- STATIONS FOR MAP ----------------
-// ---------------- STATIONS FOR MAP ----------------
 window.fetchAllStationData = async function () {
   await window.dataReady;
 
@@ -234,9 +233,8 @@ window.fetchAllStationData = async function () {
 
   return stationNames.map(name => {
     const rows = dataByStation[name];
-    const aqhiRow = rows["AQHI"];
-
-    const firstRow = Object.values(rows)[0];
+    const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
+    const firstRow = rows[0];
 
     return {
       stationName: name,
