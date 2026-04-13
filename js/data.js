@@ -226,6 +226,7 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
 
 
 // ---------------- STATIONS FOR MAP ----------------
+// ---------------- STATIONS FOR MAP ----------------
 window.fetchAllStationData = async function () {
   await window.dataReady;
 
@@ -233,17 +234,21 @@ window.fetchAllStationData = async function () {
 
   return stationNames.map(name => {
     const rows = dataByStation[name];
-    const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
+    const aqhiRow = rows["AQHI"];
+
+    const firstRow = Object.values(rows)[0];
 
     return {
       stationName: name,
-      lat: isFinite(Number(rows[0].Latitude)) ? Number(rows[0].Latitude) : null,
-      lon: isFinite(Number(rows[0].Longitude)) ? Number(rows[0].Longitude) : null,
+      lat: isFinite(Number(firstRow?.Latitude)) ? Number(firstRow.Latitude) : null,
+      lon: isFinite(Number(firstRow?.Longitude)) ? Number(firstRow.Longitude) : null,
       aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
         ? aqhiRow.Value
         : null,
+
       rows: rows,  
-      html: window.buildStationPopup(rows)  
+
+      html: window.buildStationPopup(Object.values(rows))  
     };
   });
 };
