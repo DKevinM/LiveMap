@@ -159,7 +159,7 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
     const raw = {};
     rows.forEach(line => {
       const cols = line.split(",");
-      if (cols.length !== headers.length) return;
+      if (cols.length < headers.length) return;
       const e = Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
     
       if (!e.StationName || !e.Latitude || !e.Longitude) return;
