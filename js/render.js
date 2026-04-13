@@ -103,13 +103,29 @@ function loadFireSmokeLayer(url, layer) {
     .then(r => r.json())
     .then(geo => {
       layer.clearLayers();
+
       L.geoJSON(geo, {
         style: f => ({
           fillColor: getSmokeColor(f.properties.pm25),
           fillOpacity: 0.4,
-          color: "none"
-        })
+          color: "none",
+          weight: 0
+        }),
+
+        onEachFeature: function (feature, lyr) {
+          const pm = Number(feature.properties?.pm25);
+          const ts = feature.properties?.timestamp || "";
+
+          lyr.bindTooltip(
+            `PM2.5: ${isFinite(pm) ? pm.toFixed(1) : "—"} µg/m³` +
+            (ts ? `<br>${ts}` : ""),
+            {
+              sticky: true
+            }
+          );
+        }
       }).addTo(layer);
+
       console.log("Loaded FireSmoke:", url);
     })
     .catch(e => console.error("FireSmoke load failed:", e));
