@@ -174,16 +174,6 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
       if (!isFinite(v)) {
         v = null;
       }      
-      // ppm → ppb conversion
-      if (v !== null && [
-        "Ozone","Total Oxides of Nitrogen","Hydrogen Sulphide",
-        "Total Reduced Sulphur","Sulphur Dioxide",
-        "Nitric Oxide","Nitrogen Dioxide"
-      ].includes(e.ParameterName)) {
-        v *= 1000;
-      }      
-      e.Value = v;
-
     
       // ---- FIX 4: Units + Shortform (missing in LiveMap) ----
       e.Units = unitsLookup[e.ParameterName] || "";
@@ -210,9 +200,30 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
           byParam[p] = e;
         }
       });
-      dataByStation[station] = Object.values(byParam);
+      dataByStation[station] = byParam;
     });
+
+    // ==============================
+    // GLOBAL ACCESS HELPERS
+    // ==============================
+    
+    window.getStationValue = function(station, param) {
+      const row = window.dataByStation?.[station]?.[param];
+      return row?.Value ?? null;
+    };
+    
+    window.getStationTime = function(station, param) {
+      const row = window.dataByStation?.[station]?.[param];
+      return row?.DisplayDate ?? null;
+    };
+    
   });
+
+
+
+
+
+
 
 // ---------------- STATIONS FOR MAP ----------------
 window.fetchAllStationData = async function () {
