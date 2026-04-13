@@ -28,7 +28,7 @@ window.showCurrentWeather = async function(lat, lng) {
             <td>${Math.round(cw.temperature)} °C</td></tr>
         <tr><td><strong>Wind</strong></td>
             <td>${Math.round(cw.windspeed)} km/h
-                ${isFinite(cw.winddirection) ? degToCardinal(cw.winddirection) : ""}}</td></tr>
+                ${isFinite(cw.winddirection) ? degToCardinal(cw.winddirection) : ""}</td></tr>
       </table>
     `;
 
@@ -148,3 +148,37 @@ window.extractCurrentWeather = function (data) {
     dir: data.hourly.wind_direction_10m[i]
   };
 };
+
+window.fetchWeather = async function(lat, lng) {
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
+    `&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,wind_direction_10m,uv_index` +
+    `&timezone=America%2FEdmonton`;
+
+  try {
+    const r = await fetch(url);
+    return await r.json();
+  } catch (e) {
+    console.warn("Weather fetch failed:", e);
+    return null;
+  }
+};
+
+
+window.renderPanelWeather = function(current, lat, lng, addressText) {
+  const el = document.getElementById("mini-weather");
+  if (!el || !current) return;
+
+  el.innerHTML = `
+    <div style="font-size:12px; line-height:1.35;">
+      <div><strong>${addressText || "Selected location"}</strong></div>
+      <div>${current.time || ""}</div>
+      <div>Temp: ${current.temp != null ? Math.round(current.temp) : "--"} °C</div>
+      <div>RH: ${current.rh != null ? Math.round(current.rh) : "--"} %</div>
+      <div>Wind: ${current.wind != null ? Math.round(current.wind) : "--"} km/h ${current.dir != null ? degToCardinal(current.dir) : ""}</div>
+      <div>Precip: ${current.precip != null ? Number(current.precip).toFixed(1) : "0.0"} mm</div>
+      <div>UV: ${current.uv != null ? Math.round(current.uv) : "--"}</div>
+    </div>
+  `;
+};
+
