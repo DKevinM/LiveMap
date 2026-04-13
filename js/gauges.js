@@ -429,24 +429,9 @@ function normalizeRow(r) {
   // AQHI fix
   if (!param) param = "AQHI";
 
-  // ppm → ppb conversion
-  const ppmParams = [
-    "Ozone",
-    "Nitric Oxide",
-    "Nitrogen Dioxide",
-    "Total Oxides of Nitrogen",
-    "Sulphur Dioxide",
-    "Total Reduced Sulphur",
-    "Hydrogen Sulphide"
-  ];
-
-  if (ppmParams.includes(param)) {
-    value = value * 1000;
-  }
-
   return {
     param,
-    value,                         // ALWAYS numeric
+    value: Number(value),
     time: new Date(r.ReadingDate)
   };
 }
