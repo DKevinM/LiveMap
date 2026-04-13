@@ -41,13 +41,29 @@ html, body {
 }
 
 
+/* keep container transparent */
 .leaflet-control-container {
-  background: transparent !important;
+  background: transparent;
 }
 
-.leaflet-control {
-  background: transparent !important;
-  box-shadow: none !important;
+/* ONLY keep zoom buttons clean, not everything */
+.leaflet-control-zoom {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* FIX layer control specifically */
+.leaflet-control-layers {
+  background: rgba(255,255,255,0.95) !important;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.25);
+}
+
+/* text readability */
+.leaflet-control-layers label {
+  color: #000 !important;
+  font-weight: 500;
 }
 
 
