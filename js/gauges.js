@@ -622,7 +622,6 @@ window.AppData.ready.then(() => {
         `;
       }
 
-    const aqhiCol = aqhiColor(aqhiValue);  
     
     document.getElementById("aqhiBig").innerHTML = `
       <div style="
