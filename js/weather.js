@@ -186,40 +186,61 @@ window.renderPanelWeather = function(current, lat, lng, addressText) {
 // POPUP WEATHER TABLE (FOR MAP CLICK)
 // ==============================
 window.buildPopupWeatherTable = function(data) {
-  if (!data || !data.hourly) return "";
+  if (!data || !data.hourly || !data.hourly.time) return "";
 
   const now = new Date();
   let i = 0;
 
   while (i < data.hourly.time.length) {
-    if (new Date(data.hourly.time[i]) >= now) break;
+    const t = new Date(data.hourly.time[i]);
+    if (t >= now) break;
     i++;
   }
-  if (i >= data.hourly.time.length) i = data.hourly.time.length - 1;
 
-  const temp = data.hourly.temperature_2m[i];
-  const wind = data.hourly.wind_speed_10m[i];
-  const dir  = data.hourly.wind_direction_10m[i];
-  const precip = data.hourly.precipitation[i];
+  if (i >= data.hourly.time.length) {
+    i = data.hourly.time.length - 1;
+  }
+
+  let forecastRows = "";
+  for (let j = 0; j < 6 && (i + j) < data.hourly.time.length; j++) {
+    const t = new Date(data.hourly.time[i + j]);
+
+    const hhmm = t.toLocaleTimeString("en-CA", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "America/Edmonton"
+    });
+
+    const temp = data.hourly.temperature_2m?.[i + j];
+    const wind = data.hourly.wind_speed_10m?.[i + j];
+    const dir  = data.hourly.wind_direction_10m?.[i + j];
+    const precip = data.hourly.precipitation?.[i + j];
+
+    forecastRows += `
+      <tr>
+        <td>${hhmm}</td>
+        <td>${isFinite(temp) ? Math.round(temp) : "--"}°C</td>
+        <td>${isFinite(wind) ? Math.round(wind) : "--"} km/h ${isFinite(dir) ? degToCardinal(dir) : ""}</td>
+        <td>${precip != null ? Number(precip).toFixed(1) : "0.0"} mm</td>
+      </tr>
+    `;
+  }
 
   return `
-    <div style="margin-top:8px;">
-      <div style="font-weight:600; margin-bottom:3px;">Weather</div>
-      <table style="width:100%; font-size:11px;">
+    <div style="font-weight:600; margin:8px 0 3px;">Weather forecast (next 6h)</div>
+    <table style="width:100%; font-size:11px;">
+      <thead>
         <tr>
-          <td>Temp</td>
-          <td>${isFinite(temp) ? Math.round(temp) : "--"} °C</td>
+          <th align="left">Time</th>
+          <th align="left">Temp</th>
+          <th align="left">Wind</th>
+          <th align="left">Precip</th>
         </tr>
-        <tr>
-          <td>Wind</td>
-          <td>${isFinite(wind) ? Math.round(wind) : "--"} km/h ${isFinite(dir) ? degToCardinal(dir) : ""}</td>
-        </tr>
-        <tr>
-          <td>Precip</td>
-          <td>${precip != null ? Number(precip).toFixed(1) : "0.0"} mm</td>
-        </tr>
-      </table>
-    </div>
+      </thead>
+      <tbody>
+        ${forecastRows}
+      </tbody>
+    </table>
   `;
 };
 
