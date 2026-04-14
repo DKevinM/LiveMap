@@ -49,18 +49,7 @@ window.initMap = function () {
   // ----------------------------
   // AQHI CLICK HANDLER
   // ----------------------------
-  map.on("overlayadd", async function (e) {
-
-    if (
-      e.name === "Wind Rose (PM2.5)" ||
-      e.name === "Wind Rose (NO2)" ||
-      e.name === "Wind Rose (SO2)"
-    ) {
-      if (typeof window.renderMap === "function") {
-        await window.renderMap();
-      }
-    }
-    
+  map.on("overlayadd", async function (e) {    
     const name = e.name.replace("AQHI ", "");
     const group = name;
 
