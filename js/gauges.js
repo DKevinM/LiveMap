@@ -557,13 +557,15 @@ window.AppData.ready.then(() => {
     
       document.getElementById("val_g_AQHI").innerHTML =
         `<span style="color:#999;font-weight:700">N/A</span>`;
-    
+
+      const aqhiCol = aqhiColor(aqhiValue);
       document.getElementById("aqhiBig").innerHTML = `
         <div style="color:#999">
           AQHI —
         </div>
       `;
-    
+
+      const aqhiCol = aqhiColor(aqhiValue);
       // ---- NO MESSAGE ----
       document.getElementById("aqhiMessage").innerHTML = "";
     
