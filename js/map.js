@@ -224,6 +224,7 @@ window.initMap = function () {
         "rose_no2",
         "rose_so2",      
         "purpleair",
+        "eaqhi",
         "weather_radar",
         "weather_wind_u",
         "weather_lightning",
