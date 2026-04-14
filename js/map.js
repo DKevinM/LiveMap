@@ -51,6 +51,16 @@ window.initMap = function () {
   // ----------------------------
   map.on("overlayadd", async function (e) {
 
+    if (
+      e.name === "Wind Rose (PM2.5)" ||
+      e.name === "Wind Rose (NO2)" ||
+      e.name === "Wind Rose (SO2)"
+    ) {
+      if (typeof window.renderMap === "function") {
+        await window.renderMap();
+      }
+    }
+    
     const name = e.name.replace("AQHI ", "");
     const group = name;
 
@@ -68,6 +78,24 @@ window.initMap = function () {
     map.addLayer(window.layers.aqhi[group]);
   });
 
+
+  map.on("overlayremove", function (e) {
+  
+    if (
+      e.name === "Wind Rose (PM2.5)" ||
+      e.name === "Wind Rose (NO2)" ||
+      e.name === "Wind Rose (SO2)"
+    ) {
+      window.layers.rose_pm25.clearLayers();
+      window.layers.rose_no2.clearLayers();
+      window.layers.rose_so2.clearLayers();
+    }
+  
+  });
+
+
+
+  
   // ----------------------------
   // LAYER REGISTRY
   // ----------------------------
