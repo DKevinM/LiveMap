@@ -59,13 +59,12 @@ async function loadAQHIGroup(groupName) {
           f.properties?.blend ??
           f.properties?.blended_aqhi;
 
-        return {
-          fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
-          color: "#444",
-          weight: 0.5,
-          fillOpacity: 0.6
-        };
-      },
+      return {
+        fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
+        color: "none",
+        weight: 0,
+        fillOpacity: 0.6
+      };
 
       onEachFeature: function(feature, lyr) {
         const p = feature.properties || {};
