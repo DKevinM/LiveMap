@@ -38,3 +38,8 @@ async function lookupAddress() {
     console.error("Geocode error:", err);
   }
 }
+
+
+window.lookupAddress = lookupAddress;
+
+
