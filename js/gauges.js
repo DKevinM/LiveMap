@@ -590,27 +590,26 @@ window.AppData.ready.then(() => {
             background:#f5f5f5;
             border-radius:8px;
             line-height:1.35;
-            border-left:6px solid ${aqhiColor(aqhiValue)};
           ">
-        
+    
             <div style="
               font-weight:700;
-              color:#222;
+              color:${aqhiColor(aqhiValue)};
               margin-bottom:6px;
             ">
               ${msg.level} Risk (AQHI ${msg.range})
             </div>
-        
+    
             <div style="font-size:14px; margin-bottom:6px;">
               <b>At Risk Population:</b><br>
               ${msg.atRisk}
             </div>
-        
+    
             <div style="font-size:14px;">
               <b>General Population:</b><br>
               ${msg.general}
             </div>
-        
+    
           </div>
         `;
       }
