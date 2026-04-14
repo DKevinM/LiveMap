@@ -45,19 +45,56 @@ async function loadAQHIGroup(groupName) {
     const res = await fetch(url);
     const geojson = await res.json();
 
+  
     const layer = L.geoJSON(geojson, {
-      interactive: false,
-      
+      interactive: true,
+
       style: f => {
-        const v = f.properties?.aqhi ?? f.properties?.AQHI ?? f.properties?.value ?? f.properties?.gridcode;
+        const v =
+          f.properties?.aqhi ??
+          f.properties?.AQHI ??
+          f.properties?.value ??
+          f.properties?.gridcode ??
+          f.properties?.aqhi_blend ??
+          f.properties?.blend ??
+          f.properties?.blended_aqhi;
+
         return {
           fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
           color: "#444",
           weight: 0.5,
           fillOpacity: 0.6
         };
+      },
+
+      onEachFeature: function(feature, lyr) {
+        const p = feature.properties || {};
+
+        const v =
+          p.aqhi ??
+          p.AQHI ??
+          p.value ??
+          p.gridcode ??
+          p.aqhi_blend ??
+          p.blend ??
+          p.blended_aqhi;
+
+        const row = p.row ?? p.Row ?? "";
+        const col = p.col ?? p.Col ?? "";
+        const src = p.source ?? p.Source ?? "";
+
+        lyr.bindTooltip(
+          `AQHI: ${isFinite(Number(v)) ? Number(v).toFixed(1) : "—"}` +
+          (row !== "" || col !== "" ? `<br>Row: ${row} Col: ${col}` : "") +
+          (src ? `<br>Source: ${src}` : ""),
+          { sticky: true }
+        );
       }
     });
+
+
+
+      
 
     layerGroup.addLayer(layer);
   }
