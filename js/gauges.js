@@ -516,17 +516,9 @@ window.AppData.ready.then(() => {
 
     
     // -------- FIRST PASS: find AQHI and time only --------
-    function renderNextGauge(i = 0) {
+    gaugeOrder.forEach(param => {
     
-      if (i >= gaugeOrder.length) return;
-    
-      const param = gaugeOrder[i];
-    
-      // skip AQHI (already built)
-      if (param === "AQHI") {
-        requestAnimationFrame(() => renderNextGauge(i + 1));
-        return;
-      }
+      if (param === "AQHI") return;
     
       const gid = `g_${param.replace(/\s/g,'')}`;
     
@@ -535,20 +527,12 @@ window.AppData.ready.then(() => {
         targetRow = "met";
     
       const rows = byParam[param] || [];
-      if (rows.length === 0) {
-        requestAnimationFrame(() => renderNextGauge(i + 1));
-        return;
-      }
-    
       const { latest, status } = getLatestStatus(rows, new Date(), 3);
+      if (rows.length === 0) return;
     
       const container = document.getElementById(targetRow);
-      if (!container) {
-        requestAnimationFrame(() => renderNextGauge(i + 1));
-        return;
-      }
+      if (!container) return;
     
-      // create box FIRST (instant UI)
       container.insertAdjacentHTML("beforeend", `
         <div class="gaugeBox">
           <div id="${gid}" class="gauge"></div>
@@ -557,49 +541,41 @@ window.AppData.ready.then(() => {
         </div>
       `);
     
-      // render gauge AFTER DOM paints
-      setTimeout(() => {
+      if (!latest) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
     
-        if (!latest) {
-          buildOfflineGauge(gid, param);
-          document.getElementById(`val_${gid}`).innerHTML =
-            `<span style="color:#999;font-weight:700">OFFLINE</span>`;
-        } else {
+      if (status === "stale") {
+        document.getElementById(gid).closest(".gaugeBox")
+          .style.filter = "grayscale(40%) brightness(0.9)";
+      }
     
-          if (status === "stale") {
-            document.getElementById(gid).closest(".gaugeBox")
-              .style.filter = "grayscale(40%) brightness(0.9)";
-          }
+      const max   = gaugeMax[param] || 200;
+      const guide = guideLimits[param] || null;
+      const min   = param === "Outdoor Temperature" ? -40 : 0;
     
-          const max   = gaugeMax[param] || 200;
-          const guide = guideLimits[param] || null;
-          const min   = param === "Outdoor Temperature" ? -40 : 0;
+      if (param === "Wind Direction") {
+        buildCompass(gid, latest.value);
+      } else {
+        buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
+      }
     
-          if (param === "Wind Direction") {
-            buildCompass(gid, latest.value);
-          } else {
-            buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
-          }
+      const disp = formatDisplay(param, latest.value);
+      const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
+      const unit  = displayMap[param]?.unit || "ppb";
     
-          const disp = formatDisplay(param, latest.value);
-          const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
-          const unit  = displayMap[param]?.unit || "ppb";
+      document.getElementById(`val_${gid}`).innerHTML = `
+        <b>${disp.text}</b> ${disp.unit}
+        <div style="font-size:11px;color:#666;margin-top:2px">
+          Updated ${updated}
+          ${guide ? `<br>${guideLabel[param]} = ${guide} ${unit}` : ``}
+        </div>
+      `;
     
-          document.getElementById(`val_${gid}`).innerHTML = `
-            <b>${disp.text}</b> ${disp.unit}
-            <div style="font-size:11px;color:#666;margin-top:2px">
-              Updated ${updated}
-              ${guide ? `<br>${guideLabel[param]} = ${guide} ${unit}` : ``}
-            </div>
-          `;
-        }
-    
-        renderNextGauge(i + 1);
-    
-      }, 20);
-    }
-    
-    renderNextGauge();
+    });
 
     
     
