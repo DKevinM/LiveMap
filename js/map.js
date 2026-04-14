@@ -49,7 +49,26 @@ window.initMap = function () {
   // ----------------------------
   // AQHI CLICK HANDLER
   // ----------------------------
-  map.on("overlayadd", async function (e) {    
+  map.on("overlayadd", async function (e) { 
+
+    if (
+      e.name === "Wind Rose (PM2.5)" ||
+      e.name === "Wind Rose (NO2)" ||
+      e.name === "Wind Rose (SO2)"
+    ) {
+  
+      const map = window.map;
+  
+      if (map.hasLayer(window.layers.rose_pm25) ||
+          map.hasLayer(window.layers.rose_no2) ||
+          map.hasLayer(window.layers.rose_so2)) {
+  
+        if (typeof window.loadRoses === "function") {
+          await window.loadRoses();
+        }
+      }
+    }
+    
     const name = e.name.replace("AQHI ", "");
     const group = name;
 
