@@ -129,7 +129,26 @@
   <title>Station Gauges</title>
   <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
+
 <body>
+
+<div id="loading-screen" style="
+  position: fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  background:#f2f6f8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  font-size:18px;
+  font-weight:600;
+">
+  Loading station data...
+</div>
+
+  
 <div class="topnav">
   <a href="#" class="backlink" onclick="goBack(event)">
     ← Back to AQHI Map
@@ -167,5 +186,13 @@ function goBack(e) {
 
 <script src="js/data.js"></script>
 <script src="js/gauges.js"></script>
+
+<script>
+window.addEventListener("load", function() {
+  const loader = document.getElementById("loading-screen");
+  if (loader) loader.style.display = "none";
+});
+</script>
+  
 </body>
 </html>
