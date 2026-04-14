@@ -65,10 +65,11 @@ async function loadAQHIGroup(groupName) {
         weight: 0,
         fillOpacity: 0.6
       };
-
+      },
+      
       onEachFeature: function(feature, lyr) {
         const p = feature.properties || {};
-
+      
         const v =
           p.aqhi ??
           p.AQHI ??
@@ -77,11 +78,11 @@ async function loadAQHIGroup(groupName) {
           p.aqhi_blend ??
           p.blend ??
           p.blended_aqhi;
-
+      
         const row = p.row ?? p.Row ?? "";
         const col = p.col ?? p.Col ?? "";
         const src = p.source ?? p.Source ?? "";
-
+      
         lyr.bindTooltip(
           `AQHI: ${isFinite(Number(v)) ? Number(v).toFixed(1) : "—"}` +
           (row !== "" || col !== "" ? `<br>Row: ${row} Col: ${col}` : "") +
@@ -90,10 +91,6 @@ async function loadAQHIGroup(groupName) {
         );
       }
     });
-
-
-
-      
 
     layerGroup.addLayer(layer);
   }
