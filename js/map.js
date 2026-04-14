@@ -174,6 +174,9 @@ window.initMap = function () {
     ? window.APP_CONFIG.overlays
     : [
         "stations",
+        "rose_pm25",
+        "rose_no2",
+        "rose_so2",      
         "purpleair",
         "weather_radar",
         "weather_wind_u",
