@@ -3,9 +3,7 @@
 // =======================
 
 window.roseVisible = true;
-window.RosePM25 = window.RosePM25 || L.layerGroup();
-window.RoseNO2  = window.RoseNO2  || L.layerGroup();
-window.RoseSO2   = window.RoseSO2   || L.layerGroup();
+
 
 
 window.stationImages = {
@@ -177,9 +175,9 @@ function clearAllLayers() {
   if (window.layers?.stations) window.layers.stations.clearLayers();
   if (window.layers?.purpleair) window.layers.purpleair.clearLayers();
 
-  window.RosePM25.clearLayers();
-  window.RoseNO2.clearLayers();
-  window.RoseSO2.clearLayers();
+  window.layers.rose_pm25.clearLayers();
+  window.layers.rose_no2.clearLayers();
+  window.layers.rose_so2.clearLayers();
 
   window.layers.eaqhi.clearLayers();
 }
@@ -411,9 +409,9 @@ window.renderMap = async function () {
     // ALWAYS show Alberta
     window.layers.stations.addTo(map);
     window.layers.purpleair.addTo(map);
-    window.RosePM25.addTo(map);
-    window.RoseNO2.addTo(map);
-    window.RoseSO2.addTo(map);
+    window.layers.rose_pm25.addTo(map);
+    window.layers.rose_no2.addTo(map);
+    window.layers.rose_so2.addTo(map);
     window.layers.aca_boundary = ACABoundaryLayer;
     window.layers.wcas_boundary = WCASBoundaryLayer;
     
@@ -589,10 +587,9 @@ window.renderMap = async function () {
   if (window.roseVisible) {
     await loadRoses();
   } else {
-    // ensure they disappear when unchecked
-    window.RosePM25.clearLayers();
-    window.RoseNO2.clearLayers();
-    window.RoseSO2.clearLayers();
+    window.layers.rose_pm25.clearLayers();
+    window.layers.rose_no2.clearLayers();
+    window.layers.rose_so2.clearLayers();
   }
   
   console.log("Map rendered.");
@@ -677,10 +674,11 @@ window.renderMap = async function () {
     console.log("Loading roses...");
   
     const types = [
-      { key: "PM25", layer: window.RosePM25 },
-      { key: "NO2",  layer: window.RoseNO2  },
-      { key: "SO2",   layer: window.RoseSO2   }
+      { key: "PM25", layer: window.layers.rose_pm25 },
+      { key: "NO2",  layer: window.layers.rose_no2  },
+      { key: "SO2",  layer: window.layers.rose_so2  }
     ];
+    
   
     // Clear all rose layers upfront
     types.forEach(t => t.layer.clearLayers());
