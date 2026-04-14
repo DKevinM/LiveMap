@@ -46,6 +46,16 @@ window.handleMapClick = async function(lat, lng, map) {
     window.layers.click.addLayer(marker);
   }
   
+  marker.bindPopup(`
+    <div style="font-size:12px; line-height:1.25;">
+      Loading station data ...
+    </div>
+  `, {
+    maxWidth: 420,
+    minWidth: 380,
+    autoPanPadding: [20, 20]
+  }).openPopup();
+  
   closestStations.forEach(st => {
     const circle = L.circleMarker([st.lat, st.lng], {
       radius: 15,
@@ -220,9 +230,5 @@ window.handleMapClick = async function(lat, lng, map) {
     window.updatePanelLocation(addressText, lat, lng);
   }
 
-  marker.bindPopup(popupHtml, {
-    maxWidth: 420,
-    minWidth: 380,
-    autoPanPadding: [20, 20]
-  }).openPopup();
+  marker.setPopupContent(popupHtml);
 }
