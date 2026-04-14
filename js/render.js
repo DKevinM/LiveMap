@@ -174,11 +174,6 @@ function getSmokeColor(pm) {
 function clearAllLayers() {
   if (window.layers?.stations) window.layers.stations.clearLayers();
   if (window.layers?.purpleair) window.layers.purpleair.clearLayers();
-
-  window.layers.rose_pm25.clearLayers();
-  window.layers.rose_no2.clearLayers();
-  window.layers.rose_so2.clearLayers();
-
   window.layers.eaqhi.clearLayers();
 }
 
@@ -682,7 +677,11 @@ window.renderMap = async function () {
     
   
     // Clear all rose layers upfront
-    types.forEach(t => t.layer.clearLayers());
+    types.forEach(t => {
+      if (map.hasLayer(t.layer)) {
+        t.layer.clearLayers();
+      }
+    });
     // Fetch all GeoJSON files in parallel
     const results = await Promise.all(
       types.map(t =>
