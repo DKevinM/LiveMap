@@ -2,7 +2,7 @@
 // render.js
 // =======================
 
-window.roseVisible = true;
+window.roseVisible = false;
 
 
 
@@ -409,9 +409,6 @@ window.renderMap = async function () {
     // ALWAYS show Alberta
     window.layers.stations.addTo(map);
     window.layers.purpleair.addTo(map);
-    window.layers.rose_pm25.addTo(map);
-    window.layers.rose_no2.addTo(map);
-    window.layers.rose_so2.addTo(map);
     window.layers.aca_boundary = ACABoundaryLayer;
     window.layers.wcas_boundary = WCASBoundaryLayer;
     
@@ -584,7 +581,11 @@ window.renderMap = async function () {
 
 
   // ---- ROSES ----
-  if (window.roseVisible) {
+  if (
+    map.hasLayer(window.layers.rose_pm25) ||
+    map.hasLayer(window.layers.rose_no2) ||
+    map.hasLayer(window.layers.rose_so2)
+  ) {
     await loadRoses();
   } else {
     window.layers.rose_pm25.clearLayers();
