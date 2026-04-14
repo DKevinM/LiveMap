@@ -36,6 +36,20 @@ html, body {
   letter-spacing: 0.3px;
 }
 
+
+#clear-btn {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 2000;
+
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+
 /* RIGHT (placeholder for future buttons if needed) */
 #header-right {
   width: 150px; /* keeps spacing balanced */
