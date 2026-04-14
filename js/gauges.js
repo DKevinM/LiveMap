@@ -516,24 +516,90 @@ window.AppData.ready.then(() => {
 
     
     // -------- FIRST PASS: find AQHI and time only --------
-    gaugeOrder.forEach(param => {    
-      if (!byParam[param]) return;    
+    function renderNextGauge(i = 0) {
+    
+      if (i >= gaugeOrder.length) return;
+    
+      const param = gaugeOrder[i];
+    
+      // skip AQHI (already built)
+      if (param === "AQHI") {
+        requestAnimationFrame(() => renderNextGauge(i + 1));
+        return;
+      }
+    
+      const gid = `g_${param.replace(/\s/g,'')}`;
+    
+      let targetRow = "air";
+      if (["Wind Speed","Wind Direction","Outdoor Temperature","Relative Humidity"].includes(param))
+        targetRow = "met";
+    
       const rows = byParam[param] || [];
-      if (rows.length === 0) return;    
-      const latest = rows[rows.length - 1];    
-      if (!stationTime) {
-        stationTime = latest.time.toLocaleString("en-CA");
-      }    
-      if (param === "AQHI") {    
-        const { latest: aqhiLatest, status: aqhiStatus } =
-          getLatestStatus(rows, new Date(), 3);    
-        if (aqhiLatest && aqhiStatus !== "offline") {
-          aqhiValue = aqhiLatest.value;
+      if (rows.length === 0) {
+        requestAnimationFrame(() => renderNextGauge(i + 1));
+        return;
+      }
+    
+      const { latest, status } = getLatestStatus(rows, new Date(), 3);
+    
+      const container = document.getElementById(targetRow);
+      if (!container) {
+        requestAnimationFrame(() => renderNextGauge(i + 1));
+        return;
+      }
+    
+      // create box FIRST (instant UI)
+      container.insertAdjacentHTML("beforeend", `
+        <div class="gaugeBox">
+          <div id="${gid}" class="gauge"></div>
+          <div class="value" id="val_${gid}"></div>
+          <div class="label">${param}</div>
+        </div>
+      `);
+    
+      // render gauge AFTER DOM paints
+      setTimeout(() => {
+    
+        if (!latest) {
+          buildOfflineGauge(gid, param);
+          document.getElementById(`val_${gid}`).innerHTML =
+            `<span style="color:#999;font-weight:700">OFFLINE</span>`;
         } else {
-          aqhiValue = null;  // stale or missing
-        }    
-      }    
-    });
+    
+          if (status === "stale") {
+            document.getElementById(gid).closest(".gaugeBox")
+              .style.filter = "grayscale(40%) brightness(0.9)";
+          }
+    
+          const max   = gaugeMax[param] || 200;
+          const guide = guideLimits[param] || null;
+          const min   = param === "Outdoor Temperature" ? -40 : 0;
+    
+          if (param === "Wind Direction") {
+            buildCompass(gid, latest.value);
+          } else {
+            buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
+          }
+    
+          const disp = formatDisplay(param, latest.value);
+          const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
+          const unit  = displayMap[param]?.unit || "ppb";
+    
+          document.getElementById(`val_${gid}`).innerHTML = `
+            <b>${disp.text}</b> ${disp.unit}
+            <div style="font-size:11px;color:#666;margin-top:2px">
+              Updated ${updated}
+              ${guide ? `<br>${guideLabel[param]} = ${guide} ${unit}` : ``}
+            </div>
+          `;
+        }
+    
+        renderNextGauge(i + 1);
+    
+      }, 20);
+    }
+    
+    renderNextGauge();
 
     
     
@@ -559,8 +625,12 @@ window.AppData.ready.then(() => {
         `<span style="color:#999;font-weight:700">N/A</span>`;
     
       document.getElementById("aqhiBig").innerHTML = `
-        <div style="color:#999">
-          AQHI —
+        <div style="
+          color:${aqhiColor(aqhiValue)};
+          -webkit-text-stroke: 1px #333;
+          text-shadow: 0 0 3px rgba(0,0,0,0.3);
+        ">
+          AQHI ${aqhiValue}
         </div>
       `;
     
@@ -590,26 +660,27 @@ window.AppData.ready.then(() => {
             background:#f5f5f5;
             border-radius:8px;
             line-height:1.35;
+            border-left:6px solid ${aqhiColor(aqhiValue)};
           ">
-    
+        
             <div style="
               font-weight:700;
-              color:${aqhiColor(aqhiValue)};
+              color:#222;
               margin-bottom:6px;
             ">
               ${msg.level} Risk (AQHI ${msg.range})
             </div>
-    
+        
             <div style="font-size:14px; margin-bottom:6px;">
               <b>At Risk Population:</b><br>
               ${msg.atRisk}
             </div>
-    
+        
             <div style="font-size:14px;">
               <b>General Population:</b><br>
               ${msg.general}
             </div>
-    
+        
           </div>
         `;
       }
