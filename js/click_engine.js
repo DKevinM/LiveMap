@@ -110,7 +110,12 @@ window.handleMapClick = async function(lat, lng, map) {
       window.renderPanelWeather(current, lat, lng, addressText);
     }
   
-    weatherHtml = buildPopupWeatherTable(weatherData);
+    if (typeof window.buildPopupWeatherTable === "function") {
+      weatherHtml = window.buildPopupWeatherTable(weatherData);
+    } else {
+      console.warn("buildPopupWeatherTable not found");
+      weatherHtml = "";
+    }
   }
 
 
