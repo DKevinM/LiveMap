@@ -62,9 +62,9 @@ window.initMap = function () {
   map.on("overlayadd", async function (e) { 
 
     if (
-      e.name === "Wind Rose (PM2.5)" ||
-      e.name === "Wind Rose (NO2)" ||
-      e.name === "Wind Rose (SO2)"
+      e.name === "PM2.5 Rose" ||
+      e.name === "NO2 Rose" ||
+      e.name === "SO2 Rose"
     ) {
   
       const map = window.map;
