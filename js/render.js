@@ -663,7 +663,7 @@ window.renderMap = async function () {
 
 
   // roses
-  async function loadRoses() {
+  window.loadRoses = async function () {
 
     const map = window.map;
 
