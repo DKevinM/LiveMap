@@ -182,3 +182,44 @@ window.renderPanelWeather = function(current, lat, lng, addressText) {
   `;
 };
 
+// ==============================
+// POPUP WEATHER TABLE (FOR MAP CLICK)
+// ==============================
+window.buildPopupWeatherTable = function(data) {
+  if (!data || !data.hourly) return "";
+
+  const now = new Date();
+  let i = 0;
+
+  while (i < data.hourly.time.length) {
+    if (new Date(data.hourly.time[i]) >= now) break;
+    i++;
+  }
+  if (i >= data.hourly.time.length) i = data.hourly.time.length - 1;
+
+  const temp = data.hourly.temperature_2m[i];
+  const wind = data.hourly.wind_speed_10m[i];
+  const dir  = data.hourly.wind_direction_10m[i];
+  const precip = data.hourly.precipitation[i];
+
+  return `
+    <div style="margin-top:8px;">
+      <div style="font-weight:600; margin-bottom:3px;">Weather</div>
+      <table style="width:100%; font-size:11px;">
+        <tr>
+          <td>Temp</td>
+          <td>${isFinite(temp) ? Math.round(temp) : "--"} °C</td>
+        </tr>
+        <tr>
+          <td>Wind</td>
+          <td>${isFinite(wind) ? Math.round(wind) : "--"} km/h ${isFinite(dir) ? degToCardinal(dir) : ""}</td>
+        </tr>
+        <tr>
+          <td>Precip</td>
+          <td>${precip != null ? Number(precip).toFixed(1) : "0.0"} mm</td>
+        </tr>
+      </table>
+    </div>
+  `;
+};
+
