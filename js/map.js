@@ -45,14 +45,16 @@ window.initMap = function () {
 
   window.map = map;
 
-  L.control({position: "bottomright"})
-    .onAdd = () => {
-      const img = L.DomUtil.create("img");
-      img.src = "images/aqhi_legend.png";
-      img.style.width = "180px";
-      return img;
-    }
-    .addTo(map);  
+  const legend = L.control({ position: "bottomright" });
+  
+  legend.onAdd = function () {
+    const img = L.DomUtil.create("img");
+    img.src = "images/aqhi_legend.png";
+    img.style.width = "180px";
+    return img;
+  };
+  
+  legend.addTo(map);
 
   // ----------------------------
   // AQHI CLICK HANDLER
