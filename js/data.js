@@ -173,7 +173,24 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
       let v = parseFloat(e.Value);      
       if (!isFinite(v)) {
         v = null;
-      }      
+      }
+      
+      // ---- FIX: ppm → ppb conversion ----
+      const ppmToPpbParams = [
+        "Ozone",
+        "Nitrogen Dioxide",
+        "Nitric Oxide",
+        "Total Oxides of Nitrogen",
+        "Sulphur Dioxide",
+        "Hydrogen Sulphide",
+        "Total Reduced Sulphur"
+      ];
+      
+      if (v !== null && ppmToPpbParams.includes(e.ParameterName)) {
+        v = v * 1000;
+      }
+      
+      e.Value = v;   
     
       // ---- FIX 4: Units + Shortform (missing in LiveMap) ----
       e.Units = unitsLookup[e.ParameterName] || "";
