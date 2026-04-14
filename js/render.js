@@ -708,8 +708,7 @@ window.renderMap = async function () {
         
         if (!bounds.contains([lat, lon])) return;
         
-      
-        if (!window.roseVisible) return;
+    
 
   
         const latlng = L.latLng(
