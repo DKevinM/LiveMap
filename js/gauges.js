@@ -558,14 +558,12 @@ window.AppData.ready.then(() => {
       document.getElementById("val_g_AQHI").innerHTML =
         `<span style="color:#999;font-weight:700">N/A</span>`;
 
-      const aqhiCol = aqhiColor(aqhiValue);
       document.getElementById("aqhiBig").innerHTML = `
         <div style="color:#999">
           AQHI —
         </div>
       `;
 
-      const aqhiCol = aqhiColor(aqhiValue);
       // ---- NO MESSAGE ----
       document.getElementById("aqhiMessage").innerHTML = "";
     
@@ -655,8 +653,7 @@ window.AppData.ready.then(() => {
     
       // ---- ALWAYS CREATE THE GAUGE BOX ----
       const rows = byParam[param] || [];
-      const { latest, status } = getLatestStatus(rows, new Date(), 3);
-      if (rows.length === 0) return; 
+      
       const container = document.getElementById(targetRow);
       if (!container) return;
       
@@ -667,6 +664,15 @@ window.AppData.ready.then(() => {
           <div class="label">${param}</div>
         </div>
       `);
+      
+      const { latest, status } = getLatestStatus(rows, new Date(), 3);
+      
+      if (!latest) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
 
 
         
