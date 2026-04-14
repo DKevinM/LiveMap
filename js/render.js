@@ -7,8 +7,6 @@ window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
 window.RoseSO2   = window.RoseSO2   || L.layerGroup();
 
-window.eAQHIStations = window.eAQHIStations || L.layerGroup();
-
 
 window.stationImages = {
   "Breton": "images/Breton.jpg",
@@ -183,7 +181,7 @@ function clearAllLayers() {
   window.RoseNO2.clearLayers();
   window.RoseSO2.clearLayers();
 
-  window.eAQHIStations.clearLayers();
+  window.layers.eaqhi.clearLayers();
 }
 
 
@@ -195,7 +193,7 @@ function loadEstimatedAQHI() {
       return r.json();
     })
     .then(data => {
-      window.eAQHIStations.clearLayers();
+      window.layers.eaqhi.clearLayers();
       data.forEach(st => {
         const color = window.getAQHIColor(st.AQHI);
         const marker = L.circleMarker([st.lat, st.lon], {
@@ -218,7 +216,7 @@ function loadEstimatedAQHI() {
           Sensors used: ${st.purpleair_sensor_count}<br>
           <i>Estimated from nearby PurpleAir</i>
         `);
-        marker.addTo(window.eAQHIStations);
+        marker.addTo(window.layers.eaqhi);
         
         // add AQHI number label
         const label = L.marker([st.lat, st.lon], {
@@ -231,7 +229,7 @@ function loadEstimatedAQHI() {
           interactive: false
         });
         
-        label.addTo(window.eAQHIStations);
+        label.addTo(window.layers.eaqhi);
         
       });
       console.log("Loaded estimated AQHI:", data.length);
@@ -415,7 +413,6 @@ window.renderMap = async function () {
     // ALWAYS show Alberta
     window.layers.stations.addTo(map);
     window.layers.purpleair.addTo(map);
-    window.eAQHIStations.addTo(map);
     window.layers.aca_boundary = ACABoundaryLayer;
     window.layers.wcas_boundary = WCASBoundaryLayer;
     
