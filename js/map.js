@@ -100,9 +100,9 @@ window.initMap = function () {
   map.on("overlayremove", function (e) {
   
     if (
-      e.name === "Wind Rose (PM2.5)" ||
-      e.name === "Wind Rose (NO2)" ||
-      e.name === "Wind Rose (SO2)"
+      e.name === "PM2.5 Rose" ||
+      e.name === "NO2 Rose" ||
+      e.name === "SO2 Rose"
     ) {
       window.layers.rose_pm25.clearLayers();
       window.layers.rose_no2.clearLayers();
