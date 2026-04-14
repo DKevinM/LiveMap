@@ -2,7 +2,7 @@
 // render.js
 // =======================
 
-window.roseVisible = false;
+window.roseVisible = true;
 window.RosePM25 = window.RosePM25 || L.layerGroup();
 window.RoseNO2  = window.RoseNO2  || L.layerGroup();
 window.RoseSO2   = window.RoseSO2   || L.layerGroup();
@@ -408,11 +408,12 @@ window.renderMap = async function () {
   // ENSURE LAYERS ARE ATTACHED ONCE
   if (!window._layersAttached) {
   
-
-
     // ALWAYS show Alberta
     window.layers.stations.addTo(map);
     window.layers.purpleair.addTo(map);
+    window.RosePM25.addTo(map);
+    window.RoseNO2.addTo(map);
+    window.RoseSO2.addTo(map);
     window.layers.aca_boundary = ACABoundaryLayer;
     window.layers.wcas_boundary = WCASBoundaryLayer;
     
