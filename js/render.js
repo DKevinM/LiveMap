@@ -415,6 +415,7 @@ window.renderMap = async function () {
     // ALWAYS show Alberta
     window.layers.stations.addTo(map);
     window.layers.purpleair.addTo(map);
+    window.eAQHIStations.addTo(map);
     window.layers.aca_boundary = ACABoundaryLayer;
     window.layers.wcas_boundary = WCASBoundaryLayer;
     
