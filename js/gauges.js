@@ -581,7 +581,9 @@ window.AppData.ready.then(() => {
       );
     
       const msg = getAQHIMessage(aqhiValue);
-    
+      const aqhiCol = aqhiColor(aqhiValue);
+      const isYellow = aqhiValue >= 4 && aqhiValue <= 5;
+      
       if (msg) {
         document.getElementById("aqhiMessage").innerHTML = `
           <div style="
@@ -594,7 +596,13 @@ window.AppData.ready.then(() => {
     
             <div style="
               font-weight:700;
-              color:${aqhiColor(aqhiValue)};
+              const headerStyle = `
+                color:${aqhiCol};
+                ${isYellow ? `
+                  -webkit-text-stroke: 0.6px #333;
+                  text-shadow: 0 0 2px rgba(0,0,0,0.3);
+                ` : ``}
+              `;
               margin-bottom:6px;
             ">
               ${msg.level} Risk (AQHI ${msg.range})
@@ -614,11 +622,20 @@ window.AppData.ready.then(() => {
         `;
       }
     
-      document.getElementById("aqhiBig").innerHTML = `
-        <div style="color:${aqhiColor(aqhiValue)}">
-          AQHI ${aqhiValue}
-        </div>
-      `;
+    const aqhiCol = aqhiColor(aqhiValue);
+    const isYellow = aqhiValue >= 4 && aqhiValue <= 5;
+    
+    document.getElementById("aqhiBig").innerHTML = `
+      <div style="
+        color:${aqhiCol};
+        ${isYellow ? `
+          -webkit-text-stroke: 1px #333;
+          text-shadow: 0 0 3px rgba(0,0,0,0.3);
+        ` : ``}
+      ">
+        AQHI ${aqhiValue}
+      </div>
+    `;
     
       document.getElementById("val_g_AQHI").innerHTML =
         `<b>${aqhiValue}</b>`;
