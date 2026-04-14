@@ -594,6 +594,7 @@ window.AppData.ready.then(() => {
           ">
     
             <div style="
+              font-size: 18px;
               font-weight:700;
               color:${aqhiCol};
               margin-bottom:6px;
