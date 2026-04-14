@@ -581,6 +581,7 @@ window.AppData.ready.then(() => {
       );
     
       const msg = getAQHIMessage(aqhiValue);
+      const aqhiCol = aqhiColor(aqhiValue);
       
       if (msg) {
         document.getElementById("aqhiMessage").innerHTML = `
@@ -618,7 +619,8 @@ window.AppData.ready.then(() => {
           </div>
         `;
       }
-    
+
+    const aqhiCol = aqhiColor(aqhiValue);  
     
     document.getElementById("aqhiBig").innerHTML = `
       <div style="
