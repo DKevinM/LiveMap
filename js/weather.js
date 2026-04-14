@@ -166,10 +166,11 @@ window.fetchWeather = async function(lat, lng) {
 
 
 window.renderPanelWeather = function(current, lat, lng, addressText) {
-  const el = document.getElementById("mini-weather");
+  const el = document.getElementById("panel-weather");
   if (!el || !current) return;
 
   el.innerHTML = `
+    <div style="font-weight:600; margin-bottom:4px;">Current Weather</div>
     <div style="font-size:12px; line-height:1.35;">
       <div><strong>${addressText || "Selected location"}</strong></div>
       <div>${current.time || ""}</div>
