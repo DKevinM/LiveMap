@@ -248,7 +248,7 @@ window.initMap = function () {
     window.layers.aqhi = {};
   }
   
-  const aqhiKeys = (window.APP_CONFIG?.aqhi && window.APP_CONFIG.aqhi.length)
+  const aqhiKeys = (window.APP_CONFIG?.aqhi !== undefined)
     ? window.APP_CONFIG.aqhi
     : Object.keys(window.AQHI_GROUPS);
   
@@ -256,7 +256,9 @@ window.initMap = function () {
     if (!window.layers.aqhi[key]) {
       window.layers.aqhi[key] = L.layerGroup();
     }
-    overlays["AQHI " + key] = window.layers.aqhi[key];
+    if (shouldLoad(key)) {
+      overlays["AQHI " + key] = window.layers.aqhi[key];
+    }
   });
   
   window._layerControl = L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
