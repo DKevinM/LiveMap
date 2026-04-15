@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jasper Air Monitoring</title>
+  <meta charset="utf-8"/>
+
+  <script>
+    window.APP_CONFIG = {
+      airshed: "JASPER",
+      title: "Jasper Air Monitoring",
+      bounds: [
+        [52.55, -118.45],
+        [53.10, -117.70]
+      ],
+      lockBounds: true,
+      minZoom: 9,
+      maxZoom: 15,
+      aqhi: [],
+      overlays: [
+        "stations",
+        "purpleair",
+        "eaqhi",
+        "rose_pm25",
+        "rose_no2",
+        "rose_so2",
+        "weather_radar",
+        "weather_wind_u",
+        "weather_lightning",
+        "weather_thunderstorm",
+        "firesmoke_now",
+        "firesmoke_6h",
+        "firesmoke_12h",
+        "firesmoke_24h"
+      ],
+      focus: {
+        name: "Jasper",
+        lat: 52.8737,
+        lon: -118.0814,
+        radiusKm: 80
+      }
+    };
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+</head>
+<body>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="close">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div id="header">
+  <div id="header-left">
+    Jasper Air Monitoring
+  </div>
+
+  <div id="header-center">
+    Jasper-focused view with stations, PurpleAir, weather, smoke, and roses
+  </div>
+
+  <div id="header-right">
+    <a href="index.html" style="color:inherit; text-decoration:none; font-weight:600;">← Alberta</a>
+  </div>
+</div>
+
+<div style="position:absolute; top:8px; right:25px; z-index:1000;">
+  <input id="addressInput" type="text" placeholder="Enter address..."
+         style="padding:6px; width:250px;" />
+  <button onclick="lookupAddress()">Go</button>
+</div>
+
+<div id="app">
+  <div id="map"></div>
+
+  <div id="panel">
+    <div id="aqhi-panel">
+      <div id="aqhi-content"></div>
+    </div>
+    <div id="station-gauges"></div>
+  </div>
+</div>
+
+<button onclick="clearSelection()" id="clear-btn">
+  Clear Selection
+</button>
+
+<script src="js/data.js" defer></script>
+<script src="js/aqhi.js" defer></script>
+<script src="js/click_utils.js" defer></script>
+
+<script defer>
+  (function () {
+    function distanceKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const toRad = d => d * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(a));
+    }
+
+    function withinFocus(item) {
+      const focus = window.APP_CONFIG?.focus;
+      if (!focus) return true;
+
+      const lat = Number(item?.lat);
+      const lon = Number(item?.lon ?? item?.lng);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return false;
+
+      return distanceKm(focus.lat, focus.lon, lat, lon) <= focus.radiusKm;
+    }
+
+    const originalReady = window.AppData.ready;
+
+    window.AppData.ready = (async () => {
+      await originalReady;
+
+      window.AppData.stations = (window.AppData.stations || []).filter(withinFocus);
+      window.AppData.purpleair = (window.AppData.purpleair || []).filter(withinFocus);
+
+      window.STATIONS_FC = {
+        type: "FeatureCollection",
+        features: (window.AppData.stations || []).map(s => ({
+          type: "Feature",
+          properties: s,
+          geometry: { type: "Point", coordinates: [s.lon, s.lat] }
+        }))
+      };
+
+      window.PURPLE_FC = {
+        type: "FeatureCollection",
+        features: (window.AppData.purpleair || []).map(p => ({
+          type: "Feature",
+          properties: p,
+          geometry: { type: "Point", coordinates: [p.lon, p.lat] }
+        }))
+      };
+    })();
+  })();
+</script>
+
+<script src="js/map.js" defer></script>
+<script src="js/render.js" defer></script>
+<script src="js/purpleair.js" defer></script>
+<script src="js/weather.js" defer></script>
+<script src="js/click_engine.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/geocode.js" defer></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
