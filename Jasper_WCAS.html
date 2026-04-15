@@ -7,6 +7,7 @@
   <script>
     window.APP_CONFIG = {
       airshed: "JASPER",
+      aqhi: Object.keys(window.AQHI_GROUPS)
       title: "Jasper Air Monitoring",
       bounds: [
         [52.55, -118.45],
@@ -18,13 +19,12 @@
       aqhi: [],
       overlays: [
         "stations",
-        "WCAS_2024",
-        "WCAS_2024_BLEND",
         "purpleair",
         "eaqhi",
+        "WCAS_2024",
+        "WCAS_2024_BLEND",
         "rose_pm25",
         "rose_no2",
-        "rose_so2",
         "weather_radar",
         "weather_wind_u",
         "weather_lightning",
@@ -34,6 +34,11 @@
         "firesmoke_12h",
         "firesmoke_24h"
       ],
+    
+      aqhi: [
+        "WCAS_2024",
+        "WCAS_2024_BLEND"
+      ]
       focus: {
         name: "Jasper",
         lat: 52.8737,
