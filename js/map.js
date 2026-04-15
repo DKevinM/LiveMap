@@ -256,7 +256,7 @@ window.initMap = function () {
     if (!window.layers.aqhi[key]) {
       window.layers.aqhi[key] = L.layerGroup();
     }
-    if (shouldLoad(key)) {
+    if (!window.APP_CONFIG?.aqhi || window.APP_CONFIG.aqhi.includes(key)) {
       overlays["AQHI " + key] = window.layers.aqhi[key];
     }
   });
