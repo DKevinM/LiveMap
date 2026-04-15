@@ -585,7 +585,7 @@ window.renderMap = async function () {
       const label = L.marker([lat, lon], {
         icon: L.divIcon({
           className: "aqhi-label",
-          html: aqhiVal,
+          html: (aqhiVal === 0 ? "-" : aqhiVal),
           iconSize: [30, 30],
           iconAnchor: [15, 15]
         }),
