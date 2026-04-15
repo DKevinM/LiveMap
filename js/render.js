@@ -48,20 +48,16 @@ async function loadAQHIGroup(groupName) {
   }
 
   if (!files || !layerGroup) return;
-  
 
   layerGroup.clearLayers();
 
   for (const file of files) {
     const url = `https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output/${file}`;
-
     const res = await fetch(url);
     const geojson = await res.json();
 
-  
     const layer = L.geoJSON(geojson, {
       interactive: true,
-
       style: f => {
         const v =
           f.properties?.aqhi ??
@@ -72,17 +68,15 @@ async function loadAQHIGroup(groupName) {
           f.properties?.blend ??
           f.properties?.blended_aqhi;
 
-      return {
-        fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
-        color: "none",
-        weight: 0,
-        fillOpacity: 0.6
-      };
+        return {
+          fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
+          color: "none",
+          weight: 0,
+          fillOpacity: 0.6
+        };
       },
-      
       onEachFeature: function(feature, lyr) {
         const p = feature.properties || {};
-      
         const v =
           p.aqhi ??
           p.AQHI ??
@@ -91,17 +85,10 @@ async function loadAQHIGroup(groupName) {
           p.aqhi_blend ??
           p.blend ??
           p.blended_aqhi;
-      
-        const row = p.row ?? p.Row ?? "";
-        const col = p.col ?? p.Col ?? "";
-        const src = p.source ?? p.Source ?? "";
-      
-        lyr.bindTooltip(
-          `AQHI: ${isFinite(Number(v)) ? Number(v).toFixed(1) : "—"}` +
-          (row !== "" || col !== "" ? `<br>Row: ${row} Col: ${col}` : "") +
-          (src ? `<br>Source: ${src}` : ""),
-          { sticky: true }
-        );
+
+        lyr.bindTooltip(`AQHI: ${isFinite(Number(v)) ? Number(v).toFixed(1) : "—"}`, {
+          sticky: true
+        });
       }
     });
 
