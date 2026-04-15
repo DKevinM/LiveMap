@@ -435,7 +435,7 @@ window.renderMap = async function () {
         map.addLayer(window.layers.aqhi[key]);
       }
     }
-    }
+    
     
     // OPTIONAL overlays based on config
     const airshed = window.APP_CONFIG?.airshed;
