@@ -17,7 +17,6 @@ function shouldLoad(layerKey) {
 window.roseVisible = false;
 
 
-
 window.stationImages = {
   "Breton": "images/Breton.jpg",
   "Carrot Creek": "images/Carrot Creek.jpg",
@@ -416,6 +415,15 @@ window.renderMap = async function () {
     window.layers.purpleair.addTo(map);
     window.layers.aca_boundary = ACABoundaryLayer;
     window.layers.wcas_boundary = WCASBoundaryLayer;
+
+    if (window.APP_CONFIG?.defaultAQHI?.length) {
+      for (const key of window.APP_CONFIG.defaultAQHI) {
+        if (window.layers?.aqhi?.[key]) {
+          await loadAQHIGroup(key);
+          map.addLayer(window.layers.aqhi[key]);
+        }
+      }
+    }
     
     // OPTIONAL overlays based on config
     const airshed = window.APP_CONFIG?.airshed;
