@@ -597,7 +597,7 @@ window.AppData.ready.then(() => {
           ">
     
             <div style="
-              font-size: 22px;
+              font-size: 24px;
               font-weight:700;
               color:${aqhiCol};
               margin-bottom:6px;
@@ -629,10 +629,10 @@ window.AppData.ready.then(() => {
       <div style="
         color:${aqhiCol};
         text-shadow:
-          -2px -2px 0 #333,
-           2px -2px 0 #333,
-          -2px  2px 0 #333,
-           2px  2px 0 #333;
+          -1px -1px 0 #333,
+           1px -1px 0 #333,
+          -1px  1px 0 #333,
+           1px  1px 0 #333;
       ">
         AQHI ${aqhiValue}
       </div>
