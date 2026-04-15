@@ -41,10 +41,6 @@ async function loadAQHIGroup(groupName) {
   const files = window.AQHI_GROUPS[groupName];
   const layerGroup = window.layers.aqhi[groupName];
 
-    if (!window.shouldLoad || !window.shouldLoad(groupName)) {
-    if (layerGroup) layerGroup.clearLayers();
-    return;
-  }
 
   if (!files || !layerGroup) return;
 
