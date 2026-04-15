@@ -597,7 +597,7 @@ window.AppData.ready.then(() => {
           ">
     
             <div style="
-              font-size: 18px;
+              font-size: 22px;
               font-weight:700;
               color:${aqhiCol};
               margin-bottom:6px;
@@ -610,12 +610,12 @@ window.AppData.ready.then(() => {
               ${msg.level} Risk (AQHI ${msg.range})
             </div>
     
-            <div style="font-size:14px; margin-bottom:6px;">
+            <div style="font-size:16px; margin-bottom:6px;">
               <b>At Risk Population:</b><br>
               ${msg.atRisk}
             </div>
     
-            <div style="font-size:14px;">
+            <div style="font-size:16px;">
               <b>General Population:</b><br>
               ${msg.general}
             </div>
