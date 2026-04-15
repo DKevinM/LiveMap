@@ -217,7 +217,7 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
           byParam[p] = e;
         }
       });
-      dataByStation[station] = byParam;
+      dataByStation[station] = Object.values(byParam);
     });
 
     // ==============================
