@@ -678,13 +678,7 @@ window.AppData.ready.then(() => {
         return;
       }
 
-      // ---- OFFLINE ----
-      if (!latest) {
-        buildOfflineGauge(gid, param);
-        document.getElementById(`val_${gid}`).innerHTML =
-          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
-        return;
-      }
+
       
     
       // ---- STALE ----
