@@ -460,15 +460,15 @@ window.renderMap = async function () {
 
   
 
-  if (!map) {
-    console.error("renderMap: window.map missing");
-    return;
-  }
-
-  if (!window.AppData?.stations) {
-    console.error("renderMap: AppData missing stations/purpleair");
-    return;
-  }
+    if (!map) {
+      console.error("renderMap: window.map missing");
+      return;
+    }
+  
+    if (!window.AppData?.stations) {
+      console.error("renderMap: AppData missing stations/purpleair");
+      return;
+    }
 
     
 
