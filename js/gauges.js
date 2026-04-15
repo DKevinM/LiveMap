@@ -119,7 +119,7 @@ function buildGauge(id, value, title, min, max, zones, guide) {
       min: min,
       max: max,
       progress: {
-        show: (title === "AQHI" && value > 1),
+        show: (title === "AQHI"),   // ONLY AQHI gets a fill
         width: 24,
         itemStyle: {
           color: aqhiColor(value)
@@ -544,36 +544,25 @@ window.AppData.ready.then(() => {
     `;
     
     
-    const aqhiNum = Number(aqhiValue);
-    
-    const isValidAQHI =
-      Number.isFinite(aqhiNum) && aqhiNum > 0;
-  
+
     // ---------- AQHI GAUGE ----------
     
+    // Check if AQHI is valid
+    const isValidAQHI = Number.isFinite(aqhiValue);
+    
     if (!isValidAQHI) {
-      buildGauge(
-        "g_AQHI",
-        1,                 
-        "AQHI",
-        0,
-        11,
-        gaugeZones("AQHI", 11),
-        null
-      );
+    
+      // ---- GREY GAUGE ----
+      buildOfflineGauge("g_AQHI", "AQHI");
     
       document.getElementById("val_g_AQHI").innerHTML =
-        `<b>-</b>`;
-    
+        `<span style="color:#999;font-weight:700">N/A</span>`;
+
       document.getElementById("aqhiBig").innerHTML = `
         <div style="color:#999">
           AQHI —
         </div>
       `;
-    
-      document.getElementById("aqhiMessage").innerHTML = "";
-    }
-
 
       // ---- NO MESSAGE ----
       document.getElementById("aqhiMessage").innerHTML = "";
@@ -679,14 +668,24 @@ window.AppData.ready.then(() => {
       
       const { latest, status } = getLatestStatus(rows, new Date(), 3);
       
-      if (!latest) return;
-      
+      if (!latest) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
+
+
         
     
       // ---- OFFLINE ----
-      if (!latest) return;
-
-      
+      if (!latest) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
+    
       // ---- STALE ----
       if (status === "stale") {
         document.getElementById(gid).closest(".gaugeBox")
