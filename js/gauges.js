@@ -2,6 +2,8 @@
 // gauges_page.js
 // =======================
 
+window.onerror = function() { return true; };
+
 const params = new URLSearchParams(window.location.search);
 const station = params.get("station");
 
@@ -581,7 +583,7 @@ window.AppData.ready.then(() => {
       );
     
       const msg = getAQHIMessage(aqhiValue);
-      const aqhiCol = aqhiColor(aqhiValue);
+      const aqhiCol = Number.isFinite(aqhiValue) ? aqhiColor(aqhiValue) : "#999";
       
       if (msg) {
         document.getElementById("aqhiMessage").innerHTML = `
@@ -676,15 +678,6 @@ window.AppData.ready.then(() => {
       }
 
 
-        
-    
-      // ---- OFFLINE ----
-      if (!latest) {
-        buildOfflineGauge(gid, param);
-        document.getElementById(`val_${gid}`).innerHTML =
-          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
-        return;
-      }
     
       // ---- STALE ----
       if (status === "stale") {
