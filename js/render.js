@@ -2,6 +2,18 @@
 // render.js
 // =======================
 
+function shouldLoad(layerKey) {
+  const cfg = window.APP_CONFIG || {};
+
+  // Explicit disable wins
+  if (cfg.disableLayers && cfg.disableLayers.includes(layerKey)) return false;
+
+  // If overlays list exists, only allow those
+  if (cfg.overlays && !cfg.overlays.includes(layerKey)) return false;
+
+  return true;
+}
+
 window.roseVisible = false;
 
 
@@ -27,11 +39,16 @@ let WCASpoly = null;
 
 
 async function loadAQHIGroup(groupName) {
-
   const files = window.AQHI_GROUPS[groupName];
   const layerGroup = window.layers.aqhi[groupName];
 
+  if (!shouldLoad(groupName)) {
+    if (layerGroup) layerGroup.clearLayers();
+    return;
+  }
+
   if (!files || !layerGroup) return;
+  
 
   layerGroup.clearLayers();
 
@@ -174,7 +191,13 @@ function getSmokeColor(pm) {
 function clearAllLayers() {
   if (window.layers?.stations) window.layers.stations.clearLayers();
   if (window.layers?.purpleair) window.layers.purpleair.clearLayers();
-  window.layers.eaqhi.clearLayers();
+  if (window.layers?.eaqhi) window.layers.eaqhi.clearLayers();
+
+  if (window.layers?.aqhi) {
+    Object.values(window.layers.aqhi).forEach(layer => {
+      if (layer?.clearLayers) layer.clearLayers();
+    });
+  }
 }
 
 
