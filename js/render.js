@@ -417,10 +417,18 @@ window.renderMap = async function () {
     window.layers.wcas_boundary = WCASBoundaryLayer;
 
     if (window.APP_CONFIG?.defaultAQHI?.length) {
-      for (const key of window.APP_CONFIG.defaultAQHI) {
-        if (window.layers?.aqhi?.[key]) {
-          await loadAQHIGroup(key);
-          map.addLayer(window.layers.aqhi[key]);
+      for (const key of window.APP_CONFIG.defaultAQHI) {    
+        if (!window.AQHI_GROUPS[key]) continue;
+    
+        Object.entries(window.layers.aqhi || {}).forEach(([k, layer]) => {
+          if (map.hasLayer(layer)) {
+            map.removeLayer(layer);
+          }
+        });
+    
+        await loadAQHIGroup(key);
+
+        map.addLayer(window.layers.aqhi[key]);
         }
       }
     }
