@@ -8,6 +8,7 @@ const params = new URLSearchParams(window.location.search);
 const station = params.get("station");
 
 document.getElementById("title").innerText = station;
+document.getElementById("loading-screen")?.remove();
 
 
 function buildCompass(id, degrees) {
@@ -490,10 +491,10 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
 }
 
 
-window.AppData.ready.then(() => {
-  const data = window.AppData.stations.find(s => s.stationName === station);
+  const data = window.AppData?.stations?.find(s => s.stationName === station);
   if (!data) return;
   const rows = data.rows;
+
   
   const byParam = {};
   rows.forEach(r => {
