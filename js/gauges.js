@@ -553,7 +553,7 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
     // ---------- AQHI GAUGE ----------
     
     // Check if AQHI is valid
-    const isValidAQHI = Number.isFinite(aqhiValue);
+    const isValidAQHI = Number.isFinite(aqhiValue) && aqhiValue >= 1;
     
     if (!isValidAQHI) {
     
