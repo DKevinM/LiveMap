@@ -1,779 +1,722 @@
 // =======================
-// render.js
+// gauges_page.js
 // =======================
 
-window.roseVisible = false;
+const params = new URLSearchParams(window.location.search);
+const station = params.get("station");
+
+document.getElementById("title").innerText = station;
+
+
+function buildCompass(id, degrees) {
+
+  const chart = echarts.init(document.getElementById(id));
+
+  chart.setOption({
+    series: [{
+      type: 'gauge',
+      min: 0,
+      max: 360,
+      startAngle: 90,
+      endAngle: -270,
+      radius: '90%',
+
+      axisLine: {
+        lineStyle: {
+          width: 8,
+          color: [[1, '#1976d2']]
+        }
+      },
+
+      // major tick marks every 45°
+      splitNumber: 8,
+      splitLine: {
+        length: 14,
+        lineStyle: {
+          width: 3,
+          color: '#333'
+        }
+      },
+
+      // small tick marks every 11.25°
+      axisTick: {
+        show: true,
+        splitNumber: 4,
+        length: 8,
+        lineStyle: {
+          width: 1,
+          color: '#666'
+        }
+      },
+
+      // compass letters tight to the ring
+      axisLabel: {
+        distance: 14,
+        fontSize: 11,
+        fontWeight: 700,
+        formatter: function(v) {
+          if (v === 0)   return 'N';
+          if (v === 45)  return 'NE';
+          if (v === 90)  return 'E';
+          if (v === 135) return 'SE';
+          if (v === 180) return 'S';
+          if (v === 225) return 'SW';
+          if (v === 270) return 'W';
+          if (v === 315) return 'NW';
+          return '';
+        }
+      },
+
+      pointer: {
+        length: '70%',
+        width: 6
+      },
+
+      detail: { show: false },
+      data: [{ value: degrees }]
+    }]
+  });
+}
 
 
 
-window.stationImages = {
-  "Breton": "images/Breton.jpg",
-  "Carrot Creek": "images/Carrot Creek.jpg",
-  "Drayton Valley": "images/Drayton Valley.jpg",
-  "Edson": "images/Edson.jpg",
-  "Genesee": "images/Genesee.jpg",
-  "Hinton-Drinnan": "images/Hinton-Drinnan.jpg",
-  "Hinton-Hillcrest": "images/Hinton-Hillcrest.jpg",
-  "Jasper": "images/Jasper.jpg",
-  "Meadows": "images/Meadows.jpg",
-  "Steeper": "images/Steeper.jpg",
-  "Wagner": "images/Wagner.jpg"
-};
+function buildOfflineGauge(id, param) {
+  const chart = echarts.init(document.getElementById(id));
+
+  chart.setOption({
+    series: [{
+      type: 'gauge',
+      min: 0,
+      max: 100,
+      axisLine: {
+        lineStyle: {
+          width: 24,
+          color: [[1, '#dddddd']]
+        }
+      },
+      pointer: { show: false },
+      axisTick: { show: false },
+      splitLine: { show: false },
+      axisLabel: { show: false },
+      detail: { show: false },
+      title: { show: false }
+    }]
+  });
+}
 
 
-let ACApoly = null;
-let WCASpoly = null;
 
 
 
-async function loadAQHIGroup(groupName) {
 
-  const files = window.AQHI_GROUPS[groupName];
-  const layerGroup = window.layers.aqhi[groupName];
+function buildGauge(id, value, title, min, max, zones, guide) {
 
-  if (!files || !layerGroup) return;
+  const chart = echarts.init(document.getElementById(id));
 
-  layerGroup.clearLayers();
+  chart.setOption({
+    series: [{
+      type: 'gauge',
+      min: min,
+      max: max,
+      progress: {
+        show: (title === "AQHI"),   // ONLY AQHI gets a fill
+        width: 24,
+        itemStyle: {
+          color: aqhiColor(value)
+        }
+      },
+      axisLine: { lineStyle: { width: 24, color: zones }},
+      pointer: { width: 8 },
+      radius: '95%',
+      center: ['50%', '62%'],   
 
-  for (const file of files) {
-    const url = `https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output/${file}`;
 
-    const res = await fetch(url);
-    const geojson = await res.json();
-
-  
-    const layer = L.geoJSON(geojson, {
-      interactive: true,
-
-      style: f => {
-        const v =
-          f.properties?.aqhi ??
-          f.properties?.AQHI ??
-          f.properties?.value ??
-          f.properties?.gridcode ??
-          f.properties?.aqhi_blend ??
-          f.properties?.blend ??
-          f.properties?.blended_aqhi;
-
-      return {
-        fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
-        color: "none",
-        weight: 0,
-        fillOpacity: 0.6
-      };
+      axisTick: {
+        distance: -30,
+        length: 10,
+        lineStyle: { width: 2 }
       },
       
-      onEachFeature: function(feature, lyr) {
-        const p = feature.properties || {};
+      splitNumber: (title === "AQHI") ? 11 : 10,
       
-        const v =
-          p.aqhi ??
-          p.AQHI ??
-          p.value ??
-          p.gridcode ??
-          p.aqhi_blend ??
-          p.blend ??
-          p.blended_aqhi;
+      axisLabel: {
+        distance: 28,
+        fontSize: 11,
+        interval: 0,
+        formatter: function(v) {
       
-        const row = p.row ?? p.Row ?? "";
-        const col = p.col ?? p.Col ?? "";
-        const src = p.source ?? p.Source ?? "";
+          // ----- AQHI -----
+          if (title === "AQHI") {
+            if (v === 11) return "10+";
+            if (Number.isInteger(v) && v >= 1 && v <= 10) return String(v);
+            return "";
+          }
       
-        lyr.bindTooltip(
-          `AQHI: ${isFinite(Number(v)) ? Number(v).toFixed(1) : "—"}` +
-          (row !== "" || col !== "" ? `<br>Row: ${row} Col: ${col}` : "") +
-          (src ? `<br>Source: ${src}` : ""),
-          { sticky: true }
-        );
-      }
-    });
-
-    layerGroup.addLayer(layer);
-  }
-}
-
-
-
-
-// Boundary layers (toggleable)
-const ACABoundaryLayer  = L.layerGroup();
-const WCASBoundaryLayer = L.layerGroup();
-
-const baseURL = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output";
-
-const acaBoundaryReady = fetch("data/ACA.geojson")
-  .then(r => r.json())
-  .then(g => {
-    ACApoly = g;
-    ACABoundaryLayer.clearLayers();
-    ACABoundaryLayer.addLayer(L.geoJSON(g, { style: { color: "#33a02c", weight: 2, fill: false } }));
-  })
-  .catch(e => console.error("ACA boundary load failed:", e));
-
-const wcasBoundaryReady = fetch("data/WCAS.geojson")
-  .then(r => r.json())
-  .then(g => {
-    WCASpoly = g;
-    WCASBoundaryLayer.clearLayers();
-    WCASBoundaryLayer.addLayer(L.geoJSON(g, { style: { color: "#1b9e77", weight: 2, fill: false } }));
-  })
-  .catch(e => console.error("WCAS boundary load failed:", e));
-
-
-// point-in-polygon helper
-function inside(poly, lat, lon) {
-  if (!poly || !poly.features || !poly.features.length) return false;
-  return turf.booleanPointInPolygon(turf.point([lon, lat]), poly.features[0]);
-}
-
-
-function loadFireSmokeLayer(url, layer) {
-  fetch(url)
-    .then(r => r.json())
-    .then(geo => {
-      layer.clearLayers();
-
-      L.geoJSON(geo, {
-        style: f => ({
-          fillColor: getSmokeColor(f.properties.pm25),
-          fillOpacity: 0.4,
-          color: "none",
-          weight: 0
-        }),
-
-        onEachFeature: function (feature, lyr) {
-          const pm = Number(feature.properties?.pm25);
-          const ts = feature.properties?.timestamp || "";
-
-          lyr.bindTooltip(
-            `PM2.5: ${isFinite(pm) ? pm.toFixed(1) : "—"} µg/m³` +
-            (ts ? `<br>${ts}` : ""),
-            {
-              sticky: true
-            }
-          );
+          // ----- Guideline bold -----
+          if (guide && Math.abs(v - guide) < 0.01) {
+            return `{guide|${v}}`;
+          }
+      
+          return Number.isInteger(v) ? v : "";
+        },
+        rich: {
+          guide: {
+            fontWeight: 'bold',
+            fontSize: 12,
+            color: '#000'
+          }
         }
-      }).addTo(layer);
-
-      console.log("Loaded FireSmoke:", url);
-    })
-    .catch(e => console.error("FireSmoke load failed:", e));
-}
-
-
-function getSmokeColor(pm) {
-  if (pm < 5) return "#009966";
-  if (pm < 10) return "#ffde33";
-  if (pm < 25) return "#ff9933";
-  if (pm < 50) return "#cc0033";
-  return "#660000";
-}
-
-
-// clear layers (so re-render doesn’t duplicate)
-function clearAllLayers() {
-  if (window.layers?.stations) window.layers.stations.clearLayers();
-  if (window.layers?.purpleair) window.layers.purpleair.clearLayers();
-  window.layers.eaqhi.clearLayers();
-}
-
-
-
-function loadEstimatedAQHI() {
-  fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
-    .then(r => {
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.json();
-    })
-    .then(data => {
-      window.layers.eaqhi.clearLayers();
-      data.forEach(st => {
-        const color = window.getAQHIColor(st.AQHI);
-        const marker = L.circleMarker([st.lat, st.lon], {
-          radius: 18,
-          fillColor: color,
-          color: "#000",
-          weight: 1,
-          fillOpacity: 0.85,
-          dashArray: "4,3"
-        });
-
-
-      
-        marker.bindPopup(`
-          <b>${st.station}</b><br>
-          Estimated AQHI: <b>${st.AQHI}</b><br>
-          PM2.5 (PurpleAir): ${st.pm25_est} µg/m³<br>
-          O3 (3h): ${st.o3_3h} ppb<br>
-          NO2 (3h): ${st.no2_3h} ppb<br>
-          Sensors used: ${st.purpleair_sensor_count}<br>
-          <i>Estimated from nearby PurpleAir</i>
-        `);
-        marker.addTo(window.layers.eaqhi);
-        
-        // add AQHI number label
-        const label = L.marker([st.lat, st.lon], {
-          icon: L.divIcon({
-            className: "aqhi-label",
-            html: st.AQHI,
-            iconSize: [30, 30],
-            iconAnchor: [15, 15]
-          }),
-          interactive: false
-        });
-        
-        label.addTo(window.layers.eaqhi);
-        
-      });
-      console.log("Loaded estimated AQHI:", data.length);
-    })
-    .catch(err => console.error("eAQHI load error", err));
-}
-
-
-
-  
-  function drawRose(latlng, p, layer, pollutant) {
-  
-    const map = window.map;
-  
-    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
-  
-    const bins = [
-      { suffix: "_calm", color: "#9ecae1" },   // medium light blue
-      { suffix: "_low",  color: "#91cf60" },   // green
-      { suffix: "_med",  color: "#fc8d59" },   // orange
-      { suffix: "_high", color: "#a50026" }    // deep red
-    ];
-  
-    let unit = "";
-    if (pollutant === "PM25") unit = " µg/m³";
-    if (pollutant === "NO2")  unit = " ppb";
-    if (pollutant === "SO2")   unit = " ppb";
-
-    
-    let total = Number(p.grand_total);
-    
-    if (!Number.isFinite(total) || total <= 0) {
-      total = 0;
-      dirs.forEach(d => {
-        bins.forEach(bin => {
-          total += Number(p[d + bin.suffix] || 0);
-        });
-      });
-      if (total === 0) total = 1;
-    }
-
-    
-    // Radius in METERS (not degrees)
-    const zoomScale = Math.pow(2, map.getZoom() - 8);
-    const R = 10 * zoomScale;
-
-  
-
-    // find max mean concentration for scaling
-    let maxVal = 0;
-    dirs.forEach(d => {
-      bins.forEach(bin => {
-        const v = Number(p[`${d}${bin.suffix}`] || 0);
-        if (v > maxVal) maxVal = v;
-      });
-    });
-    if (maxVal === 0) maxVal = 1;
-
-    
-
-    dirs.forEach((d, i) => {
-    
-      const sectorCount = dirs.length;
-      const step = 360 / sectorCount;
-      const half = step / 2;
-    
-      const angle1 = (i * step - half - 90) * Math.PI/180;
-      const angle2 = ((i+1) * step - half - 90) * Math.PI/180;
-    
-      const center = map.project(latlng);
-    
-      let cumulativeRadius = 0;
-    
-
-      bins.forEach(bin => {
-      
-        const val = Number(p[`${d}${bin.suffix}`] || 0);
-        if (val <= 0) return;
-      
-        const r = (val / maxVal) * R;
-      
-        const innerRadius = cumulativeRadius;
-        const outerRadius = cumulativeRadius + r;
-      
-        const p1 = map.unproject([
-          center.x + innerRadius * Math.cos(angle1),
-          center.y + innerRadius * Math.sin(angle1)
-        ]);
-      
-        const p2 = map.unproject([
-          center.x + outerRadius * Math.cos(angle1),
-          center.y + outerRadius * Math.sin(angle1)
-        ]);
-      
-        const p3 = map.unproject([
-          center.x + outerRadius * Math.cos(angle2),
-          center.y + outerRadius * Math.sin(angle2)
-        ]);
-      
-        const p4 = map.unproject([
-          center.x + innerRadius * Math.cos(angle2),
-          center.y + innerRadius * Math.sin(angle2)
-        ]);
-      
-        const wedge = L.polygon([p1, p2, p3, p4], {
-          color: "#333",
-          weight: 0.4,
-          fillColor: bin.color,
-          fillOpacity: 0.75
-        });
-      
-        const pollutantLabel =
-          pollutant === "PM25" ? "PM₂.₅" :
-          pollutant === "NO2"  ? "NO₂"  :
-          pollutant === "SO2"  ? "SO₂"  : pollutant;
-      
-        const speedText = {
-          "_calm": "Calm (<2 km/h)",
-          "_low":  "Low (2–10 km/h)",
-          "_med":  "Medium (10–25 km/h)",
-          "_high": "High (>25 km/h)"
-        };
-      
-        wedge.bindTooltip(
-          `${pollutantLabel}<br>
-           ${d} – ${speedText[bin.suffix]}<br>
-           ${val.toFixed(1)} ${unit}`
-        );
-      
-        wedge.addTo(layer);
-      
-        cumulativeRadius += r;
-      
-      });
-
-    });
-  }
+      },
 
 
 
 
-window.renderMap = async function () {
-  window.layers.aqhi = window.layers.aqhi || {};
-
-  Object.keys(window.AQHI_GROUPS).forEach(group => {
-    if (!window.layers.aqhi[group]) {
-      window.layers.aqhi[group] = L.layerGroup();
-    }
+      title: {
+        fontSize: 13,
+        fontWeight: 700
+      },
+      detail: { show: false },
+      data: [{ value: value, name: displayMap[title]?.short || title }]
+    }]
   });
+}
 
-  
-  const map = window.map;   
 
-  await Promise.all([
-    window.AppData.ready,
-    acaBoundaryReady,
-    wcasBoundaryReady
-  ]);
-  
-  clearAllLayers();
-  
-  loadEstimatedAQHI();  
-  
-  loadFireSmokeLayer(`${baseURL}/firesmoke_now.geojson`, window.layers.firesmoke_now);
-  loadFireSmokeLayer(`${baseURL}/firesmoke_6h.geojson`, window.layers.firesmoke_6h);
-  loadFireSmokeLayer(`${baseURL}/firesmoke_12h.geojson`, window.layers.firesmoke_12h);
-  loadFireSmokeLayer(`${baseURL}/firesmoke_24h.geojson`, window.layers.firesmoke_24h);
-    
-  
-  // render PurpleAir
-  if (window.renderPurpleAir) {
-    await window.renderPurpleAir();
+function aqhiColor(v) {
+  if (v <= 1) return "#01cbff";
+  if (v <= 2) return "#0099cb";
+  if (v <= 3) return "#016797";
+  if (v <= 4) return "#fffe03";
+  if (v <= 5) return "#ffcb00";
+  if (v <= 6) return "#ff9835";
+  if (v <= 7) return "#fd6866";
+  if (v <= 8) return "#fe0002";
+  if (v <= 9) return "#cc0001";
+  if (v <= 10) return "#9a0100";
+  return "#640100"; // 10+
+}
+
+function getAQHIMessage(aqhi) {
+  if (!isFinite(aqhi)) return null;
+  if (aqhi <= 3) {
+    return {
+      level: "Low",
+      range: "1 - 3",
+      atRisk: "Enjoy your usual outdoor activities.",
+      general: "Ideal air quality for outdoor activities."
+    };
   }
-  
-  
-  // ENSURE LAYERS ARE ATTACHED ONCE
-  if (!window._layersAttached) {
-  
-    // ALWAYS show Alberta
-    window.layers.stations.addTo(map);
-    window.layers.purpleair.addTo(map);
-    window.layers.aca_boundary = ACABoundaryLayer;
-    window.layers.wcas_boundary = WCASBoundaryLayer;
-    
-    // OPTIONAL overlays based on config
-    const airshed = window.APP_CONFIG?.airshed;
-    
-    if (airshed === "ACA") {
-      if (window.APP_CONFIG?.showACABoundary) {
-        ACABoundaryLayer.addTo(map);
-      }
-    }
-    
-    if (airshed === "WCAS") {
-      if (window.APP_CONFIG?.showWCASBoundary) {
-        WCASBoundaryLayer.addTo(map);
-      }
-    }
-  
-    // ---- Roses: PM2.5 only ----
-     
-  
-    window._layersAttached = true;
+  if (aqhi <= 6) {
+    return {
+      level: "Moderate",
+      range: "4 - 6",
+      atRisk: "Consider reducing or rescheduling strenuous activities outdoors if you are experiencing symptoms.",
+      general: "No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation."
+    };
   }
-
-  
-
-  if (!map) {
-    console.error("renderMap: window.map missing");
-    return;
+  if (aqhi <= 10) {
+    return {
+      level: "High",
+      range: "7 - 10",
+      atRisk: "Reduce or reschedule strenuous activities outdoors. Children and the elderly should also take it easy.",
+      general: "Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation."
+    };
   }
-  if (!window.AppData?.stations) {
-    console.error("renderMap: AppData missing stations/purpleair");
-    return;
-  }
-
-    
-
-  // -----------------------
-  // STATIONS
-  // -----------------------
-
-  window.AppData.stations.forEach(st => {
-  
-    const stationName = st.stationName;
-    const rows = st.rows;
-  
-    if (!rows || !rows.length) return;
-  
-  
-    const lat = st.lat;
-    const lon = st.lon;
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-  
- 
-    // AQHI value for color
-    const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
-    const aqhiVal = aqhiRow ? Number(aqhiRow.Value) : NaN;
-  
-    const color = Number.isFinite(aqhiVal) ? window.getAQHIColor(aqhiVal) : "#888888";
-  
-    // timestamp: use latest ReadingDate across the rows (rows[0] is NOT reliable)
-    let latest = null;
-    rows.forEach(r => {
-      const t = new Date(r.ReadingDate);
-      if (!latest || t > latest) latest = t;
-    });
-  
-    const displayTime = latest
-      ? latest.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true })
-      : "";
-  
-    // Keep the popup dynamic, but order key params first (everything else after)
-    const ordered = [
-      "AQHI",
-      "Outdoor Temperature",
-      "Relative Humidity",
-      "Wind Speed",
-      "Wind Direction",
-      "Nitrogen Dioxide",
-      "Total Oxides of Nitrogen",
-      "Nitric Oxide",
-      "Ozone",
-      "Fine Particulate Matter",
-      "Sulphur Dioxide",
-      "Hydrogen Sulphide",
-      "Total Reduced Sulphur",
-      "Carbon Monoxide",
-      "Total Hydrocarbons",
-      "Methane",
-      "Non-methane Hydrocarbons"
-    ];
-  
-    const byParam = {};
-    rows.forEach(r => { byParam[r.ParameterName] = r; });
-  
-    const used = new Set();
-  
-    const linesFirst = ordered
-      .filter(p => byParam[p])
-      .map(p => {
-        used.add(p);
-        const r = byParam[p];
-        const u = r.Units ? `${r.Units}` : "";
-        const label = r.Shortform || r.ParameterName;
-        const linesFirst = ordered
-          .filter(p => byParam[p])
-          .map(p => {
-            used.add(p);
-            const r = byParam[p];
-            const u = r.Units ? `${r.Units}` : "";
-            const label = r.Shortform || r.ParameterName;
-        
-            let val = r.Value;
-        
-            if (r.ParameterName === "AQHI") {
-              const num = Number(val);
-        
-              if (val === null || val === undefined || val === "" || isNaN(num) || num === 0) {
-                val = "-";
-              } else {
-                val = num;
-              }
-            }
-        
-            return `${label}: ${val}${u}`;
-          });
-      });
-  
-    const linesRest = rows
-      .filter(r => !used.has(r.ParameterName))
-      .map(r => {
-        const u = r.Units ? `${r.Units}` : "";
-        const label = r.Shortform || r.ParameterName;
-        const linesRest = rows
-          .filter(r => !used.has(r.ParameterName))
-          .map(r => {
-            const u = r.Units ? `${r.Units}` : "";
-            const label = r.Shortform || r.ParameterName;
-        
-            let val = r.Value;
-        
-            if (r.ParameterName === "AQHI") {
-              const num = Number(val);
-        
-              if (val === null || val === undefined || val === "" || isNaN(num) || num === 0) {
-                val = "-";
-              } else {
-                val = num;
-              }
-            }
-        
-            return `${label}: ${val}${u}`;
-          });
-      });
+  return {
+    level: "Very High",
+    range: "10+",
+    atRisk: "Avoid strenuous activities outdoors. Children and the elderly should also avoid outdoor physical exertion.",
+    general: "Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation."
+  };
+}
 
 
-    const imgPath = window.stationImages[stationName];
-    
-    const imageHTML = imgPath
-      ? `<br><img src="${imgPath}" 
-               style="width:100%;max-width:260px;border-radius:6px;margin-top:6px;">`
-      : "";
+const guideLimits = {
+  "Ozone": 76,
+  "Nitrogen Dioxide": 159,
+  "Hydrogen Sulphide": 10,
+  "Total Reduced Sulphur": 5,
+  "Sulphur Dioxide": 172,
+  "Fine Particulate Matter": 80,
+  "Carbon Monoxide": 13,
+};
 
-    
-    const popupHTML = `
-      <strong>${stationName}</strong><br>
-      <small>${displayTime}</small><br><br>
-      ${[...linesFirst, ...linesRest].join("<br>")}
-      ${imageHTML}
-      <hr>
-      <a href="https://dkevinm.github.io/AB_datapull/web/station_compare.html?station=${stationName}" target="_blank">
-        View historical data</a><br>
-      <a href="/LiveMap/gauges.html?station=${encodeURIComponent(stationName)}" target="_blank">
-        View gauges</a>
-
-    `;
-  
-    const marker = L.circleMarker([lat, lon], {
-      radius: 18,
-      fillColor: color,
-      color: "#222",
-      weight: 2,
-      fillOpacity: 0.85
-    }).bindPopup(popupHTML);
-    
-    // choose which layer the marker belongs to
-    // ALWAYS add to Alberta layer
-    window.layers.stations.addLayer(marker);
-    
-    
-    
-    // add AQHI number inside circle
-    if (Number.isFinite(aqhiVal)) {
-    
-      const label = L.marker([lat, lon], {
-        icon: L.divIcon({
-          className: "aqhi-label",
-          html: aqhiVal,
-          iconSize: [30, 30],
-          iconAnchor: [15, 15]
-        }),
-        interactive: false
-      });
-    
-      window.layers.stations.addLayer(label);
-      
-    }  
-
-  });
-
-
-  // ---- ROSES ----
-  if (
-    map.hasLayer(window.layers.rose_pm25) ||
-    map.hasLayer(window.layers.rose_no2) ||
-    map.hasLayer(window.layers.rose_so2)
-  ) {
-    await loadRoses();
-  } else {
-    window.layers.rose_pm25.clearLayers();
-    window.layers.rose_no2.clearLayers();
-    window.layers.rose_so2.clearLayers();
-  }
-  
-  console.log("Map rendered.");
+const guideLabel = {
+  "Ozone": "AAAQO",
+  "Nitrogen Dioxide": "AAAQO",
+  "Sulphur Dioxide": "AAAQO",
+  "Hydrogen Sulphide": "AAAQO",
+  "Carbon Monoxide": "AAAQO",
+  // These are GUIDELINES
+  "Fine Particulate Matter": "AAAQG",
+  "Total Reduced Sulphur": "AAAQG"
 };
 
 
-
-  function buildRoseTable(p, pollutant) {
-  
-    let unit = "";
-    if (pollutant === "PM25") unit = "µg/m³";
-    if (pollutant === "NO2")  unit = "ppb";
-    if (pollutant === "SO2")   unit = "ppb";
-  
-    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
-
-    const bins = ["calm","low","med","high"];
-  
-    let html = `
-      <div style="min-width:260px">
-        <strong>${p.station || "Station"}</strong><br>
-        <small>${p.period || "Last 7 Days"} – ${p.pollutant || pollutant}</small>
-        <br><br>
-        <table style="
-          border-collapse: collapse;
-          width:100%;
-          font-size:12px;
-          text-align:center;
-        ">
-          <tr style="background:#f0f0f0;">
-            <th style="border:1px solid #ccc;padding:4px;">Dir</th>
-            <th style="border:1px solid #ccc;padding:4px;">Calm</th>
-            <th style="border:1px solid #ccc;padding:4px;">Low</th>
-            <th style="border:1px solid #ccc;padding:4px;">Med</th>
-            <th style="border:1px solid #ccc;padding:4px;">High</th>
-          </tr>
-    `;
-  
-    dirs.forEach(d => {
-      html += `<tr>`;
-      html += `<td style="border:1px solid #ccc;padding:4px;"><b>${d}</b></td>`;
-  
-      bins.forEach(b => {
-        const val = Number(p[`${d}_${b}`] || 0);
-        html += `<td style="border:1px solid #ccc;padding:4px;">
-                  ${val.toFixed(1)}
-                 </td>`;
-      });
-  
-      html += `</tr>`;
-    });
-  
-    html += `</table><br>`;
-  
-    html += `
-      <div style="font-size:12px">
-        <b>Summary:</b><br>
-        Period: ${p.start_date} → ${p.end_date}<br>
-        Overall Mean: ${Number(p.overall_mean || 0).toFixed(1)} ${unit}<br>
-        Predominant Direction: <b>${p.dominant_dir || "--"}</b>
-        (${Number(p.dominant_value || 0).toFixed(1)} ${unit},
-        ${Number(p.dominant_percent || 0).toFixed(1)}%)<br>
-        Calm Conditions: ${Number(p.calm_percent || 0).toFixed(1)}%<br>
-        Total Samples: ${p.n_total || 0}
-      </div>
-    </div>
-    `;
-  
-    return html;
-  }
+const gaugeMax = {
+  "Ozone": 120,
+  "Fine Particulate Matter": 160,
+  "Nitrogen Dioxide": 200,
+  "Sulphur Dioxide": 200,
+  "Hydrogen Sulphide": 20,
+  "Total Reduced Sulphur": 20,
+  "Carbon Monoxide": 20,
+  "Total Hydrocarbons": 10,
+  "Methane": 10,
+  "Non-methane Hydrocarbons": 10,
+  "Wind Speed": 75,
+  "Wind Direction": 360,
+  "Outdoor Temperature": 40,
+  "Relative Humidity": 100,
+  "AQHI": 11
+};
 
 
+function gaugeZones(param, max) {
 
-
-
-
-  // roses
-  window.loadRoses = async function () {
-
-    const map = window.map;
-
-    console.log("Loading roses...");
-  
-    const types = [
-      { key: "PM25", layer: window.layers.rose_pm25 },
-      { key: "NO2",  layer: window.layers.rose_no2  },
-      { key: "SO2",  layer: window.layers.rose_so2  }
+  if (param === "AQHI") {
+    return [
+      [1/11, "#01cbff"],
+      [2/11, "#0099cb"],
+      [3/11, "#016797"],
+      [4/11, "#fffe03"],
+      [5/11, "#ffcb00"],
+      [6/11, "#ff9835"],
+      [7/11, "#fd6866"],
+      [8/11, "#fe0002"],
+      [9/11, "#cc0001"],
+      [10/11, "#9a0100"],
+      [1, "#640100"]
     ];
-    
-  
-    // Clear all rose layers upfront
-    types.forEach(t => {
-      if (map.hasLayer(t.layer)) {
-        t.layer.clearLayers();
-      }
-    });
-    // Fetch all GeoJSON files in parallel
-    const results = await Promise.all(
-      types.map(t =>
-        fetch(`data/rose_${t.key}.geojson`)
-          .then(r => {
-            if (!r.ok) throw new Error(`HTTP ${r.status} loading rose_${t.key}.geojson`);
-            return r.json();
-          })
-          .then(geo => ({ t, geo }))
-          .catch(err => { console.error(`Failed to load rose_${t.key}.geojson:`, err); return null; })
-      )
-    );
-    results.forEach(item => {
-      if (!item) return;
-      const { t, geo } = item;    
-  
-  
-      geo.features.forEach(f => {
-
-        const bounds = map.getBounds();
-        const lat = f.geometry.coordinates[1];
-        const lon = f.geometry.coordinates[0];
-        
-        if (!bounds.contains([lat, lon])) return;
-        
-    
-
-  
-        const latlng = L.latLng(
-          f.geometry.coordinates[1],
-          f.geometry.coordinates[0]
-        );
-  
-        // draw wedges
-        drawRose(latlng, f.properties, t.layer, t.key);
-  
-        // add center marker for popup
-        const centerMarker = L.circleMarker(latlng, {
-          radius: 4,
-          fillColor: "#000",
-          color: "#000",
-          weight: 1,
-          fillOpacity: 1
-        });
-  
-        centerMarker.bindPopup(
-          buildRoseTable(f.properties, t.key)
-        );
-  
-        centerMarker.addTo(t.layer);
-      });
-    });  
-  
-    console.log("Roses done.");
   }
+
+
+  const guide = guideLimits[param];
+
+  // ---- NO GUIDELINE (met data, etc) ----
+  if (!guide) {
+    return [[1, "#1976d2"]];  // solid blue, nothing fancy
+  }
+
+  // ---- GUIDELINE PRESENT (real air pollutant logic) ----
+  const guidePct = guide / max;
+  const greenBreak  = (0.5 * guide) / max;
+  const eps = 0.01;
+
+  return [
+    [greenBreak, "#00c853"],            // green
+    [guidePct - eps, "#ffd600"],       // yellow up to guide
+    [guidePct + eps, "#000000"],       // black line
+    [1, "#d50000"]                     // red
+  ];
+}
+
+
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines.shift().split(',');
+
+  return lines.map(line => {
+    const cols = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        cols.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    cols.push(current);
+
+    return Object.fromEntries(
+      headers.map((h, i) => [h, cols[i].replace(/^"|"$/g, '')])
+    );
+  });
+}
+
+const gaugeOrder = [
+  // ---- AIR QUALITY ----
+  "AQHI",
+  "Ozone",
+  "Nitrogen Dioxide",
+  "Nitric Oxide",
+  "Total Oxides of Nitrogen",
+  "Sulphur Dioxide",
+  "Hydrogen Sulphide",
+  "Total Reduced Sulphur",
+  "Fine Particulate Matter",
+  "Carbon Monoxide",
+  "Total Hydrocarbons",
+  "Methane",
+  "Non-methane Hydrocarbons",
+
+  // ---- METEOROLOGY ----
+  "Wind Speed",
+  "Wind Direction",
+  "Outdoor Temperature",
+  "Relative Humidity"
+];
+
+
+
+const displayMap = {
+  "Outdoor Temperature": { short: "ET", unit: "°C", dec: 1 },
+  "Relative Humidity":   { short: "RH",   unit: "%",  dec: 1 },
+  "Wind Speed":          { short: "Wind", unit: "km/h", dec: 1 },
+  "Wind Direction":      { short: "Dir",  unit: "°",  dec: 0 },
+  "Fine Particulate Matter": { short: "PM2.5", unit: "µg/m³", dec: 1 },
+  "Nitrogen Dioxide":    { short: "NO₂", unit: "ppb", dec: 1 },
+  "Nitric Oxide":        { short: "NO",  unit: "ppb", dec: 1 },
+  "Total Oxides of Nitrogen": { short: "NOx", unit: "ppb", dec: 1 },
+  "Sulphur Dioxide":     { short: "SO₂", unit: "ppb", dec: 1 },
+  "Hydrogen Sulphide":     { short: "H₂S", unit: "ppb", dec: 1 },
+  "Total Reduced Sulphur":   { short: "TRS", unit: "ppb", dec: 1 },
+  "Ozone":               { short: "O₃",  unit: "ppb", dec: 1 },
+  "Carbon Monoxide":     { short: "CO",  unit: "ppm", dec: 2 },
+  "Total Hydrocarbons":   { short: "THC", unit: "ppm", dec: 2 },
+  "Methane":             { short: "CH₄", unit: "ppm", dec: 2 },
+  "Non-methane Hydrocarbons": { short: "NMHC", unit: "ppm", dec: 2 }
+};
+
+function toCardinal16(deg) {
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE",
+                "S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  const d = ((Number(deg) % 360) + 360) % 360;
+  const ix = Math.floor((d + 11.25) / 22.5) % 16;
+  return dirs[ix];
+}
+
+
+
+function normalizeRow(r) {
+
+  let value = r.Value === "" ? null : Number(r.Value);
+  let param = r.ParameterName ? r.ParameterName.trim() : "";
+  // ---- PARAMETERS THAT SHOULD NEVER BE NEGATIVE ----
+  const noNegativeParams = [
+    "Nitric Oxide",
+    "Nitrogen Dioxide",
+    "Total Oxides of Nitrogen",
+    "Ozone",
+    "Sulphur Dioxide",
+    "Hydrogen Sulphide",
+    "Total Reduced Sulphur",
+    "Fine Particulate Matter",
+    "Total Hydrocarbons",
+    "Methane",
+    "Non-methane Hydrocarbons",
+    "Carbon Monoxide"
+  ];  
+
+  // ---- HANDLE INVALID VALUES ----
+  if (value === null || isNaN(value)) {
+    return null;   // still drop true garbage
+  }
+  
+  // ---- FIX NEGATIVES (air data only) ----  
+  if (noNegativeParams.includes(param) && value < 0) {
+    value = 0;   // clamp instead of losing data
+  }
+
+  // AQHI fix
+  if (!param) param = "AQHI";
+
+  return {
+    param,
+    value: Number(value),
+    time: new Date(r.ReadingDate)
+  };
+}
+
+
+
+
+
+  function formatDisplay(param, raw) {
+  
+    if (param === "Wind Direction") {
+      return {
+        text: `${Math.round(raw)}° (${toCardinal16(raw)})`,
+        unit: ""
+      };
+    }
+  
+    if (displayMap[param]) {
+      return {
+        text: Number(raw).toFixed(displayMap[param].dec),
+        unit: displayMap[param].unit
+      };
+    }
+  
+    return {
+      text: Number(raw).toFixed(1),
+      unit: "ppb"
+    };
+  }
+
+
+
+
+
+function getLatestStatus(rows, now = new Date(), staleHours = 3) {
+  if (!rows || rows.length === 0) return { latest: null, status: "missing", ageHours: null };
+
+  // rows already sorted by time ascending
+  const latest = rows[rows.length - 1];
+  const ageMs = now - latest.time;
+  const ageHours = ageMs / (1000 * 60 * 60);
+
+  if (!Number.isFinite(ageHours)) return { latest: null, status: "missing", ageHours: null };
+
+  // fresh enough to show
+  if (ageHours <= staleHours) {
+    // you can optionally flag "stale-but-usable" if > 1 hour
+    const status = (ageHours > 1) ? "stale" : "fresh";
+    return { latest, status, ageHours };
+  }
+
+  // too old -> offline
+  return { latest, status: "offline", ageHours };
+}
+
+
+window.AppData.ready.then(() => {
+  const data = window.AppData.stations.find(s => s.stationName === station);
+  if (!data) return;
+  const rows = data.rows;
+  
+  const byParam = {};
+  rows.forEach(r => {
+    let param = r.ParameterName || r.param || "AQHI";
+    const n = normalizeRow(r);
+    if (!n) return;
+  
+    byParam[n.param] = byParam[n.param] || [];
+    byParam[n.param].push({
+      value: n.value,
+      time: n.time
+    });
+  });
+  
+  Object.keys(byParam).forEach(p => {
+    byParam[p].sort((a,b) => a.time - b.time);
+  });
+
+  
+    let stationTime = null;
+    let aqhiValue = null;
+
+    
+    // -------- FIRST PASS: find AQHI and time only --------
+    gaugeOrder.forEach(param => {    
+      if (!byParam[param]) return;    
+      const rows = byParam[param] || [];
+      if (rows.length === 0) return;    
+      const latest = rows[rows.length - 1];    
+      if (!stationTime) {
+        stationTime = latest.time.toLocaleString("en-CA");
+      }    
+      if (param === "AQHI") {    
+        const { latest: aqhiLatest, status: aqhiStatus } =
+          getLatestStatus(rows, new Date(), 3);    
+        if (aqhiLatest && aqhiStatus !== "offline") {
+          aqhiValue = aqhiLatest.value;
+        } else {
+          aqhiValue = null;  // stale or missing
+        }    
+      }    
+    });
+
+    
+    
+    // ---------- HEADER ----------
+    document.getElementById("title").innerHTML = `
+      ${station}<br>
+      <span style="font-size:14px;font-weight:400">${stationTime}</span>
+    `;
+    
+    
+
+    // ---------- AQHI GAUGE ----------
+    
+    // Check if AQHI is valid
+    const isValidAQHI = Number.isFinite(aqhiValue);
+    
+    if (!isValidAQHI) {
+    
+      // ---- GREY GAUGE ----
+      buildOfflineGauge("g_AQHI", "AQHI");
+    
+      document.getElementById("val_g_AQHI").innerHTML =
+        `<span style="color:#999;font-weight:700">N/A</span>`;
+
+      document.getElementById("aqhiBig").innerHTML = `
+        <div style="color:#999">
+          AQHI —
+        </div>
+      `;
+
+      // ---- NO MESSAGE ----
+      document.getElementById("aqhiMessage").innerHTML = "";
+    
+    } else {
+    
+      // ---- NORMAL AQHI ----
+      buildGauge(
+        "g_AQHI",
+        aqhiValue,
+        "AQHI",
+        0,
+        11,
+        gaugeZones("AQHI", 11),
+        null
+      );
+    
+      const msg = getAQHIMessage(aqhiValue);
+      const aqhiCol = aqhiColor(aqhiValue);
+      
+      if (msg) {
+        document.getElementById("aqhiMessage").innerHTML = `
+          <div style="
+            margin-top:12px;
+            padding:10px;
+            background:#f5f5f5;
+            border-radius:8px;
+            line-height:1.35;
+          ">
+    
+            <div style="
+              font-size: 18px;
+              font-weight:700;
+              color:${aqhiCol};
+              margin-bottom:6px;
+              text-shadow:
+                -1px -1px 0 #333,
+                 1px -1px 0 #333,
+                -1px  1px 0 #333,
+                 1px  1px 0 #333;
+            ">
+              ${msg.level} Risk (AQHI ${msg.range})
+            </div>
+    
+            <div style="font-size:14px; margin-bottom:6px;">
+              <b>At Risk Population:</b><br>
+              ${msg.atRisk}
+            </div>
+    
+            <div style="font-size:14px;">
+              <b>General Population:</b><br>
+              ${msg.general}
+            </div>
+    
+          </div>
+        `;
+      }
+
+    
+    document.getElementById("aqhiBig").innerHTML = `
+      <div style="
+        color:${aqhiCol};
+        text-shadow:
+          -2px -2px 0 #333,
+           2px -2px 0 #333,
+          -2px  2px 0 #333,
+           2px  2px 0 #333;
+      ">
+        AQHI ${aqhiValue}
+      </div>
+    `;
+    
+      document.getElementById("val_g_AQHI").innerHTML =
+        `<b>${aqhiValue}</b>`;
+    }
+    
+    
+    
+    // -------- SECOND PASS: build all OTHER gauges --------
+    gaugeOrder.forEach(param => {
+    
+      if (param === "AQHI") return;
+    
+      const gid = `g_${param.replace(/\s/g,'')}`;
+    
+      let targetRow = "air";
+      if (["Wind Speed","Wind Direction","Outdoor Temperature","Relative Humidity"].includes(param))
+        targetRow = "met";
+    
+      // ---- ALWAYS CREATE THE GAUGE BOX ----
+      const rows = byParam[param] || [];
+      
+      const container = document.getElementById(targetRow);
+      if (!container) return;
+      
+      container.insertAdjacentHTML("beforeend", `
+        <div class="gaugeBox">
+          <div id="${gid}" class="gauge"></div>
+          <div class="value" id="val_${gid}"></div>
+          <div class="label">${param}</div>
+        </div>
+      `);
+      
+      const { latest, status } = getLatestStatus(rows, new Date(), 3);
+      
+      if (!latest) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
+
+
+        
+    
+      // ---- OFFLINE ----
+      if (!latest) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
+    
+      // ---- STALE ----
+      if (status === "stale") {
+        document.getElementById(gid).closest(".gaugeBox")
+          .style.filter = "grayscale(40%) brightness(0.9)"; 
+      }
+    
+      
+      const max   = gaugeMax[param] || 200;
+      const guide = guideLimits[param] || null;
+      const min   = param === "Outdoor Temperature" ? -40 : 0;
+      
+      if (param === "Wind Direction") {
+        buildCompass(gid, latest.value);
+      } else {
+        buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
+      }
+
+
+
+      const disp = formatDisplay(param, latest.value);
+      const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
+      const unit  = displayMap[param]?.unit || "ppb";
+      
+      document.getElementById(`val_${gid}`).innerHTML = `
+        <b>${disp.text}</b> ${disp.unit}
+        <div style="font-size:11px;color:#666;margin-top:2px">
+          Updated ${updated}
+          ${guide ? `<br>${guideLabel[param]} = ${guide} ${unit}` : ``}
+        </div>
+      `;
+
+    });
+
+  })
