@@ -492,7 +492,9 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
 
 
   const data = window.AppData?.stations?.find(s => s.stationName === station);
-  if (!data) return;
+  if (!data) {
+    console.warn("No data");
+  }
   const rows = data.rows;
 
   
@@ -713,4 +715,3 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
 
     });
 
-  })
