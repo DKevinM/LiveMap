@@ -462,6 +462,7 @@ window.renderMap = async function () {
 
   if (!map) {
     console.error("renderMap: window.map missing");
+    return;
   }
 
   if (!window.AppData?.stations) {
