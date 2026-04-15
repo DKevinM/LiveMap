@@ -5,12 +5,46 @@
   <meta charset="utf-8"/>
 
   <!-- Provincial map config (must be BEFORE scripts) -->
-  <script>
-    window.APP_CONFIG = {
-      airshed: "ALL",
-      title: "Live Air Quality Monitoring – Alberta"
-    };
-  </script>
+<script>
+  window.APP_CONFIG = {
+    airshed: "ALL",
+    title: "Live Air Quality Monitoring – Alberta",
+
+    overlays: [
+      "stations",
+      "purpleair",
+      "eaqhi",
+      "rose_pm25",
+      "rose_no2",
+      "rose_so2",
+      "weather_radar",
+      "weather_wind_u",
+      "weather_lightning",
+      "weather_thunderstorm",
+      "firesmoke_now",
+      "firesmoke_6h",
+      "firesmoke_12h",
+      "firesmoke_24h"
+    ],
+
+    aqhi: [
+      "Alberta",
+      "Alberta_BLEND",
+      "ACA_Boundary_2022",
+      "ACA_Boundary_2022_BLEND",
+      "Edmonton",
+      "Edmonton_BLEND",
+      "Parkland_County",
+      "Parkland_County_BLEND",
+      "Strathcona",
+      "Strathcona_BLEND",
+      "WCAS_2024",
+      "WCAS_2024_BLEND",
+      "Yellowhead",
+      "Yellowhead_BLEND"
+    ]
+  };
+</script>
 
   
   <link rel="stylesheet" href="css/style.css">
