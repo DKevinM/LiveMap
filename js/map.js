@@ -50,7 +50,7 @@ window.initMap = function () {
   legend.onAdd = function () {
     const img = L.DomUtil.create("img");
     img.src = "images/aqhi_legend.png";
-    img.style.width = "180px";
+    img.style.width = "275px";
     return img;
   };
   
