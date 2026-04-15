@@ -421,14 +421,17 @@ window.renderMap = async function () {
           window.layers.aqhi[key] = L.layerGroup();
         }
     
-        // clear existing
-        Object.values(window.layers.aqhi).forEach(layer => {
-          if (map.hasLayer(layer)) map.removeLayer(layer);
-        });
-    
         await loadAQHIGroup(key);
     
         map.addLayer(window.layers.aqhi[key]);
+  
+        if (window._layerControl && window._layerControl._layers) {
+          Object.values(window._layerControl._layers).forEach(l => {
+            if (l.name === "AQHI " + key) {
+              l.layer = window.layers.aqhi[key];
+            }
+          });
+        }
       }
     }
     
