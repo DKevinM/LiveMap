@@ -508,7 +508,28 @@ window.renderMap = async function () {
         const r = byParam[p];
         const u = r.Units ? `${r.Units}` : "";
         const label = r.Shortform || r.ParameterName;
-        return `${label}: ${r.Value}${u}`;
+        const linesFirst = ordered
+          .filter(p => byParam[p])
+          .map(p => {
+            used.add(p);
+            const r = byParam[p];
+            const u = r.Units ? `${r.Units}` : "";
+            const label = r.Shortform || r.ParameterName;
+        
+            let val = r.Value;
+        
+            if (r.ParameterName === "AQHI") {
+              const num = Number(val);
+        
+              if (val === null || val === undefined || val === "" || isNaN(num) || num === 0) {
+                val = "-";
+              } else {
+                val = num;
+              }
+            }
+        
+            return `${label}: ${val}${u}`;
+          });
       });
   
     const linesRest = rows
@@ -516,7 +537,26 @@ window.renderMap = async function () {
       .map(r => {
         const u = r.Units ? `${r.Units}` : "";
         const label = r.Shortform || r.ParameterName;
-        return `${label}: ${r.Value}${u}`;
+        const linesRest = rows
+          .filter(r => !used.has(r.ParameterName))
+          .map(r => {
+            const u = r.Units ? `${r.Units}` : "";
+            const label = r.Shortform || r.ParameterName;
+        
+            let val = r.Value;
+        
+            if (r.ParameterName === "AQHI") {
+              const num = Number(val);
+        
+              if (val === null || val === undefined || val === "" || isNaN(num) || num === 0) {
+                val = "-";
+              } else {
+                val = num;
+              }
+            }
+        
+            return `${label}: ${val}${u}`;
+          });
       });
 
 
