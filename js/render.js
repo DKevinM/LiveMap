@@ -2,7 +2,7 @@
 // render.js
 // =======================
 
-function shouldLoad(layerKey) {
+window.shouldLoad = function(layerKey) {
   const cfg = window.APP_CONFIG || {};
 
   // Explicit disable wins
@@ -458,8 +458,8 @@ window.renderMap = async function () {
 
   if (!map) {
     console.error("renderMap: window.map missing");
-    return;
   }
+
   if (!window.AppData?.stations) {
     console.error("renderMap: AppData missing stations/purpleair");
     return;
