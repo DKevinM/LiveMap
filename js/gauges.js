@@ -8,7 +8,7 @@ const params = new URLSearchParams(window.location.search);
 const station = params.get("station");
 
 document.getElementById("title").innerText = station;
-document.getElementById("loading-screen")?.remove();
+
 
 
 function buildCompass(id, degrees) {
@@ -491,13 +491,11 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
 }
 
 
-  const data = window.AppData?.stations?.find(s => s.stationName === station);
-  if (!data) {
-    console.warn("No data");
-  }
-  const rows = data.rows;
+window.AppData.ready.then(() => {
+  const data = window.AppData.stations.find(s => s.stationName === station);
+  if (!data) return;
 
-  
+  const rows = data.rows;
   const byParam = {};
   rows.forEach(r => {
     let param = r.ParameterName || r.param || "AQHI";
@@ -680,7 +678,14 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
         return;
       }
 
-
+      // ---- OFFLINE ----
+      if (!latest) {
+        buildOfflineGauge(gid, param);
+        document.getElementById(`val_${gid}`).innerHTML =
+          `<span style="color:#999;font-weight:700">OFFLINE</span>`;
+        return;
+      }
+      
     
       // ---- STALE ----
       if (status === "stale") {
@@ -715,3 +720,4 @@ function getLatestStatus(rows, now = new Date(), staleHours = 3) {
 
     });
 
+  })
