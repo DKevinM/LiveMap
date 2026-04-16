@@ -79,23 +79,28 @@ window.initMap = function () {
       }
     }
     
-    const name = e.name.replace("AQHI ", "");
-    const group = name;
-
+    // ----------------------------
+    // AQHI GRID FIX
+    // ----------------------------
+    if (!e.name.startsWith("AQHI Grid")) return;
+  
+    const parts = e.name.split(" ");
+    const group = parts[2];   // ACA, AB, Edmonton...
+  
     if (!window.AQHI_GROUPS[group]) return;
     if (!window.layers?.aqhi) return;
-
+  
     // remove other AQHI layers
     Object.entries(window.layers.aqhi || {}).forEach(([key, layer]) => {
       if (key !== group && map.hasLayer(layer)) {
         map.removeLayer(layer);
       }
     });
-
+  
+    // load + show
     await loadAQHIGroup(group);
     map.addLayer(window.layers.aqhi[group]);
   });
-
 
   map.on("overlayremove", function (e) {
   
