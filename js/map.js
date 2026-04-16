@@ -85,14 +85,15 @@ window.initMap = function () {
     if (!e.name.startsWith("AQHI Grid")) return;
     
     const parts = e.name.split(" ");
-    const region = parts[2];   // AB, ACA, Edmonton...
+    let region = parts[2];   // AB, ACA, Edmonton...
     
-    // dynamically find matching AQHI group
+    if (region === "AB") region = "Alberta";
+    
     const isBlend = e.name.includes("Sensors");
-      const group = Object.keys(window.AQHI_GROUPS).find(k =>
-        k.startsWith(region) &&
-        (isBlend ? k.includes("BLEND") : !k.includes("BLEND"))
-      );
+    const group = Object.keys(window.AQHI_GROUPS).find(k =>
+      k.startsWith(region) &&
+      (isBlend ? k.includes("BLEND") : !k.includes("BLEND"))
+    );
     
     if (!group) return;
     if (!window.layers?.aqhi) return;
@@ -283,14 +284,19 @@ window.initMap = function () {
     ? window.APP_CONFIG.aqhi
     : Object.keys(window.AQHI_GROUPS);
   
-  aqhiKeys.forEach(key => {
-    if (!window.layers.aqhi[key]) {
-      window.layers.aqhi[key] = L.layerGroup();
-    }
-    if (!window.APP_CONFIG?.aqhi || window.APP_CONFIG.aqhi.includes(key)) {
-      overlays[labelMap["AQHI " + key] || ("AQHI " + key)] = window.layers.aqhi[key];
-    }
-  });
+    aqhiKeys.forEach(key => {
+      if (!window.layers.aqhi[key]) {
+        window.layers.aqhi[key] = L.layerGroup();
+      }
+    
+      if (!window.APP_CONFIG?.aqhi || window.APP_CONFIG.aqhi.includes(key)) {
+        const label = labelMap["AQHI " + key];
+    
+        if (label && window.layers.aqhi[key]) {
+          overlays[label] = window.layers.aqhi[key];
+        }
+      }
+    });
   
   window._layerControl = L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
 
