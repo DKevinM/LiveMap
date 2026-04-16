@@ -532,7 +532,14 @@ window.renderMap = async function () {
     const used = new Set();
   
     const linesFirst = ordered
-      .filter(p => byParam[p])
+      .filter(p => {
+        const r = byParam[p];
+        return r &&
+          r.Value !== null &&
+          r.Value !== undefined &&
+          !isNaN(Number(r.Value)) &&
+          Number(r.Value) !== -10;
+      })      
       .map(p => {
         used.add(p);
         const r = byParam[p];
@@ -554,7 +561,14 @@ window.renderMap = async function () {
       });
   
       const linesRest = rows
-        .filter(r => !used.has(r.ParameterName))
+        .filter(r =>
+          !used.has(r.ParameterName) &&
+          r.Value !== null &&
+          r.Value !== undefined &&
+          !isNaN(Number(r.Value)) &&
+          Number(r.Value) !== -10
+        )
+        
         .map(r => {
           const u = r.Units ? `${r.Units}` : "";
           const label = r.Shortform || r.ParameterName;
