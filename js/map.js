@@ -83,11 +83,16 @@ window.initMap = function () {
     // AQHI GRID FIX
     // ----------------------------
     if (!e.name.startsWith("AQHI Grid")) return;
-  
+    
     const parts = e.name.split(" ");
-    const group = parts[2];   // ACA, AB, Edmonton...
-  
-    if (!window.AQHI_GROUPS[group]) return;
+    const region = parts[2];   // AB, ACA, Edmonton...
+    
+    // dynamically find matching AQHI group
+    const group = Object.keys(window.AQHI_GROUPS).find(k =>
+      k.startsWith(region)
+    );
+    
+    if (!group) return;
     if (!window.layers?.aqhi) return;
   
     // remove other AQHI layers
