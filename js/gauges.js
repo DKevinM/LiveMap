@@ -658,9 +658,33 @@ window.AppData.ready.then(() => {
       // ---- ALWAYS CREATE THE GAUGE BOX ----
       const rows = byParam[param] || [];
       
-      const { latest, status } = getLatestStatus(rows, new Date(), 3);
+      const { latest, status, ageHours } = getLatestStatus(rows, new Date(), 6);
       
-      if (!latest) return;  
+      // check if ANY valid data exists historically
+      const hasValidData = rows.some(r =>
+        r.value !== null &&
+        r.value !== undefined &&
+        !isNaN(Number(r.value)) &&
+        Number(r.value) !== -10
+      );
+      
+      // If never had valid data → DO NOT SHOW
+      if (!hasValidData) return;
+      
+      // If no latest → skip
+      if (!latest) return;
+      
+      // If value is bad BUT data is recent → still show as offline
+      const isBadValue =
+        latest.value === null ||
+        latest.value === undefined ||
+        isNaN(Number(latest.value)) ||
+        Number(latest.value) === -10;
+      
+      // Hide ONLY if:
+      // - bad value AND
+      // - data is too old (true offline)
+      if (isBadValue && status === "offline") return;
       
       const container = document.getElementById(targetRow);
       if (!container) return;
@@ -686,16 +710,29 @@ window.AppData.ready.then(() => {
       const guide = guideLimits[param] || null;
       const min   = param === "Outdoor Temperature" ? -40 : 0;
       
-      if (param === "Wind Direction") {
-        buildCompass(gid, latest.value);
+      if (isBadValue) {
+        buildOfflineGauge(gid, param);
       } else {
-        buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
+        if (param === "Wind Direction") {
+          buildCompass(gid, latest.value);
+        } else {
+          buildGauge(gid, latest.value, param, min, max, gaugeZones(param, max), guide);
+        }
       }
 
 
 
-      const disp = formatDisplay(param, latest.value);
-      const updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
+      let disp, updated;
+      
+      if (isBadValue) {
+        disp = { text: "Offline", unit: "" };
+        updated = latest.time
+          ? latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"})
+          : "--";
+      } else {
+        disp = formatDisplay(param, latest.value);
+        updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
+      }
       const unit  = displayMap[param]?.unit || "ppb";
       
       document.getElementById(`val_${gid}`).innerHTML = `
