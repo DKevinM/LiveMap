@@ -155,6 +155,25 @@ window.initMap = function () {
     weather_thunderstorm: L.layerGroup()
   };
 
+  
+  // ----------------------------
+  // ACA / WCAS BOUNDARY ADD
+  // ----------------------------
+  const airshed = window.APP_CONFIG?.airshed;
+  
+  if (airshed === "ACA" && window.APP_CONFIG?.showACABoundary) {
+    if (typeof ACABoundaryLayer !== "undefined") {
+      ACABoundaryLayer.addTo(map);
+    }
+  }
+  
+  if (airshed === "WCAS" && window.APP_CONFIG?.showWCASBoundary) {
+    if (typeof WCASBoundaryLayer !== "undefined") {
+      WCASBoundaryLayer.addTo(map);
+    }
+  }
+
+  
   // ----------------------------
   // WEATHER WMS LAYERS
   // ----------------------------
