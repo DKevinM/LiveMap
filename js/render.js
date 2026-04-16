@@ -493,7 +493,12 @@ window.renderMap = async function () {
 
   window.AppData.stations.forEach(st => {
 
-    if (excludedStations.includes(st.stationName)) return;
+    const name = st.stationName || st.StationName || "";    
+    if (
+      excludedStations.includes(name) ||
+      window.APP_CONFIG?.excludeStations?.includes(name)
+    ) return;
+    
     const stationName = st.stationName;
     const rows = st.rows;
   
