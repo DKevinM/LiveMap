@@ -234,7 +234,7 @@ window.initMap = function () {
     "AQHI Edmonton_BLEND": "AQHI Grid Edmonton Stations+Sensors",
     "AQHI Parkland_County": "AQHI Grid Parkland Stations",
     "AQHI Parkland_County_BLEND": "AQHI Grid Parkland Stations+Sensors",
-    "AQHI Strathcona": "AQHI Grid Strathcona Stations+Sensors",
+    "AQHI Strathcona": "AQHI Grid Strathcona Stations",
     "AQHI Strathcona_BLEND": "AQHI Grid Strathcona Stations+Sensors",
     "AQHI WCAS_2024": "AQHI Grid WCAS Stations",
     "AQHI WCAS_2024_BLEND": "AQHI Grid WCAS Stations+Sensors",
