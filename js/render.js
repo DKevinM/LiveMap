@@ -16,6 +16,9 @@ window.shouldLoad = function(layerKey) {
 
 window.roseVisible = false;
 
+const excludedStations = [
+  "Powers"
+];
 
 window.stationImages = {
   "Breton": "images/Breton.jpg",
@@ -476,7 +479,8 @@ window.renderMap = async function () {
   // -----------------------
 
   window.AppData.stations.forEach(st => {
-  
+
+    if (excludedStations.includes(st.stationName)) return;
     const stationName = st.stationName;
     const rows = st.rows;
   
