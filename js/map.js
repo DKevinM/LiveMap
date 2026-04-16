@@ -110,24 +110,8 @@ window.initMap = function () {
     else if (e.name === "AQHI Grid Yellowhead Stations+Sensors") group = "Yellowhead_BLEND";
     
     if (!group) return;
-    
     if (!window.layers?.aqhi) return;
-  
-    // remove other AQHI layers
-    Object.entries(window.layers.aqhi || {}).forEach(([key, layer]) => {
-      if (key !== group && map.hasLayer(layer)) {
-        map.removeLayer(layer);
-      }
-    });
-  
-    // load + show
-    // force reload
-    if (map.hasLayer(window.layers.aqhi[group])) {
-      map.removeLayer(window.layers.aqhi[group]);
-    }
-    
     await loadAQHIGroup(group);
-    map.addLayer(window.layers.aqhi[group]);
     }
   });
 
