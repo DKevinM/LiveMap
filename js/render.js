@@ -82,7 +82,9 @@ async function loadAQHIGroup(groupName) {
           p.gridcode ??
           p.aqhi_blend ??
           p.blend ??
-          p.blended_aqhi;
+          p.blended_aqhi ??
+          p.AQHI_BLEND ??
+          p.aqhiBlend;
 
         lyr.bindTooltip(`AQHI: ${isFinite(Number(v)) ? Number(v).toFixed(1) : "—"}`, {
           sticky: true
