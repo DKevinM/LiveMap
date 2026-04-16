@@ -250,7 +250,6 @@ const guideLabel = {
   "Sulphur Dioxide": "AAAQO",
   "Hydrogen Sulphide": "AAAQO",
   "Carbon Monoxide": "AAAQO",
-  // These are GUIDELINES
   "Fine Particulate Matter": "AAAQG",
   "Total Reduced Sulphur": "AAAQG"
 };
@@ -519,7 +518,7 @@ window.AppData.ready.then(() => {
 
     
     // -------- FIRST PASS: find AQHI and time only --------
-    gaugeOrder.forEach(param => {    
+    Object.keys(byParam).forEach(param => {  
       if (!byParam[param]) return;    
       const rows = byParam[param] || [];
       if (rows.length === 0) return;    
