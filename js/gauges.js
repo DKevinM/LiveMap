@@ -660,15 +660,22 @@ window.AppData.ready.then(() => {
       const { latest, status, ageHours } = getLatestStatus(rows, new Date(), 6);
       
       // check if ANY valid data exists historically
-      const hasValidData = rows.some(r =>
-        r.value !== null &&
-        r.value !== undefined &&
-        !isNaN(Number(r.value)) &&
-        Number(r.value) !== -10
-      );
+      const now = new Date();
       
-      // If never had valid data → DO NOT SHOW
-      if (!hasValidData) return;
+      const hasRecentValidData = rows.some(r => {
+        if (
+          r.value === null ||
+          r.value === undefined ||
+          isNaN(Number(r.value)) ||
+          Number(r.value) === -10
+        ) return false;
+      
+        const ageHours = (now - r.time) / (1000 * 60 * 60);
+      
+        return ageHours <= 6;   // ONLY recent data counts
+      });
+      
+      if (!hasRecentValidData) return;
       
       // If no latest → skip
       if (!latest) return;
