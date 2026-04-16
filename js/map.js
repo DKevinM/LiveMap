@@ -81,21 +81,36 @@ window.initMap = function () {
     
     // ----------------------------
     // AQHI GRID FIX
-    // ----------------------------
-    if (!e.name.startsWith("AQHI Grid")) return;
+    // ----------------------------   
+    if (!e.name.startsWith("AQHI Grid")) {
+      // do nothing, let other layers behave normally
+    } else {
     
-    const parts = e.name.split(" ");
-    let region = parts[2];   // AB, ACA, Edmonton...
+    let group = null;
     
-    if (region === "AB") region = "Alberta";
+    if (e.name === "AQHI Grid AB Stations") group = "Alberta";
+    else if (e.name === "AQHI Grid AB Stations+Sensors") group = "Alberta_BLEND";
     
-    const isBlend = e.name.includes("Sensors");
-    const group = Object.keys(window.AQHI_GROUPS).find(k =>
-      k.startsWith(region) &&
-      (isBlend ? k.includes("BLEND") : !k.includes("BLEND"))
-    );
+    else if (e.name === "AQHI Grid ACA Stations") group = "ACA_Boundary_2022";
+    else if (e.name === "AQHI Grid ACA Stations+Sensors") group = "ACA_Boundary_2022_BLEND";
+    
+    else if (e.name === "AQHI Grid Edmonton Stations") group = "Edmonton";
+    else if (e.name === "AQHI Grid Edmonton Stations+Sensors") group = "Edmonton_BLEND";
+    
+    else if (e.name === "AQHI Grid Parkland Stations") group = "Parkland_County";
+    else if (e.name === "AQHI Grid Parkland Stations+Sensors") group = "Parkland_County_BLEND";
+    
+    else if (e.name === "AQHI Grid Strathcona Stations") group = "Strathcona";
+    else if (e.name === "AQHI Grid Strathcona Stations+Sensors") group = "Strathcona_BLEND";
+    
+    else if (e.name === "AQHI Grid WCAS Stations") group = "WCAS_2024";
+    else if (e.name === "AQHI Grid WCAS Stations+Sensors") group = "WCAS_2024_BLEND";
+    
+    else if (e.name === "AQHI Grid Yellowhead Stations") group = "Yellowhead";
+    else if (e.name === "AQHI Grid Yellowhead Stations+Sensors") group = "Yellowhead_BLEND";
     
     if (!group) return;
+    
     if (!window.layers?.aqhi) return;
   
     // remove other AQHI layers
@@ -113,6 +128,7 @@ window.initMap = function () {
     
     await loadAQHIGroup(group);
     map.addLayer(window.layers.aqhi[group]);
+    }
   });
 
   map.on("overlayremove", function (e) {
