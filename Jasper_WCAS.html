@@ -8,13 +8,16 @@
     window.APP_CONFIG = {
       airshed: "JASPER",
       title: "Jasper Air Monitoring",
+      
       bounds: [
         [52.85, -118.15],
         [52.90, -118.00]
       ],
+      
       lockBounds: true,
       minZoom: 9,
-      maxZoom: 18,
+      maxZoom: 20,
+      
       overlays: [
         "stations",
         "purpleair",
@@ -102,8 +105,8 @@
 <script src="js/aqhi.js" defer></script>
 <script src="js/click_utils.js" defer></script>
 
-<script defer>
-  (function () {
+<script>
+  window.addEventListener("load", function () {
     function distanceKm(lat1, lon1, lat2, lon2) {
       const R = 6371;
       const toRad = d => d * Math.PI / 180;
@@ -124,6 +127,11 @@
       if (!Number.isFinite(lat) || !Number.isFinite(lon)) return false;
 
       return distanceKm(focus.lat, focus.lon, lat, lon) <= focus.radiusKm;
+    }
+
+    if (!window.AppData || !window.AppData.ready) {
+      console.error("AppData not ready in Jasper_WCAS.html");
+      return;
     }
 
     const originalReady = window.AppData.ready;
@@ -152,7 +160,7 @@
         }))
       };
     })();
-  })();
+  });
 </script>
 
 <script src="js/render.js" defer></script>
