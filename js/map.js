@@ -88,9 +88,11 @@ window.initMap = function () {
     const region = parts[2];   // AB, ACA, Edmonton...
     
     // dynamically find matching AQHI group
-    const group = Object.keys(window.AQHI_GROUPS).find(k =>
-      k.startsWith(region)
-    );
+    const isBlend = e.name.includes("Sensors");
+      const group = Object.keys(window.AQHI_GROUPS).find(k =>
+        k.startsWith(region) &&
+        (isBlend ? k.includes("BLEND") : !k.includes("BLEND"))
+      );
     
     if (!group) return;
     if (!window.layers?.aqhi) return;
