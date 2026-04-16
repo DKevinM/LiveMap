@@ -4,21 +4,20 @@
   <title>St. Albert Air Monitoring</title>
   <meta charset="utf-8"/>
 
-  <!-- CONFIG -->
   <script>
     window.APP_CONFIG = {
       airshed: "ACA",
       title: "St. Albert Air Monitoring",
-
+      
       bounds: [
         [53.61, -113.66],
         [53.65, -113.60]
       ],
-
+      
       lockBounds: true,
       minZoom: 11,
-      maxZoom: 19,
-
+      maxZoom: 20,
+      
       overlays: [
         "stations",
         "purpleair",
@@ -35,7 +34,7 @@
         "firesmoke_12h",
         "firesmoke_24h"
       ],
-
+    
       aqhi: [
         "ACA_Boundary_2022",
         "ACA_Boundary_2022_BLEND"
@@ -50,36 +49,126 @@
     };
   </script>
 
-  <!-- LEAFLET -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
-  <!-- MAIN STYLES -->
-  <link rel="stylesheet" href="css/style.css"/>
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
-    #map {
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 </head>
-
 <body>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="close">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
 
-<div id="map"></div>
+<div id="header">
+  <div id="header-left">
+    St. Albert Air Monitoring
+  </div>
 
-<!-- SCRIPTS (same as Jasper / LiveMap) -->
-<script src="js/data.js"></script>
-<script src="js/purpleair.js"></script> 
-<script src="js/render.js"></script>
-<script src="js/map.js"></script>
+  <div id="header-center">
+    St. Albert - focused view with stations, PurpleAir, weather, smoke, and roses
+  </div>
+
+  <div id="header-right">
+    <a href="index.html" style="color:inherit; text-decoration:none; font-weight:600;">← Alberta</a>
+  </div>
+</div>
+
+<div style="position:absolute; top:8px; right:25px; z-index:1000;">
+  <input id="addressInput" type="text" placeholder="Enter address..."
+         style="padding:6px; width:250px;" />
+  <button onclick="lookupAddress()">Go</button>
+</div>
+
+<div id="app">
+  <div id="map"></div>
+
+  <div id="panel">
+    <div id="aqhi-panel">
+      <div id="aqhi-content"></div>
+    </div>
+    <div id="station-gauges"></div>
+  </div>
+</div>
+
+<button onclick="clearSelection()" id="clear-btn">
+  Clear Selection
+</button>
+
+<script src="js/data.js" defer></script>
+<script src="js/aqhi.js" defer></script>
+<script src="js/click_utils.js" defer></script>
+
+<script>
+  window.addEventListener("load", function () {
+    function distanceKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const toRad = d => d * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(a));
+    }
+
+    function withinFocus(item) {
+      const focus = window.APP_CONFIG?.focus;
+      if (!focus) return true;
+
+      const lat = Number(item?.lat);
+      const lon = Number(item?.lon ?? item?.lng);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return false;
+
+      return distanceKm(focus.lat, focus.lon, lat, lon) <= focus.radiusKm;
+    }
+
+    if (!window.AppData || !window.AppData.ready) {
+      console.error("AppData not ready in StAlbert_ACA.html");
+      return;
+    }
+
+    const originalReady = window.AppData.ready;
+
+    window.AppData.ready = (async () => {
+      await originalReady;
+
+      window.AppData.stations = (window.AppData.stations || []).filter(withinFocus);
+      window.AppData.purpleair = (window.AppData.purpleair || []).filter(withinFocus);
+
+      window.STATIONS_FC = {
+        type: "FeatureCollection",
+        features: (window.AppData.stations || []).map(s => ({
+          type: "Feature",
+          properties: s,
+          geometry: { type: "Point", coordinates: [s.lon, s.lat] }
+        }))
+      };
+
+      window.PURPLE_FC = {
+        type: "FeatureCollection",
+        features: (window.AppData.purpleair || []).map(p => ({
+          type: "Feature",
+          properties: p,
+          geometry: { type: "Point", coordinates: [p.lon, p.lat] }
+        }))
+      };
+    })();
+  });
+</script>
+
+<script src="js/render.js" defer></script>
+<script src="js/map.js" defer></script>
+<script src="js/purpleair.js" defer></script>
+<script src="js/weather.js" defer></script>
+<script src="js/click_engine.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/geocode.js" defer></script>
 <script src="js/main.js"></script>
 
 </body>
