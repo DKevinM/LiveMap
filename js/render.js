@@ -432,8 +432,14 @@ window.renderMap = async function () {
   
         if (window._layerControl && window._layerControl._layers) {
           Object.values(window._layerControl._layers).forEach(l => {
-            if (l.name === "AQHI " + key) {
-              l.layer = window.layers.aqhi[key];
+            if (l.name && l.name.startsWith("AQHI Grid")) {
+            
+              const parts = l.name.split(" ");
+              const groupKey = parts[2];  // ← THIS pulls ACA, AB, Edmonton, etc.
+            
+              if (window.layers.aqhi[groupKey]) {
+                l.layer = window.layers.aqhi[groupKey];
+              }
             }
           });
         }
