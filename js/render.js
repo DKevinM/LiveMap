@@ -432,15 +432,20 @@ window.renderMap = async function () {
   
         if (window._layerControl && window._layerControl._layers) {
           Object.values(window._layerControl._layers).forEach(l => {
-            if (l.name && l.name.startsWith("AQHI Grid")) {
-            
-              const parts = l.name.split(" ");
-              const groupKey = parts[2];  // ← THIS pulls ACA, AB, Edmonton, etc.
-            
-              if (window.layers.aqhi[groupKey]) {
-                l.layer = window.layers.aqhi[groupKey];
-              }
-            }
+            if (l.name === "AQHI Grid AB Stations") l.layer = window.layers.aqhi["Alberta"];
+            else if (l.name === "AQHI Grid AB Stations+Sensors") l.layer = window.layers.aqhi["Alberta_BLEND"];
+            else if (l.name === "AQHI Grid ACA Stations") l.layer = window.layers.aqhi["ACA_Boundary_2022"];
+            else if (l.name === "AQHI Grid ACA Stations+Sensors") l.layer = window.layers.aqhi["ACA_Boundary_2022_BLEND"];
+            else if (l.name === "AQHI Grid Edmonton Stations") l.layer = window.layers.aqhi["Edmonton"];
+            else if (l.name === "AQHI Grid Edmonton Stations+Sensors") l.layer = window.layers.aqhi["Edmonton_BLEND"];
+            else if (l.name === "AQHI Grid Parkland Stations") l.layer = window.layers.aqhi["Parkland_County"];
+            else if (l.name === "AQHI Grid Parkland Stations+Sensors") l.layer = window.layers.aqhi["Parkland_County_BLEND"];
+            else if (l.name === "AQHI Grid Strathcona Stations") l.layer = window.layers.aqhi["Strathcona"];
+            else if (l.name === "AQHI Grid Strathcona Stations+Sensors") l.layer = window.layers.aqhi["Strathcona_BLEND"];
+            else if (l.name === "AQHI Grid WCAS Stations") l.layer = window.layers.aqhi["WCAS_2024"];
+            else if (l.name === "AQHI Grid WCAS Stations+Sensors") l.layer = window.layers.aqhi["WCAS_2024_BLEND"];
+            else if (l.name === "AQHI Grid Yellowhead Stations") l.layer = window.layers.aqhi["Yellowhead"];
+            else if (l.name === "AQHI Grid Yellowhead Stations+Sensors") l.layer = window.layers.aqhi["Yellowhead_BLEND"];
           });
         }
       }
