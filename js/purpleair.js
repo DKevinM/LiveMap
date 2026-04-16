@@ -1,5 +1,10 @@
 const PURPLE_URL = "https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json";
 
+const excludedSensors = [
+  114435,
+  121565
+];
+
 function computeEAQHI(pm) {
   if (pm == null || isNaN(pm)) return null;
 
@@ -43,7 +48,8 @@ window.renderPurpleAir = async function () {
     : (Array.isArray(data.data) ? data.data : []);
 
   records.forEach(rec => {
-  
+  if (excludedSensors.includes(rec.sensor_index)) return;
+    
   const lat = Number(rec.latitude);
   const lon = Number(rec.longitude);
   const pm  = Number(rec.pm_corr);
