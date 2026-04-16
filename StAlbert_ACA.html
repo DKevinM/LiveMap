@@ -7,7 +7,7 @@
   <!-- CONFIG -->
   <script>
     window.APP_CONFIG = {
-      airshed: "STALBERT",
+      airshed: "ACA",
       title: "St. Albert Air Monitoring",
 
       bounds: [
@@ -17,7 +17,7 @@
 
       lockBounds: true,
       minZoom: 11,
-      maxZoom: 18,
+      maxZoom: 19,
 
       overlays: [
         "stations",
@@ -25,6 +25,7 @@
         "eaqhi",
         "rose_pm25",
         "rose_no2",
+        "rose_so2",
         "weather_radar",
         "weather_wind_u",
         "weather_lightning",
@@ -35,8 +36,11 @@
         "firesmoke_24h"
       ],
 
-      aqhi: [],   // ❌ no AQHI grids for now
-      defaultAQHI: [],
+      aqhi: [
+        "ACA_Boundary_2022",
+        "ACA_Boundary_2022_BLEND"
+      ],
+      defaultAQHI: ["ACA_Boundary_2022"],
 
       focus: {
         lat: 53.6320,
