@@ -6,6 +6,12 @@ window.onerror = function() { return true; };
 
 const params = new URLSearchParams(window.location.search);
 const station = params.get("station");
+const stationExcludes = {
+  "Jasper": [
+    "Sulphur Dioxide",
+    "Total Reduced Sulphur"
+  ]
+};
 
 document.getElementById("title").innerText = station;
 
@@ -647,7 +653,8 @@ window.AppData.ready.then(() => {
     gaugeOrder.forEach(param => {
 
       if (param === "AQHI") return;
-      if (!byParam[param]) return;     
+      if (!byParam[param]) return;
+      if (stationExcludes[station]?.includes(param)) return;
       const gid = `g_${param.replace(/\s/g,'')}`;
     
       let targetRow = "air";
