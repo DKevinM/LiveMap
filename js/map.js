@@ -271,7 +271,7 @@ window.initMap = function () {
       window.layers.aqhi[key] = L.layerGroup();
     }
     if (!window.APP_CONFIG?.aqhi || window.APP_CONFIG.aqhi.includes(key)) {
-      overlays[labelMap[key] || ("AQHI " + key)] = window.layers.aqhi[key];
+      overlays[labelMap["AQHI " + key] || ("AQHI " + key)] = window.layers.aqhi[key];
     }
   });
   
