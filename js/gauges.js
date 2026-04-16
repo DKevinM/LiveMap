@@ -645,9 +645,9 @@ window.AppData.ready.then(() => {
     
     // -------- SECOND PASS: build all OTHER gauges --------
     gaugeOrder.forEach(param => {
-    
+
       if (param === "AQHI") return;
-    
+      if (!byParam[param]) return;     
       const gid = `g_${param.replace(/\s/g,'')}`;
     
       let targetRow = "air";
