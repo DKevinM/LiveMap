@@ -9,15 +9,23 @@
       airshed: "ACA",
       title: "ACA Air Monitoring",
 
+      excludeStations: [
+        "Edmonton-Beverly",
+        "Edmonton-Gold Bar"
+      ],
+      
       // Lock map to ACA region
       bounds: [
-        [53.0, -114.5],   // SW
-        [54.2, -111.5]    // NE
+        [52.5, -115.5],
+        [55.0, -110.5]
       ],
       lockBounds: true,
-      minZoom: 9,
+      minZoom: 6,
       maxZoom: 20,
 
+      center: [53.6, -113.5],
+      zoom: 8,
+      
       // Show ACA boundary 
       showACABoundary: true,
 
