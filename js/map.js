@@ -105,6 +105,11 @@ window.initMap = function () {
     });
   
     // load + show
+    // force reload
+    if (map.hasLayer(window.layers.aqhi[group])) {
+      map.removeLayer(window.layers.aqhi[group]);
+    }
+    
     await loadAQHIGroup(group);
     map.addLayer(window.layers.aqhi[group]);
   });
