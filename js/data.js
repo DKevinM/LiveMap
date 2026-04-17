@@ -209,14 +209,27 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
 
 
 
+    const now = new Date();
+    
     Object.entries(raw).forEach(([station, arr]) => {
       const byParam = {};
+    
       arr.forEach(e => {
         const p = e.ParameterName || "AQHI";
-        if (!byParam[p] || new Date(e.ReadingDate) > new Date(byParam[p].ReadingDate)) {
+        const t = new Date(e.ReadingDate);
+    
+        if (!isFinite(t)) return;
+    
+        const ageHours = (now - t) / (1000 * 60 * 60);
+    
+        // ONLY USE DATA ≤ 3 HOURS OLD
+        if (ageHours > 3) return;
+    
+        if (!byParam[p] || t > new Date(byParam[p].ReadingDate)) {
           byParam[p] = e;
         }
       });
+    
       dataByStation[station] = Object.values(byParam);
     });
 
