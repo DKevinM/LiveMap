@@ -10,17 +10,22 @@ function computeEAQHI(pm) {
 
   pm = Number(pm);
 
-  // Simple AQHI-style scaling (Canada-style approximation)
-  if (pm <= 6) return 1;
-  if (pm <= 12) return 2;
-  if (pm <= 20) return 3;
-  if (pm <= 30) return 4;
-  if (pm <= 50) return 5;
-  if (pm <= 75) return 6;
-  if (pm <= 100) return 7;
-  if (pm <= 150) return 8;
-  if (pm <= 250) return 9;
-  return 10;
+function computeEAQHI(pm) {
+  if (pm == null) return null;
+
+  if (pm > 100) return 10;
+  else if (pm > 90) return 10;
+  else if (pm > 80) return 9;
+  else if (pm > 70) return 8;
+  else if (pm > 60) return 7;
+  else if (pm > 50) return 6;
+  else if (pm > 40) return 5;
+  else if (pm > 30) return 4;
+  else if (pm > 20) return 3;
+  else if (pm > 10) return 2;
+  else if (pm > 0) return 1;
+
+  return null;
 }
 
 
