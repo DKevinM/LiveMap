@@ -10,9 +10,6 @@ function computeEAQHI(pm) {
 
   pm = Number(pm);
 
-function computeEAQHI(pm) {
-  if (pm == null) return null;
-
   if (pm > 100) return 10;
   else if (pm > 90) return 10;
   else if (pm > 80) return 9;
