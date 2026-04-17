@@ -447,8 +447,11 @@ function normalizeRow(r) {
 
 
 
-
   function formatDisplay(param, raw) {
+  
+    if (raw === null || raw === undefined || isNaN(Number(raw))) {
+      return { text: "—", unit: "" };
+    }
   
     if (param === "Wind Direction") {
       return {
@@ -664,7 +667,7 @@ window.AppData.ready.then(() => {
       // ---- ALWAYS CREATE THE GAUGE BOX ----
       const rows = byParam[param] || [];
       
-      const { latest, status, ageHours } = getLatestStatus(rows, new Date(), 6);
+      const { latest, status, ageHours } = getLatestStatus(rows, new Date(), 3);
       
       // check if ANY valid data exists historically
       const now = new Date();
@@ -679,7 +682,7 @@ window.AppData.ready.then(() => {
       
         const ageHours = (now - r.time) / (1000 * 60 * 60);
       
-        return ageHours <= 6;   // ONLY recent data counts
+        return ageHours <= 3;  // ONLY recent data counts
       });
       
       if (!hasRecentValidData) return;
@@ -724,7 +727,7 @@ window.AppData.ready.then(() => {
       const min   = param === "Outdoor Temperature" ? -40 : 0;
       
       if (isBadValue) {
-        buildOfflineGauge(gid, param);
+        if (status === "offline") return;
       } else {
         if (param === "Wind Direction") {
           buildCompass(gid, latest.value);
