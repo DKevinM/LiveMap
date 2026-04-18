@@ -2,7 +2,7 @@
 // gauges_page.js
 // =======================
 
-window.onerror = function() { return true; };
+// window.onerror = function() { return true; };
 
 const params = new URLSearchParams(window.location.search);
 const station = params.get("station");
@@ -544,7 +544,7 @@ window.AppData.ready.then(() => {
       }    
       if (param === "AQHI") {    
         const { latest: aqhiLatest, status: aqhiStatus } =
-          getLatestStatus(rows, new Date(), 3);    
+          getLatestStatus(rows, new Date(), 4);    
         if (aqhiLatest && aqhiStatus !== "offline") {
           aqhiValue = aqhiLatest.value;
         } else {
@@ -674,7 +674,7 @@ window.AppData.ready.then(() => {
       // ---- ALWAYS CREATE THE GAUGE BOX ----
       const rows = byParam[param] || [];
       
-      const { latest, status, ageHours } = getLatestStatus(rows, new Date(), 3);
+      const { latest, status, ageHours } = getLatestStatus(rows, new Date(), 4);
       
       // check if ANY valid data exists historically
       const now = new Date();
@@ -689,10 +689,10 @@ window.AppData.ready.then(() => {
       
         const ageHours = (now - r.time) / (1000 * 60 * 60);
       
-        return ageHours <= 3;  // ONLY recent data counts
+        return ageHours <= 4;  // ONLY recent data counts
       });
       
-      if (!hasRecentValidData) return;
+      if (!hasRecentValidData && status === "offline") return;
       
       // If no latest → skip
       if (!latest) return;
