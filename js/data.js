@@ -16,7 +16,12 @@ window.buildStationPopup = function (rows) {
       ">
         <span><b>${r.Shortform}</b></span>
         <span style="text-align:right;">
-          ${r.Value ?? "NA"}${r.Units || ""}
+          ${r.Value === null
+            ? "NA"
+            : r.stale
+              ? `${r.Value}${r.Units}*`
+              : `${r.Value}${r.Units}`
+          }          
         </span>
       </div>
     `).join("")}
@@ -231,25 +236,30 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
         const t = new Date(byParam[p].ReadingDate);
         const ageHours = (now - t) / (1000 * 60 * 60);
       
-        if (ageHours > 4) {
-          delete byParam[p];
+        if (ageHours > 6) {
+          delete byParam[p];   // 🔥 remove truly old data
+        } else {
+          byParam[p].stale = ageHours > 4;
         }
       });
-    
-      dataByStation[station] = Object.values(byParam);
-    });
 
     // ==============================
     // GLOBAL ACCESS HELPERS
     // ==============================
     
     window.getStationValue = function(station, param) {
-      const row = window.dataByStation?.[station]?.[param];
+      const rows = window.dataByStation?.[station];
+      if (!rows) return null;
+    
+      const row = rows.find(r => r.ParameterName === param);
       return row?.Value ?? null;
     };
     
     window.getStationTime = function(station, param) {
-      const row = window.dataByStation?.[station]?.[param];
+      const rows = window.dataByStation?.[station];
+      if (!rows) return null;
+    
+      const row = rows.find(r => r.ParameterName === param);
       return row?.DisplayDate ?? null;
     };
     
@@ -270,7 +280,7 @@ window.fetchAllStationData = async function () {
   return stationNames.map(name => {
     const rows = dataByStation[name];
     const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
-    const firstRow = rows[0];
+    if (!rows || rows.length === 0) return null;
 
     return {
       stationName: name,
@@ -279,6 +289,7 @@ window.fetchAllStationData = async function () {
       aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
         ? aqhiRow.Value
         : null,
+      aqhi_stale: aqhiRow ? aqhiRow.stale : false,
 
       rows: rows,  
 
