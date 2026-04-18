@@ -214,19 +214,25 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
     Object.entries(raw).forEach(([station, arr]) => {
       const byParam = {};
     
+      // STEP 1: get latest per parameter
       arr.forEach(e => {
         const p = e.ParameterName || "AQHI";
         const t = new Date(e.ReadingDate);
-    
+      
         if (!isFinite(t)) return;
-    
-        const ageHours = (now - t) / (1000 * 60 * 60);
-    
-        // ONLY USE DATA ≤ 3 HOURS OLD
-        if (ageHours > 3) return;
-    
+      
         if (!byParam[p] || t > new Date(byParam[p].ReadingDate)) {
           byParam[p] = e;
+        }
+      });
+      
+      // STEP 2: apply age filter AFTER
+      Object.keys(byParam).forEach(p => {
+        const t = new Date(byParam[p].ReadingDate);
+        const ageHours = (now - t) / (1000 * 60 * 60);
+      
+        if (ageHours > 4) {
+          delete byParam[p];
         }
       });
     
