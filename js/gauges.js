@@ -406,7 +406,14 @@ function toCardinal16(deg) {
 
 function normalizeRow(r) {
 
-  let value = r.Value === "" ? null : Number(r.Value);
+  let value;
+  if (r.Value === "" || r.Value === null || r.Value === undefined) {
+    value = null;
+  } else {
+    const n = Number(r.Value);
+    value = Number.isFinite(n) ? n : null;
+  }
+  
   let param = r.ParameterName ? r.ParameterName.trim() : "";
   // ---- PARAMETERS THAT SHOULD NEVER BE NEGATIVE ----
   const noNegativeParams = [
