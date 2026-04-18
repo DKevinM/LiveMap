@@ -242,6 +242,8 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
           byParam[p].stale = ageHours > 4;
         }
       });
+      dataByStation[station] = Object.values(byParam);
+      });      
 
     // ==============================
     // GLOBAL ACCESS HELPERS
@@ -279,8 +281,10 @@ window.fetchAllStationData = async function () {
 
   return stationNames.map(name => {
     const rows = dataByStation[name];
-    const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
     if (!rows || rows.length === 0) return null;
+
+    const firstRow = rows[0] || {};
+    const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
 
     return {
       stationName: name,
