@@ -318,6 +318,19 @@ window.fetchAllStationData = async function () {
     .map(name => {
       const rows = dataByStation[name];
       if (!rows || rows.length === 0) return null;
+      
+      // HARD FILTER: remove stations with no recent data
+      const now = new Date();
+      
+      const hasRecent = rows.some(r => {
+        const t = new Date(r.ReadingDate);
+        if (isNaN(t.getTime())) return false;
+      
+        const ageHours = (now - t) / (1000 * 60 * 60);
+        return ageHours <= 6;
+      });
+      
+      if (!hasRecent) return null;      
   
       const locRow = rows.find(r => r.Latitude && r.Longitude) || {};
       const aqhiRow = rows.find(r =>
