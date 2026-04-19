@@ -28,7 +28,9 @@ window.buildStationPopup = function (rows) {
   </div>
   `;
 
-  const stationName = rows[0]?.StationName || "Unknown";
+  const stationName = (rows && rows.length > 0 && rows[0].StationName)
+    ? rows[0].StationName
+    : "Unknown";
 
   return content + `
     <br><br>
@@ -224,8 +226,7 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
       arr.forEach(e => {
         const p = e.ParameterName || "AQHI";
         const t = new Date(e.ReadingDate);
-      
-        if (!isFinite(t)) return;
+        if (isNaN(t.getTime())) return;
       
         const isAQHI = p === "AQHI";
       
@@ -273,7 +274,10 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
           byParam[p].stale = ageHours > 4;
         }
       });
-      dataByStation[station] = Object.values(byParam);
+        const cleaned = Object.values(byParam);
+        if (cleaned.length > 0) {
+          dataByStation[station] = cleaned;
+        }      
       });      
 
     // ==============================
@@ -310,32 +314,32 @@ window.fetchAllStationData = async function () {
 
   const stationNames = Object.keys(dataByStation);
 
-  return stationNames.map(name => {
-    const rows = dataByStation[name];
-    if (!rows || rows.length === 0) return null;
-
-    const firstRow = rows[0] || {};
-    const aqhiRow = rows.find(r =>
-      r.ParameterName === "AQHI" &&
-      r.Value !== null &&
-      isFinite(r.Value) &&
-      Number(r.Value) >= 1
-    );  
-
-    return {
-      stationName: name,
-      lat: isFinite(Number(firstRow?.Latitude)) ? Number(firstRow.Latitude) : null,
-      lon: isFinite(Number(firstRow?.Longitude)) ? Number(firstRow.Longitude) : null,
-      aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
-        ? aqhiRow.Value
-        : null,
-      aqhi_stale: aqhiRow ? aqhiRow.stale : false,
-
-      rows: rows,  
-
-      html: window.buildStationPopup(Object.values(rows))  
-    };
-  });
+  return stationNames
+    .map(name => {
+      const rows = dataByStation[name];
+      if (!rows || rows.length === 0) return null;
+  
+      const locRow = rows.find(r => r.Latitude && r.Longitude) || {};
+      const aqhiRow = rows.find(r =>
+        r.ParameterName === "AQHI" &&
+        r.Value !== null &&
+        isFinite(r.Value) &&
+        Number(r.Value) >= 1
+      );
+  
+      return {
+        stationName: name,
+        lat: isFinite(Number(firstRow?.Latitude)) ? Number(firstRow.Latitude) : null,
+        lon: isFinite(Number(firstRow?.Longitude)) ? Number(firstRow.Longitude) : null,
+        aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
+          ? aqhiRow.Value
+          : null,
+        aqhi_stale: aqhiRow ? aqhiRow.stale : false,
+        rows: rows,
+        html: window.buildStationPopup(Object.values(rows))
+      };
+    })
+    .filter(s => s && s.lat !== null && s.lon !== null);
 };
 
 
@@ -345,14 +349,16 @@ async function loadPurpleAir() {
   const res = await fetch(url);
   const json = await res.json();
   const records = Array.isArray(json) ? json : (json.data || []);
+  const pm = isFinite(r.pm_corr) ? Number(r.pm_corr) : null;
 
-  return records.map(r => ({
+
+  return {
     lat: Number(r.latitude),
     lon: Number(r.longitude),
-    pm: isFinite(r.pm_corr) ? Number(r.pm_corr) : null,
-    eAQHI: Math.floor(Number(r.pm_corr)/10)+1,
+    pm: pm,
+    eAQHI: pm !== null ? Math.floor(pm/10)+1 : null,
     name: r.name || `Sensor ${r.sensor_index ?? ""}`
-  }));
+  };
 }
 
 // ---------------- READY ----------------
@@ -388,7 +394,9 @@ window.stationsFCReady = (async () => {
 
     window.STATIONS_FC = {
       type: "FeatureCollection",
-      features: (window.AppData.stations || []).map(s => ({
+      features: (window.AppData.stations || [])
+        .filter(s => s && s.lat != null && s.lon != null)
+        .map(s => ({
         type: "Feature",
         properties: s,
         geometry: {
