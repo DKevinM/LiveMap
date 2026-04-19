@@ -329,8 +329,8 @@ window.fetchAllStationData = async function () {
   
       return {
         stationName: name,
-        lat: isFinite(Number(firstRow?.Latitude)) ? Number(firstRow.Latitude) : null,
-        lon: isFinite(Number(firstRow?.Longitude)) ? Number(firstRow.Longitude) : null,
+        lat: isFinite(Number(locRow?.Latitude)) ? Number(locRow.Latitude) : null,
+        lon: isFinite(Number(locRow?.Longitude)) ? Number(locRow.Longitude) : null,
         aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
           ? aqhiRow.Value
           : null,
@@ -349,16 +349,17 @@ async function loadPurpleAir() {
   const res = await fetch(url);
   const json = await res.json();
   const records = Array.isArray(json) ? json : (json.data || []);
-  const pm = isFinite(r.pm_corr) ? Number(r.pm_corr) : null;
-
-
-  return {
-    lat: Number(r.latitude),
-    lon: Number(r.longitude),
-    pm: pm,
-    eAQHI: pm !== null ? Math.floor(pm/10)+1 : null,
-    name: r.name || `Sensor ${r.sensor_index ?? ""}`
-  };
+  return records.map(r => {
+    const pm = isFinite(r.pm_corr) ? Number(r.pm_corr) : null;
+  
+    return {
+      lat: Number(r.latitude),
+      lon: Number(r.longitude),
+      pm: pm,
+      eAQHI: pm !== null ? Math.floor(pm / 10) + 1 : null,
+      name: r.name || `Sensor ${r.sensor_index ?? ""}`
+    };
+  });
 }
 
 // ---------------- READY ----------------
@@ -397,13 +398,13 @@ window.stationsFCReady = (async () => {
       features: (window.AppData.stations || [])
         .filter(s => s && s.lat != null && s.lon != null)
         .map(s => ({
-        type: "Feature",
-        properties: s,
-        geometry: {
-          type: "Point",
-          coordinates: [s.lon, s.lat]
-        }
-      }))
+          type: "Feature",
+          properties: s,
+          geometry: {
+            type: "Point",
+            coordinates: [s.lon, s.lat]
+          }
+        }))
     };
 
     console.log("[LiveMap] STATIONS_FC:", window.STATIONS_FC.features.length);
