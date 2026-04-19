@@ -339,7 +339,13 @@ window.fetchAllStationData = async function () {
         html: window.buildStationPopup(Object.values(rows))
       };
     })
-    .filter(s => s && s.lat !== null && s.lon !== null);
+    .filter(st =>
+      st &&
+      st.lat != null &&
+      st.lon != null &&
+      st.rows &&
+      st.rows.length > 0
+    );
 };
 
 
