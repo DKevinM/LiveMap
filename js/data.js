@@ -284,7 +284,10 @@ window.fetchAllStationData = async function () {
     if (!rows || rows.length === 0) return null;
 
     const firstRow = rows[0] || {};
-    const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
+    const aqhiRow = rows.find(r => 
+      r.ParameterName &&
+      r.ParameterName.toUpperCase().includes("AQHI")
+    );    
 
     return {
       stationName: name,
