@@ -220,16 +220,47 @@ window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/
       const byParam = {};
     
       // STEP 1: get latest per parameter
+      // STEP 1: get latest VALID per parameter
       arr.forEach(e => {
         const p = e.ParameterName || "AQHI";
         const t = new Date(e.ReadingDate);
       
         if (!isFinite(t)) return;
       
-        if (!byParam[p] || t > new Date(byParam[p].ReadingDate)) {
+        const isAQHI = p === "AQHI";
+      
+        // AQHI: treat null, non-numeric, or <1 as invalid for circle display
+        const hasValidValue = isAQHI
+          ? (e.Value !== null && isFinite(e.Value) && Number(e.Value) >= 1)
+          : (e.Value !== null && isFinite(e.Value));
+      
+        // If we don't have anything yet, keep this row
+        if (!byParam[p]) {
+          byParam[p] = e;
+          return;
+        }
+      
+        const oldT = new Date(byParam[p].ReadingDate);
+        const oldIsAQHI = p === "AQHI";
+        const oldHasValidValue = oldIsAQHI
+          ? (byParam[p].Value !== null && isFinite(byParam[p].Value) && Number(byParam[p].Value) >= 1)
+          : (byParam[p].Value !== null && isFinite(byParam[p].Value));
+      
+        // Prefer newer VALID rows over older ones
+        if (hasValidValue && (!oldHasValidValue || t > oldT)) {
+          byParam[p] = e;
+          return;
+        }
+      
+        // If both are invalid, keep the newer one
+        if (!hasValidValue && !oldHasValidValue && t > oldT) {
           byParam[p] = e;
         }
+      
+        // If old is valid and new is invalid, keep old
+        // If both valid, newer valid already handled above
       });
+
       
       // STEP 2: apply age filter AFTER
       Object.keys(byParam).forEach(p => {
@@ -284,10 +315,12 @@ window.fetchAllStationData = async function () {
     if (!rows || rows.length === 0) return null;
 
     const firstRow = rows[0] || {};
-    const aqhiRow = rows.find(r => 
-      r.ParameterName &&
-      r.ParameterName.toUpperCase().includes("AQHI")
-    );    
+    const aqhiRow = rows.find(r =>
+      r.ParameterName === "AQHI" &&
+      r.Value !== null &&
+      isFinite(r.Value) &&
+      Number(r.Value) >= 1
+    );  
 
     return {
       stationName: name,
