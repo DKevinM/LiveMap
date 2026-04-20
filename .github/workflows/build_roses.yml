@@ -27,7 +27,7 @@ jobs:
 
       - name: Run rose builder
         env:
-          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: |
           python python/build_roses.py
