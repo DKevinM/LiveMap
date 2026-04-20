@@ -30,7 +30,11 @@ window.initMap = function () {
       maxBoundsViscosity: 1.0
     });
 
-    map.fitBounds(window.APP_CONFIG.bounds);
+    if (window.APP_CONFIG.center && window.APP_CONFIG.zoom) {
+      map.setView(window.APP_CONFIG.center, window.APP_CONFIG.zoom);
+    } else {
+      map.fitBounds(window.APP_CONFIG.bounds);
+    }
 
   } else {
 
@@ -39,8 +43,15 @@ window.initMap = function () {
       [60.0, -110.0]
     ];
 
-    map = L.map(mapDiv);
-    map.fitBounds(albertaBounds);
+    map = L.map(mapDiv);   
+    // Apply bounds only if defined
+    if (window.APP_CONFIG.center && window.APP_CONFIG.zoom) {
+      map.setView(window.APP_CONFIG.center, window.APP_CONFIG.zoom);
+    } else if (window.APP_CONFIG.bounds) {
+      map.fitBounds(window.APP_CONFIG.bounds);
+    } else {
+      map.fitBounds(albertaBounds);
+    }
   }
 
   window.map = map;
