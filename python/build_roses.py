@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta, timezone
 
-SUPABASE_URL = os.getenv("SUPABASE_DB_URL")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
 
