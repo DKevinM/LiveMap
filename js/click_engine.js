@@ -164,7 +164,7 @@ window.handleMapClick = async function(lat, lng, map) {
   `).join("");
   
   const stTable = `
-    <table style="width:100%; font-size:11px;">
+    <table style="width:100%; font-size:20px;">
       <thead>
         <tr>
           <th align="left">Station</th>
@@ -204,16 +204,16 @@ window.handleMapClick = async function(lat, lng, map) {
   const popupHtml = `
     <div style="font-size:13px; line-height:1.3;">
   
-      <div style="font-weight:1200; font-size:24px; margin-bottom:8px;">
+      <div style="font-weight:1000; font-size:20px; margin-bottom:8px;">
         Nearest stations & sensors
       </div>
   
       <!-- AQHI STATIONS (PRIMARY) -->
-      <div style="font-weight:1200; font-size:24px; margin:6px 0 4px;">
+      <div style="font-weight:1000; font-size:20px; margin:6px 0 4px;">
         AQHI stations (2) — Weight: 1.0
       </div>
   
-      <div style="font-size:24px; font-weight:1200;">
+      <div style="font-size:20px; font-weight:1000;">
         ${stTable}
       </div>
   
