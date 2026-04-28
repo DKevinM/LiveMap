@@ -204,7 +204,7 @@ window.handleMapClick = async function(lat, lng, map) {
   const popupHtml = `
     <div style="font-size:13px; line-height:1.3;">
   
-      <div style="font-weight:700; font-size:15px; margin-bottom:8px;">
+      <div style="font-weight:900; font-size:17px; margin-bottom:8px;">
         Nearest stations & sensors
       </div>
   
