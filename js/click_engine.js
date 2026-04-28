@@ -202,21 +202,29 @@ window.handleMapClick = async function(lat, lng, map) {
   `;
 
   const popupHtml = `
-    <div style="font-size:12px; line-height:1.25;">
+    <div style="font-size:13px; line-height:1.3;">
   
-      <div style="font-weight:700; margin-bottom:6px;">
+      <div style="font-weight:700; font-size:15px; margin-bottom:8px;">
         Nearest stations & sensors
       </div>
   
-      <div style="font-weight:600; margin:6px 0 3px;">
-        AQHI stations (2)
+      <!-- AQHI STATIONS (PRIMARY) -->
+      <div style="font-weight:700; font-size:14px; margin:6px 0 4px;">
+        AQHI stations (2) — Weight: 1.0
       </div>
-      ${stTable}
   
-      <div style="font-weight:600; margin:8px 0 3px;">
-        PurpleAir (3)
+      <div style="font-size:14px; font-weight:600;">
+        ${stTable}
       </div>
-      ${paTable}
+  
+      <!-- PURPLEAIR (SECONDARY) -->
+      <div style="font-weight:600; font-size:12px; margin:10px 0 4px;">
+        PurpleAir (3) — Weight: 0.5
+      </div>
+  
+      <div style="font-size:12px; opacity:0.9;">
+        ${paTable}
+      </div>
   
       ${weatherHtml}
   
