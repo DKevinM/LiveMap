@@ -232,9 +232,16 @@ function drawAQHIPanel() {
     if (!s) return "";
   
     return `
-      <div style="display:flex; align-items:center; gap:6px;">
-        <span style="width:10px;height:10px;background:${s.color};
-                     border-radius:50%;display:inline-block;"></span>
+      <div style="margin-left:14px; position:relative;">
+        <span style="
+          position:absolute;
+          left:-14px;
+          top:5px;
+          width:8px;
+          height:8px;
+          border-radius:50%;
+          background:${s.color};
+        "></span>
         <b>${s.label}</b>
       </div>
     `;
