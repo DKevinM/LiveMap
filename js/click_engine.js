@@ -209,11 +209,11 @@ window.handleMapClick = async function(lat, lng, map) {
       </div>
   
       <!-- AQHI STATIONS (PRIMARY) -->
-      <div style="font-weight:700; font-size:14px; margin:6px 0 4px;">
+      <div style="font-weight:1200; font-size:24px; margin:6px 0 4px;">
         AQHI stations (2) — Weight: 1.0
       </div>
   
-      <div style="font-size:14px; font-weight:600;">
+      <div style="font-size:24px; font-weight:1200;">
         ${stTable}
       </div>
   
