@@ -64,6 +64,12 @@ window.renderPurpleAir = async function () {
     const sensorIndex = rec.sensor_index;
     const label = rec.name || (sensorIndex != null ? `Sensor ${sensorIndex}` : "Unnamed sensor");
     const color = window.getAQHIColor(eAQHI);
+    const showHistory = window.APP_CONFIG?.enableHistory === true;
+    const historyLink = (showHistory && sensorIndex != null)
+      ? `<a href="https://dkevinm.github.io/AB_datapull/web/sensor_compare.html?sensor_index=${sensorIndex}" target="_blank">
+           View historical PM2.5
+         </a>`
+      : "";    
 
     const marker = L.circleMarker([lat, lon], {
       radius: 5,
@@ -78,10 +84,7 @@ window.renderPurpleAir = async function () {
       eAQHI: ${eAQHI}<br>
       PM₂.₅ (corr): ${pm.toFixed(1)} µg/m³
       <hr>
-      ${sensorIndex != null ? `
-        <a href="https://dkevinm.github.io/AB_datapull/web/sensor_compare.html?sensor_index=${sensorIndex}" target="_blank">
-          View historical PM2.5
-        </a>` : ""}
+        ${historyLink}
     `);
 
     if (!window.layers?.purpleair) return;
