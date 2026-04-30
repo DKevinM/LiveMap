@@ -195,6 +195,22 @@ window.handleMapClick = async function(lat, lng, map) {
     `;
   }).join("");
 
+  const paTable = `
+    <table style="width:100%; font-size:11px;">
+      <thead>
+        <tr>
+          <th align="left">Sensor</th>
+          <th align="center">AQHI (est.)</th>
+          <th align="right">Dist</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${paRows}
+      </tbody>
+    </table>
+  `;
+
+  
   const popupHtml = `
     <div style="font-size:13px; line-height:1.3;">
   
