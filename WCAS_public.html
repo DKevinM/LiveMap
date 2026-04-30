@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WCAS Air Monitoring</title>
+  <meta charset="utf-8"/>
+
+  <script>
+    window.APP_CONFIG = {
+      airshed: "WCAS",
+      title: "WCAS Air Monitoring",
+
+      enableHistory: false,
+      
+      // Lock to WCAS region (wider view)
+      bounds: [
+        [52.7, -118.5],   // southwest
+        [54.8, -115.0]    // northeast
+      ],
+      lockBounds: false,
+      minZoom: 5,
+      maxZoom: 18,
+      
+      center: [53.6, -116.8],
+      zoom: 6,
+
+      // Boundary toggle
+      showWCASBoundary: true,
+
+      overlays: [
+        "stations",
+        "purpleair",
+        "eaqhi",
+        "rose_pm25",
+        "rose_no2",
+        "rose_so2",
+        "weather_radar",
+        "weather_wind_u",
+        "weather_lightning",
+        "weather_thunderstorm",
+        "firesmoke_now",
+        "firesmoke_6h",
+        "firesmoke_12h",
+        "firesmoke_24h"
+      ],
+
+      defaultAQHI: ["WCAS_2024_BLEND"],
+
+      aqhi: [
+        "WCAS_2024",
+        "WCAS_2024_BLEND",
+        "Parkland_County",
+        "Parkland_County_BLEND",
+        "Yellowhead",
+        "Yellowhead_BLEND"
+      ],
+
+      // station removal
+      excludeStations: [
+        "Powers",
+        "E-BAM Slave Lake",
+        "E-BAM Swan Hills"
+      ]
+    };
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+</head>
+
+<body>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="close">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div id="header">
+  <div id="header-left">
+    WCAS Air Monitoring
+  </div>
+
+  <div id="header-center">
+    Click anywhere on the map to identify nearby stations, sensors, and weather
+  </div>
+
+  <div id="header-right"></div>
+</div>
+
+<div style="position:absolute; top:8px; right:25px; z-index:1000;">
+  <input id="addressInput" type="text" placeholder="Enter address..."
+         style="padding:6px; width:250px;" />
+  <button onclick="lookupAddress()">Go</button>
+</div>
+
+<div id="app">
+  <div id="map"></div>
+
+  <div id="panel">
+    <div id="aqhi-panel">
+      <div id="aqhi-content"></div>
+    </div>
+    <div id="station-gauges"></div>
+  </div>
+</div>
+
+<button onclick="clearSelection()" id="clear-btn">
+  Clear Selection
+</button>
+
+<!-- Scripts -->
+<script src="js/data.js" defer></script>
+<script src="js/aqhi.js" defer></script>
+<script src="js/click_utils.js" defer></script>
+<script src="js/render.js" defer></script>
+<script src="js/map.js" defer></script>
+<script src="js/purpleair.js" defer></script>
+<script src="js/weather.js" defer></script>
+<script src="js/click_engine.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/geocode.js" defer></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
