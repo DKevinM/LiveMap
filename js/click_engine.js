@@ -210,7 +210,7 @@ window.handleMapClick = async function(lat, lng, map) {
   
       <!-- AQHI STATIONS (PRIMARY) -->
       <div style="font-weight:800; font-size:18px; margin:6px 0 4px;">
-        AQHI stations (2) — Weight: 1.0
+        AQHI stations (2)
       </div>
   
       <div style="font-size:18px; font-weight:800;">
@@ -219,7 +219,7 @@ window.handleMapClick = async function(lat, lng, map) {
   
       <!-- PURPLEAIR (SECONDARY) -->
       <div style="font-weight:600; font-size:12px; margin:10px 0 4px;">
-        PurpleAir (3) — Weight: 0.5
+        PurpleAir (3)
       </div>
   
       <div style="font-size:12px; opacity:0.9;">
