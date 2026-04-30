@@ -5,7 +5,7 @@ const excludedSensors = [
   121565
 ];
 
-function computeEAQHI(pm) {
+window.computeEAQHI = function(pm) {
   if (pm == null || isNaN(pm)) return null;
 
   pm = Number(pm);
