@@ -617,6 +617,13 @@ window.renderMap = async function () {
                style="width:100%;max-width:260px;border-radius:6px;margin-top:6px;">`
       : "";
 
+    const showHistory = window.APP_CONFIG?.enableHistory === true;
+    const historyLink = showHistory
+      ? `<a href="https://dkevinm.github.io/AB_datapull/web/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
+           View historical data
+         </a><br>`
+      : "";
+    
     
     const popupHTML = `
       <strong>${stationName}</strong><br>
@@ -624,11 +631,9 @@ window.renderMap = async function () {
       ${[...linesFirst, ...linesRest].join("<br>")}
       ${imageHTML}
       <hr>
-      <a href="https://dkevinm.github.io/AB_datapull/web/station_compare.html?station=${stationName}" target="_blank">
-        View historical data</a><br>
+      ${historyLink}
       <a href="/LiveMap/gauges.html?station=${encodeURIComponent(stationName)}" target="_blank">
         View gauges</a>
-
     `;
   
     const marker = L.circleMarker([lat, lon], {
