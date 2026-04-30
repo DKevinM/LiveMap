@@ -178,28 +178,22 @@ window.handleMapClick = async function(lat, lng, map) {
     </table>
   `;
   
-  const paRows = closestPA.map(p => `
-    <tr>
-      <td>${p.name}</td>
-      <td>${p.pm == null ? "—" : Number(p.pm).toFixed(1)}</td>
-      <td>${p.dist_km.toFixed(1)} km</td>
-    </tr>
-  `).join("");
+  const paRows = closestPA.map(p => {
   
-  const paTable = `
-    <table style="width:100%; font-size:11px;">
-      <thead>
-        <tr>
-          <th align="left">Sensor</th>
-          <th align="left">PM2.5 (µg/m³)</th>
-          <th align="right">Dist</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${paRows}
-      </tbody>
-    </table>
-  `;
+    const eAQHI = (p.pm != null && !isNaN(p.pm))
+      ? computeEAQHI(Number(p.pm))
+      : null;
+  
+    return `
+      <tr>
+        <td>${p.name}</td>
+        <td style="text-align:center;">
+          ${eAQHI != null ? `<b>${eAQHI}</b>` : "—"}
+        </td>
+        <td style="text-align:right;">${p.dist_km.toFixed(1)} km</td>
+      </tr>
+    `;
+  }).join("");
 
   const popupHtml = `
     <div style="font-size:13px; line-height:1.3;">
