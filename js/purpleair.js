@@ -72,7 +72,7 @@ window.renderPurpleAir = async function () {
       : "";    
 
     const marker = L.circleMarker([lat, lon], {
-      radius: 5,
+      radius: 9,
       fillColor: color,
       color: "#111",
       weight: 1,
