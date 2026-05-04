@@ -81,13 +81,20 @@ html, body {
   font-weight: 500;
 }
 
+
+/* purpleair lable */
 .purpleair-label {
   font-size: 9px;
   font-weight: bold;
   color: white;
   text-align: center;
   line-height: 18px;   /* must match iconSize height */
+  transform: translateY(-1px); 
 }
+
+
+
+
 
 /* HEADER LOOK */
 #aqhi-header {
