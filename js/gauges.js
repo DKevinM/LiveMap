@@ -552,7 +552,7 @@ window.AppData.ready.then(() => {
         if (!Number.isFinite(raw) || raw <= 0) {
           aqhiValue = null;
       } else {
-        aqhiValue = Math.min(Math.round(raw), 10);
+        aqhiValue = raw > 10 ? 11 : Math.round(raw);
       }
       
       } else {
@@ -606,8 +606,10 @@ window.AppData.ready.then(() => {
         null
       );
     
-      const msg = getAQHIMessage(aqhiValue);
-      const aqhiCol = Number.isFinite(aqhiValue) ? aqhiColor(aqhiValue) : "#999";
+      const msg = getAQHIMessage(aqhiValue === 11 ? 11 : aqhiValue);
+      const aqhiCol = Number.isFinite(aqhiValue)
+        ? aqhiColor(aqhiValue === 11 ? 11 : aqhiValue)
+        : "#999";
       
       if (msg) {
         document.getElementById("aqhiMessage").innerHTML = `
@@ -630,7 +632,7 @@ window.AppData.ready.then(() => {
                 -1px  1px 0 #333,
                  1px  1px 0 #333;
             ">
-              ${msg.level} Risk (AQHI ${msg.range})
+              ${msg.level} Risk (AQHI ${aqhiValue === 11 ? "10+" : msg.range})
             </div>
     
             <div style="font-size:16px; margin-bottom:6px;">
