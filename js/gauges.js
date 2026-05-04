@@ -545,11 +545,21 @@ window.AppData.ready.then(() => {
       if (param === "AQHI") {    
         const { latest: aqhiLatest, status: aqhiStatus } =
           getLatestStatus(rows, new Date(), 4);    
-        if (aqhiLatest && aqhiStatus !== "offline") {
-          aqhiValue = aqhiLatest.value;
+      if (aqhiLatest && aqhiStatus !== "offline") {
+      
+        const raw = aqhiLatest.value;
+      
+        if (!Number.isFinite(raw) || raw <= 0) {
+          aqhiValue = null;
+        } else if (raw > 10) {
+          aqhiValue = "10+";
         } else {
-          aqhiValue = null;  // stale or missing
-        }    
+          aqhiValue = Math.round(raw);
+        }
+      
+      } else {
+        aqhiValue = null;
+      }
       }    
     });
 
@@ -588,9 +598,13 @@ window.AppData.ready.then(() => {
     } else {
     
       // ---- NORMAL AQHI ----
+      const numericAQHI =
+        aqhiValue === "10+" ? 10 :
+        (Number.isFinite(aqhiValue) ? aqhiValue : 0);
+      
       buildGauge(
         "g_AQHI",
-        aqhiValue,
+        numericAQHI,
         "AQHI",
         0,
         11,
