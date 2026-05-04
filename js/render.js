@@ -67,7 +67,9 @@ async function loadAQHIGroup(groupName) {
           f.properties?.blended_aqhi;
 
         return {
-          fillColor: isFinite(Number(v)) ? window.getAQHIColor(Number(v)) : "#999",
+        fillColor: isFinite(Number(v))
+          ? window.getAQHIColor(Number(v) > 10 ? 11 : Number(v))
+          : "#999",
           color: "none",
           weight: 0,
           fillOpacity: 0.6
@@ -86,7 +88,11 @@ async function loadAQHIGroup(groupName) {
           p.AQHI_BLEND ??
           p.aqhiBlend;
 
-        lyr.bindTooltip(`AQHI: ${isFinite(Number(v)) ? Number(v).toFixed(1) : "—"}`, {
+          lyr.bindTooltip(`AQHI: ${
+            isFinite(Number(v))
+              ? (Number(v) > 10 ? "10+" : Math.round(Number(v)))
+              : "—"
+          }`, {
           sticky: true
         });
       }
