@@ -90,5 +90,18 @@ window.renderPurpleAir = async function () {
     if (!window.layers?.purpleair) return;
     marker.addTo(window.layers.purpleair);
 
+    // add AQHI number label inside circle
+    const labelMarker = L.marker([lat, lon], {
+      icon: L.divIcon({
+        className: "aqhi-label",
+        html: (eAQHI > 10 ? "10+" : Math.round(eAQHI)),
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      }),
+      interactive: false
+    });
+    
+    labelMarker.addTo(window.layers.purpleair);    
+
   });
 };
