@@ -84,15 +84,19 @@ html, body {
 
 /* purpleair lable */
 .purpleair-label {
+  display: flex;  
+  align-items: center; 
+  justify-content: center;
+
+  width: 18px;  
+  height: 18px;
+
   font-size: 9px;
   font-weight: bold;
   color: white;
-  text-align: center;
-  line-height: 18px;   /* must match iconSize height */
-  transform: translateY(-3px); 
+
+  line-height: 1; 
 }
-
-
 
 
 
