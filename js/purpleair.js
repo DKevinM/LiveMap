@@ -93,8 +93,8 @@ window.renderPurpleAir = async function () {
     // add AQHI number label inside circle
     const labelMarker = L.marker([lat, lon], {
       icon: L.divIcon({
-        className: "aqhi-label purpleair-label",
-        html: (eAQHI > 10 ? "10+" : Math.round(eAQHI)),
+        className: "purpleair-label",
+        html: `<div class="pa-inner">${eAQHI > 10 ? "10+" : Math.round(eAQHI)}</div>`,
         iconSize: [18, 18],
         iconAnchor: [9, 9]
       }),
