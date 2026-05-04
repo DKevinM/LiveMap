@@ -551,11 +551,9 @@ window.AppData.ready.then(() => {
       
         if (!Number.isFinite(raw) || raw <= 0) {
           aqhiValue = null;
-        } else if (raw > 10) {
-          aqhiValue = "10+";
-        } else {
-          aqhiValue = Math.round(raw);
-        }
+      } else {
+        aqhiValue = Math.min(Math.round(raw), 10);
+      }
       
       } else {
         aqhiValue = null;
@@ -597,14 +595,10 @@ window.AppData.ready.then(() => {
     
     } else {
     
-      // ---- NORMAL AQHI ----
-      const numericAQHI =
-        aqhiValue === "10+" ? 10 :
-        (Number.isFinite(aqhiValue) ? aqhiValue : 0);
-      
+      // ---- NORMAL AQHI ----     
       buildGauge(
         "g_AQHI",
-        numericAQHI,
+        aqhiValue,
         "AQHI",
         0,
         11,
@@ -663,12 +657,12 @@ window.AppData.ready.then(() => {
           -1px  1px 0 #333,
            1px  1px 0 #333;
       ">
-        AQHI ${aqhiValue}
+        AQHI ${aqhiValue >= 10 ? "10+" : aqhiValue}
       </div>
     `;
     
       document.getElementById("val_g_AQHI").innerHTML =
-        `<b>${aqhiValue}</b>`;
+        `<b>${aqhiValue >= 10 ? "10+" : aqhiValue}</b>`;
     }
     
     
