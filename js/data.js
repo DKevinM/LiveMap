@@ -18,10 +18,12 @@ window.buildStationPopup = function (rows) {
         <span style="text-align:right;">
           ${r.Value === null
             ? "NA"
-            : r.stale
-              ? `${r.Value}${r.Units}*`
-              : `${r.Value}${r.Units}`
-          }          
+            : r.ParameterName === "AQHI"
+              ? (r.Value > 10 ? `10+${r.Units}` : `${Math.round(r.Value)}${r.Units}`)
+              : r.stale
+                ? `${r.Value}${r.Units}*`
+                : `${r.Value}${r.Units}`
+          }      
         </span>
       </div>
     `).join("")}
@@ -345,7 +347,7 @@ window.fetchAllStationData = async function () {
         lat: isFinite(Number(locRow?.Latitude)) ? Number(locRow.Latitude) : null,
         lon: isFinite(Number(locRow?.Longitude)) ? Number(locRow.Longitude) : null,
         aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
-          ? aqhiRow.Value
+          ? (aqhiRow.Value > 10 ? 11 : aqhiRow.Value)
           : null,
         aqhi_stale: aqhiRow ? aqhiRow.stale : false,
         rows: rows,
