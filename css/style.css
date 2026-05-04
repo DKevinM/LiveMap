@@ -101,8 +101,14 @@ html, body {
 
   font-size: 8px;
   font-weight: bold;
-  color: white;
+  color: black;
 
+  text-shadow: 
+    -1px -1px 0 white,
+     1px -1px 0 white,
+    -1px  1px 0 white,
+     1px  1px 0 white;
+  
   transform: translateY(1px); 
 }
 
