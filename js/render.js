@@ -212,7 +212,7 @@ function loadEstimatedAQHI() {
       
         marker.bindPopup(`
           <b>${st.station}</b><br>
-          Estimated AQHI: <b>${st.AQHI}</b><br>
+          Estimated AQHI: <b>${st.AQHI > 10 ? "10+" : Math.round(st.AQHI)}</b><br>
           PM2.5 (PurpleAir): ${st.pm25_est} µg/m³<br>
           O3 (3h): ${st.o3_3h} ppb<br>
           NO2 (3h): ${st.no2_3h} ppb<br>
@@ -225,7 +225,7 @@ function loadEstimatedAQHI() {
         const label = L.marker([st.lat, st.lon], {
           icon: L.divIcon({
             className: "aqhi-label",
-            html: st.AQHI,
+            html: (st.AQHI > 10 ? "10+" : Math.round(st.AQHI)),
             iconSize: [30, 30],
             iconAnchor: [15, 15]
           }),
@@ -575,7 +575,7 @@ window.renderMap = async function () {
           if (val === null || val === undefined || val === "" || isNaN(num) || num === 0) {
             val = "-";
           } else {
-            val = num;
+            val = num > 10 ? "10+" : Math.round(num);
           }
         }
     
@@ -602,7 +602,7 @@ window.renderMap = async function () {
             if (val === null || val === undefined || val === "" || isNaN(num) || num === 0) {
               val = "-";
             } else {
-              val = num;
+              val = num > 10 ? "10+" : Math.round(num);
             }
           }
       
@@ -656,7 +656,10 @@ window.renderMap = async function () {
       const label = L.marker([lat, lon], {
         icon: L.divIcon({
           className: "aqhi-label",
-          html: (aqhiVal === 0 ? "-" : aqhiVal),
+          html: (!isFinite(aqhiVal) || aqhiVal === 0
+            ? "-"
+            : (aqhiVal > 10 ? "10+" : Math.round(aqhiVal))
+          ),
           iconSize: [30, 30],
           iconAnchor: [15, 15]
         }),
