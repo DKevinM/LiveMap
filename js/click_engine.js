@@ -162,7 +162,9 @@ window.handleMapClick = async function(lat, lng, map) {
     <tr>
       <td>${s.station}</td>
       <td style="text-align:center;">
-        ${isFinite(s.aqhi) ? s.aqhi : "—"}
+        ${isFinite(s.aqhi)
+          ? (Number(s.aqhi) > 10 ? "10+" : Math.round(Number(s.aqhi)))
+          : "—"}        
       </td>
       <td style="text-align:right;">${s.dist_km.toFixed(1)} km</td>
     </tr>
