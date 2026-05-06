@@ -360,11 +360,21 @@ html, body {
 
     border-radius: 12px 12px 0 0 !important;
   }
-
-  #map {
+  
+  #app {
     position: fixed !important;
     inset: 0 !important;
-
+  
+    width: 100% !important;
+    height: 100% !important;
+  
+    overflow: hidden !important;
+  }
+  
+  #map {
+    position: absolute !important;
+    inset: 0 !important;
+  
     width: 100% !important;
     height: 100% !important;
   }
