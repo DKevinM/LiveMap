@@ -33,7 +33,9 @@ window.handleMapClick = async function(lat, lng, map) {
       station: s.stationName,
       lat: Number(s.lat),
       lng: Number(s.lon),
-      aqhi: (s.aqhi !== null && isFinite(s.aqhi)) ? Math.round(s.aqhi) : null,
+      aqhi: (s.aqhi !== null && isFinite(s.aqhi))
+        ? (Number(s.aqhi) > 10 ? "10+" : Math.round(Number(s.aqhi)))
+        : null,
       dist_km: getDistance(lat, lng, s.lat, s.lon) / 1000
     }))
     .filter(s => isFinite(s.lat) && isFinite(s.lng))
@@ -60,7 +62,10 @@ window.handleMapClick = async function(lat, lng, map) {
     const circle = L.circleMarker([st.lat, st.lng], {
       radius: 15,
       color: "#000",
-      fillColor: isFinite(st.aqhi) ? window.getAQHIColor(st.aqhi) : "#999",
+      fillColor:
+        st.aqhi === "10+"
+          ? window.getAQHIColor(11)
+          : (isFinite(st.aqhi) ? window.getAQHIColor(st.aqhi) : "#999"),
       weight: 3,
       fillOpacity: 0.8
     });
