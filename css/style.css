@@ -381,3 +381,22 @@ html, body {
   }
 
 }
+
+
+#search-box {
+  position: absolute;
+  top: 8px;
+  right: 25px;
+  z-index: 1000;
+}
+
+@media (max-width:768px) {
+
+  #search-box {
+    top: auto;
+    bottom: 10px;
+    right: 10px;
+    left: auto;
+  }
+
+}
