@@ -343,22 +343,25 @@ html, body {
 
   #panel {
     position: fixed !important;
+  
     left: 0 !important;
     right: 0 !important;
-    top: auto !important;
     bottom: 0 !important;
-
+    top: auto !important;
+  
     width: 100% !important;
-    max-width: 100% !important;
-
-    height: 30vh !important;
-    max-height: 30vh !important;
-
+  
+    height: 140px !important;
+    max-height: 140px !important;
+  
     overflow-y: auto !important;
-
-    z-index: 1500 !important;
-
-    border-radius: 12px 12px 0 0 !important;
+  
+    z-index: 2000 !important;
+  
+    background: rgba(255,255,255,0.96) !important;
+  
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
   }
   
   #app {
