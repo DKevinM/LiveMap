@@ -34,7 +34,7 @@ window.handleMapClick = async function(lat, lng, map) {
       lat: Number(s.lat),
       lng: Number(s.lon),
       aqhi: (s.aqhi !== null && isFinite(s.aqhi))
-        ? (Number(s.aqhi) > 10 ? "10+" : Math.round(Number(s.aqhi)))
+        ? Number(s.aqhi)
         : null,
       dist_km: getDistance(lat, lng, s.lat, s.lon) / 1000
     }))
@@ -82,7 +82,9 @@ window.handleMapClick = async function(lat, lng, map) {
   // ==============================
   if (closestStations && closestStations.length > 0) {
     const s = closestStations[0];
-    const aqhiVal = (s.aqhi !== null && isFinite(s.aqhi)) ? s.aqhi : null;
+    const aqhiVal = (s.aqhi !== null && isFinite(s.aqhi))
+      ? (Number(s.aqhi) > 10 ? "10+" : Math.round(Number(s.aqhi)))
+      : null;
     const aqhiEl = document.getElementById("aqhi-current");
     if (aqhiEl) aqhiEl.textContent = aqhiVal !== null ? aqhiVal : "—";
     const titleEl = document.getElementById("panel-title");
@@ -162,9 +164,9 @@ window.handleMapClick = async function(lat, lng, map) {
     <tr>
       <td>${s.station}</td>
       <td style="text-align:center;">
-        ${isFinite(s.aqhi)
+        ${s.aqhi !== null && isFinite(s.aqhi)
           ? (Number(s.aqhi) > 10 ? "10+" : Math.round(Number(s.aqhi)))
-          : "—"}        
+          : "—"}   
       </td>
       <td style="text-align:right;">${s.dist_km.toFixed(1)} km</td>
     </tr>
