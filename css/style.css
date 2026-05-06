@@ -393,10 +393,10 @@ html, body {
 @media (max-width:768px) {
 
   #search-box {
-    top: 70px;
-    right: 10px;
-    left: auto;
-    bottom: auto;
+    top: auto !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    left: auto !important;
   
     z-index: 2000;
   }
