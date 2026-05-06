@@ -127,8 +127,11 @@ html, body {
   }
 
   #clear-btn {
-    bottom: 42vh;
-    right: 10px;
+    position: fixed !important;
+  
+    right: 10px !important;
+    bottom: 32vh !important;
+  
     z-index: 1001;
   }
 
@@ -334,4 +337,47 @@ html, body {
 
 .pa-dot {
   filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
+}
+
+@media (max-width: 768px) {
+
+  #panel {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    bottom: 0 !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: 30vh !important;
+    max-height: 30vh !important;
+
+    overflow-y: auto !important;
+
+    z-index: 1500 !important;
+
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  #map {
+    position: fixed !important;
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #clear-btn {
+    position: fixed !important;
+
+    left: 10px !important;
+    right: auto !important;
+
+    bottom: 32vh !important;
+
+    z-index: 2001 !important;
+  }
+
 }
