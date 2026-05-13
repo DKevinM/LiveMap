@@ -140,28 +140,28 @@ html, body {
   }
   
   .leaflet-control-layers {
-    max-width: 115px !important;
+    max-width: 145px !important;
 
-    font-size: 7px !important;
-    line-height: 0.95 !important;
+    font-size: 8px !important;
+    line-height: 1.05 !important;
 
-    padding: 2px !important;
+    padding: 4px !important;
 
-    max-height: 140px !important;
+    max-height: 180px !important;
+
     overflow-y: auto !important;
     overflow-x: hidden !important;
   }
 
   .leaflet-control-layers label {
-    margin: 0 !important;
+    margin: 1px 0 !important;
     padding: 0 !important;
   }
 
   .leaflet-control-layers input {
-    transform: scale(0.65);
-    margin-right: 1px !important;
+    transform: scale(0.75);
+    margin-right: 2px !important;
   }
-
 }
 
 
