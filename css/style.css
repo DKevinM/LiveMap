@@ -138,26 +138,29 @@ html, body {
   #addressInput {
     width: 160px !important;
   }
-
+  
   .leaflet-control-layers {
-    max-width: 150px !important;
-    font-size: 9px !important;
-    line-height: 1.1 !important;
-    padding: 4px !important;
+    max-width: 125px !important;
+  
+    font-size: 8px !important;
+    line-height: 1 !important;
+  
+    padding: 2px 3px !important;
   }
-
+  
   .leaflet-control-layers label {
-    margin-bottom: 2px !important;
+    margin-bottom: 0px !important;
+    padding: 0 !important;
   }
   
   .leaflet-control-layers input {
-    transform: scale(0.8);
-    margin-right: 2px;
+    transform: scale(0.7);
+    margin-right: 1px !important;
   }
-    
-  .leaflet-popup-content {
-    max-width: 220px;
-    font-size: 13px;
+  
+  .leaflet-control-layers-list {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
 }
