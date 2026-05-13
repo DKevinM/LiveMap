@@ -3,6 +3,7 @@
 <head>
   <title>ACA Air Monitoring</title>
   <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script>
     window.APP_CONFIG = {
@@ -96,8 +97,8 @@
   <div id="header-right"></div>
 </div>
 
-<!-- 🔍 Address search -->
-<div style="position:absolute; top:8px; right:25px; z-index:1000;">
+<!-- Address search -->
+<div id="search-box">
   <input id="addressInput" type="text" placeholder="Enter address..."
          style="padding:6px; width:250px;" />
   <button onclick="lookupAddress()">Go</button>
