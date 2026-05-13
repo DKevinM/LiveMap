@@ -67,7 +67,7 @@ html, body {
 }
 
 /* FIX layer control specifically */
-.leaflet-control-layers {
+
   background: rgba(255,255,255,0.95) !important;
   padding: 8px;
   border-radius: 8px;
@@ -140,10 +140,21 @@ html, body {
   }
 
   .leaflet-control-layers {
-    max-width: 220px;
-    font-size: 12px;
+    max-width: 150px !important;
+    font-size: 9px !important;
+    line-height: 1.1 !important;
+    padding: 4px !important;
   }
 
+  .leaflet-control-layers label {
+    margin-bottom: 2px !important;
+  }
+  
+  .leaflet-control-layers input {
+    transform: scale(0.8);
+    margin-right: 2px;
+  }
+    
   .leaflet-popup-content {
     max-width: 220px;
     font-size: 13px;
