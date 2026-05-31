@@ -447,7 +447,7 @@ function normalizeRow(r) {
   return {
     param,
     value: Number(value),
-    time: "Hour ending " + new Date(r.ReadingDate)
+    time: new Date(r.ReadingDate)
   };
 }
 
