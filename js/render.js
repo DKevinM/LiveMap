@@ -525,7 +525,7 @@ window.renderMap = async function () {
     // timestamp: use latest ReadingDate across the rows (rows[0] is NOT reliable)
     let latest = null;
     rows.forEach(r => {
-      const t = "Hour ending " + new Date(r.ReadingDate);
+      const t = new Date(r.ReadingDate);
       if (!latest || t > latest) latest = t;
     });
   
