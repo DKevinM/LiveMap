@@ -633,7 +633,7 @@ window.renderMap = async function () {
     
     const popupHTML = `
       <strong>${stationName}</strong><br>
-      <small>${displayTime}</small><br><br>
+      <small>${displayTime} Hour Ending</small><br><br>
       ${[...linesFirst, ...linesRest].join("<br>")}
       ${imageHTML}
       <hr>
