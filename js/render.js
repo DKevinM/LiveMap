@@ -177,7 +177,6 @@ function getSmokeColor(pm) {
   if (pm < 28)  return "#f5a623";
   if (pm < 60)  return "#f57c00";
   if (pm < 120) return "#cc5500";
-
   return "#662200";
 }
 
