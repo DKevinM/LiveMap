@@ -242,17 +242,28 @@ window.initMap = function () {
           .toLowerCase();
   
         return (
-          text.includes("severe")
+          text.includes("severe") ||
+          text.includes("moderate")
         );
   
       },
   
-      style: function() {
-  
+      style: function(feature) {
+      
+        const text = JSON.stringify(
+          feature.properties || {}
+        ).toLowerCase();
+      
+        let color = "#ff8800";
+      
+        if (text.includes("severe")) {
+          color = "#ff0000";
+        }
+      
         return {
-  
-          color: "#ff0000",
-          fillColor: "#ff0000",
+      
+          color: color,
+          fillColor: color,
           fillOpacity: 0.05,
           weight: 1,
           dashArray: "4 4"
