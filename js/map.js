@@ -273,9 +273,9 @@ window.initMap = function () {
       
           color: color,
           fillColor: color,
-          fillOpacity: 0.02,
-          weight: 0.8,
-          dashArray: "3 6"
+          fillOpacity: 0.08,
+          weight: 1.5,
+          dashArray: "4 4"
       
         };
       
