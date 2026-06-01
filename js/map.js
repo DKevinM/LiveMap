@@ -233,31 +233,42 @@ window.initMap = function () {
     const thunder = L.geoJSON(data, {
   
       filter: function(feature) {
-  
+      
         const p = feature.properties || {};
-  
+      
         console.log("Thunderstorm props:", p);
-  
-        const text = JSON.stringify(p)
-          .toLowerCase();
-  
-        return (
-          text.includes("severe") ||
-          text.includes("moderate")
-        );
-  
+      
+        return true;
+      
       },
   
       style: function(feature) {
       
-        const text = JSON.stringify(
-          feature.properties || {}
-        ).toLowerCase();
+        const p = feature.properties || {};
       
-        let color = "#ff8800";
+        const type =
+          (p.product_type || "").toUpperCase();
       
-        if (text.includes("severe")) {
+        let color = "#ffff00";
+      
+        // Prairie Severe Prediction Centre
+        if (type.includes("PASPC")) {
+          color = "#ff8800";
+        }
+      
+        // Pacific Severe Prediction Centre
+        else if (type.includes("PSPC")) {
           color = "#ff0000";
+        }
+      
+        // Ontario
+        else if (type.includes("OSPC")) {
+          color = "#ffcc00";
+        }
+      
+        // Atlantic
+        else if (type.includes("ASPC")) {
+          color = "#ffaa00";
         }
       
         return {
@@ -267,9 +278,9 @@ window.initMap = function () {
           fillOpacity: 0.05,
           weight: 1,
           dashArray: "4 4"
-  
+      
         };
-  
+      
       },
   
       onEachFeature: function(feature, layer) {
