@@ -236,8 +236,6 @@ window.initMap = function () {
       
         const p = feature.properties || {};
       
-        console.log("Thunderstorm props:", p);
-      
         return true;
       
       },
@@ -275,9 +273,9 @@ window.initMap = function () {
       
           color: color,
           fillColor: color,
-          fillOpacity: 0.05,
-          weight: 1,
-          dashArray: "4 4"
+          fillOpacity: 0.02,
+          weight: 0.8,
+          dashArray: "3 6"
       
         };
       
@@ -287,11 +285,33 @@ window.initMap = function () {
   
         const p = feature.properties || {};
   
-        layer.bindPopup(`
-          <b>Severe Thunderstorm Outlook</b><br>
-          Issued: ${p.publication_datetime || "-"}<br>
-          Expires: ${p.expiration_datetime || "-"}
-        `);
+        layer.bindTooltip(`
+        
+        <b>Thunderstorm Outlook</b><br>
+        
+        Region:
+        ${p.product_sub_type || "-"}<br>
+        
+        Centre:
+        Outlook Region:
+        ${p.product_sub_type || "-"}<br>
+        
+        Issued:
+        ${new Date(
+          p.publication_datetime
+        ).toLocaleString()}<br>
+        
+        Expires:
+        ${new Date(
+          p.expiration_datetime
+        ).toLocaleString()}
+        
+        `, {
+        
+          sticky: true,
+          direction: "top"
+        
+        });
   
       }
   
@@ -341,7 +361,7 @@ window.initMap = function () {
     weather_radar: "Radar",
     weather_wind_u: "Winds",
     weather_lightning: "Lightning",
-    weather_thunderstorm: "Thunderstorm (3h)",
+    weather_thunderstorm: "Thunderstorm Outlook",
     purpleair: "Sensors (PurpleAir)",
     stations: "Stations",
     rose_pm25: "PM2.5 Rose",
