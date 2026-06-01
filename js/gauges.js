@@ -566,9 +566,12 @@ window.AppData.ready.then(() => {
     // ---------- HEADER ----------
     document.getElementById("title").innerHTML = `
       ${station}<br>
-      <span style="font-size:14px;font-weight:400">${stationTime}</span>
+      <span style="font-size:14px;font-weight:400">${stationTime}</span><br>
+      <span style="font-size:12px;font-weight:400;color:#666;">
+        Hour Ending
+      </span>
     `;
-    
+        
     
 
     // ---------- AQHI GAUGE ----------
