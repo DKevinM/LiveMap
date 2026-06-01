@@ -566,10 +566,16 @@ window.AppData.ready.then(() => {
     // ---------- HEADER ----------
     document.getElementById("title").innerHTML = `
       ${station}<br>
-      <span style="font-size:14px;font-weight:400">${stationTime}</span><br>
-      <span style="font-size:12px;font-weight:400;color:#666;">
+      <span style="font-size:14px;font-weight:400">${stationTime}</span>
+      <div style="
+        font-size:11px;
+        font-weight:400;
+        color:#666;
+        margin-top:2px;
+        line-height:1;
+      ">
         Hour Ending
-      </span>
+      </div>
     `;
         
     
