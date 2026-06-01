@@ -213,13 +213,81 @@ window.initMap = function () {
   });
   window.layers.weather_lightning.addLayer(lightning);
 
-  const thunder = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
-    layers: "GDPS-WEonG_15km_Thunderstorm-Prob.3h",
-    format: "image/png",
-    transparent: true,
-    opacity: 0.75
+  // ----------------------------
+  // SEVERE THUNDERSTORM OUTLOOK
+  // ----------------------------
+  
+  fetch(
+    "https://api.weather.gc.ca/collections/thunderstorm_outlook/items?f=json"
+  )
+  
+  .then(r => r.json())
+  
+  .then(data => {
+  
+    console.log(
+      "Thunderstorm outlook loaded:",
+      data
+    );
+  
+    const thunder = L.geoJSON(data, {
+  
+      filter: function(feature) {
+  
+        const p = feature.properties || {};
+  
+        console.log("Thunderstorm props:", p);
+  
+        const text = JSON.stringify(p)
+          .toLowerCase();
+  
+        return (
+          text.includes("severe")
+        );
+  
+      },
+  
+      style: function() {
+  
+        return {
+  
+          color: "#ff0000",
+          fillColor: "#ff0000",
+          fillOpacity: 0.05,
+          weight: 1,
+          dashArray: "4 4"
+  
+        };
+  
+      },
+  
+      onEachFeature: function(feature, layer) {
+  
+        const p = feature.properties || {};
+  
+        layer.bindPopup(`
+          <b>Severe Thunderstorm Outlook</b><br>
+          Issued: ${p.publication_datetime || "-"}<br>
+          Expires: ${p.expiration_datetime || "-"}
+        `);
+  
+      }
+  
+    });
+  
+    window.layers.weather_thunderstorm
+      .addLayer(thunder);
+  
+  })
+  
+  .catch(err => {
+  
+    console.error(
+      "Thunderstorm layer failed:",
+      err
+    );
+  
   });
-  window.layers.weather_thunderstorm.addLayer(thunder);
 
   // ----------------------------
   // BASE MAPS
