@@ -845,23 +845,6 @@ window.renderMap = async function () {
   }
 
 
-// =======================
-// AUTO REFRESH
-// =======================
-
-window.startAutoRefresh = function () {
-  setInterval(async () => {
-    console.log("Auto-refreshing map...");
-    try {
-      await window.renderMap();
-      console.log("Refresh complete");
-    } catch (err) {
-      console.error("Refresh failed:", err);
-    }
-  }, 20 * 60 * 1000);
-
-};
-
 
 
 
