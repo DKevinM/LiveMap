@@ -449,4 +449,11 @@ window.initMap = function () {
     }
   });
 
+  // ----------------------------
+  // AUTO REFRESH
+  // ----------------------------
+  if (typeof window.startAutoRefresh === "function") {
+    window.startAutoRefresh();
+  }
+   
 };
