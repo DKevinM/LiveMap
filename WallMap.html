@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Air Quality Monitoring – Alberta</title>
+  <meta charset="utf-8"/>
+
+  
+  <script>
+    window.APP_CONFIG = {
+      airshed: "ALL",
+      title: "Live Air Quality Monitoring – Alberta",
+
+
+      enableHistory: true,
+      
+      overlays: [
+        "stations",
+        "purpleair",
+        "eaqhi",
+        "rose_pm25",
+        "rose_no2",
+        "rose_so2",
+        "weather_radar",
+        "weather_wind_u",
+        "weather_lightning",
+        "weather_thunderstorm",
+        "firesmoke_now",
+        "firesmoke_6h",
+        "firesmoke_12h",
+        "firesmoke_24h"
+      ],
+
+      defaultAQHI: ["Alberta"],
+      
+      aqhi: [
+        "Alberta",
+        "Alberta_BLEND",
+        "ACA_Boundary_2022",
+        "ACA_Boundary_2022_BLEND",
+        "Edmonton",
+        "Edmonton_BLEND",
+        "Parkland_County",
+        "Parkland_County_BLEND",
+        "Strathcona",
+        "Strathcona_BLEND",
+        "WCAS_2024",
+        "WCAS_2024_BLEND",
+        "Yellowhead",
+        "Yellowhead_BLEND"
+      ]
+    };
+  </script>
+
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+  
+</head>
+<body>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="close">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+  
+
+<div id="header">
+  <div id="header-left">
+    Live Air Quality Monitoring – Alberta
+  </div>
+
+  <div id="header-center">
+    Click anywhere on the map to identify nearby stations, sensors, and weather
+  </div>
+
+  <div id="header-right"></div>
+</div>
+
+<div style="position:absolute; top:8px; right:25px; z-index:1000;">
+  <input id="addressInput" type="text" placeholder="Enter address..."
+         style="padding:6px; width:250px;" />
+  <button onclick="lookupAddress()">Go</button>
+</div>
+
+<div id="app">
+  <div id="map"></div>
+
+  <div id="panel"> 
+    <div id="aqhi-panel">
+      <div id="aqhi-content"></div>
+    </div>
+    <div id="station-gauges"></div>
+  </div>
+
+</div>
+  
+<button onclick="clearSelection()" id="clear-btn">
+  Clear Selection
+</button>
+  
+<!-- 1. DATA -->
+<script src="js/data.js" defer></script>
+
+<!-- 2. CORE LOGIC (used everywhere) -->
+<script src="js/aqhi.js" defer></script>
+<script src="js/click_utils.js" defer></script>
+
+<!-- 4. RENDERERS -->
+<script src="js/render.js" defer></script>
+  <!-- 3. MAP + LAYERS -->
+<script src="js/map.js" defer></script>
+  
+<script src="js/purpleair.js" defer></script>
+
+<!-- 5. WEATHER -->
+<script src="js/weather.js" defer></script>
+
+<!-- 6. INTERACTION -->
+<script src="js/click_engine.js" defer></script>
+
+<!-- 7. UI -->
+<script src="js/ui.js" defer></script>
+
+<!-- 9. GEOCODE -->
+<script src="js/geocode.js" defer></script>  
+
+<!-- 8. START -->
+<script src="js/main.js"></script>
+
+
+</body>
+</html>
