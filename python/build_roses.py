@@ -57,7 +57,7 @@ def fetch_last7days():
 
     all_rows = []
     start = 0
-    page_size = 100000
+    page_size = 1000
 
 
     while True:
