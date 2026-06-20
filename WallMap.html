@@ -4,6 +4,39 @@
   <title>Live Air Quality Monitoring – Alberta</title>
   <meta charset="utf-8"/>
 
+
+  <style>
+  /* Hide right-side AQHI panel */
+  #panel {
+    display: none !important;
+  }
+  
+  /* Hide Clear Selection button */
+  #clear-btn {
+    display: none !important;
+  }
+  
+  /* Hide address search */
+  #addressInput,
+  button[onclick="lookupAddress()"] {
+    display: none !important;
+  }
+  
+  /* Hide center instructions */
+  #header-center {
+    display: none !important;
+  }
+  
+  /* Expand map to full width */
+  #map {
+    width: 100vw !important;
+  }
+  
+  #app {
+    display: block !important;
+  }
+  </style>
+  
   
   <script>
     window.APP_CONFIG = {
@@ -131,6 +164,19 @@
 <!-- 9. GEOCODE -->
 <script src="js/geocode.js" defer></script>  
 
+<script>
+window.addEventListener("load", function() {
+  setTimeout(function() {
+    if (window.map) {
+      map.fitBounds([
+        [48.9, -120.0],
+        [60.1, -109.9]
+      ]);
+    }
+  }, 2000);
+});
+</script>
+  
 <!-- 8. START -->
 <script src="js/main.js"></script>
 
