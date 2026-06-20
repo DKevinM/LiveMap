@@ -70,8 +70,6 @@ def fetch_last7days():
 
         r = requests.get(url, headers=headers, params=params)
 
-        print("URL:", r.url)
-        print("Status:", r.status_code)
 
         if r.status_code != 200:
             print("Response:")
