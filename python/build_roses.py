@@ -13,7 +13,7 @@ HEADERS = {
     "Authorization": f"Bearer {SUPABASE_KEY}"
 }
 
-TABLE = "aqhi_data"
+TABLE = "rose_data_7day"
 
 POLLUTANTS = {
     "Fine Particulate Matter": "PM25",
@@ -49,7 +49,7 @@ def speed_bin(ws):
 
 # -------- PROPER PAGED SUPABASE PULL --------
 
-def fetch_last48():
+def fetch_last7days():
     now = datetime.now(timezone.utc)
     since = now - timedelta(hours=168)
 
@@ -57,7 +57,7 @@ def fetch_last48():
 
     all_rows = []
     start = 0
-    page_size = 1000
+    page_size = 10000
 
     while True:
         headers = HEADERS.copy()
@@ -65,9 +65,6 @@ def fetch_last48():
 
         params = {
             "select": "StationName,ParameterName,Value,ReadingDate",
-            "ParameterName": "in.(Fine Particulate Matter,Nitrogen Dioxide,Sulphur Dioxide,Wind Direction,Wind Speed)",
-            "ReadingDate": f"gte.{since.isoformat()}",
-            "order": "ReadingDate"
         }
 
         r = requests.get(url, headers=headers, params=params)
@@ -264,7 +261,7 @@ def build_rose(df, pollutant_name, stations):
 
 # -------- MAIN --------
 def main():
-    df = fetch_last48()
+    df = fetch_last7days()
 
 
     stations = fetch_stations()
