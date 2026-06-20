@@ -72,12 +72,15 @@ def fetch_last48():
 
 		r = requests.get(url, headers=headers, params=params)
 		
-		if r.status_code != 200:
-		    print("ERROR:")
-		    print(r.text)
-		
-        r.raise_for_status()
-        rows = r.json()
+	    print(r.url)
+	    print(r.status_code)
+	
+	    if r.status_code != 200:
+	        print(r.text)
+	
+	    r.raise_for_status()
+	
+	    rows = r.json()
 
         if not rows:
             break
