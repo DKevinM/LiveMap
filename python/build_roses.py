@@ -81,8 +81,6 @@ def fetch_last7days():
 
         rows = r.json()
 		
-		print("Range:", headers["Range"])
-		print("Rows returned:", len(rows))
 
         if not rows:
             break
