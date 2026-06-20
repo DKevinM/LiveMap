@@ -67,7 +67,7 @@
   
   <script>
     window.APP_CONFIG = {
-      : "ALL",
+      airshed: "ALL",
       title: "Live Air Quality Monitoring – Alberta",
 
 
@@ -228,9 +228,9 @@ window.addEventListener("load", function () {
     "WCAS"
   ];
 
-  airsheds.forEach(name => {
+  airshed.forEach(name => {
 
-    fetch(`airsheds/${name}.geojson`)
+    fetch(`airshed/${name}.geojson`)
       .then(response => response.json())
       .then(data => {
 
