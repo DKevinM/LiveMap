@@ -57,7 +57,8 @@ def fetch_last7days():
 
     all_rows = []
     start = 0
-    page_size = 10000
+    page_size = 100000
+
 
     while True:
         headers = HEADERS.copy()
@@ -79,6 +80,8 @@ def fetch_last7days():
         r.raise_for_status()
 
         rows = r.json()
+		print("Range:", headers["Range"])
+		print("Rows returned:", len(rows))
 
         if not rows:
             break
