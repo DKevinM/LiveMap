@@ -70,7 +70,12 @@ def fetch_last48():
             "order": "ReadingDate"
         }
 
-        r = requests.get(url, headers=headers, params=params)
+		r = requests.get(url, headers=headers, params=params)
+		
+		if r.status_code != 200:
+		    print("ERROR:")
+		    print(r.text)
+		
         r.raise_for_status()
         rows = r.json()
 
