@@ -80,6 +80,7 @@ def fetch_last7days():
         r.raise_for_status()
 
         rows = r.json()
+		
 		print("Range:", headers["Range"])
 		print("Rows returned:", len(rows))
 
