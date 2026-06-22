@@ -215,7 +215,7 @@ window.addEventListener("load", function() {
 <script>
 window.addEventListener("load", function () {
 
-  const airshed = [
+  const airsheds = [
     "ACA",
     "CRAZ",
     "HAMP",
@@ -228,19 +228,39 @@ window.addEventListener("load", function () {
     "WCAS"
   ];
 
-  airshed.forEach(name => {
+  airsheds.forEach(name => {
+
+    let style = {
+      color: "#444444",
+      weight: 2,
+      opacity: 0.8,
+      fillOpacity: 0
+    };
+
+    if (name === "ACA") {
+      style = {
+        color: "#000000",
+        weight: 6,
+        opacity: 1,
+        fillOpacity: 0
+      };
+    }
+
+    if (name === "WCAS") {
+      style = {
+        color: "#000000",
+        weight: 6,
+        opacity: 1,
+        fillOpacity: 0
+      };
+    }
 
     fetch(`airshed/${name}.geojson`)
-      .then(response => response.json())
+      .then(r => r.json())
       .then(data => {
 
         L.geoJSON(data, {
-          style: {
-            color: "#444444",
-            weight: 2,
-            opacity: 0.8,
-            fillOpacity: 0
-          }
+          style: style
         }).addTo(map);
 
       })
@@ -249,7 +269,7 @@ window.addEventListener("load", function () {
   });
 
 });
-</script>  
+</script>
 
 </body>
 </html>
