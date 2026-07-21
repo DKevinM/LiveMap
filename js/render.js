@@ -185,8 +185,8 @@ function getSmokeColor(pm) {
 function loadFireSmokePNG(imageFile, layer) {
     layer.clearLayers();
     const smokeBounds = [
-      [42.0341, -129.9029],
-      [65.0262, -89.9954]
+      [42.0, -130.0],
+      [65.0, -90.0]
     ];
   
     const smoke = L.imageOverlay(
