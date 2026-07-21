@@ -184,15 +184,18 @@ function getSmokeColor(pm) {
 
 function loadFireSmokePNG(imageFile, layer) {
     layer.clearLayers();
+    const smokeBounds = [
+      [35, -145], // southwest: latitude, longitude
+      [75,  -85]  // northeast: latitude, longitude
+    ];
+  
     const smoke = L.imageOverlay(
-        `${baseURL}/${imageFile}`,
-        [
-            [42, -130],
-            [65,  -90]
-        ],
-        {
-            opacity: 0.55
-        }
+      `${baseURL}/${imageFile}`,
+      smokeBounds,
+      {
+        opacity: 0.55,
+        interactive: false
+      }
     );
     layer.addLayer(smoke);
     console.log("Loaded FireSmoke PNG:", imageFile);
@@ -423,19 +426,37 @@ window.renderMap = async function () {
   
   loadEstimatedAQHI();  
   
-const mobile = window.innerWidth <= 1024;
-if (mobile) {
+  const useSmokePNG =
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.innerWidth <= 1024;
+  
+  if (useSmokePNG) {
     loadFireSmokePNG("firesmoke_00h.png", window.layers.firesmoke_now);
     loadFireSmokePNG("firesmoke_06h.png", window.layers.firesmoke_6h);
     loadFireSmokePNG("firesmoke_12h.png", window.layers.firesmoke_12h);
     loadFireSmokePNG("firesmoke_24h.png", window.layers.firesmoke_24h);
-} else {
-    loadFireSmokeLayer(`${baseURL}/firesmoke_now.geojson`, window.layers.firesmoke_now);
-    loadFireSmokeLayer(`${baseURL}/firesmoke_6h.geojson`, window.layers.firesmoke_6h);
-    loadFireSmokeLayer(`${baseURL}/firesmoke_12h.geojson`, window.layers.firesmoke_12h);
-    loadFireSmokeLayer(`${baseURL}/firesmoke_24h.geojson`, window.layers.firesmoke_24h);
-}
-    
+  } else {
+    loadFireSmokeLayer(
+      `${baseURL}/firesmoke_now.geojson`,
+      window.layers.firesmoke_now
+    );
+  
+    loadFireSmokeLayer(
+      `${baseURL}/firesmoke_6h.geojson`,
+      window.layers.firesmoke_6h
+    );
+  
+    loadFireSmokeLayer(
+      `${baseURL}/firesmoke_12h.geojson`,
+      window.layers.firesmoke_12h
+    );
+  
+    loadFireSmokeLayer(
+      `${baseURL}/firesmoke_24h.geojson`,
+      window.layers.firesmoke_24h
+    );
+  }
+      
   
   // render PurpleAir
   if (window.renderPurpleAir) {
