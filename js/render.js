@@ -490,6 +490,7 @@ window.renderMap = async function () {
           Object.values(window._layerControl._layers).forEach(l => {
             if (l.name === "AQHI Grid AB Stations") l.layer = window.layers.aqhi["Alberta"];
             else if (l.name === "AQHI Grid AB Stations+Sensors") l.layer = window.layers.aqhi["Alberta_BLEND"];
+            else if (l.name === "AQHI Forecast (3h)") l.layer = window.layers.aqhi["Alberta_FORECAST_3H"];
             else if (l.name === "AQHI Grid ACA Stations") l.layer = window.layers.aqhi["ACA_Boundary_2022"];
             else if (l.name === "AQHI Grid ACA Stations+Sensors") l.layer = window.layers.aqhi["ACA_Boundary_2022_BLEND"];
             else if (l.name === "AQHI Grid Edmonton Stations") l.layer = window.layers.aqhi["Edmonton"];
