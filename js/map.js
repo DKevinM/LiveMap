@@ -101,6 +101,9 @@ window.initMap = function () {
     
     if (e.name === "AQHI Grid AB Stations") group = "Alberta";
     else if (e.name === "AQHI Grid AB Stations+Sensors") group = "Alberta_BLEND";
+
+    else if (e.name === "AQHI Forecast (3h)")
+      group = "Alberta_FORECAST_3H";
     
     else if (e.name === "AQHI Grid ACA Stations") group = "ACA_Boundary_2022";
     else if (e.name === "AQHI Grid ACA Stations+Sensors") group = "ACA_Boundary_2022_BLEND";
@@ -374,6 +377,7 @@ window.initMap = function () {
     firesmoke_24h: "FireSmoke +24h",
     "AQHI Alberta": "AQHI Grid AB Stations",
     "AQHI Alberta_BLEND": "AQHI Grid AB Stations+Sensors",
+    "AQHI Alberta_FORECAST_3H": "AQHI Forecast (3h)",
     "AQHI ACA_Boundary_2022": "AQHI Grid ACA Stations",
     "AQHI ACA_Boundary_2022_BLEND": "AQHI Grid ACA Stations+Sensors",
     "AQHI Edmonton": "AQHI Grid Edmonton Stations",
