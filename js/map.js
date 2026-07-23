@@ -376,7 +376,7 @@ window.initMap = function () {
     firesmoke_24h: "FireSmoke +24h",
     "AQHI Alberta": "AQHI Grid AB Stations",
     "AQHI Alberta_BLEND": "AQHI Grid AB Stations+Sensors",
-    "AQHI Alberta_FORECAST_3H": "AQHI Forecast (3h)",
+    "AQHI Alberta_FORECAST_3H": "AQHI Grid Forecast (3h)",
     "AQHI ACA_Boundary_2022": "AQHI Grid ACA Stations",
     "AQHI ACA_Boundary_2022_BLEND": "AQHI Grid ACA Stations+Sensors",
     "AQHI Edmonton": "AQHI Grid Edmonton Stations",
