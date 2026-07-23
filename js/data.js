@@ -132,6 +132,9 @@ window.AQHI_GROUPS = {
   Alberta: ["AQHI_Alberta.geojson"],
   Alberta_BLEND: ["AQHI_Alberta_blend.geojson"],
 
+    // 3-hour Cubist AQHI forecast
+  Alberta_FORECAST_3H: ["AQHI_forecast_3h_grid.geojson"],
+  
   ACA_Boundary_2022: ["AQHI_ACA_Boundary_2022.geojson"],
   ACA_Boundary_2022_BLEND: ["AQHI_ACA_Boundary_2022_blend.geojson"],
 
@@ -154,7 +157,7 @@ window.AQHI_GROUPS = {
 
 window.ACTIVE_REGIONS = ["Alberta", "ACA", "WCAS"];
 
-window.ACTIVE_TYPES = ["CURRENT", "BLEND"];
+window.ACTIVE_TYPES = ["CURRENT", "BLEND", "FORECAST_3H"];
 
 
 
