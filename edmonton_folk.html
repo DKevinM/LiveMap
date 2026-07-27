@@ -195,7 +195,7 @@ window.addEventListener("load", () => {
         // Analysis Zones
         //-------------------------------------------------
 
-        L.circle([festival.lat, festival.lng], {
+        const immediateAreaCircle = L.circle([festival.lat, festival.lng], {
             radius: 2000,
             color: "#00B050",
             weight: 3,
@@ -226,13 +226,13 @@ window.addEventListener("load", () => {
         .bindTooltip("10 km Regional Intelligence Area");
 
         //-------------------------------------------------
-        // Focus on the Festival
+        // Focus on the Festival - start zoomed to the green
+        // (2 km Immediate Event Area) circle
         //-------------------------------------------------
 
-        map.setView(
-            [festival.lat, festival.lng],
-            12
-        );
+        map.fitBounds(immediateAreaCircle.getBounds(), {
+            padding: [20, 20]
+        });
 
         marker.openPopup();
 
