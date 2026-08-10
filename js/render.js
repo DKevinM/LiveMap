@@ -239,15 +239,20 @@ function loadEstimatedAQHI() {
         });
 
 
-      
+
+        const isPM25Only = st.AQHI_type === "estimated_pm25_only";
+        const gasLines = isPM25Only ? "" : `
+          O3 (3h): ${st.o3_3h} ppb<br>
+          NO2 (3h): ${st.no2_3h} ppb<br>`;
+        const estimateNote = isPM25Only
+          ? "Station appears offline — PM2.5-only estimate from nearby PurpleAir"
+          : "No PM2.5 sensor at this station — estimated from nearby PurpleAir";
         marker.bindPopup(`
           <b>${st.station}</b><br>
           Estimated AQHI: <b>${st.AQHI > 10 ? "10+" : Math.round(st.AQHI)}</b><br>
-          PM2.5 (PurpleAir): ${st.pm25_est} µg/m³<br>
-          O3 (3h): ${st.o3_3h} ppb<br>
-          NO2 (3h): ${st.no2_3h} ppb<br>
+          PM2.5 (PurpleAir): ${st.pm25_est} µg/m³<br>${gasLines}
           Sensors used: ${st.purpleair_sensor_count}<br>
-          <i>Estimated from nearby PurpleAir</i>
+          <i>${estimateNote}</i>
         `);
         marker.addTo(window.layers.eaqhi);
         
