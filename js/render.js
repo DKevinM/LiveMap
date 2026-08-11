@@ -241,17 +241,26 @@ function loadEstimatedAQHI() {
 
 
         const isPM25Only = st.AQHI_type === "estimated_pm25_only";
+        const isMdsDirect = st.AQHI_type === "mds_direct";
         const gasLines = isPM25Only ? "" : `
           O3 (3h): ${st.o3_3h} ppb<br>
           NO2 (3h): ${st.no2_3h} ppb<br>`;
+        const pm25Label = st.pm25_source === "MDS" ? "MDS" : "PurpleAir";
+        const sensorLine = st.purpleair_sensor_count
+          ? `Sensors used: ${st.purpleair_sensor_count}<br>`
+          : "";
         const estimateNote = isPM25Only
           ? "Station appears offline — PM2.5-only estimate from nearby PurpleAir"
-          : "No PM2.5 sensor at this station — estimated from nearby PurpleAir";
+          : isMdsDirect
+            ? (st.pm25_source === "MDS"
+                ? "Missing from the government feed — real reading from the airshed's own MDS telemetry"
+                : "Missing from the government feed — MDS telemetry for gases, PM2.5 estimated from nearby PurpleAir")
+            : "No PM2.5 sensor at this station — estimated from nearby PurpleAir";
         marker.bindPopup(`
           <b>${st.station}</b><br>
           Estimated AQHI: <b>${st.AQHI > 10 ? "10+" : Math.round(st.AQHI)}</b><br>
-          PM2.5 (PurpleAir): ${st.pm25_est} µg/m³<br>${gasLines}
-          Sensors used: ${st.purpleair_sensor_count}<br>
+          PM2.5 (${pm25Label}): ${st.pm25_est} µg/m³<br>${gasLines}
+          ${sensorLine}
           <i>${estimateNote}</i>
         `);
         marker.addTo(window.layers.eaqhi);
