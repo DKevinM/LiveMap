@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PAZA Air Monitoring</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script>
+    window.APP_CONFIG = {
+      airshed: "PAZA",
+      title: "PAZA Air Monitoring",
+
+      enableHistory: true,
+
+      // Lock to PAZA region (Peace/Grande Prairie area)
+      bounds: [
+        [53.5, -120.3],   // southwest
+        [56.6, -114.8]    // northeast
+      ],
+      lockBounds: false,
+      minZoom: 5,
+      maxZoom: 18,
+
+      center: [55.06, -117.53],
+      zoom: 7,
+
+      // Stations + PurpleAir only for now - no AQHI grid yet (PAZA isn't
+      // wired into the Cubist forecast grid pipeline, unlike ACA/WCAS/
+      // Parkland_County/Yellowhead). Both station and PurpleAir feeds are
+      // already Alberta-wide and filtered by map bounds, so PAZA's own
+      // stations show up automatically with no PAZA-specific data pull.
+      overlays: [
+        "stations",
+        "purpleair"
+      ]
+
+      // No aqhi / defaultAQHI here on purpose - see comment above.
+    };
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+</head>
+
+<body>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span id="close">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div id="header">
+  <div id="header-left">
+    PAZA Air Monitoring
+  </div>
+
+  <div id="header-center">
+    Click anywhere on the map to identify nearby stations, sensors, and weather
+  </div>
+
+  <div id="header-right"></div>
+</div>
+
+<!-- Address search -->
+<div id="search-box">
+  <input id="addressInput" type="text" placeholder="Enter address..."
+         style="padding:6px; width:250px;" />
+  <button onclick="lookupAddress()">Go</button>
+</div>
+
+
+<div id="app">
+  <div id="map"></div>
+
+  <div id="panel">
+    <div id="aqhi-panel">
+      <div id="aqhi-content"></div>
+    </div>
+    <div id="station-gauges"></div>
+  </div>
+</div>
+
+<button onclick="clearSelection()" id="clear-btn">
+  Clear Selection
+</button>
+
+<!-- Scripts -->
+<script src="js/data.js" defer></script>
+<script src="js/aqhi.js" defer></script>
+<script src="js/click_utils.js" defer></script>
+<script src="js/render.js" defer></script>
+<script src="js/map.js" defer></script>
+<script src="js/purpleair.js" defer></script>
+<script src="js/weather.js" defer></script>
+<script src="js/click_engine.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/geocode.js" defer></script>
+<script src="js/main.js"></script>
+
+<!-- PAZA boundary - loaded independently rather than via the shared
+     showACABoundary/showWCASBoundary flags in map.js/render.js, so this
+     page doesn't require changes to code the other airshed pages depend on -->
+<script>
+window.addEventListener("load", function () {
+  setTimeout(function() {
+    if (!window.map) return;
+
+    fetch("airshed/PAZA.geojson")
+      .then(r => r.json())
+      .then(data => {
+        L.geoJSON(data, {
+          style: {
+            color: "#000000",
+            weight: 4,
+            opacity: 1,
+            fillOpacity: 0
+          }
+        }).addTo(map);
+      })
+      .catch(err => console.log("Failed to load PAZA boundary", err));
+  }, 1500);
+});
+</script>
+
+</body>
+</html>
