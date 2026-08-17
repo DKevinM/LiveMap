@@ -648,8 +648,14 @@ window.renderMap = async function () {
           } else {
             val = num > 10 ? "10+" : Math.round(num);
           }
+        } else {
+          // fixes float artifacts like 46.699999999999996 from
+          // upstream unit-conversion arithmetic - round to 1 decimal
+          // rather than displaying the raw stored value
+          const num = Number(val);
+          if (!isNaN(num)) val = Math.round(num * 10) / 10;
         }
-    
+
         return `${label}: ${val}${u}`;
       });
   
@@ -675,8 +681,14 @@ window.renderMap = async function () {
             } else {
               val = num > 10 ? "10+" : Math.round(num);
             }
+          } else {
+            // fixes float artifacts like 46.699999999999996 from
+            // upstream unit-conversion arithmetic - round to 1 decimal
+            // rather than displaying the raw stored value
+            const num = Number(val);
+            if (!isNaN(num)) val = Math.round(num * 10) / 10;
           }
-      
+
           return `${label}: ${val}${u}`;
         });
 
@@ -718,13 +730,19 @@ window.renderMap = async function () {
       ${dnaChartHTML}
     `;
 
+    // Wider popup only where the DNA chart needs the room - every other
+    // page gets Leaflet's default sizing, unchanged.
+    const popupOptions = window.APP_CONFIG?.showDNAChart
+      ? { maxWidth: 320, minWidth: 300 }
+      : {};
+
     const marker = L.circleMarker([lat, lon], {
       radius: 18,
       fillColor: color,
       color: "#222",
       weight: 2,
       fillOpacity: 0.85
-    }).bindPopup(popupHTML);
+    }).bindPopup(popupHTML, popupOptions);
 
     // Plotly needs a real DOM element, which only exists once Leaflet
     // actually opens this popup - popupopen is the right hook, not
