@@ -656,9 +656,9 @@ window.renderMap = async function () {
           if (!isNaN(num)) val = Math.round(num * 10) / 10;
         }
 
-        return `${label}: ${val}${u}`;
+        return { label, val, u };
       });
-  
+
       const linesRest = rows
         .filter(r =>
           !used.has(r.ParameterName) &&
@@ -689,7 +689,7 @@ window.renderMap = async function () {
             if (!isNaN(num)) val = Math.round(num * 10) / 10;
           }
 
-          return `${label}: ${val}${u}`;
+          return { label, val, u };
         });
 
 
@@ -717,11 +717,26 @@ window.renderMap = async function () {
       ? `<hr><div id="${dnaChartId}"></div>`
       : "";
 
+    const allLines = [...linesFirst, ...linesRest];
+
+    // Plain-text list on every page except PAZA, unchanged from before -
+    // PAZA gets a real two-column table since the wider popup (added for
+    // the DNA chart) left the old label:value list looking sparse/ragged.
+    const paramListHTML = window.APP_CONFIG?.showDNAChart
+      ? `<table style="border-collapse:collapse;width:100%;font-size:12px;">
+           ${allLines.map(l => `
+             <tr>
+               <td style="padding:1px 8px 1px 0;text-align:left;white-space:nowrap;">${l.label}</td>
+               <td style="padding:1px 0;text-align:right;white-space:nowrap;">${l.val}${l.u}</td>
+             </tr>`).join("")}
+         </table>`
+      : allLines.map(l => `${l.label}: ${l.val}${l.u}`).join("<br>");
+
     const popupHTML = `
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br>
       <small>Hour Ending</small><br><br>
-      ${[...linesFirst, ...linesRest].join("<br>")}
+      ${paramListHTML}
       ${imageHTML}
       <hr>
       ${historyLink}
