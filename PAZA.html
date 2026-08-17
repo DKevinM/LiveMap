@@ -135,10 +135,16 @@ window.addEventListener("load", function () {
 });
 </script>
 
-<!-- AQHI "DNA" driver chart. Wraps drawAQHIPanel() (js/aqhi.js) rather
-     than modifying it, so this stays PAZA-only and none of the shared
-     files ACA.html/WCAS.html/etc. depend on are touched. Decomposes
-     the real AQHI formula:
+<!-- AQHI "DNA" driver chart. The actual station popup is built in the
+     SHARED js/render.js (inside renderMap()'s per-station loop) - it
+     places an empty placeholder div in the popup HTML and fires
+     window.renderDNAChartInto(...) on Leaflet's popupopen event, but
+     only when window.APP_CONFIG.showDNAChart is true. That keeps the
+     shared file's behavior byte-for-byte identical on every other page
+     (ACA.html/WCAS.html/etc never set that flag) while the actual
+     chart-drawing logic below stays local to this page.
+
+     Decomposes the real AQHI formula:
        AQHI = (1000/10.4) * [exp(0.000537*O3) + exp(0.000871*NO2)
                               + exp(0.000487*PM2.5) - 3]
      into each pollutant's share of the total (each term's value above
@@ -147,22 +153,6 @@ window.addEventListener("load", function () {
      pollutant is for that station rather than what's actually driving
      today's number. -->
 <script>
-window.addEventListener("load", function () {
-  setTimeout(function () {
-    if (!window.APP_CONFIG?.showDNAChart) return;
-    if (typeof window.drawAQHIPanel !== "function") {
-      console.log("drawAQHIPanel not found - DNA chart hook skipped");
-      return;
-    }
-
-    const originalDrawAQHIPanel = window.drawAQHIPanel;
-    window.drawAQHIPanel = function () {
-      originalDrawAQHIPanel();
-      renderDNAChart();
-    };
-  }, 800); // run after aqhi.js has defined drawAQHIPanel
-});
-
 function computeAQHIDrivers(no2, o3, pm25) {
   const tNO2 = Math.exp(0.000871 * no2) - 1;
   const tO3 = Math.exp(0.000537 * o3) - 1;
@@ -176,43 +166,39 @@ function computeAQHIDrivers(no2, o3, pm25) {
   };
 }
 
-function renderDNAChart() {
-  const current = window.aqhiData?.current;
-  const stationName = current?.station;
-  const aqhiValue = current?.value;
-  if (!stationName) return;
+// containerId: the placeholder div's id, already in the DOM (popupopen
+// already fired by the time this runs). rows: this station's full
+// parameter rows (same shape used to build the rest of the popup).
+// aqhiVal: this station's current AQHI, already computed by render.js.
+window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
 
-  const no2 = window.getStationValue ? window.getStationValue(stationName, "Nitrogen Dioxide") : null;
-  const o3 = window.getStationValue ? window.getStationValue(stationName, "Ozone") : null;
-  const pm25 = window.getStationValue ? window.getStationValue(stationName, "Fine Particulate Matter") : null;
+  const byParam = {};
+  (rows || []).forEach(r => { byParam[r.ParameterName] = r; });
+
+  const no2 = byParam["Nitrogen Dioxide"]?.Value;
+  const o3 = byParam["Ozone"]?.Value;
+  const pm25 = byParam["Fine Particulate Matter"]?.Value;
 
   if (no2 == null || o3 == null || pm25 == null) return; // station doesn't report all three - skip silently
 
   const shares = computeAQHIDrivers(Number(no2), Number(o3), Number(pm25));
   if (!shares) return;
 
-  const container = document.getElementById("aqhi-content");
-  if (!container) return;
-
-  const chartDiv = document.createElement("div");
-  chartDiv.id = "dna-chart";
-  chartDiv.style.marginTop = "10px";
-  chartDiv.style.paddingTop = "8px";
-  chartDiv.style.borderTop = "1px solid #ccc";
-  container.appendChild(chartDiv);
-
   const label = document.createElement("div");
   label.style.fontWeight = "600";
-  label.style.fontSize = "13px";
+  label.style.fontSize = "12px";
+  label.style.marginBottom = "4px";
   label.textContent = "What's driving this AQHI";
-  chartDiv.appendChild(label);
+  container.appendChild(label);
 
   const plotDiv = document.createElement("div");
-  chartDiv.appendChild(plotDiv);
+  container.appendChild(plotDiv);
 
   const theta = ["NO2", "O3", "PM2.5", "NO2"];
   const r = [shares.NO2, shares.O3, shares["PM2.5"], shares.NO2];
-  const aqhiLabel = aqhiValue != null ? (aqhiValue > 10 ? "10+" : Math.round(aqhiValue)) : "—";
+  const aqhiLabel = (aqhiVal != null && isFinite(aqhiVal)) ? (aqhiVal > 10 ? "10+" : Math.round(aqhiVal)) : "—";
 
   Plotly.newPlot(plotDiv, [{
     type: "scatterpolar",
@@ -221,16 +207,16 @@ function renderDNAChart() {
     fill: "toself",
     hovertemplate: "%{theta}: %{r:.0f}%<extra></extra>"
   }], {
-    title: { text: `Current AQHI: ${aqhiLabel}`, font: { size: 12 } },
+    title: { text: `AQHI: ${aqhiLabel}`, font: { size: 11 } },
     polar: {
       radialaxis: { visible: true, range: [0, 100], ticksuffix: "%" }
     },
     showlegend: false,
-    margin: { t: 36, b: 20, l: 30, r: 30 },
-    height: 240,
-    width: 260
+    margin: { t: 30, b: 16, l: 24, r: 24 },
+    height: 200,
+    width: 220
   }, { displayModeBar: false });
-}
+};
 </script>
 
 </body>

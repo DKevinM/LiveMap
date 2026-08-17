@@ -696,6 +696,15 @@ window.renderMap = async function () {
       : "";
     
     
+    // Optional per-page addition (currently PAZA.html only, via the
+    // showDNAChart config flag) - a placeholder div for the AQHI "DNA"
+    // driver chart. Every other page leaves showDNAChart unset, so
+    // dnaChartHTML is "" and popupHTML is byte-for-byte unchanged there.
+    const dnaChartId = `dna-chart-${stationName.replace(/[^a-zA-Z0-9]/g, "_")}`;
+    const dnaChartHTML = window.APP_CONFIG?.showDNAChart
+      ? `<hr><div id="${dnaChartId}"></div>`
+      : "";
+
     const popupHTML = `
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br>
@@ -706,8 +715,9 @@ window.renderMap = async function () {
       ${historyLink}
       <a href="/LiveMap/gauges.html?station=${encodeURIComponent(stationName)}" target="_blank">
         View gauges</a>
+      ${dnaChartHTML}
     `;
-  
+
     const marker = L.circleMarker([lat, lon], {
       radius: 18,
       fillColor: color,
@@ -715,7 +725,16 @@ window.renderMap = async function () {
       weight: 2,
       fillOpacity: 0.85
     }).bindPopup(popupHTML);
-    
+
+    // Plotly needs a real DOM element, which only exists once Leaflet
+    // actually opens this popup - popupopen is the right hook, not
+    // build time (the div isn't in the document until then).
+    if (window.APP_CONFIG?.showDNAChart && typeof window.renderDNAChartInto === "function") {
+      marker.on("popupopen", function () {
+        window.renderDNAChartInto(dnaChartId, rows, aqhiVal);
+      });
+    }
+
     // choose which layer the marker belongs to
     // ALWAYS add to Alberta layer
     window.layers.stations.addLayer(marker);
