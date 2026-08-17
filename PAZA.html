@@ -32,9 +32,15 @@
       overlays: [
         "stations",
         "purpleair"
-      ]
+      ],
 
       // No aqhi / defaultAQHI here on purpose - see comment above.
+
+      // AQHI "DNA" driver chart - decomposes the actual AQHI formula
+      // into each pollutant's real share (not a historical-max
+      // normalization), so a viewer can see WHY today's AQHI is what
+      // it is, not just the number. See below for the implementation.
+      showDNAChart: true
     };
   </script>
 
@@ -127,6 +133,104 @@ window.addEventListener("load", function () {
       .catch(err => console.log("Failed to load PAZA boundary", err));
   }, 1500);
 });
+</script>
+
+<!-- AQHI "DNA" driver chart. Wraps drawAQHIPanel() (js/aqhi.js) rather
+     than modifying it, so this stays PAZA-only and none of the shared
+     files ACA.html/WCAS.html/etc. depend on are touched. Decomposes
+     the real AQHI formula:
+       AQHI = (1000/10.4) * [exp(0.000537*O3) + exp(0.000871*NO2)
+                              + exp(0.000487*PM2.5) - 3]
+     into each pollutant's share of the total (each term's value above
+     its zero-concentration floor of 1, as a fraction of the sum) - not
+     a historical-max normalization, which would show how unusual each
+     pollutant is for that station rather than what's actually driving
+     today's number. -->
+<script>
+window.addEventListener("load", function () {
+  setTimeout(function () {
+    if (!window.APP_CONFIG?.showDNAChart) return;
+    if (typeof window.drawAQHIPanel !== "function") {
+      console.log("drawAQHIPanel not found - DNA chart hook skipped");
+      return;
+    }
+
+    const originalDrawAQHIPanel = window.drawAQHIPanel;
+    window.drawAQHIPanel = function () {
+      originalDrawAQHIPanel();
+      renderDNAChart();
+    };
+  }, 800); // run after aqhi.js has defined drawAQHIPanel
+});
+
+function computeAQHIDrivers(no2, o3, pm25) {
+  const tNO2 = Math.exp(0.000871 * no2) - 1;
+  const tO3 = Math.exp(0.000537 * o3) - 1;
+  const tPM25 = Math.exp(0.000487 * pm25) - 1;
+  const total = tNO2 + tO3 + tPM25;
+  if (!isFinite(total) || total <= 0) return null;
+  return {
+    NO2: 100 * tNO2 / total,
+    O3: 100 * tO3 / total,
+    "PM2.5": 100 * tPM25 / total
+  };
+}
+
+function renderDNAChart() {
+  const current = window.aqhiData?.current;
+  const stationName = current?.station;
+  const aqhiValue = current?.value;
+  if (!stationName) return;
+
+  const no2 = window.getStationValue ? window.getStationValue(stationName, "Nitrogen Dioxide") : null;
+  const o3 = window.getStationValue ? window.getStationValue(stationName, "Ozone") : null;
+  const pm25 = window.getStationValue ? window.getStationValue(stationName, "Fine Particulate Matter") : null;
+
+  if (no2 == null || o3 == null || pm25 == null) return; // station doesn't report all three - skip silently
+
+  const shares = computeAQHIDrivers(Number(no2), Number(o3), Number(pm25));
+  if (!shares) return;
+
+  const container = document.getElementById("aqhi-content");
+  if (!container) return;
+
+  const chartDiv = document.createElement("div");
+  chartDiv.id = "dna-chart";
+  chartDiv.style.marginTop = "10px";
+  chartDiv.style.paddingTop = "8px";
+  chartDiv.style.borderTop = "1px solid #ccc";
+  container.appendChild(chartDiv);
+
+  const label = document.createElement("div");
+  label.style.fontWeight = "600";
+  label.style.fontSize = "13px";
+  label.textContent = "What's driving this AQHI";
+  chartDiv.appendChild(label);
+
+  const plotDiv = document.createElement("div");
+  chartDiv.appendChild(plotDiv);
+
+  const theta = ["NO2", "O3", "PM2.5", "NO2"];
+  const r = [shares.NO2, shares.O3, shares["PM2.5"], shares.NO2];
+  const aqhiLabel = aqhiValue != null ? (aqhiValue > 10 ? "10+" : Math.round(aqhiValue)) : "—";
+
+  Plotly.newPlot(plotDiv, [{
+    type: "scatterpolar",
+    r: r,
+    theta: theta,
+    fill: "toself",
+    hovertemplate: "%{theta}: %{r:.0f}%<extra></extra>"
+  }], {
+    title: { text: `Current AQHI: ${aqhiLabel}`, font: { size: 12 } },
+    polar: {
+      radialaxis: { visible: true, range: [0, 100], ticksuffix: "%" }
+    },
+    showlegend: false,
+    margin: { t: 36, b: 20, l: 30, r: 30 },
+    height: 240,
+    width: 260
+  }, { displayModeBar: false });
+}
 </script>
 
 </body>
