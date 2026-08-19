@@ -748,7 +748,7 @@ window.renderMap = async function () {
     // Wider popup only where the DNA chart needs the room - every other
     // page gets Leaflet's default sizing, unchanged.
     const popupOptions = window.APP_CONFIG?.showDNAChart
-      ? { maxWidth: 320, minWidth: 300 }
+      ? { maxWidth: 260, minWidth: 240 }
       : {};
 
     const marker = L.circleMarker([lat, lon], {
