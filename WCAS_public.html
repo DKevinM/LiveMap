@@ -194,6 +194,7 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
   container.appendChild(label);
 
   const plotDiv = document.createElement("div");
+  plotDiv.style.margin = "0 auto";
   container.appendChild(plotDiv);
 
   const theta = ["NO2", "O3", "PM2.5", "NO2"];
@@ -209,7 +210,7 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
   }], {
     title: { text: `AQHI: ${aqhiLabel}`, font: { size: 11 } },
     polar: {
-      radialaxis: { visible: true, range: [0, 100], tickvals: [0, 50, 100], ticksuffix: "%" }
+      radialaxis: { visible: true, range: [0, 100], tickvals: [0, 50, 100], ticktext: ["0%", "50%", "100%"] }
     },
     showlegend: false,
     margin: { t: 24, b: 22, l: 30, r: 30 },
