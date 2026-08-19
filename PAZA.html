@@ -34,7 +34,14 @@
         "purpleair"
       ],
 
-      // No aqhi / defaultAQHI here on purpose - see comment above.
+      // aqhi: [] here on purpose (not omitted) - see comment above.
+      // map.js's layer-control setup falls back to registering EVERY
+      // AQHI grid group in the app when APP_CONFIG.aqhi is undefined,
+      // not when it's absent-meaning-none - omitting this key entirely
+      // was what caused every other page's "AQHI Grid ..." entries to
+      // clutter PAZA's layer control. An empty array is the correct
+      // way to say "no AQHI grid groups for this page."
+      aqhi: [],
 
       // AQHI "DNA" driver chart - decomposes the actual AQHI formula
       // into each pollutant's real share (not a historical-max
