@@ -212,12 +212,12 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
   }], {
     title: { text: `AQHI: ${aqhiLabel}`, font: { size: 11 } },
     polar: {
-      radialaxis: { visible: true, range: [0, 100], ticksuffix: "%" }
+      radialaxis: { visible: true, range: [0, 100], tickvals: [0, 50, 100], ticksuffix: "%" }
     },
     showlegend: false,
-    margin: { t: 30, b: 16, l: 36, r: 36 },
-    height: 230,
-    width: 280
+    margin: { t: 20, b: 8, l: 20, r: 20 },
+    height: 160,
+    width: 190
   }, { displayModeBar: false });
 };
 </script>
