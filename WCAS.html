@@ -143,9 +143,9 @@
      places an empty placeholder div in the popup HTML and fires
      window.renderDNAChartInto(...) on Leaflet's popupopen event, but
      only when window.APP_CONFIG.showDNAChart is true. That keeps the
-     shared file's behavior byte-for-byte identical on every other page
-     (ACA.html/etc never set that flag) while the actual chart-drawing
-     logic below stays local to this page.
+     shared file's behavior byte-for-byte identical on pages that don't
+     set this flag while the actual chart-drawing logic below stays
+     local to this page (same block as PAZA.html/ACA.html/index.html).
 
      Decomposes the real AQHI formula:
        AQHI = (1000/10.4) * [exp(0.000537*O3) + exp(0.000871*NO2)
