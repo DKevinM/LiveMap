@@ -137,50 +137,6 @@ function inside(poly, lat, lon) {
 }
 
 
-function loadFireSmokeLayer(url, layer) {
-  fetch(url)
-    .then(r => r.json())
-    .then(geo => {
-      layer.clearLayers();
-
-      L.geoJSON(geo, {
-        style: f => ({
-          fillColor: getSmokeColor(f.properties.pm25),
-          fillOpacity: 0.4,
-          color: "none",
-          weight: 0
-        }),
-
-        onEachFeature: function (feature, lyr) {
-          const pm = Number(feature.properties?.pm25);
-          const ts = feature.properties?.timestamp || "";
-
-          lyr.bindTooltip(
-            `PM2.5: ${isFinite(pm) ? pm.toFixed(1) : "—"} µg/m³` +
-            (ts ? `<br>${ts}` : ""),
-            {
-              sticky: true
-            }
-          );
-        }
-      }).addTo(layer);
-
-      console.log("Loaded FireSmoke:", url);
-    })
-    .catch(e => console.error("FireSmoke load failed:", e));
-}
-
-
-function getSmokeColor(pm) {
-  if (pm < 1)   return "#f2e8b3";
-  if (pm < 10)  return "#e8c95c";
-  if (pm < 28)  return "#f5a623";
-  if (pm < 60)  return "#f57c00";
-  if (pm < 120) return "#cc5500";
-  return "#662200";
-}
-
-
 
 function loadFireSmokePNG(imageFile, layer) {
     layer.clearLayers();
@@ -440,36 +396,10 @@ window.renderMap = async function () {
   
   loadEstimatedAQHI();  
   
-  const useSmokePNG =
-    window.matchMedia("(pointer: coarse)").matches ||
-    window.innerWidth <= 1024;
-  
-  if (useSmokePNG) {
-    loadFireSmokePNG("firesmoke_00h.png", window.layers.firesmoke_now);
-    loadFireSmokePNG("firesmoke_06h.png", window.layers.firesmoke_6h);
-    loadFireSmokePNG("firesmoke_12h.png", window.layers.firesmoke_12h);
-    loadFireSmokePNG("firesmoke_24h.png", window.layers.firesmoke_24h);
-  } else {
-    loadFireSmokeLayer(
-      `${baseURL}/firesmoke_now.geojson`,
-      window.layers.firesmoke_now
-    );
-  
-    loadFireSmokeLayer(
-      `${baseURL}/firesmoke_6h.geojson`,
-      window.layers.firesmoke_6h
-    );
-  
-    loadFireSmokeLayer(
-      `${baseURL}/firesmoke_12h.geojson`,
-      window.layers.firesmoke_12h
-    );
-  
-    loadFireSmokeLayer(
-      `${baseURL}/firesmoke_24h.geojson`,
-      window.layers.firesmoke_24h
-    );
-  }
+  loadFireSmokePNG("firesmoke_00h.png", window.layers.firesmoke_now);
+  loadFireSmokePNG("firesmoke_06h.png", window.layers.firesmoke_6h);
+  loadFireSmokePNG("firesmoke_12h.png", window.layers.firesmoke_12h);
+  loadFireSmokePNG("firesmoke_24h.png", window.layers.firesmoke_24h);
       
   
   // render PurpleAir
