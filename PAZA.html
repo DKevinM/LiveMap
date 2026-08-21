@@ -24,24 +24,27 @@
       center: [55.06, -117.53],
       zoom: 7,
 
-      // Stations + PurpleAir only for now - no AQHI grid yet (PAZA isn't
-      // wired into the Cubist forecast grid pipeline, unlike ACA/WCAS/
-      // Parkland_County/Yellowhead). Both station and PurpleAir feeds are
-      // already Alberta-wide and filtered by map bounds, so PAZA's own
-      // stations show up automatically with no PAZA-specific data pull.
+      // Stations + PurpleAir only for now - no PAZA-specific AQHI grid yet
+      // (PAZA isn't wired into the Cubist forecast grid pipeline, unlike
+      // ACA/WCAS/Parkland_County/Yellowhead). Both station and PurpleAir
+      // feeds are already Alberta-wide and filtered by map bounds, so
+      // PAZA's own stations show up automatically with no PAZA-specific
+      // data pull. FireSmoke is Alberta-wide too, so it's included here.
       overlays: [
         "stations",
-        "purpleair"
+        "purpleair",
+        "firesmoke_now",
+        "firesmoke_6h",
+        "firesmoke_12h",
+        "firesmoke_24h"
       ],
 
-      // aqhi: [] here on purpose (not omitted) - see comment above.
-      // map.js's layer-control setup falls back to registering EVERY
-      // AQHI grid group in the app when APP_CONFIG.aqhi is undefined,
-      // not when it's absent-meaning-none - omitting this key entirely
-      // was what caused every other page's "AQHI Grid ..." entries to
-      // clutter PAZA's layer control. An empty array is the correct
-      // way to say "no AQHI grid groups for this page."
-      aqhi: [],
+      // Only the province-wide grid (both the stations-only and the
+      // stations+sensors blend version) - see comment above re: map.js's
+      // layer-control setup registering EVERY AQHI grid group in the app
+      // when APP_CONFIG.aqhi is undefined, not when it's an empty/partial
+      // array. No other airshed-specific grids belong here.
+      aqhi: ["Alberta", "Alberta_BLEND"],
 
       // AQHI "DNA" driver chart - decomposes the actual AQHI formula
       // into each pollutant's real share (not a historical-max
