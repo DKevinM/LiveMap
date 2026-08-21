@@ -71,9 +71,14 @@ window.initMap = function () {
   // baked into the firesmoke_*.png overlays themselves (AB_datapull's
   // fetch_firesmoke.py: PowerNorm gamma=0.30, vmin=0.1, vmax=80 over the
   // same 7-stop cmap), so this stays accurate as long as that ramp does.
-  // Only shown on pages that actually configure a firesmoke overlay.
+  // Only built on pages that actually configure a firesmoke overlay, and
+  // only shown once one of those layers is actually toggled on (see the
+  // overlayadd/overlayremove handlers below) - hidden by default.
+  let smokeLegend = null;
+
   if (window.APP_CONFIG?.overlays?.some(o => o.startsWith("firesmoke"))) {
-    const smokeLegend = L.DomUtil.create("div", "smoke-legend", map.getContainer());
+    smokeLegend = L.DomUtil.create("div", "smoke-legend", map.getContainer());
+    smokeLegend.style.display = "none";
     L.DomEvent.disableClickPropagation(smokeLegend);
     L.DomEvent.disableScrollPropagation(smokeLegend);
 
@@ -98,6 +103,8 @@ window.initMap = function () {
     `;
   }
 
+  const FIRESMOKE_LAYER_KEYS = ["firesmoke_now", "firesmoke_6h", "firesmoke_12h", "firesmoke_24h"];
+
   // ----------------------------
   // AQHI CLICK HANDLER
   // ----------------------------
@@ -121,9 +128,13 @@ window.initMap = function () {
       }
     }
     
+    if (e.name.startsWith("FireSmoke") && smokeLegend) {
+      smokeLegend.style.display = "block";
+    }
+
     // ----------------------------
     // AQHI GRID FIX
-    // ----------------------------   
+    // ----------------------------
     if (!e.name.startsWith("AQHI Grid")) {
       // do nothing, let other layers behave normally
     } else {
@@ -160,7 +171,12 @@ window.initMap = function () {
   });
 
   map.on("overlayremove", function (e) {
-  
+
+    if (e.name.startsWith("FireSmoke") && smokeLegend) {
+      const anyStillOn = FIRESMOKE_LAYER_KEYS.some(k => map.hasLayer(window.layers[k]));
+      if (!anyStillOn) smokeLegend.style.display = "none";
+    }
+
     if (
       e.name === "PM2.5 Rose" ||
       e.name === "NO2 Rose" ||
