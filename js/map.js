@@ -67,6 +67,37 @@ window.initMap = function () {
   
   legend.addTo(map);
 
+  // FireSmoke PM2.5 legend - swatch colours match the exact colour ramp
+  // baked into the firesmoke_*.png overlays themselves (AB_datapull's
+  // fetch_firesmoke.py: PowerNorm gamma=0.30, vmin=0.1, vmax=80 over the
+  // same 7-stop cmap), so this stays accurate as long as that ramp does.
+  // Only shown on pages that actually configure a firesmoke overlay.
+  if (window.APP_CONFIG?.overlays?.some(o => o.startsWith("firesmoke"))) {
+    const smokeLegend = L.DomUtil.create("div", "smoke-legend", map.getContainer());
+    L.DomEvent.disableClickPropagation(smokeLegend);
+    L.DomEvent.disableScrollPropagation(smokeLegend);
+
+    const stops = [
+      { value: "≥ 80", color: "#a00000" },
+      { value: "40",        color: "#e0432a" },
+      { value: "20",        color: "#ff7b3c" },
+      { value: "10",        color: "#ffb84c" },
+      { value: "5",         color: "#ffde60" },
+      { value: "1",         color: "#ddff92" },
+      { value: "≤ 0.1", color: "#d2ffd2" }
+    ];
+
+    smokeLegend.innerHTML = `
+      <div class="smoke-legend-title">PM2.5 Smoke<br>(&micro;g/m&sup3;)</div>
+      ${stops.map(s => `
+        <div class="smoke-legend-row">
+          <span class="smoke-legend-swatch" style="background:${s.color}"></span>
+          <span>${s.value}</span>
+        </div>
+      `).join("")}
+    `;
+  }
+
   // ----------------------------
   // AQHI CLICK HANDLER
   // ----------------------------
