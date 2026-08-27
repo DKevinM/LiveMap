@@ -463,9 +463,30 @@ window.purpleFCReady = (async () => {
 })();
 
 // ---------------- NPRI FC ----------------
-//  
-window.npriFCReady = fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output/NPRI.geojson")
-  .then(r => r.json())
+// Live from ECCC's own ArcGIS service, not the stale static export this
+// used to read (unchanged since 2026-07-18, had 2-4 duplicate rows per
+// facility - see project_npri_live_source memory). Paginated since the
+// server caps ~2000 records/request.
+async function fetchNpriLive() {
+  const base = "https://maps-cartes.ec.gc.ca/arcgis/rest/services/STB_DGST/NPRI/MapServer/0/query";
+  const fields = "FacilityName,CompanyName,ProvinceCode,ReportYear,NpriID,SectorDescriptionEn,City";
+  let allFeatures = [];
+  let offset = 0;
+  const pageSize = 2000;
+  while (true) {
+    const url = `${base}?where=ProvinceCode%3D%27AB%27&outFields=${fields}&f=geojson&resultRecordCount=${pageSize}&resultOffset=${offset}`;
+    const res = await fetch(url);
+    if (!res.ok) { console.error("NPRI live fetch failed:", res.status); break; }
+    const page = await res.json();
+    const feats = page.features || [];
+    allFeatures = allFeatures.concat(feats);
+    if (feats.length < pageSize) break;
+    offset += pageSize;
+  }
+  return { type: "FeatureCollection", features: allFeatures };
+}
+
+window.npriFCReady = fetchNpriLive()
   .then(j => {
     window.NPRI_FC = j;
     console.log("[LiveMap] NPRI_FC:", j.features.length);
