@@ -51,7 +51,7 @@ async function loadAQHIGroup(groupName) {
 
   for (const file of files) {
     const url = `https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/output/${file}`;
-    const res = await fetch(url);
+    const res = await fetchFresh(url);
     const geojson = await res.json();
 
     const layer = L.geoJSON(geojson, {
@@ -146,7 +146,10 @@ function loadFireSmokePNG(imageFile, layer) {
     ];
   
     const smoke = L.imageOverlay(
-      `${baseURL}/${imageFile}`,
+      // cache-bust: raw.githubusercontent.com image src, not a fetch() call,
+      // so the timestamp param has to be appended directly - see fetchFresh
+      // in data.js for why this is needed at all.
+      `${baseURL}/${imageFile}?t=${Date.now()}`,
       smokeBounds,
       {
         opacity: 0.55,
@@ -176,7 +179,7 @@ function clearAllLayers() {
 
 
 function loadEstimatedAQHI() {
-  fetch("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
+  fetchFresh("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
     .then(r => {
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();

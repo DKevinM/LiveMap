@@ -1,6 +1,16 @@
 // ---------------- GLOBALS ----------------
 window.dataByStation = Object.create(null);
 
+// raw.githubusercontent.com is served through GitHub's CDN, which can hold
+// a stale cached copy well past when the underlying file has updated - a
+// plain browser refresh doesn't force past it. Appending a timestamp makes
+// every load a distinct URL, forcing a fresh fetch from origin. Use this for
+// every raw.githubusercontent.com pull instead of calling fetch() directly.
+window.fetchFresh = function (url, options = {}) {
+  const sep = url.includes('?') ? '&' : '?';
+  return fetch(`${url}${sep}t=${Date.now()}`, { cache: 'no-store', ...options });
+};
+
 
 window.buildStationPopup = function (rows) {
 
@@ -162,7 +172,7 @@ window.ACTIVE_TYPES = ["CURRENT", "BLEND", "FORECAST_3H"];
 
 
 // ---------------- LOAD STATIONS (WORKING VERSION) ----------------
-window.dataReady = fetch('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
+window.dataReady = fetchFresh('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
   .then(res => res.text())
   .then(text => {
     const rows = text.trim().split('\n');
@@ -370,7 +380,7 @@ window.fetchAllStationData = async function () {
 // ---------------- PURPLEAIR ----------------
 async function loadPurpleAir() {
   const url = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/AB_PM25_map.json";
-  const res = await fetch(url);
+  const res = await fetchFresh(url);
   const json = await res.json();
   const records = Array.isArray(json) ? json : (json.data || []);
   return records.map(r => {

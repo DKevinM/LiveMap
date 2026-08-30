@@ -96,8 +96,8 @@ function getLabel(p, idx) {
 async function loadAQHI() {
 
   const [obs, fc] = await Promise.all([
-    fetch("https://raw.githubusercontent.com/DKevinM/CAN_AQHI/main/data/aqhi_observations.geojson").then(r => r.json()),
-    fetch("https://raw.githubusercontent.com/DKevinM/CAN_AQHI/main/data/aqhi_forecasts.geojson").then(r => r.json())
+    fetchFresh("https://raw.githubusercontent.com/DKevinM/CAN_AQHI/main/data/aqhi_observations.geojson").then(r => r.json()),
+    fetchFresh("https://raw.githubusercontent.com/DKevinM/CAN_AQHI/main/data/aqhi_forecasts.geojson").then(r => r.json())
   ]);
 
   const obsCal = (obs.features || [])
@@ -133,7 +133,7 @@ async function loadAQHI() {
 
 async function findClosestCommunityName(lat, lng) {
 
-  const obs = await fetch(
+  const obs = await fetchFresh(
     "https://raw.githubusercontent.com/DKevinM/CAN_AQHI/main/data/aqhi_observations.geojson"
   ).then(r => r.json());
 
