@@ -538,10 +538,10 @@ window.AppData.ready.then(() => {
       if (!byParam[param]) return;    
       const rows = byParam[param] || [];
       if (rows.length === 0) return;    
-      const latest = rows[rows.length - 1];    
+      const latest = rows[rows.length - 1];
       if (!stationTime) {
-        stationTime = latest.time.toLocaleString("en-CA");
-      }    
+        stationTime = window.formatHourRange(latest.time);
+      }
       if (param === "AQHI") {    
         const { latest: aqhiLatest, status: aqhiStatus } =
           getLatestStatus(rows, new Date(), 4);    
@@ -574,7 +574,7 @@ window.AppData.ready.then(() => {
         margin-top:2px;
         line-height:1;
       ">
-        Hour Ending
+        Hourly average
       </div>
     `;
         

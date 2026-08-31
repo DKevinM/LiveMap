@@ -11,6 +11,48 @@ window.fetchFresh = function (url, options = {}) {
   return fetch(`${url}${sep}t=${Date.now()}`, { cache: 'no-store', ...options });
 };
 
+// This data's timestamps use the "Hour Ending" convention: a 4:00 p.m.
+// reading covers the 3:00-4:00 p.m. period, not 4:00-5:00 p.m. That's a
+// standard convention in this data's own industry but reads backwards to
+// most people, who see a single timestamp and assume it means "as of this
+// time" going forward. Rather than relying on a "Hour Ending" label to
+// carry that meaning, show the real range - unambiguous either way. Used
+// by the station popup (render.js) and gauges.html (gauges.js), the two
+// places this timestamp reaches the public.
+window.formatHourRange = function (endDate, opts = {}) {
+  const tz = opts.timeZone || "America/Edmonton";
+  if (!(endDate instanceof Date) || isNaN(endDate)) return "";
+
+  const startDate = new Date(endDate.getTime() - 60 * 60 * 1000);
+
+  const timeFmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true
+  });
+  const dateFmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit"
+  });
+
+  const partVal = (parts, type) => parts.find(p => p.type === type)?.value || "";
+  const startParts = timeFmt.formatToParts(startDate);
+  const endParts = timeFmt.formatToParts(endDate);
+
+  const startPeriod = partVal(startParts, "dayPeriod");
+  const endPeriod = partVal(endParts, "dayPeriod");
+  const startTime = `${partVal(startParts, "hour")}:${partVal(startParts, "minute")}`;
+  const endTime = `${partVal(endParts, "hour")}:${partVal(endParts, "minute")}`;
+
+  // Drop the redundant a.m./p.m. on the start time when both ends share
+  // the same period (e.g. "3:00 – 4:00 p.m."), keep both when they
+  // don't (e.g. "11:00 a.m. – 12:00 p.m.").
+  const rangeStr = startPeriod === endPeriod
+    ? `${startTime} – ${endTime} ${endPeriod}`
+    : `${startTime} ${startPeriod} – ${endTime} ${endPeriod}`;
+
+  return opts.dateOnEnd === false
+    ? rangeStr
+    : `${dateFmt.format(endDate)}, ${rangeStr}`;
+};
+
 
 window.buildStationPopup = function (rows) {
 

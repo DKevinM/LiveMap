@@ -527,9 +527,7 @@ window.renderMap = async function () {
       if (!latest || t > latest) latest = t;
     });
   
-    const displayTime = latest
-      ? latest.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true })
-      : "";
+    const displayTime = latest ? window.formatHourRange(latest) : "";
   
     // Keep the popup dynamic, but order key params first (everything else after)
     const ordered = [
@@ -668,7 +666,7 @@ window.renderMap = async function () {
     const popupHTML = `
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br>
-      <small>Hour Ending</small><br><br>
+      <small>Hourly average</small><br><br>
       ${paramListHTML}
       ${imageHTML}
       <hr>
