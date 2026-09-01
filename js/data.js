@@ -214,7 +214,14 @@ window.ACTIVE_TYPES = ["CURRENT", "BLEND", "FORECAST_3H"];
 
 
 // ---------------- LOAD STATIONS (WORKING VERSION) ----------------
-window.dataReady = fetchFresh('https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/last6h.csv')
+// raw.githubusercontent.com's edge nodes can independently lag well behind
+// origin with no way for us to force a refresh - confirmed 2026-08-31 when
+// a fresh, cache-busted fetch still served an hour-old file while our own
+// server's identical request (different network path) got the current one.
+// jsdelivr's GitHub mirror exposes a real purge API (called by
+// run_fetch_last6h.sh right after every push), so staleness here is
+// actively fixed rather than just waited out.
+window.dataReady = fetchFresh('https://cdn.jsdelivr.net/gh/DKevinM/AB_datapull@main/data/last6h.csv')
   .then(res => res.text())
   .then(text => {
     const rows = text.trim().split('\n');
