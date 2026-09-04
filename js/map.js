@@ -398,7 +398,22 @@ window.initMap = function () {
       fetch(`airshed/${name}.geojson`)
         .then(r => r.json())
         .then(data => {
-          window.layers.airsheds.addLayer(L.geoJSON(data, { style: airshedStyle }));
+          const gj = L.geoJSON(data, {
+            style: airshedStyle,
+            // fillOpacity 0 in the style above is a hollow outline visually,
+            // but SVG hit-testing (pointer-events: visiblePainted) treats an
+            // unpainted fill as un-hoverable - so the tooltip would only
+            // trigger right on the boundary line, not the interior. A near-
+            // zero fillOpacity here keeps it visually identical (see
+            // airshedStyle) while making the whole polygon hoverable, same
+            // as the AQHI grid cells.
+            onEachFeature: function (feature, lyr) {
+              lyr.setStyle({ fillOpacity: 0.01 });
+              const label = feature.properties?.Name || name;
+              lyr.bindTooltip(label, { sticky: true });
+            }
+          });
+          window.layers.airsheds.addLayer(gj);
         })
         .catch(err => console.error(`Airshed boundary load failed: ${name}`, err));
     });
