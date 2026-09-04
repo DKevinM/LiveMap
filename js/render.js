@@ -138,26 +138,107 @@ function inside(poly, lat, lon) {
 
 
 
-function loadFireSmokePNG(imageFile, layer) {
+// One overlay, click-to-pick-a-time instead of four separate toggle
+// layers. window._firesmokeHour persists the user's choice across
+// re-renders (renderMap() re-runs on every data refresh / 20min page
+// reload) so switching to "+12h" doesn't silently snap back to "Now".
+const FIRESMOKE_HOURS = [
+  { key: "00h", label: "Now",  file: "firesmoke_00h.png" },
+  { key: "06h", label: "+6h",  file: "firesmoke_06h.png" },
+  { key: "12h", label: "+12h", file: "firesmoke_12h.png" },
+  { key: "24h", label: "+24h", file: "firesmoke_24h.png" }
+];
+window._firesmokeHour = window._firesmokeHour || "00h";
+
+function loadFireSmokeCombined() {
+    const layer = window.layers.firesmoke;
     layer.clearLayers();
+
     const smokeBounds = [
       [42.0, -130.0],
       [65.0, -90.0]
     ];
-  
+
+    const current = FIRESMOKE_HOURS.find(h => h.key === window._firesmokeHour) || FIRESMOKE_HOURS[0];
+
     const smoke = L.imageOverlay(
       // cache-bust: raw.githubusercontent.com image src, not a fetch() call,
       // so the timestamp param has to be appended directly - see fetchFresh
       // in data.js for why this is needed at all.
-      `${baseURL}/${imageFile}?t=${Date.now()}`,
+      `${baseURL}/${current.file}?t=${Date.now()}`,
       smokeBounds,
       {
         opacity: 0.55,
-        interactive: false
+        interactive: true
       }
     );
+
+    // Bound straight to the DOM <img> rather than smoke.on("click", ...):
+    // Leaflet's own container-level click delegation didn't reliably
+    // reach this element/pane combo in testing. A plain DOM listener on
+    // the element itself fires every time - but the <img> doesn't exist
+    // until Leaflet actually adds this layer to the map (it's lazily
+    // created in onAdd), which for a layer sitting inside a not-yet-
+    // toggled-on layerGroup doesn't happen until the FireSmoke checkbox
+    // is switched on. So attach via the "add" event (fires right after
+    // onAdd, once the <img> is guaranteed to exist) rather than reading
+    // getElement() immediately after addLayer(), which is too early.
+    smoke.on("add", function () {
+      const imgEl = smoke.getElement();
+      if (!imgEl || imgEl._firesmokeClickBound) return;
+      imgEl._firesmokeClickBound = true;
+
+      imgEl.addEventListener("click", function (domEvt) {
+        // Without this, the click bubbles up to the map's own click
+        // handler (click_engine.js), which calls clearSelection() and
+        // closes the popup we're about to open.
+        domEvt.stopPropagation();
+
+        const mapRect = window.map.getContainer().getBoundingClientRect();
+        const point = L.point(domEvt.clientX - mapRect.left, domEvt.clientY - mapRect.top);
+        const latlng = window.map.containerPointToLatLng(point);
+
+        const popupDiv = document.createElement("div");
+        popupDiv.className = "firesmoke-time-popup";
+
+        const title = document.createElement("div");
+        title.style.fontWeight = "600";
+        title.style.marginBottom = "6px";
+        title.textContent = "FireSmoke forecast time";
+        popupDiv.appendChild(title);
+
+        FIRESMOKE_HOURS.forEach(h => {
+          const btn = document.createElement("button");
+          btn.textContent = h.label;
+          btn.style.margin = "2px";
+          btn.style.padding = "4px 10px";
+          btn.style.cursor = "pointer";
+          if (h.key === window._firesmokeHour) {
+            btn.style.fontWeight = "700";
+            btn.style.background = "#444";
+            btn.style.color = "#fff";
+          }
+          btn.onclick = function () {
+            window._firesmokeHour = h.key;
+            loadFireSmokeCombined();
+            window.map.closePopup();
+          };
+          popupDiv.appendChild(btn);
+        });
+
+        L.popup({ closeButton: true })
+          .setLatLng(latlng)
+          .setContent(popupDiv)
+          .openOn(window.map);
+      });
+    });
+
     layer.addLayer(smoke);
-    console.log("Loaded FireSmoke PNG:", imageFile);
+
+    const hourLabelEl = document.getElementById("smoke-legend-hour");
+    if (hourLabelEl) hourLabelEl.textContent = `Showing: ${current.label} — click smoke to change`;
+
+    console.log("Loaded FireSmoke PNG:", current.file);
 }
 
 
@@ -399,10 +480,7 @@ window.renderMap = async function () {
   
   loadEstimatedAQHI();  
   
-  loadFireSmokePNG("firesmoke_00h.png", window.layers.firesmoke_now);
-  loadFireSmokePNG("firesmoke_06h.png", window.layers.firesmoke_6h);
-  loadFireSmokePNG("firesmoke_12h.png", window.layers.firesmoke_12h);
-  loadFireSmokePNG("firesmoke_24h.png", window.layers.firesmoke_24h);
+  loadFireSmokeCombined();
       
   
   // render PurpleAir

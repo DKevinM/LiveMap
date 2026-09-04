@@ -1,72 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WCAS Air Monitoring</title>
+  <title>Live Air Quality Monitoring – Alberta (Overview)</title>
   <meta charset="utf-8"/>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script>
     window.APP_CONFIG = {
-      airshed: "WCAS",
-      title: "WCAS Air Monitoring",
+      airshed: "ALL",
+      title: "Live Air Quality Monitoring – Alberta",
 
-      enableHistory: false,
-      
-      // Lock to WCAS region (wider view)
-      bounds: [
-        [52.7, -118.5],   // southwest
-        [54.8, -115.0]    // northeast
-      ],
-      lockBounds: false,
-      minZoom: 5,
-      maxZoom: 18,
-      
-      center: [53.6, -116.8],
-      zoom: 6,
+      enableHistory: true,
 
-      // Boundary toggle
-      showWCASBoundary: true,
+      // AQHI "DNA" driver chart - see index.html for the full explanation.
+      showDNAChart: true,
 
+      // Trimmed layer set: basemap toggle (OSM/Satellite, built into
+      // map.js regardless of config), stations, PurpleAir sensors,
+      // winds, FireSmoke (single layer, click it to pick a forecast
+      // time - see loadFireSmokeCombined() in render.js), and only the
+      // AQHI Grid AB Stations layer (no BLEND/forecast/other-airshed
+      // variants - see the aqhi list below).
       overlays: [
         "stations",
         "purpleair",
-        // "eaqhi",
-        // "rose_pm25",
-        // "rose_no2",
-        // "rose_so2",
-        // "weather_radar",
         "weather_wind_u",
-        // "weather_lightning",
-        // "weather_thunderstorm",
         "firesmoke"
       ],
 
-      defaultAQHI: [],
+      defaultAQHI: ["Alberta"],
 
       aqhi: [
-        // "WCAS_2024",
-        // "WCAS_2024_BLEND",
-        // "Parkland_County",
-        // "Parkland_County_BLEND",
-        // "Yellowhead",
-        // "Yellowhead_BLEND"
-      ],
-
-      // station removal
-      excludeStations: [
-        "Powers",
-        "E-BAM Slave Lake",
-        "E-BAM Swan Hills"
-      ],
-
-      // AQHI "DNA" driver chart - decomposes the actual AQHI formula
-      // into each pollutant's real share (not a historical-max
-      // normalization), so a viewer can see WHY today's AQHI is what
-      // it is, not just the number. See below for the implementation.
-      showDNAChart: true
+        "Alberta"
+      ]
     };
   </script>
+
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -75,10 +44,10 @@
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+
 </head>
-
 <body>
-
 <div id="modal" class="modal">
   <div class="modal-content">
     <span id="close">&times;</span>
@@ -86,9 +55,10 @@
   </div>
 </div>
 
+
 <div id="header">
   <div id="header-left">
-    WCAS Air Monitoring
+    Live Air Quality Monitoring – Alberta
   </div>
 
   <div id="header-center">
@@ -98,7 +68,7 @@
   <div id="header-right"></div>
 </div>
 
-<div id="search-box">
+<div style="position:absolute; top:8px; right:25px; z-index:1000;">
   <input id="addressInput" type="text" placeholder="Enter address..."
          style="padding:6px; width:250px;" />
   <button onclick="lookupAddress()">Go</button>
@@ -113,42 +83,45 @@
     </div>
     <div id="station-gauges"></div>
   </div>
+
 </div>
 
 <button onclick="clearSelection()" id="clear-btn">
   Clear Selection
 </button>
 
-<!-- Scripts -->
+<!-- 1. DATA -->
 <script src="js/data.js" defer></script>
+
+<!-- 2. CORE LOGIC (used everywhere) -->
 <script src="js/aqhi.js" defer></script>
 <script src="js/click_utils.js" defer></script>
+
+<!-- 4. RENDERERS -->
 <script src="js/render.js" defer></script>
+  <!-- 3. MAP + LAYERS -->
 <script src="js/map.js" defer></script>
+
 <script src="js/purpleair.js" defer></script>
+
+<!-- 5. WEATHER -->
 <script src="js/weather.js" defer></script>
+
+<!-- 6. INTERACTION -->
 <script src="js/click_engine.js" defer></script>
+
+<!-- 7. UI -->
 <script src="js/ui.js" defer></script>
+
+<!-- 9. GEOCODE -->
 <script src="js/geocode.js" defer></script>
+
+<!-- 8. START -->
 <script src="js/main.js"></script>
 
-<!-- AQHI "DNA" driver chart. The actual station popup is built in the
-     SHARED js/render.js (inside renderMap()'s per-station loop) - it
-     places an empty placeholder div in the popup HTML and fires
-     window.renderDNAChartInto(...) on Leaflet's popupopen event, but
-     only when window.APP_CONFIG.showDNAChart is true. That keeps the
-     shared file's behavior byte-for-byte identical on every other page
-     (ACA.html/etc never set that flag) while the actual chart-drawing
-     logic below stays local to this page.
-
-     Decomposes the real AQHI formula:
-       AQHI = (1000/10.4) * [exp(0.000537*O3) + exp(0.000871*NO2)
-                              + exp(0.000487*PM2.5) - 3]
-     into each pollutant's share of the total (each term's value above
-     its zero-concentration floor of 1, as a fraction of the sum) - not
-     a historical-max normalization, which would show how unusual each
-     pollutant is for that station rather than what's actually driving
-     today's number. -->
+<!-- AQHI "DNA" driver chart - identical block to index.html/ACA.html/
+     WCAS.html/PAZA.html. See index.html for the full comment on how
+     this hooks into the shared js/render.js popup code. -->
 <script>
 function computeAQHIDrivers(no2, o3, pm25) {
   const tNO2 = Math.exp(0.000871 * no2) - 1;
@@ -163,10 +136,6 @@ function computeAQHIDrivers(no2, o3, pm25) {
   };
 }
 
-// containerId: the placeholder div's id, already in the DOM (popupopen
-// already fired by the time this runs). rows: this station's full
-// parameter rows (same shape used to build the rest of the popup).
-// aqhiVal: this station's current AQHI, already computed by render.js.
 window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -178,7 +147,7 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
   const o3 = byParam["Ozone"]?.Value;
   const pm25 = byParam["Fine Particulate Matter"]?.Value;
 
-  if (no2 == null || o3 == null || pm25 == null) return; // station doesn't report all three - skip silently
+  if (no2 == null || o3 == null || pm25 == null) return;
 
   const shares = computeAQHIDrivers(Number(no2), Number(o3), Number(pm25));
   if (!shares) return;

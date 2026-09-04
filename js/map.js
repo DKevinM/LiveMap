@@ -94,6 +94,7 @@ window.initMap = function () {
 
     smokeLegend.innerHTML = `
       <div class="smoke-legend-title">PM2.5 Smoke<br>(&micro;g/m&sup3;)</div>
+      <div class="smoke-legend-hour" id="smoke-legend-hour">Click the smoke layer to pick a time</div>
       ${stops.map(s => `
         <div class="smoke-legend-row">
           <span class="smoke-legend-swatch" style="background:${s.color}"></span>
@@ -103,7 +104,7 @@ window.initMap = function () {
     `;
   }
 
-  const FIRESMOKE_LAYER_KEYS = ["firesmoke_now", "firesmoke_6h", "firesmoke_12h", "firesmoke_24h"];
+  const FIRESMOKE_LAYER_KEYS = ["firesmoke"];
 
   // ----------------------------
   // AQHI CLICK HANDLER
@@ -205,10 +206,7 @@ window.initMap = function () {
     rose_pm25: L.layerGroup(),
     rose_no2: L.layerGroup(),
     rose_so2: L.layerGroup(),
-    firesmoke_now: L.layerGroup(),
-    firesmoke_6h: L.layerGroup(),
-    firesmoke_12h: L.layerGroup(),
-    firesmoke_24h: L.layerGroup(),
+    firesmoke: L.layerGroup(),
     weather_radar: L.layerGroup(),
     weather_wind_u: L.layerGroup(),
     weather_lightning: L.layerGroup(),
@@ -417,10 +415,7 @@ window.initMap = function () {
     rose_no2: "NO2 Rose",
     rose_so2: "SO2 Rose",
     eaqhi: "eAQHI (PurpleAir)",
-    firesmoke_now: "FireSmoke Now",
-    firesmoke_6h: "FireSmoke +6h",
-    firesmoke_12h: "FireSmoke +12h",
-    firesmoke_24h: "FireSmoke +24h",
+    firesmoke: "FireSmoke",
     "AQHI Alberta": "AQHI Grid AB Stations",
     "AQHI Alberta_BLEND": "AQHI Grid AB Stations+Sensors",
     "AQHI Alberta_FORECAST_3H": "AQHI Grid Forecast (3h)",
@@ -451,10 +446,7 @@ window.initMap = function () {
         "weather_wind_u",
         "weather_lightning",
         "weather_thunderstorm",
-        "firesmoke_now",
-        "firesmoke_6h",
-        "firesmoke_12h",
-        "firesmoke_24h"
+        "firesmoke"
       ];
   
   overlayKeys.forEach(key => {
