@@ -236,7 +236,7 @@ function loadFireSmokeCombined() {
     layer.addLayer(smoke);
 
     const hourLabelEl = document.getElementById("smoke-legend-hour");
-    if (hourLabelEl) hourLabelEl.textContent = `Showing: ${current.label} — click smoke to change`;
+    if (hourLabelEl) hourLabelEl.textContent = `Showing: ${current.label} — click on map to change`;
 
     console.log("Loaded FireSmoke PNG:", current.file);
 }

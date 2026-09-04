@@ -94,7 +94,7 @@ window.initMap = function () {
 
     smokeLegend.innerHTML = `
       <div class="smoke-legend-title">PM2.5 Smoke<br>(&micro;g/m&sup3;)</div>
-      <div class="smoke-legend-hour" id="smoke-legend-hour">Click the smoke layer to pick a time</div>
+      <div class="smoke-legend-hour" id="smoke-legend-hour">Click on map to pick a time</div>
       ${stops.map(s => `
         <div class="smoke-legend-row">
           <span class="smoke-legend-swatch" style="background:${s.color}"></span>
