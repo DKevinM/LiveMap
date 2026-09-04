@@ -18,14 +18,18 @@
       // Trimmed layer set: basemap toggle (OSM/Satellite, built into
       // map.js regardless of config), stations, PurpleAir sensors,
       // winds, FireSmoke (single layer, click it to pick a forecast
-      // time - see loadFireSmokeCombined() in render.js), and only the
-      // AQHI Grid AB Stations layer (no BLEND/forecast/other-airshed
+      // time - see loadFireSmokeCombined() in render.js), all 10
+      // airshed boundary outlines as one uniform-style toggle (unlike
+      // WallMap.html, no airshed is drawn darker/bolder than another -
+      // see the AIRSHED BOUNDARIES block in map.js), and only the AQHI
+      // Grid AB Stations layer (no BLEND/forecast/other-airshed
       // variants - see the aqhi list below).
       overlays: [
         "stations",
         "purpleair",
         "weather_wind_u",
-        "firesmoke"
+        "firesmoke",
+        "airsheds"
       ],
 
       defaultAQHI: ["Alberta"],

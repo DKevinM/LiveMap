@@ -203,6 +203,7 @@ window.initMap = function () {
     grid: L.layerGroup().addTo(map),
     forecast: L.layerGroup().addTo(map),
     eaqhi: L.layerGroup(),
+    airsheds: L.layerGroup(),
     rose_pm25: L.layerGroup(),
     rose_no2: L.layerGroup(),
     rose_so2: L.layerGroup(),
@@ -375,8 +376,33 @@ window.initMap = function () {
       "Thunderstorm layer failed:",
       err
     );
-  
+
   });
+
+  // ----------------------------
+  // AIRSHED BOUNDARIES (all 10, one uniform style, one toggle)
+  // ----------------------------
+  // Unlike WallMap.html (ACA/WCAS drawn bold+black, the other 8 grey,
+  // always on) - here every airshed gets the same neutral outline and
+  // the whole set is one layer-control checkbox, on only when asked for.
+  if (window.APP_CONFIG?.overlays?.includes("airsheds")) {
+    const AIRSHED_NAMES = ["ACA", "CRAZ", "HAMP", "LICA", "PAMZ", "PAS", "PAZA", "PRAMP", "WBEA", "WCAS"];
+    const airshedStyle = {
+      color: "#444444",
+      weight: 2,
+      opacity: 0.8,
+      fillOpacity: 0
+    };
+
+    AIRSHED_NAMES.forEach(name => {
+      fetch(`airshed/${name}.geojson`)
+        .then(r => r.json())
+        .then(data => {
+          window.layers.airsheds.addLayer(L.geoJSON(data, { style: airshedStyle }));
+        })
+        .catch(err => console.error(`Airshed boundary load failed: ${name}`, err));
+    });
+  }
 
   // ----------------------------
   // BASE MAPS
@@ -415,6 +441,7 @@ window.initMap = function () {
     rose_no2: "NO2 Rose",
     rose_so2: "SO2 Rose",
     eaqhi: "eAQHI (PurpleAir)",
+    airsheds: "Airsheds",
     firesmoke: "FireSmoke",
     "AQHI Alberta": "AQHI Grid AB Stations",
     "AQHI Alberta_BLEND": "AQHI Grid AB Stations+Sensors",
