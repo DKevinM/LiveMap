@@ -211,6 +211,7 @@ window.initMap = function () {
     weather_radar: L.layerGroup(),
     weather_wind_u: L.layerGroup(),
     weather_lightning: L.layerGroup(),
+    weather_uv: L.layerGroup(),
     weather_thunderstorm: L.layerGroup()
   };
 
@@ -260,6 +261,18 @@ window.initMap = function () {
     opacity: 0.85
   });
   window.layers.weather_lightning.addLayer(lightning);
+
+  // GDPS forecast UV index - GeoMet has a time dimension with a default
+  // (nearest-current) value, same as the layers above, so omitting TIME
+  // is fine here too.
+  const uvIndex = L.tileLayer.wms("https://geo.weather.gc.ca/geomet/?lang=en", {
+    layers: "GDPS_15km_UVIndex",
+    styles: "UVIndex_LowtoExtreme_Dis",
+    format: "image/png",
+    transparent: true,
+    opacity: 0.7
+  });
+  window.layers.weather_uv.addLayer(uvIndex);
 
   // ----------------------------
   // SEVERE THUNDERSTORM OUTLOOK
@@ -449,6 +462,7 @@ window.initMap = function () {
     weather_radar: "Radar",
     weather_wind_u: "Winds",
     weather_lightning: "Lightning",
+    weather_uv: "UV Index",
     weather_thunderstorm: "Thunderstorm Outlook",
     purpleair: "Sensors (PurpleAir)",
     stations: "Stations",
