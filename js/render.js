@@ -741,11 +741,25 @@ window.renderMap = async function () {
          </table>`
       : allLines.map(l => `${l.label}: ${l.val}${l.u}`).join("<br>");
 
+    // Health Canada's standard AQHI messaging - same bands as the color
+    // coding above (getAQHIColor), not a per-page thing to reword.
+    const healthMsg = Number.isFinite(aqhiVal)
+      ? window.getAQHIHealthMessage(aqhiVal > 10 ? "10+" : aqhiVal)
+      : null;
+    const healthMsgHTML = healthMsg
+      ? `<div style="margin-top:6px;padding:6px 8px;background:#f5f5f5;border-radius:4px;font-size:11px;line-height:1.4;">
+           <strong>${healthMsg.risk}</strong><br>
+           <span style="color:#555;">General population:</span> ${healthMsg.general}<br>
+           <span style="color:#555;">At-risk population:</span> ${healthMsg.atRisk}
+         </div>`
+      : "";
+
     const popupHTML = `
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br>
       <small>Hourly average</small><br><br>
       ${paramListHTML}
+      ${healthMsgHTML}
       ${imageHTML}
       <hr>
       ${historyLink}

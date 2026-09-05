@@ -138,6 +138,46 @@ window.getAQHIColor = function (val) {
 
 window.getColor = window.getAQHIColor;
 
+// ---------------- AQHI HEALTH MESSAGING ----------------
+// Health Canada's standard AQHI health messages, same 4 bands as
+// getAQHIColor above (1-3 Low, 4-6 Moderate, 7-10 High, 10+ Very High).
+// Two audiences per band, same wording used nationally on provincial
+// AQHI pages - not something to reword per-page, it's the standard.
+window.getAQHIHealthMessage = function (val) {
+  const s = String(val).trim();
+  const isPlus = s === "10+";
+  const v = isPlus ? 11 : Math.round(Number(s));
+
+  if (!isFinite(v) || v < 1) return null;
+
+  if (v <= 3) {
+    return {
+      risk: "Low Risk",
+      general: "Ideal air quality for outdoor activities.",
+      atRisk: "Enjoy your usual outdoor activities."
+    };
+  }
+  if (v <= 6) {
+    return {
+      risk: "Moderate Risk",
+      general: "No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation.",
+      atRisk: "Consider reducing or rescheduling strenuous activities outdoors if you are experiencing symptoms."
+    };
+  }
+  if (v <= 10) {
+    return {
+      risk: "High Risk",
+      general: "Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation.",
+      atRisk: "Reduce or reschedule strenuous activities outdoors. Children and the elderly should also take it easy."
+    };
+  }
+  return {
+    risk: "Very High Risk",
+    general: "Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation.",
+    atRisk: "Avoid strenuous activities outdoors."
+  };
+};
+
 const unitsLookup = {
   "AQHI": "",
   "Ozone": " ppb",
