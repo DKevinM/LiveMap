@@ -259,6 +259,23 @@ function clearAllLayers() {
 
 
 
+// Per-station PM2.5 smoke forecast (now/6h/12h/24h), extracted from the
+// same BlueSky/firesmoke.ca grid the FireSmoke raster layer already
+// uses - see AB_datapull/scripts/extract_station_smoke_forecast.py.
+// Loaded once at startup and read from the station popup builder below;
+// refreshes every 2h same as the FireSmoke layer itself, so no need to
+// re-fetch per popup open.
+window.stationSmokeForecast = {};
+fetchFresh(`${baseURL}/station_smoke_forecast.json`)
+  .then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  })
+  .then(data => {
+    window.stationSmokeForecast = data.stations || {};
+  })
+  .catch(err => console.error("Station smoke forecast load failed:", err));
+
 function loadEstimatedAQHI() {
   fetchFresh("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
     .then(r => {
@@ -754,12 +771,30 @@ window.renderMap = async function () {
          </div>`
       : "";
 
+    // Smoke forecast for this station specifically, not the province-
+    // wide raster - see window.stationSmokeForecast above.
+    const smokeFx = window.stationSmokeForecast?.[stationName];
+    const smokeFxHTML = smokeFx
+      ? `<div style="margin-top:6px;font-size:11px;">
+           <strong>Smoke forecast (PM2.5, &micro;g/m&sup3;)</strong>
+           <table style="width:100%;border-collapse:collapse;margin-top:2px;">
+             <tr>
+               ${["now","6h","12h","24h"].map(h => `<th style="font-weight:600;padding:1px 4px;">${h === "now" ? "Now" : "+" + h}</th>`).join("")}
+             </tr>
+             <tr>
+               ${["now","6h","12h","24h"].map(h => `<td style="text-align:center;padding:1px 4px;">${smokeFx[h] != null ? smokeFx[h] : "—"}</td>`).join("")}
+             </tr>
+           </table>
+         </div>`
+      : "";
+
     const popupHTML = `
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br>
       <small>Hourly average</small><br><br>
       ${paramListHTML}
       ${healthMsgHTML}
+      ${smokeFxHTML}
       ${imageHTML}
       <hr>
       ${historyLink}
