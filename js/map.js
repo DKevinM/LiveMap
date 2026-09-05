@@ -104,6 +104,38 @@ window.initMap = function () {
     `;
   }
 
+  // UV Index legend - same treatment as the smoke legend above: colours
+  // sampled directly from GeoMet's own GetLegendGraphic for
+  // UVIndex_LowtoExtreme_Dis, so it matches the actual tile colours
+  // exactly rather than a guessed generic WHO scale. Only built on
+  // pages that configure the layer, hidden until it's toggled on.
+  let uvLegend = null;
+
+  if (window.APP_CONFIG?.overlays?.includes("weather_uv")) {
+    uvLegend = L.DomUtil.create("div", "uv-legend", map.getContainer());
+    uvLegend.style.display = "none";
+    L.DomEvent.disableClickPropagation(uvLegend);
+    L.DomEvent.disableScrollPropagation(uvLegend);
+
+    const uvStops = [
+      { value: "≥ 11 Extreme",   color: "#8f63cc" },
+      { value: "8 - 10 Very High", color: "#ee3340" },
+      { value: "6 - 7 High",     color: "#fe8100" },
+      { value: "3 - 5 Moderate", color: "#fbe200" },
+      { value: "0 - 2 Low",      color: "#96d600" }
+    ];
+
+    uvLegend.innerHTML = `
+      <div class="uv-legend-title">UV Index</div>
+      ${uvStops.map(s => `
+        <div class="uv-legend-row">
+          <span class="uv-legend-swatch" style="background:${s.color}"></span>
+          <span>${s.value}</span>
+        </div>
+      `).join("")}
+    `;
+  }
+
   const FIRESMOKE_LAYER_KEYS = ["firesmoke"];
 
   // ----------------------------
@@ -131,6 +163,10 @@ window.initMap = function () {
     
     if (e.name.startsWith("FireSmoke") && smokeLegend) {
       smokeLegend.style.display = "block";
+    }
+
+    if (e.name === "UV Index" && uvLegend) {
+      uvLegend.style.display = "block";
     }
 
     // ----------------------------
@@ -176,6 +212,10 @@ window.initMap = function () {
     if (e.name.startsWith("FireSmoke") && smokeLegend) {
       const anyStillOn = FIRESMOKE_LAYER_KEYS.some(k => map.hasLayer(window.layers[k]));
       if (!anyStillOn) smokeLegend.style.display = "none";
+    }
+
+    if (e.name === "UV Index" && uvLegend) {
+      uvLegend.style.display = "none";
     }
 
     if (
