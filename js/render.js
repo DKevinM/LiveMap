@@ -66,12 +66,20 @@ async function loadAQHIGroup(groupName) {
           f.properties?.blend ??
           f.properties?.blended_aqhi;
 
+        // "flagged" - set by aqhi_map_forecast.py's detect_outlier_stations()
+        // when this cell's value came predominantly from a station whose
+        // reading is way outside its neighbors (see that function's
+        // docstring). The real interpolated value/color is left exactly
+        // as-is - flagged only adds a dashed border, since a genuinely
+        // localized event would look statistically identical to a sensor
+        // fault and must not be hidden, only called out for a second look.
         return {
         fillColor: isFinite(Number(v))
           ? window.getAQHIColor(Number(v) > 10 ? 11 : Number(v))
           : "#999",
-          color: "none",
-          weight: 0,
+          color: f.properties?.flagged ? "#000" : "none",
+          weight: f.properties?.flagged ? 1.5 : 0,
+          dashArray: f.properties?.flagged ? "3,2" : null,
           fillOpacity: 0.6
         };
       },
@@ -88,11 +96,13 @@ async function loadAQHIGroup(groupName) {
           p.AQHI_BLEND ??
           p.aqhiBlend;
 
-          lyr.bindTooltip(`AQHI: ${
-            isFinite(Number(v))
+          const valueText = isFinite(Number(v))
               ? (Number(v) > 10 ? "10+" : Math.round(Number(v)))
-              : "—"
-          }`, {
+              : "—";
+          const flagNote = p.flagged
+            ? "<br><b>⚠ Suspect reading</b> — driven by a station well outside its neighbors; may be a sensor fault or a real localized event, not yet resolved."
+            : "";
+          lyr.bindTooltip(`AQHI: ${valueText}${flagNote}`, {
           sticky: true
         });
       }
