@@ -504,7 +504,7 @@ window.initMap = function () {
     weather_lightning: "Lightning",
     weather_uv: "UV Index",
     weather_thunderstorm: "Thunderstorm Outlook",
-    purpleair: "Sensors (PurpleAir)",
+    purpleair: "PM sensors",
     stations: "Stations",
     rose_pm25: "PM2.5 Rose",
     rose_no2: "NO2 Rose",
