@@ -174,6 +174,50 @@
     border-radius: 4px;
     width: 60%;
   }
+
+  .nearby-block {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #304152;
+  }
+  .nearby-block .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9fb0bf;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .nearby-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 14px;
+    gap: 8px;
+  }
+  .nearby-item .name { color: #f4f7fa; min-width: 0; }
+  .nearby-item .reading { font-weight: 700; white-space: nowrap; }
+  .nearby-item .dist { font-size: 11.5px; color: #6c7a86; white-space: nowrap; }
+
+  .weather-now { font-size: 14px; margin-top: 2px; color: #d8e1e8; }
+  .weather-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-top: 8px;
+    padding-bottom: 2px;
+  }
+  .weather-chip {
+    flex: 0 0 auto;
+    background: #111c26;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+    min-width: 54px;
+  }
+  .weather-chip .time { font-size: 10.5px; color: #6c7a86; }
+  .weather-chip .temp { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .weather-chip .precip { font-size: 10px; color: #6c7a86; margin-top: 1px; }
 </style>
 </head>
 <body>
@@ -186,6 +230,34 @@
 <main>
   <div id="mini-map" role="img" aria-label="Map of the Alberta Capital Airshed with monitoring stations"></div>
   <p id="map-hint">Tap anywhere on the map to check that area</p>
+
+  <section id="tap-panel" class="panel hazard-unknown" hidden>
+    <h2 id="tap-title">Checked location</h2>
+    <div class="aqhi-row">
+      <div class="aqhi-number" id="tap-aqhi-number">&mdash;</div>
+      <div class="aqhi-meta">
+        <p class="risk" id="tap-aqhi-risk">Loading&hellip;</p>
+        <p class="station-line" id="tap-aqhi-line"></p>
+      </div>
+    </div>
+    <div id="tap-health"></div>
+
+    <div class="nearby-block">
+      <span class="label">Nearest official station</span>
+      <div class="nearby-item" id="tap-station-row">&mdash;</div>
+    </div>
+
+    <div class="nearby-block">
+      <span class="label">Nearest PurpleAir sensor</span>
+      <div class="nearby-item" id="tap-pa-row">&mdash;</div>
+    </div>
+
+    <div class="nearby-block">
+      <span class="label">Weather</span>
+      <div class="weather-now" id="tap-weather-now"></div>
+      <div class="weather-strip" id="tap-weather-strip"></div>
+    </div>
+  </section>
 
   <select id="station-picker" aria-label="Choose your location"></select>
 
@@ -218,6 +290,7 @@
 
 <script src="js/data.js"></script>
 <script src="js/purpleair.js"></script>
+<script src="js/weather.js"></script>
 <script>
 (function () {
   const STATIONS = [
@@ -314,7 +387,11 @@
     markersByName[s.name] = marker;
   });
 
-  map.on("click", (e) => selectStation(nearestStation(e.latlng.lat, e.latlng.lng).name));
+  map.on("click", (e) => {
+    const { lat, lng } = e.latlng;
+    selectStation(nearestStation(lat, lng).name);
+    handleMapTap(lat, lng);
+  });
 
   // ---------------- PURPLEAIR (community sensors, visual context only -
   // tapping the map still selects the nearest OFFICIAL station below;
@@ -322,6 +399,10 @@
   // tooltip, same visual convention (white border = official station,
   // dark border = community sensor) as the full desktop map) ----------------
   const ACA_BOUNDS = { minLat: 52.6, maxLat: 55.2, minLon: -114.5, maxLon: -112.0 };
+  // Kept unfiltered (unlike the ACA_BOUNDS-clipped markers below) so a tap
+  // near the airshed edge can still find a real nearest sensor just outside
+  // the drawn box, instead of coming up empty.
+  let paCache = [];
   fetch("https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json")
     .then(r => r.json())
     .then(data => {
@@ -329,9 +410,10 @@
       records.forEach(rec => {
         const lat = Number(rec.latitude), lon = Number(rec.longitude), pm = Number(rec.pm_corr);
         if (!Number.isFinite(lat) || !Number.isFinite(lon) || !Number.isFinite(pm)) return;
-        if (lat < ACA_BOUNDS.minLat || lat > ACA_BOUNDS.maxLat || lon < ACA_BOUNDS.minLon || lon > ACA_BOUNDS.maxLon) return;
         const eAQHI = window.computeEAQHI ? window.computeEAQHI(pm) : null;
         if (eAQHI == null) return;
+        paCache.push({ name: rec.name || "PurpleAir sensor", lat, lon, pm, eAQHI });
+        if (lat < ACA_BOUNDS.minLat || lat > ACA_BOUNDS.maxLat || lon < ACA_BOUNDS.minLon || lon > ACA_BOUNDS.maxLon) return;
         L.circleMarker([lat, lon], {
           radius: 5, color: "#111", weight: 1, fillColor: window.getAQHIColor(eAQHI), fillOpacity: 0.85
         }).bindTooltip(`${rec.name || "PurpleAir sensor"} · PM2.5 ${pm.toFixed(1)}`, { direction: "top" }).addTo(map);
@@ -345,6 +427,206 @@
     if (risk.startsWith("Moderate")) return "hazard-moderate";
     if (risk.startsWith("High")) return "hazard-high";
     return "hazard-extreme";
+  }
+
+  // ---------------- TAP-TO-CHECK (regional AQHI + nearest sensors + weather) ----------------
+  // Same building blocks as the full desktop map's click popup
+  // (js/click_engine.js + js/aqhi.js's regional lookup), reshaped into a
+  // mobile card instead of a Leaflet popup.
+  let communityFC = null;
+  let communityAqhiList = null;
+
+  async function getCommunityFC() {
+    if (!communityFC) {
+      communityFC = await fetch(
+        "https://raw.githubusercontent.com/DKevinM/CAN_AQHI/main/data/aqhi_observations.geojson"
+      ).then(r => r.json());
+    }
+    return communityFC;
+  }
+
+  async function getCommunityAqhiList() {
+    if (!communityAqhiList) {
+      communityAqhiList = await fetch(
+        "https://data.environment.alberta.ca/EdwServices/aqhi/odata/CommunityAqhis?$format=json"
+      ).then(r => r.json()).then(d => d.value || []);
+    }
+    return communityAqhiList;
+  }
+
+  // Alberta's regional/community AQHI - the official forecast value for
+  // wherever was tapped, distinct from any single instrument's raw reading.
+  async function nearestRegionalAqhi(lat, lon) {
+    const fc = await getCommunityFC();
+    let name = null, minDist = Infinity;
+    (fc.features || []).forEach(f => {
+      const [flon, flat] = f.geometry.coordinates;
+      const d = haversineKm(lat, lon, flat, flon);
+      if (d < minDist) { minDist = d; name = f.properties.name; }
+    });
+    if (!name) return null;
+
+    const list = await getCommunityAqhiList();
+    const match = list.find(c => c.CommunityName && c.CommunityName.toLowerCase() === name.toLowerCase());
+    if (!match) return null;
+
+    return {
+      community: match.CommunityName,
+      aqhi: Number(match.Aqhi),
+      forecastToday: Number(match.ForecastToday),
+      forecastTonight: Number(match.ForecastTonight),
+      forecastTomorrow: Number(match.ForecastTomorrow)
+    };
+  }
+
+  function nearestOfficialStation(lat, lon) {
+    let best = null, bestDist = Infinity;
+    STATIONS.forEach(s => {
+      const d = haversineKm(lat, lon, s.lat, s.lon);
+      if (d < bestDist) { bestDist = d; best = s; }
+    });
+    if (!best) return null;
+    return {
+      name: best.name,
+      dist_km: bestDist,
+      aqhi: window.getStationValue(best.name, "AQHI"),
+      time: window.getStationTime(best.name, "AQHI")
+    };
+  }
+
+  function nearestPurpleAir(lat, lon) {
+    let best = null, bestDist = Infinity;
+    paCache.forEach(p => {
+      const d = haversineKm(lat, lon, p.lat, p.lon);
+      if (d < bestDist) { bestDist = d; best = p; }
+    });
+    if (!best) return null;
+    return { ...best, dist_km: bestDist };
+  }
+
+  function fmtAqhi(raw) {
+    if (raw === null || raw === undefined || raw === "" || !isFinite(Number(raw))) return "—";
+    const n = Number(raw);
+    return n > 10 ? "10+" : String(Math.round(n));
+  }
+
+  function buildWeatherStrip(data) {
+    if (!data || !data.hourly || !data.hourly.time) return "";
+    const now = new Date();
+    let i = 0;
+    while (i < data.hourly.time.length && new Date(data.hourly.time[i]) < now) i++;
+    let chips = "";
+    for (let j = 1; j <= 4 && (i + j) < data.hourly.time.length; j++) {
+      const t = new Date(data.hourly.time[i + j]);
+      const hhmm = t.toLocaleTimeString("en-CA", { hour: "numeric", timeZone: "America/Edmonton" });
+      const temp = data.hourly.temperature_2m?.[i + j];
+      const precip = data.hourly.precipitation?.[i + j];
+      chips += `
+        <div class="weather-chip">
+          <div class="time">${hhmm}</div>
+          <div class="temp">${isFinite(temp) ? Math.round(temp) : "--"}°</div>
+          <div class="precip">${precip != null && precip > 0 ? precip.toFixed(1) + "mm" : ""}</div>
+        </div>
+      `;
+    }
+    return chips;
+  }
+
+  let tapToken = 0;
+
+  async function handleMapTap(lat, lon) {
+    const token = ++tapToken;
+
+    const panel = document.getElementById("tap-panel");
+    panel.hidden = false;
+    document.getElementById("tap-aqhi-number").textContent = "—";
+    document.getElementById("tap-aqhi-risk").textContent = "Loading…";
+    document.getElementById("tap-aqhi-line").textContent = "";
+    document.getElementById("tap-health").innerHTML = "";
+    document.getElementById("tap-station-row").textContent = "Loading…";
+    document.getElementById("tap-pa-row").textContent = "Loading…";
+    document.getElementById("tap-weather-now").textContent = "";
+    document.getElementById("tap-weather-strip").innerHTML = "";
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    // ---- Regional AQHI ----
+    nearestRegionalAqhi(lat, lon).then(regional => {
+      if (token !== tapToken) return;
+      if (!regional || !isFinite(regional.aqhi)) {
+        document.getElementById("tap-aqhi-risk").textContent = "Unavailable";
+        document.getElementById("tap-aqhi-line").textContent = "No regional forecast for this area.";
+        panel.className = "panel hazard-unknown";
+        return;
+      }
+      const color = window.getAQHIColor(regional.aqhi);
+      const health = window.getAQHIHealthMessage(regional.aqhi);
+      document.getElementById("tap-aqhi-number").textContent = fmtAqhi(regional.aqhi);
+      document.getElementById("tap-aqhi-number").style.color = color;
+      document.getElementById("tap-aqhi-risk").textContent = health ? health.risk : "Unknown";
+      document.getElementById("tap-aqhi-line").textContent =
+        `Regional AQHI (Alberta forecast) · ${regional.community}`;
+      panel.className = "panel " + riskClass(health ? health.risk : null);
+      document.getElementById("tap-health").innerHTML = health ? `
+        <div class="health-msg">
+          <span class="label">General population</span>
+          ${health.general}
+        </div>
+        <div class="health-msg">
+          <span class="label">At-risk population</span>
+          ${health.atRisk}
+        </div>
+        <div class="health-msg">
+          <span class="label">Forecast</span>
+          Today ${fmtAqhi(regional.forecastToday)} · Tonight ${fmtAqhi(regional.forecastTonight)} · Tomorrow ${fmtAqhi(regional.forecastTomorrow)}
+        </div>
+      ` : "";
+    }).catch(() => {
+      if (token !== tapToken) return;
+      document.getElementById("tap-aqhi-risk").textContent = "Unavailable";
+    });
+
+    // ---- Nearest official station ----
+    try {
+      const st = nearestOfficialStation(lat, lon);
+      if (token === tapToken) {
+        document.getElementById("tap-station-row").innerHTML = st ? `
+          <span class="name">${st.name}${st.time ? " · " + st.time : ""}</span>
+          <span>
+            <span class="reading" style="color:${window.getAQHIColor(st.aqhi)}">${fmtAqhi(st.aqhi)}</span>
+            <span class="dist">${st.dist_km.toFixed(1)} km</span>
+          </span>
+        ` : "—";
+      }
+    } catch (e) {
+      if (token === tapToken) document.getElementById("tap-station-row").textContent = "—";
+    }
+
+    // ---- Nearest PurpleAir ----
+    try {
+      const pa = nearestPurpleAir(lat, lon);
+      if (token === tapToken) {
+        document.getElementById("tap-pa-row").innerHTML = pa ? `
+          <span class="name">${pa.name}</span>
+          <span>
+            <span class="reading" style="color:${window.getAQHIColor(pa.eAQHI)}">${fmtAqhi(pa.eAQHI)}</span>
+            <span class="dist">${pa.dist_km.toFixed(1)} km</span>
+          </span>
+        ` : "No nearby sensor";
+      }
+    } catch (e) {
+      if (token === tapToken) document.getElementById("tap-pa-row").textContent = "—";
+    }
+
+    // ---- Weather ----
+    window.fetchWeather(lat, lon).then(data => {
+      if (token !== tapToken || !data) return;
+      const current = window.extractCurrentWeather(data);
+      if (current) {
+        document.getElementById("tap-weather-now").textContent =
+          `${Math.round(current.temp)}°C · Wind ${Math.round(current.wind)} km/h${current.dir != null ? " " + degToCardinal(current.dir) : ""} · UV ${current.uv != null ? Math.round(current.uv) : "--"}`;
+      }
+      document.getElementById("tap-weather-strip").innerHTML = buildWeatherStrip(data);
+    }).catch(() => {});
   }
 
   function renderAQHI(station) {
