@@ -202,24 +202,13 @@
 
   <section class="panel">
     <h2>Right now</h2>
-    <div class="metric-grid">
-      <div class="metric-tile">
-        <span class="value" id="pm25-value">&mdash;</span>
-        <span class="label">PM2.5 (&micro;g/m&sup3;)</span>
-      </div>
-      <div class="metric-tile">
-        <span class="value" id="temp-value">&mdash;</span>
-        <span class="label">Temperature</span>
-      </div>
-      <div class="metric-tile">
-        <span class="value" id="wind-value">&mdash;</span>
-        <span class="label">Wind</span>
-      </div>
+    <div class="metric-grid" id="metric-grid">
       <div class="metric-tile">
         <span class="value" id="uv-value">&mdash;</span>
         <span class="label">UV Index</span>
       </div>
     </div>
+    <p id="station-readings-note" style="font-size:11.5px;color:#6c7a86;margin:12px 0 0"></p>
   </section>
 </main>
 
@@ -228,6 +217,7 @@
 </footer>
 
 <script src="js/data.js"></script>
+<script src="js/purpleair.js"></script>
 <script>
 (function () {
   const STATIONS = [
@@ -237,6 +227,8 @@
     { name: "St. Albert",        lat: 53.6269722, lon: -113.6119166 },
     { name: "Enoch",             lat: 53.4980544, lon: -113.7607143 },
     { name: "Woodcroft",         lat: 53.564411,  lon: -113.562583 },
+    { name: "O’Morrow Station 1",           lat: 54.9036817, lon: -112.8433489 },
+    { name: "Poacher’s Landing Station 2",  lat: 54.9457874, lon: -112.816501 },
   ];
   const STORAGE_KEY = "aca_mobile_station";
 
@@ -296,15 +288,21 @@
 
   const centerLat = STATIONS.reduce((s, x) => s + x.lat, 0) / STATIONS.length;
   const centerLon = STATIONS.reduce((s, x) => s + x.lon, 0) / STATIONS.length;
-  const map = L.map("mini-map", { scrollWheelZoom: false }).setView([centerLat, centerLon], 10);
+  const map = L.map("mini-map", { scrollWheelZoom: false }).setView([centerLat, centerLon], 7);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors",
     maxZoom: 18
   }).addTo(map);
 
+  // The real ACA boundary reaches ~150km north of Edmonton (it covers
+  // O'Morrow/Poacher's Landing near Lac La Biche, not just the metro
+  // area) - fit to its actual bounds rather than guessing a zoom level
+  // around the southern station cluster, which cropped the north half
+  // out of frame entirely.
   fetch("data/ACA.geojson").then(r => r.json()).then(g => {
-    L.geoJSON(g, { style: { color: "#4dabf7", weight: 2, fill: false } }).addTo(map);
+    const boundary = L.geoJSON(g, { style: { color: "#4dabf7", weight: 2.5, fill: false } }).addTo(map);
+    map.fitBounds(boundary.getBounds(), { padding: [12, 12] });
   }).catch(() => { /* boundary is decorative context - map still works without it */ });
 
   STATIONS.forEach(s => {
@@ -317,6 +315,29 @@
   });
 
   map.on("click", (e) => selectStation(nearestStation(e.latlng.lat, e.latlng.lng).name));
+
+  // ---------------- PURPLEAIR (community sensors, visual context only -
+  // tapping the map still selects the nearest OFFICIAL station below;
+  // these are shown with a small dark-bordered marker + their own
+  // tooltip, same visual convention (white border = official station,
+  // dark border = community sensor) as the full desktop map) ----------------
+  const ACA_BOUNDS = { minLat: 52.6, maxLat: 55.2, minLon: -114.5, maxLon: -112.0 };
+  fetch("https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json")
+    .then(r => r.json())
+    .then(data => {
+      const records = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+      records.forEach(rec => {
+        const lat = Number(rec.latitude), lon = Number(rec.longitude), pm = Number(rec.pm_corr);
+        if (!Number.isFinite(lat) || !Number.isFinite(lon) || !Number.isFinite(pm)) return;
+        if (lat < ACA_BOUNDS.minLat || lat > ACA_BOUNDS.maxLat || lon < ACA_BOUNDS.minLon || lon > ACA_BOUNDS.maxLon) return;
+        const eAQHI = window.computeEAQHI ? window.computeEAQHI(pm) : null;
+        if (eAQHI == null) return;
+        L.circleMarker([lat, lon], {
+          radius: 5, color: "#111", weight: 1, fillColor: window.getAQHIColor(eAQHI), fillOpacity: 0.85
+        }).bindTooltip(`${rec.name || "PurpleAir sensor"} · PM2.5 ${pm.toFixed(1)}`, { direction: "top" }).addTo(map);
+      });
+    })
+    .catch(() => { /* community sensors are supplementary context, fail open */ });
 
   function riskClass(risk) {
     if (!risk) return "hazard-unknown";
@@ -372,39 +393,61 @@
     ` : "";
   }
 
-  function renderPM25(station) {
-    const raw = window.getStationValue(station.name, "Fine Particulate Matter");
-    document.getElementById("pm25-value").textContent =
-      (raw === null || raw === undefined || raw === "") ? "—" : Number(raw).toFixed(1);
+  // Same priority order and Units/Shortform vocabulary as the full
+  // desktop map's own station popup (js/render.js) - this section is
+  // deliberately built from that same list rather than a fixed 2-3
+  // tiles, so a station reporting sour-gas parameters (H2S, TRS) shows
+  // them here the same way the popup would, and a station that only
+  // reports the basics doesn't show empty tiles for what it lacks.
+  const TILE_PARAMS = [
+    "Outdoor Temperature", "Relative Humidity", "Wind Speed", "Wind Direction",
+    "Fine Particulate Matter", "Ozone", "Nitrogen Dioxide", "Total Oxides of Nitrogen",
+    "Nitric Oxide", "Sulphur Dioxide", "Hydrogen Sulphide", "Total Reduced Sulphur",
+    "Carbon Monoxide", "Total Hydrocarbons", "Methane", "Non-methane Hydrocarbons"
+  ];
+
+  function renderStationTiles(station) {
+    const rows = window.dataByStation?.[station.name] || [];
+    const byParam = {};
+    rows.forEach(r => { byParam[r.ParameterName] = r; });
+
+    const grid = document.getElementById("metric-grid");
+    const uvTile = document.getElementById("uv-value").closest(".metric-tile");
+    grid.innerHTML = "";
+
+    let shown = 0;
+    TILE_PARAMS.forEach(p => {
+      const r = byParam[p];
+      if (!r || r.Value === null || r.Value === undefined || r.Value === "" || isNaN(Number(r.Value)) || Number(r.Value) === -10) return;
+      const val = Math.round(Number(r.Value) * 10) / 10;
+      const tile = document.createElement("div");
+      tile.className = "metric-tile";
+      tile.innerHTML = `<span class="value">${val}${r.Units || ""}</span><span class="label">${r.Shortform || p}</span>`;
+      grid.appendChild(tile);
+      shown++;
+    });
+    grid.appendChild(uvTile);
+
+    document.getElementById("station-readings-note").textContent = shown === 0
+      ? station.name + " isn't reporting other readings right now."
+      : "";
   }
 
-  async function renderWeather(station) {
-    const tempEl = document.getElementById("temp-value");
-    const windEl = document.getElementById("wind-value");
+  async function renderUV(station) {
     const uvEl = document.getElementById("uv-value");
+    uvEl.textContent = "—";
     try {
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${station.lat}&longitude=${station.lon}` +
-        `&current_weather=true&hourly=uv_index&timezone=America%2FEdmonton`;
+        `&hourly=uv_index&timezone=America%2FEdmonton`;
       const res = await fetch(url);
       const data = await res.json();
-      const cw = data.current_weather;
-      if (cw) {
-        tempEl.textContent = Math.round(cw.temperature) + "°C";
-        const dirs = ["N","NE","E","SE","S","SW","W","NW"];
-        const dir = isFinite(cw.winddirection) ? dirs[Math.round((cw.winddirection % 360) / 45) % 8] : "";
-        windEl.textContent = Math.round(cw.windspeed) + " km/h" + (dir ? " " + dir : "");
-      }
       if (data.hourly && data.hourly.uv_index && data.hourly.time) {
         const nowHourIso = new Date().toISOString().slice(0, 13);
         const idx = data.hourly.time.findIndex(t => t.startsWith(nowHourIso));
         const uv = idx >= 0 ? data.hourly.uv_index[idx] : data.hourly.uv_index[0];
         uvEl.textContent = uv != null ? Math.round(uv * 10) / 10 : "—";
       }
-    } catch (e) {
-      tempEl.textContent = "—";
-      windEl.textContent = "—";
-      uvEl.textContent = "—";
-    }
+    } catch (e) { /* UV is supplementary, station readings above are the real payload */ }
   }
 
   async function renderAll() {
@@ -413,8 +456,8 @@
     highlightMarker(station.name);
     await window.dataReady;
     renderAQHI(station);
-    renderPM25(station);
-    renderWeather(station);
+    renderStationTiles(station);
+    renderUV(station);
     colorMarkers();
   }
 
