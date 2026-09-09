@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f1720">
 <title>ACA Air Quality</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
@@ -40,6 +42,21 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+  }
+  #mini-map {
+    width: 100%;
+    height: 42vh;
+    min-height: 260px;
+    max-height: 360px;
+    border-radius: 14px;
+    border: 1px solid #304152;
+    background: #111c26;
+  }
+  #map-hint {
+    text-align: center;
+    font-size: 12px;
+    color: #6c7a86;
+    margin: -6px 0 0;
   }
   select#station-picker {
     width: 100%;
@@ -167,6 +184,9 @@
 </header>
 
 <main>
+  <div id="mini-map" role="img" aria-label="Map of the Alberta Capital Airshed with monitoring stations"></div>
+  <p id="map-hint">Tap anywhere on the map to check that area</p>
+
   <select id="station-picker" aria-label="Choose your location"></select>
 
   <section id="aqhi-panel" class="panel skeleton">
@@ -231,6 +251,72 @@
   let saved = null;
   try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
   picker.value = STATIONS.some(s => s.name === saved) ? saved : STATIONS[0].name;
+
+  // ---------------- MAP ----------------
+  const markersByName = {};
+
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
+  }
+
+  function nearestStation(lat, lon) {
+    let best = STATIONS[0], bestDist = Infinity;
+    STATIONS.forEach(s => {
+      const d = haversineKm(lat, lon, s.lat, s.lon);
+      if (d < bestDist) { bestDist = d; best = s; }
+    });
+    return best;
+  }
+
+  function selectStation(name) {
+    picker.value = name;
+    renderAll();
+  }
+
+  function highlightMarker(name) {
+    Object.entries(markersByName).forEach(([n, m]) => {
+      const selected = n === name;
+      m.setStyle({ radius: selected ? 12 : 9, weight: selected ? 3 : 2 });
+      if (selected) m.bringToFront();
+    });
+  }
+
+  function colorMarkers() {
+    STATIONS.forEach(s => {
+      const raw = window.getStationValue(s.name, "AQHI");
+      const color = (raw === null || raw === undefined || raw === "") ? "#6c757d" : window.getAQHIColor(raw);
+      if (markersByName[s.name]) markersByName[s.name].setStyle({ fillColor: color });
+    });
+  }
+
+  const centerLat = STATIONS.reduce((s, x) => s + x.lat, 0) / STATIONS.length;
+  const centerLon = STATIONS.reduce((s, x) => s + x.lon, 0) / STATIONS.length;
+  const map = L.map("mini-map", { scrollWheelZoom: false }).setView([centerLat, centerLon], 10);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors",
+    maxZoom: 18
+  }).addTo(map);
+
+  fetch("data/ACA.geojson").then(r => r.json()).then(g => {
+    L.geoJSON(g, { style: { color: "#4dabf7", weight: 2, fill: false } }).addTo(map);
+  }).catch(() => { /* boundary is decorative context - map still works without it */ });
+
+  STATIONS.forEach(s => {
+    const marker = L.circleMarker([s.lat, s.lon], {
+      radius: 9, color: "#fff", weight: 2, fillColor: "#6c757d", fillOpacity: 0.9
+    }).addTo(map);
+    marker.bindTooltip(s.name, { direction: "top" });
+    marker.on("click", () => selectStation(s.name));
+    markersByName[s.name] = marker;
+  });
+
+  map.on("click", (e) => selectStation(nearestStation(e.latlng.lat, e.latlng.lng).name));
 
   function riskClass(risk) {
     if (!risk) return "hazard-unknown";
@@ -324,10 +410,12 @@
   async function renderAll() {
     const station = STATIONS.find(s => s.name === picker.value) || STATIONS[0];
     try { localStorage.setItem(STORAGE_KEY, station.name); } catch (e) {}
+    highlightMarker(station.name);
     await window.dataReady;
     renderAQHI(station);
     renderPM25(station);
     renderWeather(station);
+    colorMarkers();
   }
 
   picker.addEventListener("change", renderAll);
