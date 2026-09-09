@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1720">
+<title>ACA Air Quality</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #0f1720;
+    color: #f4f7fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    padding-bottom: 40px;
+  }
+  header {
+    padding: 20px 18px 14px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  header p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #9fb0bf;
+  }
+  header a {
+    color: #4dabf7;
+    text-decoration: none;
+    font-size: 13px;
+  }
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  select#station-picker {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #304152;
+    background: #172330;
+    color: #f4f7fa;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .panel {
+    background: #172330;
+    border: 1px solid #304152;
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .panel.hazard-low { border-color: #2f9e44; }
+  .panel.hazard-moderate { border-color: #e0a800; }
+  .panel.hazard-high { border-color: #e8590c; }
+  .panel.hazard-extreme { border-color: #c92a2a; }
+  .panel.hazard-unknown { border-color: #6c757d; }
+
+  .aqhi-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .aqhi-number {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1;
+    min-width: 74px;
+    text-align: center;
+  }
+  .aqhi-meta { flex: 1; min-width: 0; }
+  .aqhi-meta .risk {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 2px;
+  }
+  .aqhi-meta .station-line {
+    font-size: 12.5px;
+    color: #9fb0bf;
+    margin: 0;
+  }
+  .health-msg {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid #304152;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .health-msg .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9fb0bf;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .health-msg + .health-msg {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: none;
+  }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .metric-tile {
+    background: #111c26;
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .metric-tile .value {
+    font-size: 22px;
+    font-weight: 700;
+    display: block;
+  }
+  .metric-tile .label {
+    font-size: 11.5px;
+    color: #9fb0bf;
+    margin-top: 2px;
+    display: block;
+  }
+
+  .panel h2 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: #9fb0bf;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  footer {
+    max-width: 480px;
+    margin: 24px auto 0;
+    padding: 0 16px;
+    font-size: 11.5px;
+    color: #6c7a86;
+    line-height: 1.6;
+  }
+  footer a { color: #4dabf7; }
+
+  .skeleton { opacity: 0.5; }
+  .placeholder-line {
+    height: 12px;
+    background: #223040;
+    border-radius: 4px;
+    width: 60%;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ACA Air Quality</h1>
+  <p>Alberta Capital Airshed &middot; mobile digest &middot; <a href="ACA.html">Full interactive map &rarr;</a></p>
+</header>
+
+<main>
+  <select id="station-picker" aria-label="Choose your location"></select>
+
+  <section id="aqhi-panel" class="panel skeleton">
+    <div class="aqhi-row">
+      <div class="aqhi-number" id="aqhi-number">&mdash;</div>
+      <div class="aqhi-meta">
+        <p class="risk" id="aqhi-risk">Loading&hellip;</p>
+        <p class="station-line" id="aqhi-station-line"></p>
+      </div>
+    </div>
+    <div id="aqhi-health"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Right now</h2>
+    <div class="metric-grid">
+      <div class="metric-tile">
+        <span class="value" id="pm25-value">&mdash;</span>
+        <span class="label">PM2.5 (&micro;g/m&sup3;)</span>
+      </div>
+      <div class="metric-tile">
+        <span class="value" id="temp-value">&mdash;</span>
+        <span class="label">Temperature</span>
+      </div>
+      <div class="metric-tile">
+        <span class="value" id="wind-value">&mdash;</span>
+        <span class="label">Wind</span>
+      </div>
+      <div class="metric-tile">
+        <span class="value" id="uv-value">&mdash;</span>
+        <span class="label">UV Index</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Data: Alberta Environment and Protected Areas &middot; Alberta Capital Airshed. Weather: Open-Meteo. This digest shows one station's readings &mdash; for the full interactive map with all ACA layers, sensors, and grids, use the <a href="ACA.html">full ACA map</a>.
+</footer>
+
+<script src="js/data.js"></script>
+<script>
+(function () {
+  const STATIONS = [
+    { name: "Edmonton East",     lat: 53.5482115, lon: -113.3680856 },
+    { name: "Edmonton Lendrum",  lat: 53.4978,    lon: -113.527 },
+    { name: "Edmonton McCauley", lat: 53.549509,  lon: -113.48593 },
+    { name: "St. Albert",        lat: 53.6269722, lon: -113.6119166 },
+    { name: "Enoch",             lat: 53.4980544, lon: -113.7607143 },
+    { name: "Woodcroft",         lat: 53.564411,  lon: -113.562583 },
+  ];
+  const STORAGE_KEY = "aca_mobile_station";
+
+  const picker = document.getElementById("station-picker");
+  STATIONS.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s.name;
+    opt.textContent = s.name;
+    picker.appendChild(opt);
+  });
+
+  let saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+  picker.value = STATIONS.some(s => s.name === saved) ? saved : STATIONS[0].name;
+
+  function riskClass(risk) {
+    if (!risk) return "hazard-unknown";
+    if (risk.startsWith("Low")) return "hazard-low";
+    if (risk.startsWith("Moderate")) return "hazard-moderate";
+    if (risk.startsWith("High")) return "hazard-high";
+    return "hazard-extreme";
+  }
+
+  function renderAQHI(station) {
+    const panel = document.getElementById("aqhi-panel");
+    const numberEl = document.getElementById("aqhi-number");
+    const riskEl = document.getElementById("aqhi-risk");
+    const lineEl = document.getElementById("aqhi-station-line");
+    const healthEl = document.getElementById("aqhi-health");
+
+    const raw = window.getStationValue(station.name, "AQHI");
+    const rawTime = window.getStationTime(station.name, "AQHI");
+
+    panel.classList.remove("skeleton");
+
+    if (raw === null || raw === undefined || raw === "") {
+      numberEl.textContent = "—";
+      numberEl.style.color = "#6c757d";
+      riskEl.textContent = "Unavailable";
+      lineEl.textContent = station.name + " has no recent reading.";
+      healthEl.innerHTML = "";
+      panel.className = "panel hazard-unknown";
+      return;
+    }
+
+    const n = Number(raw);
+    const displayVal = n > 10 ? "10+" : String(Math.round(n));
+    const color = window.getAQHIColor(raw);
+    const health = window.getAQHIHealthMessage(raw);
+
+    numberEl.textContent = displayVal;
+    numberEl.style.color = color;
+    riskEl.textContent = health ? health.risk : "Unknown";
+    panel.className = "panel " + riskClass(health ? health.risk : null);
+
+    lineEl.textContent = station.name + (rawTime ? " · as of " + rawTime : "");
+
+    healthEl.innerHTML = health ? `
+      <div class="health-msg">
+        <span class="label">General population</span>
+        ${health.general}
+      </div>
+      <div class="health-msg">
+        <span class="label">At-risk population</span>
+        ${health.atRisk}
+      </div>
+    ` : "";
+  }
+
+  function renderPM25(station) {
+    const raw = window.getStationValue(station.name, "Fine Particulate Matter");
+    document.getElementById("pm25-value").textContent =
+      (raw === null || raw === undefined || raw === "") ? "—" : Number(raw).toFixed(1);
+  }
+
+  async function renderWeather(station) {
+    const tempEl = document.getElementById("temp-value");
+    const windEl = document.getElementById("wind-value");
+    const uvEl = document.getElementById("uv-value");
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${station.lat}&longitude=${station.lon}` +
+        `&current_weather=true&hourly=uv_index&timezone=America%2FEdmonton`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const cw = data.current_weather;
+      if (cw) {
+        tempEl.textContent = Math.round(cw.temperature) + "°C";
+        const dirs = ["N","NE","E","SE","S","SW","W","NW"];
+        const dir = isFinite(cw.winddirection) ? dirs[Math.round((cw.winddirection % 360) / 45) % 8] : "";
+        windEl.textContent = Math.round(cw.windspeed) + " km/h" + (dir ? " " + dir : "");
+      }
+      if (data.hourly && data.hourly.uv_index && data.hourly.time) {
+        const nowHourIso = new Date().toISOString().slice(0, 13);
+        const idx = data.hourly.time.findIndex(t => t.startsWith(nowHourIso));
+        const uv = idx >= 0 ? data.hourly.uv_index[idx] : data.hourly.uv_index[0];
+        uvEl.textContent = uv != null ? Math.round(uv * 10) / 10 : "—";
+      }
+    } catch (e) {
+      tempEl.textContent = "—";
+      windEl.textContent = "—";
+      uvEl.textContent = "—";
+    }
+  }
+
+  async function renderAll() {
+    const station = STATIONS.find(s => s.name === picker.value) || STATIONS[0];
+    try { localStorage.setItem(STORAGE_KEY, station.name); } catch (e) {}
+    await window.dataReady;
+    renderAQHI(station);
+    renderPM25(station);
+    renderWeather(station);
+  }
+
+  picker.addEventListener("change", renderAll);
+  renderAll();
+})();
+</script>
+</body>
+</html>
