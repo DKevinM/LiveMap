@@ -87,11 +87,15 @@ window.initMap = function () {
   let headsUpPending = 0;
   let headsUpAlertCount = 0;
   let headsUpFirmsCount = 0;
+  let headsUpPrescribedCount = 0;
+  let headsUpPrescribedDetail = "";
+  let headsUpPrescribedDate = "";
+  let headsUpFlaresFilteredCount = 0;
 
   function headsUpCheck() {
     headsUpPending--;
     if (headsUpPending > 0) return;
-    if (headsUpAlertCount === 0 && headsUpFirmsCount === 0) return;
+    if (headsUpAlertCount === 0 && headsUpFirmsCount === 0 && headsUpPrescribedCount === 0 && headsUpFlaresFilteredCount === 0) return;
 
     const banner = L.DomUtil.create("div", "headsup-banner", map.getContainer());
     L.DomEvent.disableClickPropagation(banner);
@@ -104,11 +108,24 @@ window.initMap = function () {
     if (headsUpFirmsCount > 0) {
       bits.push(`<button type="button" class="headsup-link" id="headsup-show-firms">${headsUpFirmsCount} fire hotspot${headsUpFirmsCount === 1 ? "" : "s"}</button>`);
     }
+    if (headsUpPrescribedCount > 0) {
+      bits.push(`<a class="headsup-link" href="https://ciffc.net/situation/${headsUpPrescribedDate}" target="_blank" rel="noopener" title="${headsUpPrescribedDetail}">${headsUpPrescribedCount} active prescribed burn${headsUpPrescribedCount === 1 ? "" : "s"} (western Canada)</a>`);
+    }
+
+    const mainLine = bits.length
+      ? `<span class="headsup-icon">&#9888;</span><span class="headsup-text">Heads up: ${bits.join(" &middot; ")} detected in this area.</span>`
+      : `<span class="headsup-icon">&#8505;</span><span class="headsup-text">Fire-hotspot check ran for this area.</span>`;
+
+    const flareNote = headsUpFlaresFilteredCount > 0
+      ? `<div class="headsup-subnote">${headsUpFlaresFilteredCount} likely gas flare${headsUpFlaresFilteredCount === 1 ? "" : "s"} excluded from fire-hotspot detection in this view (persistent same-spot heat, not wildfire behavior).</div>`
+      : "";
 
     banner.innerHTML = `
-      <span class="headsup-icon">&#9888;</span>
-      <span class="headsup-text">Heads up: ${bits.join(" &middot; ")} detected in this area.</span>
-      <span class="headsup-close" id="headsup-close" role="button" aria-label="Dismiss">&times;</span>
+      <div class="headsup-main">
+        ${mainLine}
+        <span class="headsup-close" id="headsup-close" role="button" aria-label="Dismiss">&times;</span>
+      </div>
+      ${flareNote}
     `;
 
     const alertsBtn = banner.querySelector("#headsup-show-alerts");
@@ -122,6 +139,7 @@ window.initMap = function () {
 
   if (window.APP_CONFIG?.overlays?.includes("alerts")) headsUpPending++;
   if (window.APP_CONFIG?.overlays?.includes("firms")) headsUpPending++;
+  if (window.APP_CONFIG?.overlays?.includes("prescribed_burns")) headsUpPending++;
 
   const legend = L.control({ position: "bottomright" });
   
@@ -203,7 +221,7 @@ window.initMap = function () {
     `;
   }
 
-  // Environment Canada alerts legend - risk_colour_en straight from the
+  // ECCC alerts legend - risk_colour_en straight from the
   // API (yellow/orange/red are ECCC's own advisory/watch/warning
   // convention), same treatment as the smoke/UV legends above.
   let alertsLegend = null;
@@ -292,7 +310,7 @@ window.initMap = function () {
       uvLegend.style.display = "block";
     }
 
-    if (e.name === "Environment Canada Alerts" && alertsLegend) {
+    if (e.name === "ECCC Alerts" && alertsLegend) {
       alertsLegend.style.display = "block";
     }
 
@@ -349,7 +367,7 @@ window.initMap = function () {
       uvLegend.style.display = "none";
     }
 
-    if (e.name === "Environment Canada Alerts" && alertsLegend) {
+    if (e.name === "ECCC Alerts" && alertsLegend) {
       alertsLegend.style.display = "none";
     }
 
@@ -639,7 +657,7 @@ window.initMap = function () {
 
       })
       .catch(err => {
-        console.error("Environment Canada alerts layer failed:", err);
+        console.error("ECCC alerts layer failed:", err);
         headsUpCheck();
       });
   }
@@ -700,11 +718,68 @@ window.initMap = function () {
         firmsLayer.eachLayer(lyr => {
           if (lyr.getLatLng && HEADSUP_SCOPE_BOUNDS.contains(lyr.getLatLng())) headsUpFirmsCount++;
         });
+
+        // Flare-suppressed detections (see fetch_firms_map.py) never
+        // reach the map layer above, but are still counted here so the
+        // heads-up banner can say how many were filtered from this view
+        // - transparency on what got excluded, not just what's shown.
+        (data.flares?.features || []).forEach(f => {
+          const [lon, lat] = f.geometry.coordinates;
+          if (HEADSUP_SCOPE_BOUNDS.contains([lat, lon])) headsUpFlaresFilteredCount++;
+        });
+
         headsUpCheck();
 
       })
       .catch(err => {
         console.error("FIRMS hotspots layer failed:", err);
+        headsUpCheck();
+      });
+  }
+
+  // ----------------------------
+  // CIFFC PRESCRIBED-BURN NOTICES (heads-up only, no map layer)
+  // ----------------------------
+  // CIFFC's national situation report rolls up each agency's (province/
+  // territory's) currently-active prescribed fires as a count, not
+  // individual fire locations - there's nothing to plot on the map, so
+  // this only ever feeds the heads-up banner above, never window.layers.
+  // Confirmed directly: the real data API behind ciffc.net's React app
+  // is https://api.ciffc.net/v1/sitrep and sends
+  // Access-Control-Allow-Origin: * - unlike FIRMS this needs no key and
+  // can be fetched straight from this public page. No `date` param is
+  // passed on purpose: the API defaults to its latest published report,
+  // sidestepping the same "today has no data yet" gap hit with FIRMS
+  // (confirmed: requesting today's not-yet-published date returns `[]`,
+  // while omitting date always resolves to whatever the real latest
+  // report is).
+  if (window.APP_CONFIG?.overlays?.includes("prescribed_burns")) {
+    const WESTERN_CIFFC_AGENCIES = {
+      BC: "British Columbia", YT: "Yukon", AB: "Alberta", NT: "Northwest Territories",
+      SK: "Saskatchewan", MB: "Manitoba", PC: "Parks Canada"
+    };
+
+    fetch("https://api.ciffc.net/v1/sitrep")
+      .then(r => r.json())
+      .then(data => {
+
+        const sitereps = data.agencies_sitereps || {};
+        const active = [];
+
+        Object.entries(WESTERN_CIFFC_AGENCIES).forEach(([code, name]) => {
+          const n = sitereps[code]?.sitrep?.field_prescribed_active;
+          if (typeof n === "number" && n > 0) active.push(`${name}: ${n}`);
+        });
+
+        headsUpPrescribedCount = active.reduce((sum, s) => sum + Number(s.split(": ")[1]), 0);
+        headsUpPrescribedDetail = active.join(", ");
+        headsUpPrescribedDate = data.field_date || "";
+
+        headsUpCheck();
+
+      })
+      .catch(err => {
+        console.error("CIFFC prescribed-burn check failed:", err);
         headsUpCheck();
       });
   }
@@ -789,7 +864,7 @@ window.initMap = function () {
     eaqhi: "eAQHI (PurpleAir)",
     airsheds: "Airsheds",
     firesmoke: "FireSmoke",
-    alerts: "Environment Canada Alerts",
+    alerts: "ECCC Alerts",
     firms: "Fire Hotspots (satellite)",
     "AQHI Alberta": "AQHI Grid AB Stations",
     "AQHI Alberta_BLEND": "AQHI Grid AB Stations+Sensors",

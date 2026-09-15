@@ -321,7 +321,7 @@ function drawAQHIPanel() {
 
 
   <div style="margin-top:10px;">
-    <div style="font-weight:600;">Environment Canada Weather Alerts</div>
+    <div style="font-weight:600;">ECCC Weather Alerts</div>
     <a href="https://weather.gc.ca/?layers=alert&province=AB&zoom=5&center=47.04505510,-129.95671573&alertTableFilterProv=AB" target="_blank">
         Weather Alerts
     </a><br>
