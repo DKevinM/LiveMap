@@ -72,7 +72,7 @@ window.initMap = function () {
   // ----------------------------
   // PROACTIVE "HEADS UP" STATE (alerts + fire hotspots)
   // ----------------------------
-  // The Sturgeon Lake sit-rep surfaces active EC alerts and nearby fire
+  // The Sturgeon Lake sit-rep surfaces active ECCC alerts and nearby fire
   // detections unconditionally in its narrative every refresh - a real
   // heads-up, not something a visitor has to think to go looking for.
   // The alerts/firms layers below are opt-in toggles like every other
@@ -239,7 +239,7 @@ window.initMap = function () {
     ];
 
     alertsLegend.innerHTML = `
-      <div class="alerts-legend-title">EC Alerts</div>
+      <div class="alerts-legend-title">ECCC Alerts</div>
       ${alertStops.map(s => `
         <div class="alerts-legend-row">
           <span class="alerts-legend-swatch" style="background:${s.color}"></span>
