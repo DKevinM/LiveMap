@@ -12,6 +12,21 @@
 
       enableHistory: true,
 
+      // Bumped up from the shared 275px default (js/map.js) for this page
+      // only - one of the three developer requests for the overview map.
+      aqhiLegendWidth: 340,
+
+      // Zoom in one level past whatever fitBounds(albertaBounds) already
+      // computed (js/map.js) - third developer request. Tested directly
+      // (screenshotted 2026-09-15): this crops northern Alberta (toward
+      // the NWT border) off-screen on every window size tried, including
+      // a half-level compromise - there's no zoom-in here that doesn't
+      // cost some of the province, since the un-boosted view is already
+      // an exact fit with no slack. Requested as a full level anyway.
+      // Relative rather than a fixed zoom so it still adapts per screen
+      // size the way fitBounds does.
+      zoomBoost: 1,
+
       // AQHI "DNA" driver chart - see index.html for the full explanation.
       showDNAChart: true,
 
@@ -30,7 +45,9 @@
         "weather_wind_u",
         "weather_uv",
         "firesmoke",
-        "airsheds"
+        "airsheds",
+        "alerts",
+        "firms"
       ],
 
       defaultAQHI: ["Alberta"],
@@ -44,6 +61,12 @@
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <!-- ACA branding override for this page only - shared css/style.css's
+       #header stays the default blue for WCAS/PAZA/other pages. -->
+  <style>
+    #header { background: #1F4244; }
+  </style>
 
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
@@ -68,6 +91,7 @@
 
   <div id="header-center">
     Click anywhere on the map to identify nearby stations, sensors, and weather
+    &middot; <a href="AB_mobile.html" style="color:#ffffff;text-decoration:underline">On your phone? Try the mobile view</a>
   </div>
 
   <div id="header-right"></div>

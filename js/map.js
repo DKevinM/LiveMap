@@ -43,7 +43,11 @@ window.initMap = function () {
       [60.0, -110.0]
     ];
 
-    map = L.map(mapDiv);   
+    // zoomSnap defaults to Leaflet's normal 1 (whole levels only) unless a
+    // page opts into fractional steps - needed for zoomBoost below to
+    // land on a half-level nudge instead of being rounded back to a
+    // whole one.
+    map = L.map(mapDiv, { zoomSnap: window.APP_CONFIG?.zoomSnap ?? 1 });
     // Apply bounds only if defined
     if (window.APP_CONFIG.center && window.APP_CONFIG.zoom) {
       map.setView(window.APP_CONFIG.center, window.APP_CONFIG.zoom);
@@ -54,14 +58,77 @@ window.initMap = function () {
     }
   }
 
+  // Optional per-page zoom nudge on top of whatever fitBounds/setView
+  // above already computed - kept relative (+N levels) rather than a
+  // fixed zoom number so it still adapts to the viewer's screen size the
+  // same way fitBounds does, instead of a fixed zoom clipping Alberta
+  // more aggressively on a smaller window than fitBounds would have.
+  if (window.APP_CONFIG?.zoomBoost) {
+    map.setZoom(map.getZoom() + window.APP_CONFIG.zoomBoost);
+  }
+
   window.map = map;
+
+  // ----------------------------
+  // PROACTIVE "HEADS UP" STATE (alerts + fire hotspots)
+  // ----------------------------
+  // The Sturgeon Lake sit-rep surfaces active EC alerts and nearby fire
+  // detections unconditionally in its narrative every refresh - a real
+  // heads-up, not something a visitor has to think to go looking for.
+  // The alerts/firms layers below are opt-in toggles like every other
+  // overlay here (off by default), which on their own loses that
+  // "you should know about this" behavior. headsUpCheck() (built after
+  // both fetches below) restores it: counts scoped to this page's own
+  // area (its configured bounds, or the Alberta-wide fallback used
+  // elsewhere in this file), shown only if something's actually there.
+  const HEADSUP_SCOPE_BOUNDS = L.latLngBounds(
+    window.APP_CONFIG?.bounds || [[48.9, -120.0], [60.0, -110.0]]
+  );
+  let headsUpPending = 0;
+  let headsUpAlertCount = 0;
+  let headsUpFirmsCount = 0;
+
+  function headsUpCheck() {
+    headsUpPending--;
+    if (headsUpPending > 0) return;
+    if (headsUpAlertCount === 0 && headsUpFirmsCount === 0) return;
+
+    const banner = L.DomUtil.create("div", "headsup-banner", map.getContainer());
+    L.DomEvent.disableClickPropagation(banner);
+    L.DomEvent.disableScrollPropagation(banner);
+
+    const bits = [];
+    if (headsUpAlertCount > 0) {
+      bits.push(`<button type="button" class="headsup-link" id="headsup-show-alerts">${headsUpAlertCount} active weather alert${headsUpAlertCount === 1 ? "" : "s"}</button>`);
+    }
+    if (headsUpFirmsCount > 0) {
+      bits.push(`<button type="button" class="headsup-link" id="headsup-show-firms">${headsUpFirmsCount} fire hotspot${headsUpFirmsCount === 1 ? "" : "s"}</button>`);
+    }
+
+    banner.innerHTML = `
+      <span class="headsup-icon">&#9888;</span>
+      <span class="headsup-text">Heads up: ${bits.join(" &middot; ")} detected in this area.</span>
+      <span class="headsup-close" id="headsup-close" role="button" aria-label="Dismiss">&times;</span>
+    `;
+
+    const alertsBtn = banner.querySelector("#headsup-show-alerts");
+    if (alertsBtn) alertsBtn.addEventListener("click", () => map.addLayer(window.layers.alerts));
+
+    const firmsBtn = banner.querySelector("#headsup-show-firms");
+    if (firmsBtn) firmsBtn.addEventListener("click", () => map.addLayer(window.layers.firms));
+
+    banner.querySelector("#headsup-close").addEventListener("click", () => banner.remove());
+  }
+
+  if (window.APP_CONFIG?.overlays?.includes("alerts")) headsUpPending++;
+  if (window.APP_CONFIG?.overlays?.includes("firms")) headsUpPending++;
 
   const legend = L.control({ position: "bottomright" });
   
   legend.onAdd = function () {
     const img = L.DomUtil.create("img");
     img.src = "images/aqhi_legend.png";
-    img.style.width = "275px";
+    img.style.width = (window.APP_CONFIG?.aqhiLegendWidth || 275) + "px";
     return img;
   };
   
@@ -136,6 +203,62 @@ window.initMap = function () {
     `;
   }
 
+  // Environment Canada alerts legend - risk_colour_en straight from the
+  // API (yellow/orange/red are ECCC's own advisory/watch/warning
+  // convention), same treatment as the smoke/UV legends above.
+  let alertsLegend = null;
+
+  if (window.APP_CONFIG?.overlays?.includes("alerts")) {
+    alertsLegend = L.DomUtil.create("div", "alerts-legend", map.getContainer());
+    alertsLegend.style.display = "none";
+    L.DomEvent.disableClickPropagation(alertsLegend);
+    L.DomEvent.disableScrollPropagation(alertsLegend);
+
+    const alertStops = [
+      { value: "Warning", color: "#c92a2a" },
+      { value: "Watch",   color: "#e8590c" },
+      { value: "Advisory/Statement", color: "#e0a800" }
+    ];
+
+    alertsLegend.innerHTML = `
+      <div class="alerts-legend-title">EC Alerts</div>
+      ${alertStops.map(s => `
+        <div class="alerts-legend-row">
+          <span class="alerts-legend-swatch" style="background:${s.color}"></span>
+          <span>${s.value}</span>
+        </div>
+      `).join("")}
+    `;
+  }
+
+  // FIRMS fire-hotspot legend - colours match FIRMS_CONFIDENCE_COLORS
+  // in the layer block below (h/n/l = FIRMS' own confidence buckets).
+  let firmsLegend = null;
+
+  if (window.APP_CONFIG?.overlays?.includes("firms")) {
+    firmsLegend = L.DomUtil.create("div", "alerts-legend", map.getContainer());
+    firmsLegend.style.display = "none";
+    firmsLegend.style.top = "230px";
+    L.DomEvent.disableClickPropagation(firmsLegend);
+    L.DomEvent.disableScrollPropagation(firmsLegend);
+
+    const firmsStops = [
+      { value: "High confidence", color: "#c92a2a" },
+      { value: "Nominal",         color: "#e8590c" },
+      { value: "Low confidence",  color: "#e0a800" }
+    ];
+
+    firmsLegend.innerHTML = `
+      <div class="alerts-legend-title">Fire Hotspots</div>
+      ${firmsStops.map(s => `
+        <div class="alerts-legend-row">
+          <span class="alerts-legend-swatch" style="background:${s.color}"></span>
+          <span>${s.value}</span>
+        </div>
+      `).join("")}
+    `;
+  }
+
   const FIRESMOKE_LAYER_KEYS = ["firesmoke"];
 
   // ----------------------------
@@ -167,6 +290,14 @@ window.initMap = function () {
 
     if (e.name === "UV Index" && uvLegend) {
       uvLegend.style.display = "block";
+    }
+
+    if (e.name === "Environment Canada Alerts" && alertsLegend) {
+      alertsLegend.style.display = "block";
+    }
+
+    if (e.name === "Fire Hotspots (satellite)" && firmsLegend) {
+      firmsLegend.style.display = "block";
     }
 
     // ----------------------------
@@ -218,6 +349,14 @@ window.initMap = function () {
       uvLegend.style.display = "none";
     }
 
+    if (e.name === "Environment Canada Alerts" && alertsLegend) {
+      alertsLegend.style.display = "none";
+    }
+
+    if (e.name === "Fire Hotspots (satellite)" && firmsLegend) {
+      firmsLegend.style.display = "none";
+    }
+
     if (
       e.name === "PM2.5 Rose" ||
       e.name === "NO2 Rose" ||
@@ -252,7 +391,9 @@ window.initMap = function () {
     weather_wind_u: L.layerGroup(),
     weather_lightning: L.layerGroup(),
     weather_uv: L.layerGroup(),
-    weather_thunderstorm: L.layerGroup()
+    weather_thunderstorm: L.layerGroup(),
+    alerts: L.layerGroup(),
+    firms: L.layerGroup()
   };
 
   
@@ -433,6 +574,142 @@ window.initMap = function () {
   });
 
   // ----------------------------
+  // ENVIRONMENT CANADA ALERTS (western Canada - BC/AB/SK/MB/YT/NT/NU)
+  // ----------------------------
+  // Same weather-alerts collection the Sturgeon Lake environmental
+  // intelligence sit-rep already pulls for its single-point boundary
+  // check (modules/alerts/service.py), widened here to one shared bbox
+  // covering the western provinces and territories since this layer
+  // isn't tied to one site. api.weather.gc.ca sends
+  // Access-Control-Allow-Origin: * (confirmed directly), so this can
+  // fetch straight from the browser like the thunderstorm outlook above,
+  // no server-side mirror needed.
+  if (window.APP_CONFIG?.overlays?.includes("alerts")) {
+    const WESTERN_CANADA_BBOX = "-141,48.2,-88,78";
+    const ALERT_ACTIVE_STATUSES = ["issued", "continued"];
+    const ALERT_RISK_COLORS = {
+      red: "#c92a2a",
+      orange: "#e8590c",
+      yellow: "#e0a800",
+      green: "#2f9e44"
+    };
+
+    fetch(`https://api.weather.gc.ca/collections/weather-alerts/items?f=json&bbox=${WESTERN_CANADA_BBOX}&limit=500`)
+      .then(r => r.json())
+      .then(data => {
+
+        const features = (data.features || []).filter(f =>
+          ALERT_ACTIVE_STATUSES.includes(f.properties?.status_en)
+        );
+
+        const alertsLayer = L.geoJSON({ type: "FeatureCollection", features }, {
+
+          style: function (feature) {
+            const p = feature.properties || {};
+            const color = ALERT_RISK_COLORS[(p.risk_colour_en || "").toLowerCase()] || "#868e96";
+            return {
+              color: color,
+              fillColor: color,
+              fillOpacity: 0.12,
+              weight: 1.5
+            };
+          },
+
+          onEachFeature: function (feature, layer) {
+            const p = feature.properties || {};
+            layer.bindTooltip(`
+              <b>${p.alert_name_en || "Alert"}</b><br>
+              ${p.feature_name_en || p.province || ""}<br>
+              Issued: ${p.publication_datetime ? new Date(p.publication_datetime).toLocaleString() : "-"}<br>
+              Expires: ${p.expiration_datetime ? new Date(p.expiration_datetime).toLocaleString() : "-"}
+            `, {
+              sticky: true,
+              direction: "top"
+            });
+          }
+
+        });
+
+        window.layers.alerts.addLayer(alertsLayer);
+
+        alertsLayer.eachLayer(lyr => {
+          if (lyr.getBounds && lyr.getBounds().intersects(HEADSUP_SCOPE_BOUNDS)) headsUpAlertCount++;
+        });
+        headsUpCheck();
+
+      })
+      .catch(err => {
+        console.error("Environment Canada alerts layer failed:", err);
+        headsUpCheck();
+      });
+  }
+
+  // ----------------------------
+  // NASA FIRMS ACTIVE-FIRE HOTSPOTS (western Canada)
+  // ----------------------------
+  // Same VIIRS_SNPP_NRT detections as the DSAI backend's per-station fire
+  // check (dsai/fire_hotspots.py), covering the whole western-Canada bbox
+  // instead of one point. FIRMS' area API takes the MAP_KEY in the URL
+  // path, so unlike the ECCC alerts layer above this can't be fetched
+  // straight from this public page - fetch_firms_map.py holds the key
+  // server-side and writes this plain GeoJSON hourly, served with no key
+  // in it (same no-CDN-lag pattern as js/data.js's last6h.csv fetch).
+  // Detections are satellite heat signatures only - FIRMS doesn't
+  // distinguish a wildfire from a prescribed burn, so this layer covers
+  // both.
+  if (window.APP_CONFIG?.overlays?.includes("firms")) {
+    const FIRMS_CONFIDENCE_COLORS = { h: "#c92a2a", n: "#e8590c", l: "#e0a800" };
+
+    window.fetchFresh("https://status.krmenvironmental.com/data/firms_hotspots.geojson")
+      .then(r => r.json())
+      .then(data => {
+
+        const firmsLayer = L.geoJSON(data, {
+
+          pointToLayer: function (feature, latlng) {
+            const p = feature.properties || {};
+            const color = FIRMS_CONFIDENCE_COLORS[(p.confidence || "").toLowerCase()] || "#868e96";
+            const frp = Number(p.frp);
+            const radius = isFinite(frp) ? Math.min(14, 5 + Math.sqrt(frp) * 2) : 6;
+            return L.circleMarker(latlng, {
+              radius: radius,
+              color: "#111",
+              weight: 1,
+              fillColor: color,
+              fillOpacity: 0.8
+            });
+          },
+
+          onEachFeature: function (feature, layer) {
+            const p = feature.properties || {};
+            const when = (p.acq_date || "") + (p.acq_time ? " " + String(p.acq_time).padStart(4, "0").replace(/(\d{2})(\d{2})/, "$1:$2") + " UTC" : "");
+            layer.bindTooltip(`
+              <b>Fire hotspot</b><br>
+              Detected: ${when || "-"}<br>
+              Confidence: ${p.confidence || "-"}${p.frp != null ? " &middot; FRP " + p.frp + " MW" : ""}
+            `, {
+              sticky: true,
+              direction: "top"
+            });
+          }
+
+        });
+
+        window.layers.firms.addLayer(firmsLayer);
+
+        firmsLayer.eachLayer(lyr => {
+          if (lyr.getLatLng && HEADSUP_SCOPE_BOUNDS.contains(lyr.getLatLng())) headsUpFirmsCount++;
+        });
+        headsUpCheck();
+
+      })
+      .catch(err => {
+        console.error("FIRMS hotspots layer failed:", err);
+        headsUpCheck();
+      });
+  }
+
+  // ----------------------------
   // AIRSHED BOUNDARIES (all 10, one uniform style, one toggle)
   // ----------------------------
   // Unlike WallMap.html (ACA/WCAS drawn bold+black, the other 8 grey,
@@ -512,6 +789,8 @@ window.initMap = function () {
     eaqhi: "eAQHI (PurpleAir)",
     airsheds: "Airsheds",
     firesmoke: "FireSmoke",
+    alerts: "Environment Canada Alerts",
+    firms: "Fire Hotspots (satellite)",
     "AQHI Alberta": "AQHI Grid AB Stations",
     "AQHI Alberta_BLEND": "AQHI Grid AB Stations+Sensors",
     "AQHI Alberta_FORECAST_3H": "AQHI Grid Forecast (3h)",
