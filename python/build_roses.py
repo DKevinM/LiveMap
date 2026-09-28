@@ -13,7 +13,17 @@ HEADERS = {
     "Authorization": f"Bearer {SUPABASE_KEY}"
 }
 
-TABLE = "rose_data_7day"
+# Read the live table directly. Until 2026-09-28 this read "rose_data_7day",
+# a one-off snapshot of aqhi_data that nothing ever refreshed - so every
+# hourly run rebuilt identical June 13-20 roses, git saw no change, and the
+# workflow reported success for 3 months while the map showed stale roses.
+TABLE = "aqhi_data"
+ROSE_PARAMETERS = [
+    "Fine Particulate Matter", "Nitrogen Dioxide", "Sulphur Dioxide",
+    "Wind Direction", "Wind Speed",
+]
+# Fail the run (red X in Actions) rather than quietly publish old roses.
+MAX_DATA_AGE_HOURS = 6
 
 POLLUTANTS = {
     "Fine Particulate Matter": "PM25",
@@ -49,54 +59,64 @@ def speed_bin(ws):
 
 # -------- PROPER PAGED SUPABASE PULL --------
 
+def _fetch_window(url, param_filter, t0, t1):
+    """All rose rows with t0 <= ReadingDate < t1, in ONE unsorted request.
+    Supabase caps a response at 1000 rows; if a window comes back full it
+    may have been truncated, so split it in half and fetch each half."""
+    params = {
+        "select": "StationName,ParameterName,Value,ReadingDate",
+        "ParameterName": param_filter,
+        "and": f"(ReadingDate.gte.{t0.isoformat()},ReadingDate.lt.{t1.isoformat()})",
+    }
+    r = requests.get(url, headers=HEADERS, params=params, timeout=60)
+    if r.status_code not in (200, 206):
+        print("Response:")
+        print(r.text)
+    r.raise_for_status()
+    rows = r.json()
+    if len(rows) >= 1000:
+        if t1 - t0 <= timedelta(minutes=30):
+            raise SystemExit(f"{len(rows)} rows in a 30-min window at {t0} - can't split further, raise the row cap")
+        mid = t0 + (t1 - t0) / 2
+        return _fetch_window(url, param_filter, t0, mid) + _fetch_window(url, param_filter, mid, t1)
+    return rows
+
+
 def fetch_last7days():
+    """Last 168 h of the rose parameters, straight from aqhi_data.
+
+    Fetched in 2-hour windows with no ORDER BY and no Range paging: a single
+    7-day query - or even a sorted, offset-paged one-day query - hits
+    Supabase's statement timeout (57014) on aqhi_data (2025-onward, every
+    parameter), while an unsorted 2-hour slice (~700 rows) returns in a
+    fraction of a second. That timeout is presumably why the old
+    rose_data_7day snapshot existed at all."""
     now = datetime.now(timezone.utc)
     since = now - timedelta(hours=168)
 
     url = f"{SUPABASE_URL}/rest/v1/{TABLE}"
-
+    param_filter = "in.(" + ",".join(f'"{p}"' for p in ROSE_PARAMETERS) + ")"
     all_rows = []
-    start = 0
-    page_size = 1000
 
-
-    while True:
-        headers = HEADERS.copy()
-        headers["Range"] = f"{start}-{start+page_size-1}"
-
-        params = {
-            "select": "StationName,ParameterName,Value,ReadingDate",
-        }
-
-        r = requests.get(url, headers=headers, params=params)
-
-
-        if r.status_code != 200:
-            print("Response:")
-            print(r.text)
-
-        r.raise_for_status()
-
-        rows = r.json()
-		
-
-        if not rows:
-            break
-
-        all_rows.extend(rows)
-
-        if len(rows) < page_size:
-            break
-
-        start += page_size
+    t0 = since
+    while t0 < now:
+        t1 = min(t0 + timedelta(hours=2), now)
+        all_rows.extend(_fetch_window(url, param_filter, t0, t1))
+        t0 = t1
 
     df = pd.DataFrame(all_rows)
+    print("Rows pulled:", len(df))
+    if df.empty:
+        raise SystemExit(f"No rows in {TABLE} since {since:%Y-%m-%d %H:%M} UTC - refusing to write empty roses")
     df["ReadingDate"] = pd.to_datetime(df["ReadingDate"])
     df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
 
-    print("Rows pulled:", len(df))
+    newest = df["ReadingDate"].max()
+    age_h = (now - newest).total_seconds() / 3600
+    print(f"Data window: {df['ReadingDate'].min():%Y-%m-%d %H:%M} to {newest:%Y-%m-%d %H:%M} UTC (newest is {age_h:.1f} h old)")
+    if age_h > MAX_DATA_AGE_HOURS:
+        raise SystemExit(f"Newest reading is {age_h:.0f} h old (limit {MAX_DATA_AGE_HOURS} h) - source is stale, not publishing roses")
     return df
-
 
 
 
@@ -174,8 +194,15 @@ def build_rose(df, pollutant_name, stations):
 
     for station, g in merged.groupby("StationName"):
 
-        lat = stations.loc[stations.StationName == station, "Latitude"].iloc[0]
-        lon = stations.loc[stations.StationName == station, "Longitude"].iloc[0]
+        loc = stations.loc[stations.StationName == station]
+        if loc.empty:
+            # reporting in aqhi_data but missing from the stations table
+            # (e.g. a station added since that table was last filled) -
+            # skip it rather than crash every other station's rose
+            print(f"  skip {station}: no coordinates in the stations table")
+            continue
+        lat = loc["Latitude"].iloc[0]
+        lon = loc["Longitude"].iloc[0]
 
         # 2D matrix: dir x speed
         matrix = g.groupby(["dir_bin","spd_bin"])["Value_pol"].mean()
