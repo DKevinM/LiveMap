@@ -808,7 +808,7 @@ window.renderMap = async function () {
       ${imageHTML}
       <hr>
       ${historyLink}
-      <a href="/LiveMap/gauges.html?station=${encodeURIComponent(stationName)}" target="_blank">
+      <a href="gauges.html?station=${encodeURIComponent(stationName)}" target="_blank">
         View gauges</a>
       ${dnaChartHTML}
     `;
