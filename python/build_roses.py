@@ -3,6 +3,7 @@ import json
 import requests
 import pandas as pd
 from datetime import datetime, timedelta, timezone
+import time
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -68,7 +69,23 @@ def _fetch_window(url, param_filter, t0, t1):
         "ParameterName": param_filter,
         "and": f"(ReadingDate.gte.{t0.isoformat()},ReadingDate.lt.{t1.isoformat()})",
     }
-    r = requests.get(url, headers=HEADERS, params=params, timeout=60)
+    # The anon key gets a short statement timeout, and aqhi_data is busy while
+    # the hourly ingest writes to it - an occasional window times out (57014)
+    # even at 2 h (2 of 4 runs on 2026-09-29). Retry with a pause, then fall
+    # back to fetching the window as two halves, before giving up.
+    for attempt in range(3):
+        r = requests.get(url, headers=HEADERS, params=params, timeout=60)
+        if r.status_code in (200, 206):
+            break
+        timed_out = "57014" in r.text
+        print(f"  {t0:%m-%d %H:%M} window: HTTP {r.status_code}{' (statement timeout)' if timed_out else ''}, attempt {attempt + 1}/3")
+        if not timed_out:
+            break
+        time.sleep(5 * (attempt + 1))
+    else:
+        if t1 - t0 > timedelta(minutes=30):
+            mid = t0 + (t1 - t0) / 2
+            return _fetch_window(url, param_filter, t0, mid) + _fetch_window(url, param_filter, mid, t1)
     if r.status_code not in (200, 206):
         print("Response:")
         print(r.text)
