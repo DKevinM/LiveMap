@@ -36,9 +36,9 @@
       // time - see loadFireSmokeCombined() in render.js), all 10
       // airshed boundary outlines as one uniform-style toggle (unlike
       // WallMap.html, no airshed is drawn darker/bolder than another -
-      // see the AIRSHED BOUNDARIES block in map.js), and only the AQHI
-      // Grid AB Stations layer (no BLEND/forecast/other-airshed
-      // variants - see the aqhi list below).
+      // see the AIRSHED BOUNDARIES block in map.js). No AQHI grid layers:
+      // "AQHI Grid AB Stations" was removed 2026-09-30 at Kevin's request
+      // (empty aqhi/defaultAQHI lists = no checkbox, grid never loaded).
       overlays: [
         "stations",
         "purpleair",
@@ -52,11 +52,9 @@
         "prescribed_burns"
       ],
 
-      defaultAQHI: ["Alberta"],
+      defaultAQHI: [],
 
-      aqhi: [
-        "Alberta"
-      ]
+      aqhi: []
     };
   </script>
 
