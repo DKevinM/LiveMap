@@ -1,6 +1,10 @@
 const PURPLE_URL = "https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json";
-// BC 150 km border band (AB_datapull/PA_BC_pull.py), added 2026-09-30
-const PURPLE_URL_BC = "https://dkevinm.github.io/AB_datapull/data/BC_PM25_map.json";
+// 150 km border bands (AB_datapull/PA_border_pull.py; SK cut from SK_datapull), added 2026-09-30
+const PURPLE_BORDER_URLS = {
+  BC: "https://dkevinm.github.io/AB_datapull/data/BC_PM25_map.json",
+  NT: "https://dkevinm.github.io/AB_datapull/data/NT_PM25_map.json",
+  SK: "https://dkevinm.github.io/AB_datapull/data/SK_band_PM25_map.json"
+};
 
 const excludedSensors = [
   114435,
@@ -44,18 +48,21 @@ window.renderPurpleAir = async function () {
     return recs.map(r => ({ ...r, province }));
   };
 
-  // BC is optional: if it fails, still draw AB
-  const [ab, bc] = await Promise.allSettled([
+  // Border bands are optional: if one fails, still draw the rest
+  const borders = Object.entries(PURPLE_BORDER_URLS);
+  const [ab, ...rest] = await Promise.allSettled([
     load(PURPLE_URL, "AB"),
-    load(PURPLE_URL_BC, "BC")
+    ...borders.map(([prov, url]) => load(url, prov))
   ]);
   if (ab.status !== "fulfilled") {
     console.error("PurpleAir load failed:", ab.reason);
     return;
   }
-  if (bc.status !== "fulfilled") console.warn("PurpleAir BC load failed:", bc.reason);
-
-  const records = ab.value.concat(bc.status === "fulfilled" ? bc.value : []);
+  let records = ab.value;
+  rest.forEach((r, i) => {
+    if (r.status === "fulfilled") records = records.concat(r.value);
+    else console.warn(`PurpleAir ${borders[i][0]} load failed:`, r.reason);
+  });
 
   records.forEach(rec => {
   if (excludedSensors.includes(rec.sensor_index)) return;
@@ -66,8 +73,16 @@ window.renderPurpleAir = async function () {
   
   if (!Number.isFinite(lat) || !Number.isFinite(lon) || !Number.isFinite(pm)) return;
 
-    const eAQHI = computeEAQHI(pm);
+    // Full-formula AQHI (sensor PM2.5 + regional O3/NO2, build_pa_regional_aqhi.py);
+    // PM-only estimate if the build hasn't filled it
+    const hasRG = Number.isFinite(Number(rec.aqhi_rg)) && rec.aqhi_rg !== null;
+    const eAQHI = hasRG ? Number(rec.aqhi_rg) : computeEAQHI(pm);
     if (eAQHI == null) return;
+    const aqhiNote = !hasRG
+      ? "PM₂.₅ only"
+      : rec.aqhi_method === "regional_gas"
+        ? `PM₂.₅ + regional O₃ ${rec.o3_ppb} / NO₂ ${rec.no2_ppb} ppb`
+        : "PM₂.₅ + seasonal adjustment";
 
     const sensorIndex = rec.sensor_index;
     const label = rec.name || (sensorIndex != null ? `Sensor ${sensorIndex}` : "Unnamed sensor");
@@ -86,10 +101,11 @@ window.renderPurpleAir = async function () {
       weight: 1,
       fillOpacity: 0.88
     }).bindPopup(`
-      <strong>PurpleAir</strong>${rec.province === "BC" ? " (BC)" : ""}<br>
+      <strong>PurpleAir</strong>${rec.province !== "AB" ? ` (${rec.province})` : ""}<br>
       ${label}<br>
       ${sensorIndex != null ? `Sensor index: ${sensorIndex}<br>` : ""}
-      eAQHI: ${eAQHI}<br>
+      eAQHI: ${eAQHI > 10 ? "10+" : eAQHI}<br>
+      <small>${aqhiNote}</small><br>
       PM₂.₅ (corr): ${pm.toFixed(1)} µg/m³
       <hr>
         ${historyLink}
