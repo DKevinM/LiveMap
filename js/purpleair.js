@@ -1,4 +1,6 @@
 const PURPLE_URL = "https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json";
+// BC 150 km border band (AB_datapull/PA_BC_pull.py), added 2026-09-30
+const PURPLE_URL_BC = "https://dkevinm.github.io/AB_datapull/data/BC_PM25_map.json";
 
 const excludedSensors = [
   114435,
@@ -34,20 +36,26 @@ window.renderPurpleAir = async function () {
     window.layers.purpleair.clearLayers();
   }
 
-  let data = [];
-
-  try {
-    const res = await fetch(PURPLE_URL);
+  const load = async (url, province) => {
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    data = await res.json();
-  } catch (err) {
-    console.error("PurpleAir load failed:", err);
+    const data = await res.json();
+    const recs = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+    return recs.map(r => ({ ...r, province }));
+  };
+
+  // BC is optional: if it fails, still draw AB
+  const [ab, bc] = await Promise.allSettled([
+    load(PURPLE_URL, "AB"),
+    load(PURPLE_URL_BC, "BC")
+  ]);
+  if (ab.status !== "fulfilled") {
+    console.error("PurpleAir load failed:", ab.reason);
     return;
   }
+  if (bc.status !== "fulfilled") console.warn("PurpleAir BC load failed:", bc.reason);
 
-  const records = Array.isArray(data)
-    ? data
-    : (Array.isArray(data.data) ? data.data : []);
+  const records = ab.value.concat(bc.status === "fulfilled" ? bc.value : []);
 
   records.forEach(rec => {
   if (excludedSensors.includes(rec.sensor_index)) return;
@@ -78,7 +86,7 @@ window.renderPurpleAir = async function () {
       weight: 1,
       fillOpacity: 0.88
     }).bindPopup(`
-      <strong>PurpleAir</strong><br>
+      <strong>PurpleAir</strong>${rec.province === "BC" ? " (BC)" : ""}<br>
       ${label}<br>
       ${sensorIndex != null ? `Sensor index: ${sensorIndex}<br>` : ""}
       eAQHI: ${eAQHI}<br>
