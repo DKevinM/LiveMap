@@ -289,7 +289,7 @@ html, body {
 #panel {
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 54px;  /* clear of Leaflet's +/- zoom control (10px margin + 34px wide) */
   width: 300px;
   z-index: 1000;
   background: rgba(255,255,255,0.95);
