@@ -668,3 +668,40 @@ html, body {
     max-width: 96%;
   }
 }
+
+/* AQHI grid explanation (js/map.js, 2026-10-01) */
+.grid-note {
+  position: absolute;
+  left: 10px;
+  bottom: 64px;
+  z-index: 1000;
+  max-width: 300px;
+  max-height: 55vh;
+  overflow-y: auto;
+  background: rgba(255,255,255,0.96);
+  padding: 8px 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
+  color: #222;
+}
+.grid-note-title { font-weight: 600; font-size: 12px; margin-bottom: 4px; cursor: pointer; }
+.grid-note p { margin: 4px 0; }
+.grid-note ul { margin: 4px 0; padding-left: 16px; }
+.grid-note li { margin: 2px 0; }
+.grid-note details details summary { cursor: pointer; color: #1a5fb4; margin-top: 4px; }
+
+@media (max-width: 768px) {
+  /* folded tab just above the mobile Clear Selection button (bottom 150px) */
+  .grid-note {
+    bottom: 196px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+    max-height: 45vh;
+    padding: 6px 10px;
+  }
+  .grid-note-title { margin-bottom: 0; }
+}

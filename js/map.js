@@ -789,6 +789,65 @@ window.initMap = function () {
   }
 
   // ----------------------------
+  // AQHI GRID NOTE (2026-10-01): plain-language "how this grid is made"
+  // box, shown whenever any AQHI grid layer is on (toggled or loaded by
+  // default). Grade-8 wording, one caveat, details folded away - numbers
+  // match AQHI.forecast/aqhi_map_forecast.py (IDW power 2, 150 km, sensors
+  // weight 0.5) and drafts/regional_gas_eaqhi/test4 (99% within 1 point).
+  // Turn off per page with APP_CONFIG.gridNote = false.
+  // ----------------------------
+  if (window.APP_CONFIG?.gridNote !== false) {
+    const gridNote = L.DomUtil.create("div", "grid-note", map.getContainer());
+    gridNote.style.display = "none";
+    L.DomEvent.disableClickPropagation(gridNote);
+    L.DomEvent.disableScrollPropagation(gridNote);
+    // Whole note is collapsible: open on desktop, folded to a one-line tab
+    // on phones (where the bottom-sheet panel and banners need the space).
+    const openAttr = window.innerWidth > 768 ? " open" : "";
+    gridNote.innerHTML = `
+      <details class="grid-note-wrap"${openAttr}>
+      <summary class="grid-note-title">About the AQHI grid</summary>
+      <p>The grid estimates the Air Quality Health Index between monitoring
+      stations. Each square takes its value from nearby stations and sensors.
+      The closer one is, the more it counts.</p>
+      <ul>
+        <li><b>Stations:</b> official monitoring stations only.</li>
+        <li><b>Stations + Sensors:</b> also uses low-cost PurpleAir sensors.
+        Each sensor counts half as much as a station.</li>
+      </ul>
+      <p><b>These are estimates, not official readings.</b> For the official
+      AQHI, check the nearest station.</p>
+      <details>
+        <summary>How it's calculated</summary>
+        <ul>
+          <li>Updated every hour from the latest station AQHI (readings up to
+          6 hours old).</li>
+          <li>Squares use inverse-distance weighting. Stations and sensors up
+          to 150 km away can count.</li>
+          <li>Each sensor's AQHI uses its 3-hour average fine particles
+          (PM2.5, corrected for humidity), plus ozone and nitrogen dioxide
+          from Environment and Climate Change Canada's regional air quality
+          analysis. Nitrogen dioxide comes from an official station instead
+          when one is within 25 km.</li>
+          <li>Tested at 9 sites that have both a station and a sensor
+          (Jan&ndash;Sep 2026): the sensor estimate was within 1 AQHI point
+          of the station 99% of the time.</li>
+          <li>Forecast (3h), where shown: a model forecast of each station's
+          AQHI 3 hours ahead, gridded the same way.</li>
+          <li>A dashed outline means a square is driven by a station reading
+          far from its neighbours. It may be a fault or a real local event.</li>
+        </ul>
+      </details>
+      </details>`;
+
+    const updateGridNote = () => {
+      const anyOn = Object.values(window.layers?.aqhi || {}).some(g => map.hasLayer(g));
+      gridNote.style.display = anyOn ? "block" : "none";
+    };
+    map.on("layeradd layerremove", () => setTimeout(updateGridNote, 0));
+  }
+
+  // ----------------------------
   // AIRSHED BOUNDARIES (all 10, one uniform style, one toggle)
   // ----------------------------
   // Unlike WallMap.html (ACA/WCAS drawn bold+black, the other 8 grey,
