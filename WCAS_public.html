@@ -385,7 +385,7 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
   </div>
 </div>
 
-<!-- HOWTO: open/close, and open once on a first visit -->
+<!-- HOWTO: open/close (button only) -->
 <script>
 function openHowTo() {
   document.getElementById("howto").classList.add("open");
@@ -397,11 +397,7 @@ function closeHowTo() {
   try { localStorage.setItem("wcas_public_howto_seen", "1"); } catch (e) {}
 }
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeHowTo(); });
-(function () {
-  let seen = false;
-  try { seen = localStorage.getItem("wcas_public_howto_seen") === "1"; } catch (e) {}
-  if (!seen) openHowTo();
-})();
+// Opens only from the header button (Kevin 2026-10-01: no automatic pop-up).
 </script>
 </body>
 </html>
