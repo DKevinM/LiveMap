@@ -790,6 +790,16 @@ window.initMap = function () {
   // Unlike WallMap.html (ACA/WCAS drawn bold+black, the other 8 grey,
   // always on) - here every airshed gets the same neutral outline and
   // the whole set is one layer-control checkbox, on only when asked for.
+  // airshedsAlwaysOn (AB_Overview, 2026-10-01): outlines drawn from the start
+  // in their own pane under every other overlay, no layer-control checkbox,
+  // and only the boundary LINE is hoverable (name tooltip) - the hollow
+  // interior doesn't catch the mouse, so station/sensor hovers and the
+  // click-anywhere identify behave as if the layer weren't there.
+  const airshedsAlwaysOn = window.APP_CONFIG?.airshedsAlwaysOn === true;
+  if (airshedsAlwaysOn && !map.getPane("airshedPane")) {
+    map.createPane("airshedPane");
+    map.getPane("airshedPane").style.zIndex = 350;   // below overlayPane (400)
+  }
   if (window.APP_CONFIG?.overlays?.includes("airsheds")) {
     const AIRSHED_NAMES = ["ACA", "CRAZ", "HAMP", "LICA", "PAMZ", "PAS", "PAZA", "PRAMP", "WBEA", "WCAS"];
     const airshedStyle = {
@@ -805,6 +815,7 @@ window.initMap = function () {
         .then(data => {
           const gj = L.geoJSON(data, {
             style: airshedStyle,
+            ...(airshedsAlwaysOn ? { pane: "airshedPane" } : {}),
             // fillOpacity 0 in the style above is a hollow outline visually,
             // but SVG hit-testing (pointer-events: visiblePainted) treats an
             // unpainted fill as un-hoverable - so the tooltip would only
@@ -813,7 +824,7 @@ window.initMap = function () {
             // airshedStyle) while making the whole polygon hoverable, same
             // as the AQHI grid cells.
             onEachFeature: function (feature, lyr) {
-              lyr.setStyle({ fillOpacity: 0.01 });
+              if (!airshedsAlwaysOn) lyr.setStyle({ fillOpacity: 0.01 });
               const label = feature.properties?.Name || name;
               lyr.bindTooltip(label, { sticky: true });
             }
@@ -822,6 +833,7 @@ window.initMap = function () {
         })
         .catch(err => console.error(`Airshed boundary load failed: ${name}`, err));
     });
+    if (airshedsAlwaysOn) window.layers.airsheds.addTo(map);
   }
 
   // ----------------------------
@@ -900,6 +912,7 @@ window.initMap = function () {
       ];
   
   overlayKeys.forEach(key => {
+    if (key === "airsheds" && airshedsAlwaysOn) return;   // always on, no checkbox
     if (window.layers[key]) {
       overlays[labelMap[key] || key] = window.layers[key];
     }
