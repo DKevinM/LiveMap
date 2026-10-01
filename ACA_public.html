@@ -57,12 +57,14 @@
       ],
 
       // default visible AQHI layer
-      defaultAQHI: [],
+      // Same default as the members' ACA.html (2026-10-01)
+      defaultAQHI: ["ACA_Boundary_2022_BLEND"],
 
-      // only ACA + local grids
+      // Public: only the airshed-wide ACA grids (stations, stations+sensors),
+      // 2026-10-01 meeting - local grids stay members-only
       aqhi: [
-        // "ACA_Boundary_2022",
-        // "ACA_Boundary_2022_BLEND",
+        "ACA_Boundary_2022",
+        "ACA_Boundary_2022_BLEND",
         // "Edmonton",
         // "Edmonton_BLEND",
         // "Parkland_County",

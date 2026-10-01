@@ -46,11 +46,14 @@
         "prescribed_burns"
       ],
 
-      defaultAQHI: [],
+      // Same default as the members' WCAS.html (2026-10-01)
+      defaultAQHI: ["WCAS_2024_BLEND"],
 
+      // Public: only the airshed-wide WCAS grids (stations, stations+sensors),
+      // 2026-10-01 meeting - local grids stay members-only
       aqhi: [
-        // "WCAS_2024",
-        // "WCAS_2024_BLEND",
+        "WCAS_2024",
+        "WCAS_2024_BLEND",
         // "Parkland_County",
         // "Parkland_County_BLEND",
         // "Yellowhead",
