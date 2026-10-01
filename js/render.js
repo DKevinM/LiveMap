@@ -736,7 +736,10 @@ window.renderMap = async function () {
                style="width:100%;max-width:260px;border-radius:6px;margin-top:6px;">`
       : "";
 
-    const showHistory = window.APP_CONFIG?.enableHistory === true;
+    // enableStationHistory: false hides only this station link (AB_Overview,
+    // 2026-10-01); the PurpleAir history link still follows enableHistory.
+    const showHistory = window.APP_CONFIG?.enableHistory === true &&
+      window.APP_CONFIG?.enableStationHistory !== false;
     const historyLink = showHistory
       ? `<a href="https://dkevinm.github.io/AB_datapull/web/station_compare.html?station=${encodeURIComponent(stationName)}" target="_blank">
            View historical data
