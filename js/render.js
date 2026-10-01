@@ -786,7 +786,14 @@ window.renderMap = async function () {
 
     // Smoke forecast for this station specifically, not the province-
     // wide raster - see window.stationSmokeForecast above.
-    const smokeFx = window.stationSmokeForecast?.[stationName];
+    // Wildfire season only: shown Apr 1 - Sep 30 (UTC date, so it switches
+    // at 6 pm Alberta time the evening before), hidden over winter, and back
+    // automatically every Apr 1 (Kevin, 2026-10-01 - "we should not have
+    // fires over the winter"). The data feed keeps running year-round; only
+    // the popup section is gated.
+    const smokeMonth = new Date().getUTCMonth();       // 0 = Jan
+    const smokeSeason = smokeMonth >= 3 && smokeMonth <= 8;   // Apr..Sep
+    const smokeFx = smokeSeason ? window.stationSmokeForecast?.[stationName] : null;
     const smokeFxHTML = smokeFx
       ? `<div style="margin-top:6px;font-size:11px;">
            <strong>Smoke forecast (PM2.5, &micro;g/m&sup3;)</strong>
