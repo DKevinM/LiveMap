@@ -794,9 +794,10 @@ window.initMap = function () {
   // default). Grade-8 wording, one caveat, details folded away - numbers
   // match AQHI.forecast/aqhi_map_forecast.py (IDW power 2, 150 km, sensors
   // weight 0.5) and drafts/regional_gas_eaqhi/test4 (99% within 1 point).
-  // Turn off per page with APP_CONFIG.gridNote = false.
+  // PARKED 2026-10-01 (Kevin: "do not delete but do not show it yet"):
+  // opt-in only - no page shows it until its APP_CONFIG sets gridNote: true.
   // ----------------------------
-  if (window.APP_CONFIG?.gridNote !== false) {
+  if (window.APP_CONFIG?.gridNote === true) {
     const gridNote = L.DomUtil.create("div", "grid-note", map.getContainer());
     gridNote.style.display = "none";
     L.DomEvent.disableClickPropagation(gridNote);
