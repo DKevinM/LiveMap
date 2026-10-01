@@ -152,6 +152,16 @@ function inside(poly, lat, lon) {
 // layers. window._firesmokeHour persists the user's choice across
 // re-renders (renderMap() re-runs on every data refresh / 20min page
 // reload) so switching to "+12h" doesn't silently snap back to "Now".
+// Smoke season (Kevin, 2026-10-01): the FireSmoke layer and the station-
+// popup smoke forecast are ON Mar 1 - Oct 31 and OFF Nov 1 - end of Feb
+// ("we should not have fires over the winter"), switching back on by itself
+// every Mar 1. Alberta date (UTC-6 all year). Nothing is deleted and the
+// AB_datapull FireSmoke / station smoke feeds keep running year-round.
+window.inSmokeSeason = function () {
+  const m = new Date(Date.now() - 6 * 3600 * 1000).getUTCMonth();   // 0 = Jan
+  return m >= 2 && m <= 9;                                           // Mar..Oct
+};
+
 const FIRESMOKE_HOURS = [
   { key: "00h", label: "Now",  file: "firesmoke_00h.png" },
   { key: "06h", label: "+6h",  file: "firesmoke_06h.png" },
@@ -161,6 +171,7 @@ const FIRESMOKE_HOURS = [
 window._firesmokeHour = window._firesmokeHour || "00h";
 
 function loadFireSmokeCombined() {
+    if (!window.inSmokeSeason()) return;   // off-season: no layer, no PNG fetch
     const layer = window.layers.firesmoke;
     layer.clearLayers();
 
@@ -786,14 +797,8 @@ window.renderMap = async function () {
 
     // Smoke forecast for this station specifically, not the province-
     // wide raster - see window.stationSmokeForecast above.
-    // Wildfire season only: shown Apr 1 - Sep 30 (UTC date, so it switches
-    // at 6 pm Alberta time the evening before), hidden over winter, and back
-    // automatically every Apr 1 (Kevin, 2026-10-01 - "we should not have
-    // fires over the winter"). The data feed keeps running year-round; only
-    // the popup section is gated.
-    const smokeMonth = new Date().getUTCMonth();       // 0 = Jan
-    const smokeSeason = smokeMonth >= 3 && smokeMonth <= 8;   // Apr..Sep
-    const smokeFx = smokeSeason ? window.stationSmokeForecast?.[stationName] : null;
+    // Smoke season only (Mar 1 - Oct 31) - see window.inSmokeSeason.
+    const smokeFx = window.inSmokeSeason() ? window.stationSmokeForecast?.[stationName] : null;
     const smokeFxHTML = smokeFx
       ? `<div style="margin-top:6px;font-size:11px;">
            <strong>Smoke forecast (PM2.5, &micro;g/m&sup3;)</strong>

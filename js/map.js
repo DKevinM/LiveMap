@@ -161,7 +161,11 @@ window.initMap = function () {
   // overlayadd/overlayremove handlers below) - hidden by default.
   let smokeLegend = null;
 
-  if (window.APP_CONFIG?.overlays?.some(o => o.startsWith("firesmoke"))) {
+  // Off-season (Nov 1 - end of Feb, window.inSmokeSeason in render.js):
+  // no FireSmoke checkbox and no legend.
+  const smokeSeason = window.inSmokeSeason?.() !== false;
+
+  if (smokeSeason && window.APP_CONFIG?.overlays?.some(o => o.startsWith("firesmoke"))) {
     smokeLegend = L.DomUtil.create("div", "smoke-legend", map.getContainer());
     smokeLegend.style.display = "none";
     L.DomEvent.disableClickPropagation(smokeLegend);
@@ -913,6 +917,7 @@ window.initMap = function () {
   
   overlayKeys.forEach(key => {
     if (key === "airsheds" && airshedsAlwaysOn) return;   // always on, no checkbox
+    if (key.startsWith("firesmoke") && !smokeSeason) return;   // off-season
     if (window.layers[key]) {
       overlays[labelMap[key] || key] = window.layers[key];
     }
