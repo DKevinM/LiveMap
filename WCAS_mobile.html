@@ -1,10 +1,11 @@
+<!-- WCAS_mobile.html (2026-10-01): copy of ACA_mobile.html retargeted to WCAS. -->
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f1720">
-<title>ACA Air Quality</title>
+<title>WCAS Air Quality</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -223,12 +224,12 @@
 <body>
 
 <header>
-  <h1>ACA Air Quality</h1>
-  <p>Alberta Capital Airshed &middot; mobile digest &middot; <a href="ACA.html">Full interactive map &rarr;</a></p>
+  <h1>WCAS Air Quality</h1>
+  <p>West Central Airshed &middot; mobile digest &middot; <a href="WCAS_public.html">Full interactive map &rarr;</a></p>
 </header>
 
 <main>
-  <div id="mini-map" role="img" aria-label="Map of the Alberta Capital Airshed with monitoring stations"></div>
+  <div id="mini-map" role="img" aria-label="Map of the West Central Airshed with monitoring stations"></div>
   <p id="map-hint">Tap anywhere on the map to check that area</p>
 
   <section id="tap-panel" class="panel hazard-unknown" hidden>
@@ -285,7 +286,7 @@
 </main>
 
 <footer>
-  Data: Alberta Environment and Protected Areas &middot; Alberta Capital Airshed. Weather: Open-Meteo. For the full interactive map with all ACA layers, sensors, and grids, use the <a href="ACA.html">full ACA map</a>.
+  Data: Alberta Environment and Protected Areas &middot; West Central Airshed Society. Weather: Open-Meteo. For the full interactive map with all layers, sensors, and grids, use the <a href="WCAS_public.html">full WCAS map</a>.
 </footer>
 
 <script src="js/data.js"></script>
@@ -294,16 +295,19 @@
 <script>
 (function () {
   const STATIONS = [
-    { name: "Edmonton East",     lat: 53.5482115, lon: -113.3680856 },
-    { name: "Edmonton Lendrum",  lat: 53.4978,    lon: -113.527 },
-    { name: "Edmonton McCauley", lat: 53.549509,  lon: -113.48593 },
-    { name: "St. Albert",        lat: 53.6269722, lon: -113.6119166 },
-    { name: "Enoch",             lat: 53.4980544, lon: -113.7607143 },
-    { name: "Woodcroft",         lat: 53.564411,  lon: -113.562583 },
-    { name: "O’Morrow Station 1",           lat: 54.9036817, lon: -112.8433489 },
-    { name: "Poacher’s Landing Station 2",  lat: 54.9457874, lon: -112.816501 },
+    { name: "Edson",             lat: 53.59361, lon: -116.39278 },
+    { name: "Hinton-Drinnan",    lat: 53.42730, lon: -117.54407 },
+    { name: "Hinton-Hillcrest",  lat: 53.39274, lon: -117.58461 },
+    { name: "Jasper",            lat: 52.87353, lon: -118.09144 },
+    { name: "Drayton Valley",    lat: 53.22006, lon: -114.98341 },
+    { name: "Breton",            lat: 53.09028, lon: -114.46056 },
+    { name: "Carrot Creek",      lat: 53.62106, lon: -115.86915 },
+    { name: "Genesee",           lat: 53.30651, lon: -114.20035 },
+    { name: "Meadows",           lat: 53.53000, lon: -114.63610 },
+    { name: "Steeper",           lat: 53.13250, lon: -117.09111 },
+    { name: "Wagner2",           lat: 53.42944, lon: -114.38056 },
   ];
-  const STORAGE_KEY = "aca_mobile_station";
+  const STORAGE_KEY = "wcas_mobile_station";
 
   const picker = document.getElementById("station-picker");
   STATIONS.forEach(s => {
@@ -373,7 +377,7 @@
   // area) - fit to its actual bounds rather than guessing a zoom level
   // around the southern station cluster, which cropped the north half
   // out of frame entirely.
-  fetch("data/ACA.geojson").then(r => r.json()).then(g => {
+  fetch("data/WCAS.geojson").then(r => r.json()).then(g => {
     const boundary = L.geoJSON(g, { style: { color: "#4dabf7", weight: 2.5, fill: false } }).addTo(map);
     map.fitBounds(boundary.getBounds(), { padding: [12, 12] });
   }).catch(() => { /* boundary is decorative context - map still works without it */ });
@@ -398,7 +402,7 @@
   // these are shown with a small dark-bordered marker + their own
   // tooltip, same visual convention (white border = official station,
   // dark border = community sensor) as the full desktop map) ----------------
-  const ACA_BOUNDS = { minLat: 52.6, maxLat: 55.2, minLon: -114.5, maxLon: -112.0 };
+  const ACA_BOUNDS = { minLat: 52.1, maxLat: 55.85, minLon: -120.05, maxLon: -113.3 };  // WCAS extent (name kept from ACA_mobile)
   // Kept unfiltered (unlike the ACA_BOUNDS-clipped markers below) so a tap
   // near the airshed edge can still find a real nearest sensor just outside
   // the drawn box, instead of coming up empty.
@@ -745,15 +749,6 @@
 
   picker.addEventListener("change", renderAll);
   renderAll();
-})();
-</script>
-<script>
-// Arrived from the public map (ACA_public.html links here with ?from=public):
-// send the "full map" links back there instead of the members' ACA.html.
-(function () {
-  if (new URLSearchParams(location.search).get("from") === "public") {
-    document.querySelectorAll('a[href="ACA.html"]').forEach(a => { a.href = "ACA_public.html"; });
-  }
 })();
 </script>
 </body>
