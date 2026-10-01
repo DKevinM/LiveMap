@@ -267,6 +267,14 @@ html, body {
   height: calc(100vh - 50px);
   width: 100%;
   display: block;
+  /* Clip the map's tile/marker panes to the map box (2026-10-01). Without a
+     position here the box stayed static, so overflow:hidden didn't clip the
+     absolutely-positioned panes - when the map started up at a different
+     offset (e.g. lazy-loaded in wcas.ca's iframe) tiles and markers painted
+     over the header and its "How to read this map" button. Phone layout
+     still overrides position with its own !important rules below. */
+  position: relative;
+  overflow: hidden;
 }
 
 #map-instructions {
