@@ -78,11 +78,17 @@ window.renderPurpleAir = async function () {
     const hasRG = Number.isFinite(Number(rec.aqhi_rg)) && rec.aqhi_rg !== null;
     const eAQHI = hasRG ? Number(rec.aqhi_rg) : computeEAQHI(pm);
     if (eAQHI == null) return;
-    const aqhiNote = !hasRG
+    let aqhiNote = !hasRG
       ? "PM₂.₅ only"
       : rec.aqhi_method === "regional_gas"
-        ? `PM₂.₅ + regional O₃ ${rec.o3_ppb} / NO₂ ${rec.no2_ppb} ppb`
+        ? (rec.aqhi_override === "applied"
+            ? "Set by local PM₂.₅ (smoke rule)"
+            : `PM₂.₅ + regional O₃ ${rec.o3_ppb} / NO₂ ${rec.no2_ppb} ppb`)
         : "PM₂.₅ + seasonal adjustment";
+    // High local PM2.5 that nearby sensors / the sensor's own history didn't back up
+    if (rec.aqhi_override === "questioned") {
+      aqhiNote += "<br>⚠ High PM₂.₅ reading not confirmed - not used";
+    }
 
     const sensorIndex = rec.sensor_index;
     const label = rec.name || (sensorIndex != null ? `Sensor ${sensorIndex}` : "Unnamed sensor");
