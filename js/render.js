@@ -525,6 +525,11 @@ window.renderMap = async function () {
   if (window.renderPurpleAir) {
     await window.renderPurpleAir();
   }
+
+  // town eAQHI diamonds (pages with "towns" in APP_CONFIG.overlays)
+  if (window.renderTowns) {
+    await window.renderTowns();
+  }
   
   
   // ENSURE LAYERS ARE ATTACHED ONCE

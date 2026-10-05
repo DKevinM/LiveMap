@@ -713,3 +713,14 @@ html, body {
   }
   .grid-note-title { margin-bottom: 0; }
 }
+
+/* Town eAQHI diamonds (js/towns.js) */
+.town-diamond { position: relative; }
+.town-diamond .td-shape {
+  position: absolute; left: 5px; top: 5px; width: 20px; height: 20px;
+  transform: rotate(45deg); border: 2px solid #111; box-shadow: 0 1px 3px rgba(0,0,0,.45);
+}
+.town-diamond .td-num {
+  position: absolute; left: 0; top: 0; width: 30px; height: 30px;
+  line-height: 30px; text-align: center; font-weight: 700; font-size: 12px;
+}
