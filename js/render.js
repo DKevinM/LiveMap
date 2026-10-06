@@ -306,6 +306,13 @@ function loadEstimatedAQHI() {
     .then(data => {
       window.layers.eaqhi.clearLayers();
       data.forEach(st => {
+        // A real station reading from the airshed's own MDS telemetry
+        // (station missing from, or not yet in, the government feed - e.g.
+        // Wabamun, 2026-10-06) goes on the Stations layer, which is on by
+        // default, instead of the off-by-default "eAQHI (PurpleAir)" layer.
+        const isMdsDirectStation = st.AQHI_type === "mds_direct";
+        if (isMdsDirectStation && window.APP_CONFIG?.excludeStations?.includes(st.station)) return;
+        const targetLayer = isMdsDirectStation ? window.layers.stations : window.layers.eaqhi;
         const color = window.getAQHIColor(st.AQHI);
         const marker = L.circleMarker([st.lat, st.lon], {
           radius: 18,
@@ -336,12 +343,12 @@ function loadEstimatedAQHI() {
             : "No PM2.5 sensor at this station — estimated from nearby PurpleAir";
         marker.bindPopup(`
           <b>${st.station}</b><br>
-          Estimated AQHI: <b>${st.AQHI > 10 ? "10+" : Math.round(st.AQHI)}</b><br>
+          ${isMdsDirect && st.pm25_source === "MDS" ? "AQHI" : "Estimated AQHI"}: <b>${st.AQHI > 10 ? "10+" : Math.round(st.AQHI)}</b><br>
           PM2.5 (${pm25Label}): ${st.pm25_est} µg/m³<br>${gasLines}
           ${sensorLine}
           <i>${estimateNote}</i>
         `);
-        marker.addTo(window.layers.eaqhi);
+        marker.addTo(targetLayer);
         
         // add AQHI number label
         const label = L.marker([st.lat, st.lon], {
@@ -354,7 +361,7 @@ function loadEstimatedAQHI() {
           interactive: false
         });
         
-        label.addTo(window.layers.eaqhi);
+        label.addTo(targetLayer);
         
       });
       console.log("Loaded estimated AQHI:", data.length);
