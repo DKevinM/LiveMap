@@ -297,6 +297,38 @@ fetchFresh(`${baseURL}/station_smoke_forecast.json`)
   })
   .catch(err => console.error("Station smoke forecast load failed:", err));
 
+// Popup for a station read straight from the airshed's MDS (not yet in
+// Alberta's feed, e.g. Wabamun, 2026-10-06): the latest complete hour's
+// readings plus the AQHI - just the immediate data, no history or gauge.
+// build_eAQHI.py supplies latest_hour (hourly means of the MDS half-hours).
+function mdsStationPane() {
+  if (!window.map.getPane("mdsStationPane")) window.map.createPane("mdsStationPane").style.zIndex = 450;
+  return "mdsStationPane";
+}
+function latestHourPopup(st) {
+  const v = st.latest_hour.values || {};
+  const end = new Date(st.latest_hour.hour_end_utc);
+  const tz = { timeZone: "America/Edmonton" };
+  const hm = d => d.toLocaleTimeString("en-CA", Object.assign({ hour: "numeric", minute: "2-digit" }, tz));
+  const start = new Date(end.getTime() - 3600 * 1000);
+  const day = end.toLocaleDateString("en-CA", Object.assign({ month: "short", day: "numeric" }, tz));
+  const compass = d => ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"][Math.round(d / 22.5) % 16];
+  const rows = [
+    ["PM2.5", "PM25", "µg/m³"], ["Ozone (O3)", "O3", "ppb"], ["Nitrogen dioxide (NO2)", "NO2", "ppb"],
+    ["Nitric oxide (NO)", "NO", "ppb"], ["Oxides of nitrogen (NOx)", "NOX", "ppb"], ["Sulphur dioxide (SO2)", "SO2", "ppb"],
+    ["Temperature", "ET", "°C"], ["Relative humidity", "RH", "%"], ["Wind speed", "WS", "km/h"],
+  ].map(([label, k, u]) => `<tr><td>${label}</td><td style="text-align:right"><b>${v[k] != null ? v[k] : "—"}</b> ${v[k] != null ? u : ""}</td></tr>`).join("");
+  const wind = v.WD != null ? `<tr><td>Wind direction</td><td style="text-align:right"><b>${compass(v.WD)}</b> (${Math.round(v.WD)}°)</td></tr>` : "";
+  const aqhi = st.AQHI > 10 ? "10+" : Math.round(st.AQHI);
+  return `
+    <b>${st.station}</b><br>
+    AQHI: <b>${aqhi}</b><br>
+    <small>Hour ${hm(start)} – ${hm(end)}, ${day}</small>
+    <table style="margin-top:4px;border-collapse:collapse;font-size:12px">${rows}${wind}</table>
+    <i style="font-size:11px">WCAS station, not yet in Alberta's feed. Hourly averages from the station's own data system (raw, not yet QA'd).</i>
+  `;
+}
+
 function loadEstimatedAQHI() {
   fetchFresh("https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/eAQHI_map.json")
     .then(r => {
@@ -305,6 +337,11 @@ function loadEstimatedAQHI() {
     })
     .then(data => {
       window.layers.eaqhi.clearLayers();
+      // MDS-only stations with a latest hour, for the click panel's
+      // "nearest stations" table (js/click_engine.js).
+      window.AppData = window.AppData || {};
+      window.AppData.mdsLatestStations = data.filter(st => st.latest_hour &&
+        !window.APP_CONFIG?.excludeStations?.includes(st.station));
       data.forEach(st => {
         // A real station reading from the airshed's own MDS telemetry
         // (station missing from, or not yet in, the government feed - e.g.
@@ -320,7 +357,14 @@ function loadEstimatedAQHI() {
           color: "#000",
           weight: 1,
           fillOpacity: 0.85,
-          dashArray: "4,3"
+          dashArray: "4,3",
+          // Latest-hour stations (Wabamun): clicking the dot opens only its
+          // own popup, not the map's nearest-stations panel / gauge / history.
+          bubblingMouseEvents: !st.latest_hour,
+          // Own pane above the overlay pane: the AQHI grid polygons load
+          // later into overlayPane and would otherwise sit on top and take
+          // the click (z 450: above overlays 400, below markers 600).
+          pane: st.latest_hour ? mdsStationPane() : "overlayPane"
         });
 
 
@@ -341,7 +385,7 @@ function loadEstimatedAQHI() {
                 ? "Missing from the government feed — real reading from the airshed's own MDS telemetry"
                 : "Missing from the government feed — MDS telemetry for gases, PM2.5 estimated from nearby PurpleAir")
             : "No PM2.5 sensor at this station — estimated from nearby PurpleAir";
-        marker.bindPopup(`
+        marker.bindPopup(st.latest_hour ? latestHourPopup(st) : `
           <b>${st.station}</b><br>
           ${isMdsDirect && st.pm25_source === "MDS" ? "AQHI" : "Estimated AQHI"}: <b>${st.AQHI > 10 ? "10+" : Math.round(st.AQHI)}</b><br>
           PM2.5 (${pm25Label}): ${st.pm25_est} µg/m³<br>${gasLines}

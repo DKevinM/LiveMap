@@ -160,7 +160,20 @@ window.handleMapClick = async function(lat, lng, map) {
   }
 
   // ---- 6) POPUP ----
-  const stRows = closestStations.map(s => `
+  // The table also lists stations read straight from the airshed's MDS
+  // (e.g. Wabamun, not yet in Alberta's feed). They stay out of
+  // closestStations, which drives the side panel's gauge and history.
+  const mdsNear = (window.AppData?.mdsLatestStations || []).map(s => ({
+    station: s.station + " *",
+    aqhi: isFinite(s.AQHI) ? Number(s.AQHI) : null,
+    dist_km: getDistance(lat, lng, s.lat, s.lon) / 1000
+  }));
+  const tableStations = closestStations.concat(mdsNear)
+    .sort((a, b) => a.dist_km - b.dist_km)
+    .slice(0, Math.max(2, closestStations.length));
+  const mdsNote = tableStations.some(s => s.station.endsWith(" *"))
+    ? `<div style="font-size:11px;color:#555;">* WCAS station, not yet in Alberta's feed. Click its dot for the latest hour.</div>` : "";
+  const stRows = tableStations.map(s => `
     <tr>
       <td>${s.station}</td>
       <td style="text-align:center;">
@@ -233,7 +246,7 @@ window.handleMapClick = async function(lat, lng, map) {
       </div>
   
       <div style="font-size:18px; font-weight:800;">
-        ${stTable}
+        ${stTable}${mdsNote}
       </div>
   
       <!-- PURPLEAIR (SECONDARY) -->
