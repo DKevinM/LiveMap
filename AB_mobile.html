@@ -52,6 +52,11 @@
     border: 1px solid #304152;
     background: #111c26;
   }
+  /* Tapped-location pin (2026-10-16): shows where the "Checked location" panel is about. */
+  .tap-pin { width:18px; height:18px; border-radius:50%; background:#ff3b30; border:3px solid #fff; box-shadow:0 0 0 2px #111, 0 2px 6px rgba(0,0,0,.5); box-sizing:border-box; }
+  .leaflet-tooltip.tap-coords { background:#111c26; color:#fff; border:1px solid #304152; font-weight:600; font-size:12px; padding:2px 6px; }
+  .leaflet-tooltip.tap-coords::before { border-bottom-color:#304152; }
+  #tap-coords { font-size:13px; color:#9fb0bf; margin:-4px 0 8px; }
   #map-hint {
     text-align: center;
     font-size: 12px;
@@ -233,6 +238,7 @@
 
   <section id="tap-panel" class="panel hazard-unknown" hidden>
     <h2 id="tap-title">Checked location</h2>
+    <p id="tap-coords"></p>
     <div class="aqhi-row">
       <div class="aqhi-number" id="tap-aqhi-number">&mdash;</div>
       <div class="aqhi-meta">
@@ -718,8 +724,17 @@
       markersByName[s.name] = marker;
     });
 
+    let tapPin = null;
+    const fmtLatLon = (lat, lon) => `${Math.abs(lat).toFixed(4)}° ${lat >= 0 ? "N" : "S"}, ${Math.abs(lon).toFixed(4)}° ${lon >= 0 ? "E" : "W"}`;
     map.on("click", (e) => {
       const { lat, lng } = e.latlng;
+      // Mark the tapped spot and label it with its coordinates
+      if (tapPin) tapPin.remove();
+      tapPin = L.marker([lat, lng], {
+        icon: L.divIcon({ className: "", html: '<div class="tap-pin"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }),
+        interactive: false, keyboard: false, zIndexOffset: 1000
+      }).bindTooltip(`${lat.toFixed(4)}, ${lng.toFixed(4)}`, { permanent: true, direction: "bottom", offset: [0, 10], className: "tap-coords" }).addTo(map);
+      document.getElementById("tap-coords").textContent = fmtLatLon(lat, lng);
       const nearest = nearestStation(lat, lng);
       if (nearest) selectStation(nearest.name);
       handleMapTap(lat, lng);

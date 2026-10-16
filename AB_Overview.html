@@ -223,5 +223,87 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
 };
 </script>
 
+<!-- ============ Navigation fixes (2026-10-16, after AAC/Airhub reviewer feedback) ============
+     Page-level only - no shared js/ or css/ file touched.
+     1. Popups: never taller than the visible map (the content scrolls), and re-fitted after the
+        "What's driving this AQHI" chart/table finish loading. Before: the popup opened small,
+        the map panned, then the chart made it grow upward, so the station name ended up
+        ~200 px above the map on laptop screens.
+     2. Trackpads: a two-finger swipe used to jump ~6 zoom levels (Leaflet rounds each 40 ms scroll
+        batch up to a whole level). Now quarter-level steps, 120 ms batches, 150 px per level.
+        Mouse wheels still zoom, a bit slower; the +/- buttons still step one level.
+     3. A "?" button under the zoom buttons opens a short "Moving around the map" guide. -->
+<style>
+  .nav-help-btn { width:30px; height:30px; line-height:30px; text-align:center; font:bold 18px Arial, sans-serif; cursor:pointer; background:#fff; color:#1F4244; }
+  .nav-help-btn:hover { background:#f4f4f4; }
+  #navhelp { position:fixed; inset:0; z-index:5000; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; padding:16px; }
+  #navhelp .box { background:#fff; color:#1b1f23; max-width:440px; width:100%; max-height:calc(100vh - 32px); overflow:auto; border-radius:10px; padding:18px 20px; font:15px/1.5 Arial, sans-serif; box-shadow:0 8px 30px rgba(0,0,0,.35); }
+  #navhelp h2 { margin:0 0 10px; font-size:19px; color:#1F4244; }
+  #navhelp table { border-collapse:collapse; width:100%; }
+  #navhelp td { padding:6px 4px; vertical-align:top; border-top:1px solid #e5e7eb; }
+  #navhelp td:first-child { font-weight:bold; width:42%; }
+  #navhelp .close { float:right; border:0; background:none; font-size:22px; cursor:pointer; line-height:1; }
+  #navhelp .tip { color:#57606a; font-size:13px; margin-top:10px; }
+</style>
+<div id="navhelp" role="dialog" aria-modal="true" aria-labelledby="navhelp-title" onclick="if (event.target === this) closeNavHelp()">
+  <div class="box">
+    <button class="close" aria-label="Close" onclick="closeNavHelp()">&times;</button>
+    <h2 id="navhelp-title">Moving around the map</h2>
+    <table>
+      <tr><td>Move the map</td><td>Click and drag. On a trackpad, press and drag.</td></tr>
+      <tr><td>Zoom in or out</td><td>Use the <b>+</b> and <b>&minus;</b> buttons, pinch on a trackpad, or scroll with a mouse wheel.</td></tr>
+      <tr><td>See a station</td><td>Click a coloured circle. A box opens with its readings. Scroll inside the box if it is long.</td></tr>
+      <tr><td>Check a spot</td><td>Click anywhere on the map to see the nearest stations, sensors and weather.</td></tr>
+      <tr><td>Find a place</td><td>Type an address or town in the box at the top right and press <b>Go</b>.</td></tr>
+      <tr><td>Start over</td><td>Press <b>Clear Selection</b> (bottom left).</td></tr>
+      <tr><td>Show or hide layers</td><td>Tick the boxes in the list at the top right.</td></tr>
+    </table>
+    <p class="tip">Tip: if the map moves too much on a trackpad, use the + and &minus; buttons to zoom and drag to move.</p>
+  </div>
+</div>
+<script>
+function openNavHelp() { document.getElementById("navhelp").style.display = "flex"; }
+function closeNavHelp() { document.getElementById("navhelp").style.display = "none"; }
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeNavHelp(); });
+(function () {
+  L.Popup.mergeOptions({ autoPanPaddingTopLeft: L.point(10, 10), autoPanPaddingBottomRight: L.point(10, 10) });
+  function whenMap(fn) { if (window.map && window.map.getSize) fn(window.map); else setTimeout(() => whenMap(fn), 300); }
+  whenMap(map => {
+    // 2. gentler scroll / trackpad zoom
+    // Leaflet rounds every scroll batch UP to a whole zoomSnap step, so with the default
+    // snap of 1 each 40 ms batch of a trackpad swipe zooms at least one full level - a
+    // swipe jumped ~6 levels. Quarter-level snapping + a longer batch window + more pixels
+    // per level fixes the cause; the +/- buttons still step one full level (zoomDelta 1).
+    map.options.zoomSnap = 0.25;
+    map.options.zoomDelta = 1;
+    map.options.wheelPxPerZoomLevel = 150;
+    map.options.wheelDebounceTime = 120;
+    // 1. popups fit the visible map, and re-fit when their content grows
+    map.on("popupopen", e => {
+      const p = e.popup;
+      p.options.maxHeight = Math.max(200, map.getSize().y - 30);
+      p.update();
+      const content = p.getElement() && p.getElement().querySelector(".leaflet-popup-content");
+      if (!content || !window.ResizeObserver) return;
+      let last = 0, raf = 0;
+      const ro = new ResizeObserver(() => {
+        const h = content.scrollHeight;
+        if (Math.abs(h - last) < 4) return;
+        last = h; cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { if (map.hasLayer(p)) p.update(); });
+      });
+      ro.observe(content);
+      p.once("remove", () => ro.disconnect());
+    });
+    // 3. "?" button under the zoom buttons
+    const Help = L.Control.extend({ options: { position: "topleft" },
+      onAdd() { const d = L.DomUtil.create("div", "leaflet-bar"); const a = L.DomUtil.create("a", "nav-help-btn", d);
+        a.href = "#"; a.title = "How to move around the map"; a.setAttribute("role", "button"); a.innerHTML = "?";
+        L.DomEvent.on(a, "click", ev => { L.DomEvent.preventDefault(ev); L.DomEvent.stopPropagation(ev); openNavHelp(); });
+        return d; } });
+    new Help().addTo(map);
+  });
+})();
+</script>
+
 </body>
 </html>
