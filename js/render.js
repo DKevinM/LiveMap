@@ -688,9 +688,26 @@ window.renderMap = async function () {
  
     // AQHI value for color
     const aqhiRow = rows.find(r => r.ParameterName === "AQHI");
-    const aqhiVal = aqhiRow ? Number(aqhiRow.Value) : NaN;
-  
-    const color = Number.isFinite(aqhiVal) ? window.getAQHIColor(aqhiVal) : "#888888";
+    // 2026-10-25: a government AQHI over 3 h old is drawn grey, except at our own ACA/WCAS stations,
+    // which switch to our MDS-based AQHI (st.aqhi_override, see data.js) while it is under 3 h old.
+    const ov = st.aqhi_override;
+    const govStale = !!st.aqhi_stale;
+    let aqhiVal = aqhiRow ? Number(aqhiRow.Value) : NaN;
+    let color;
+    if (ov && Number.isFinite(ov.aqhi)) {
+      aqhiVal = ov.aqhi;
+      color = window.getAQHIColor(aqhiVal);
+    } else if (govStale && Number.isFinite(aqhiVal)) {
+      color = "#bdbdbd";
+    } else {
+      color = Number.isFinite(aqhiVal) ? window.getAQHIColor(aqhiVal) : "#888888";
+    }
+    const fmtLocal = t => t.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour: "numeric", minute: "2-digit", weekday: "short" });
+    const staleNoteHTML = ov
+      ? `<div style="margin:4px 0;padding:4px 6px;background:#eef6ff;border-left:3px solid #0099cb;font-size:12px">AQHI ${ov.aqhi > 10 ? "10+" : Math.round(ov.aqhi)} from our own station data at ${fmtLocal(ov.time)}. The government feed is delayed${aqhiRow ? ` (last update ${fmtLocal(new Date(aqhiRow.ReadingDate))})` : ""}.</div>`
+      : (govStale && aqhiRow)
+        ? `<div style="margin:4px 0;padding:4px 6px;background:#f3f3f3;border-left:3px solid #999;font-size:12px">Shown in grey: the government AQHI last updated ${fmtLocal(new Date(aqhiRow.ReadingDate))}, over 3 hours ago.</div>`
+        : "";
   
     // timestamp: use latest ReadingDate across the rows (rows[0] is NOT reliable)
     let latest = null;
@@ -873,6 +890,7 @@ window.renderMap = async function () {
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br>
       <small>Hourly average</small><br><br>
+      ${staleNoteHTML}
       ${paramListHTML}
       ${healthMsgHTML}
       ${smokeFxHTML}

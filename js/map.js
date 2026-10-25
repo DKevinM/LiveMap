@@ -108,13 +108,17 @@ window.initMap = function () {
     if (headsUpFirmsCount > 0) {
       bits.push(`<button type="button" class="headsup-link" id="headsup-show-firms">${headsUpFirmsCount} fire hotspot${headsUpFirmsCount === 1 ? "" : "s"}</button>`);
     }
-    if (headsUpPrescribedCount > 0) {
-      bits.push(`<a class="headsup-link" href="https://ciffc.net/situation/${headsUpPrescribedDate}" target="_blank" rel="noopener" title="${headsUpPrescribedDetail}">${headsUpPrescribedCount} active prescribed burn${headsUpPrescribedCount === 1 ? "" : "s"} (western Canada)</a>`);
-    }
+    // Prescribed burns get their own sentence (2026-10-25): CIFFC gives a count per province, not a
+    // location, so "detected in this area" was wrong for them.
+    const burnLine = headsUpPrescribedCount > 0
+      ? `<a class="headsup-link" href="https://ciffc.net/situation/${headsUpPrescribedDate}" target="_blank" rel="noopener" title="${headsUpPrescribedDetail}">CIFFC reports ${headsUpPrescribedCount} active prescribed burn${headsUpPrescribedCount === 1 ? "" : "s"} in ${headsUpPrescribedDetail.replace(/: \d+/g, "")} (${headsUpPrescribedDate}; location not given)</a>`
+      : "";
 
     const mainLine = bits.length
-      ? `<span class="headsup-icon">&#9888;</span><span class="headsup-text">Heads up: ${bits.join(" &middot; ")} detected in this area.</span>`
-      : `<span class="headsup-icon">&#8505;</span><span class="headsup-text">Fire-hotspot check ran for this area.</span>`;
+      ? `<span class="headsup-icon">&#9888;</span><span class="headsup-text">Heads up: ${bits.join(" &middot; ")} detected in this area.${burnLine ? " " + burnLine + "." : ""}</span>`
+      : burnLine
+        ? `<span class="headsup-icon">&#9888;</span><span class="headsup-text">Heads up: ${burnLine}.</span>`
+        : `<span class="headsup-icon">&#8505;</span><span class="headsup-text">Fire-hotspot check ran for this area.</span>`;
 
     const flareNote = headsUpFlaresFilteredCount > 0
       ? `<div class="headsup-subnote">${headsUpFlaresFilteredCount} likely gas flare${headsUpFlaresFilteredCount === 1 ? "" : "s"} excluded from fire-hotspot detection in this view (persistent same-spot heat, not wildfire behavior).</div>`
@@ -763,6 +767,11 @@ window.initMap = function () {
       BC: "British Columbia", YT: "Yukon", AB: "Alberta", NT: "Northwest Territories",
       SK: "Saskatchewan", MB: "Manitoba", PC: "Parks Canada"
     };
+    // 2026-10-25: count only the map's own province (APP_CONFIG.prescribedAgencies, default Alberta) and
+    // only from a current report. After fire season CIFFC stops publishing, and its "latest" report was
+    // Sep 29 - weeks old - with 2 Parks Canada burns somewhere in the West, shown as "in this area".
+    const PRESCRIBED_AGENCIES = window.APP_CONFIG?.prescribedAgencies || ["AB"];
+    const PRESCRIBED_MAX_AGE_DAYS = 2;
 
     fetch("https://api.ciffc.net/v1/sitrep")
       .then(r => r.json())
@@ -771,7 +780,9 @@ window.initMap = function () {
         const sitereps = data.agencies_sitereps || {};
         const active = [];
 
+        const ageDays = data.field_date ? (Date.now() - Date.parse(data.field_date + "T12:00:00-06:00")) / 864e5 : Infinity;
         Object.entries(WESTERN_CIFFC_AGENCIES).forEach(([code, name]) => {
+          if (!PRESCRIBED_AGENCIES.includes(code) || !(ageDays <= PRESCRIBED_MAX_AGE_DAYS)) return;
           const n = sitereps[code]?.sitrep?.field_prescribed_active;
           if (typeof n === "number" && n > 0) active.push(`${name}: ${n}`);
         });

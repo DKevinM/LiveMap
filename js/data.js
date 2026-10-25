@@ -376,7 +376,7 @@ window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.c
         if (ageHours > 6) {
           delete byParam[p];   // 🔥 remove truly old data
         } else {
-          byParam[p].stale = ageHours > 4;
+          byParam[p].stale = ageHours > 3;   // Kevin 2026-10-25: grey out anything over 3 h (was 4)
         }
       });
         const cleaned = Object.values(byParam);
@@ -389,19 +389,25 @@ window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.c
     // GLOBAL ACCESS HELPERS
     // ==============================
     
+    // AQHI over 3 h old: our own value for ACA/WCAS stations (aqhiOverrideMap, see below), otherwise
+    // null so pages show "no recent reading" instead of a stuck number (2026-10-25)
     window.getStationValue = function(station, param) {
       const rows = window.dataByStation?.[station];
-      if (!rows) return null;
-    
-      const row = rows.find(r => r.ParameterName === param);
+      const row = rows?.find(r => r.ParameterName === param);
+      if (param === "AQHI" && (!row || row.stale)) {
+        const o = window.aqhiOverrideMap?.[station];
+        return o ? o.aqhi : null;
+      }
       return row?.Value ?? null;
     };
     
     window.getStationTime = function(station, param) {
       const rows = window.dataByStation?.[station];
-      if (!rows) return null;
-    
-      const row = rows.find(r => r.ParameterName === param);
+      const row = rows?.find(r => r.ParameterName === param);
+      if (param === "AQHI" && (!row || row.stale)) {
+        const o = window.aqhiOverrideMap?.[station];
+        return o ? o.time.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) + " (our station data; government feed delayed)" : null;
+      }
       return row?.DisplayDate ?? null;
     };
     
@@ -413,11 +419,51 @@ window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.c
 
 
 
+// ---------------- OUR OWN AQHI (MDS failover) ----------------
+// 2026-10-25: AEPA's AQHI feed stopped at 06:00 on a Sunday and every map kept showing the stuck values.
+// For our own ACA/WCAS stations, scripts/aqhi_failover computes AQHI from our MDS data whenever the
+// government feed is stale; when a station's government AQHI is over 3 h old (or gone) the map uses
+// ours instead (if it is under 3 h old). Everyone else's stale AQHI is drawn grey.
+const FAILOVER_MAX_AGE_H = 3;
+window.failoverReady = fetchFresh('https://status.krmenvironmental.com/data/aqhi_failover.json')
+  .then(r => (r.ok ? r.json() : null))
+  .catch(() => null);
+// station -> {aqhi, time} for our values under 3 h old; dataReady waits for it so every page that
+// waits for station data (incl. the mobile pages' getStationValue) already has it
+window.aqhiOverrideMap = {};
+window.dataReady = Promise.all([window.dataReady, window.failoverReady]).then(([d, fo]) => {
+  const now = new Date();
+  Object.entries(fo?.stations || {}).forEach(([n, f]) => {
+    const t = new Date(f.reading_utc);
+    if (f.aqhi != null && (now - t) / 3600000 <= FAILOVER_MAX_AGE_H) window.aqhiOverrideMap[n] = { aqhi: Number(f.aqhi), time: t };
+  });
+  return d;
+});
+
 // ---------------- STATIONS FOR MAP ----------------
 window.fetchAllStationData = async function () {
   await window.dataReady;
+  const failover = (await window.failoverReady)?.stations || {};
+  const now0 = new Date();
+  const ourAQHI = name => {
+    const f = failover[name];
+    if (!f || f.aqhi == null) return null;
+    const t = new Date(f.reading_utc);
+    return (now0 - t) / 3600000 <= FAILOVER_MAX_AGE_H ? { aqhi: Number(f.aqhi), time: t, lat: f.lat, lon: f.lon } : null;
+  };
 
   const stationNames = Object.keys(dataByStation);
+
+  // our stations whose government rows have aged out of last6h.csv entirely (outage over 6 h)
+  const onlyOurs = Object.keys(failover).filter(n => !dataByStation[n]).map(n => {
+    const o = ourAQHI(n);
+    if (!o || o.lat == null || o.lon == null) return null;
+    const row = { StationName: n, ParameterName: "AQHI", Value: o.aqhi, ReadingDate: o.time.toISOString(),
+                  Shortform: "AQHI", Units: "", Latitude: o.lat, Longitude: o.lon,
+                  DisplayDate: o.time.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) };
+    return { stationName: n, lat: o.lat, lon: o.lon, aqhi: o.aqhi, aqhi_stale: true, aqhi_override: o,
+             rows: [row], html: window.buildStationPopup([row]) };
+  }).filter(Boolean);
 
   return stationNames
     .map(name => {
@@ -445,14 +491,16 @@ window.fetchAllStationData = async function () {
         Number(r.Value) >= 1
       );
   
+      const aqhiStale = aqhiRow ? !!aqhiRow.stale : true;
       return {
+        aqhi_override: aqhiStale ? ourAQHI(name) : null,
         stationName: name,
         lat: isFinite(Number(locRow?.Latitude)) ? Number(locRow.Latitude) : null,
         lon: isFinite(Number(locRow?.Longitude)) ? Number(locRow.Longitude) : null,
         aqhi: (aqhiRow && aqhiRow.Value !== null && isFinite(aqhiRow.Value))
           ? (aqhiRow.Value > 10 ? 11 : aqhiRow.Value)
           : null,
-        aqhi_stale: aqhiRow ? aqhiRow.stale : false,
+        aqhi_stale: aqhiStale,
         rows: rows,
         html: window.buildStationPopup(Object.values(rows))
       };
@@ -463,7 +511,8 @@ window.fetchAllStationData = async function () {
       st.lon != null &&
       st.rows &&
       st.rows.length > 0
-    );
+    )
+    .concat(onlyOurs);
 };
 
 
