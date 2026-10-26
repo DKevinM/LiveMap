@@ -68,6 +68,8 @@ window.initMap = function () {
   }
 
   window.map = map;
+  // Popup height, trackpad zoom and the "?" guide (js/nav_fixes.js, 2026-10-26).
+  if (window.applyNavFixes) window.applyNavFixes(map, window.APP_CONFIG?.navFixes);
 
   // ----------------------------
   // PROACTIVE "HEADS UP" STATE (alerts + fire hotspots)
