@@ -704,7 +704,7 @@ window.renderMap = async function () {
     }
     const fmtLocal = t => t.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour: "numeric", minute: "2-digit", weekday: "short" });
     const staleNoteHTML = ov
-      ? `<div style="margin:4px 0;padding:4px 6px;background:#eef6ff;border-left:3px solid #0099cb;font-size:12px">AQHI ${ov.aqhi > 10 ? "10+" : Math.round(ov.aqhi)} from our own station data at ${fmtLocal(ov.time)}. The government feed is delayed${aqhiRow ? ` (last update ${fmtLocal(new Date(aqhiRow.ReadingDate))})` : ""}.</div>`
+      ? `<div style="margin:4px 0;padding:4px 6px;background:#eef6ff;border-left:3px solid #0099cb;font-size:12px">AQHI ${ov.aqhi > 10 ? "10+" : Math.round(ov.aqhi)} from our own station data at ${fmtLocal(ov.time)}. The government feed is delayed${aqhiRow ? ` (last update ${fmtLocal(new Date(aqhiRow.ReadingDate))})` : ""}.${ov.how ? `<br><span style="color:#555">Sources: ${ov.how}</span>` : ""}</div>`
       : (govStale && aqhiRow)
         ? `<div style="margin:4px 0;padding:4px 6px;background:#f3f3f3;border-left:3px solid #999;font-size:12px">Shown in grey: the government AQHI last updated ${fmtLocal(new Date(aqhiRow.ReadingDate))}, over 3 hours ago.</div>`
         : "";

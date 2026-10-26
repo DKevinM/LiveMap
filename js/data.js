@@ -449,7 +449,7 @@ window.fetchAllStationData = async function () {
     const f = failover[name];
     if (!f || f.aqhi == null) return null;
     const t = new Date(f.reading_utc);
-    return (now0 - t) / 3600000 <= FAILOVER_MAX_AGE_H ? { aqhi: Number(f.aqhi), time: t, lat: f.lat, lon: f.lon } : null;
+    return (now0 - t) / 3600000 <= FAILOVER_MAX_AGE_H ? { aqhi: Number(f.aqhi), time: t, lat: f.lat, lon: f.lon, how: f.how || "" } : null;
   };
 
   const stationNames = Object.keys(dataByStation);
