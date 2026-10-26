@@ -13,6 +13,9 @@
 //      whole level.
 //   3. A "?" button under the zoom buttons opens a short "Moving around the
 //      map" guide, built from the controls this page actually has.
+// A page can switch parts off with APP_CONFIG.navFixes, e.g. the wall maps
+// use {zoom: false, help: false}: nobody zooms an unattended display, and
+// quarter-level snapping changed their start-up fit (Alberta edge to edge).
 (function () {
   const CSS = `
   .nav-help-btn { width:30px; height:30px; line-height:30px; text-align:center; font:bold 18px Arial, sans-serif; cursor:pointer; background:#fff; color:#1F4244; }
@@ -59,17 +62,19 @@
   window.applyNavFixes = function (map, opts) {
     if (!map || map._navFixed) return;
     map._navFixed = true;
-    map._navOpts = Object.assign({ help: true, clickSpot: true }, opts);
+    map._navOpts = Object.assign({ help: true, clickSpot: true, zoom: true }, opts);
     if (!document.getElementById("nav-fixes-css")) {
       const st = document.createElement("style"); st.id = "nav-fixes-css"; st.textContent = CSS; document.head.appendChild(st);
     }
     L.Popup.mergeOptions({ autoPanPaddingTopLeft: L.point(10, 10), autoPanPaddingBottomRight: L.point(10, 10) });
 
     // 2. gentler scroll / trackpad zoom
-    map.options.zoomSnap = 0.25;
-    map.options.zoomDelta = 1;
-    map.options.wheelPxPerZoomLevel = 150;
-    map.options.wheelDebounceTime = 120;
+    if (map._navOpts.zoom) {
+      map.options.zoomSnap = 0.25;
+      map.options.zoomDelta = 1;
+      map.options.wheelPxPerZoomLevel = 150;
+      map.options.wheelDebounceTime = 120;
+    }
 
     // 1. popups fit the visible map, and re-fit when their content grows
     map.on("popupopen", e => {
