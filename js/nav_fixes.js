@@ -76,18 +76,22 @@
       map.options.wheelDebounceTime = 120;
     }
 
-    // 1. popups fit the visible map, and re-fit when their content grows
+    // 1. popups fit the visible map, and re-fit when their content grows.
+    // Re-fit only - p.update() would re-set the popup's HTML from its
+    // original string and wipe anything drawn into it after opening
+    // (the DNA chart).
+    const refit = p => { p._updateLayout(); p._updatePosition(); p._adjustPan(); };
     map.on("popupopen", e => {
       const p = e.popup;
       p.options.maxHeight = Math.max(200, map.getSize().y - 30);
-      p.update();
+      refit(p);
       const content = p.getElement() && p.getElement().querySelector(".leaflet-popup-content");
       if (!content || !window.ResizeObserver) return;
       let last = 0, raf = 0;
       const ro = new ResizeObserver(() => {
         const h = content.scrollHeight;
         if (Math.abs(h - last) < 4) return;
-        last = h; cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { if (map.hasLayer(p)) p.update(); });
+        last = h; cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { if (map.hasLayer(p)) refit(p); });
       });
       ro.observe(content);
       p.once("remove", () => ro.disconnect());
