@@ -86,7 +86,11 @@ window.buildStationPopup = function (rows) {
     ? rows[0].StationName
     : "Unknown";
 
-  return content + `
+  // rows filled from our own MDS weather (station_met_fill.json, 2026-11-04)
+  const ourNote = rows.some(r => r.ours)
+    ? `<div style="font-size:11px;color:#555;margin-top:4px;">Weather from KRM station data (not on the government feed)</div>` : "";
+
+  return content + ourNote + `
     <br><br>
     <a href="#" onclick="if(window.buildFullGaugePanel){ window.buildFullGaugePanel({ StationName: '${stationName.replace(/'/g, "\\'")}' }); } return false;">
       View Gauges
@@ -436,6 +440,39 @@ window.dataReady = Promise.all([window.dataReady, window.failoverReady]).then(([
   Object.entries(fo?.stations || {}).forEach(([n, f]) => {
     const t = new Date(f.reading_utc);
     if (f.aqhi != null && (now - t) / 3600000 <= FAILOVER_MAX_AGE_H) window.aqhiOverrideMap[n] = { aqhi: Number(f.aqhi), time: t };
+  });
+  return d;
+});
+
+// ---------------- OUR OWN STATION WEATHER (MDS) ----------------
+// 2026-11-04: AEPA dropped Enoch and Jasper entirely when their gas/PM analyzers were shut down, but the
+// weather sensors still run. scripts/publish_health.py publishes our hourly MDS wind/temp/RH for any ACA/WCAS
+// station whose government weather is missing. A row is used only where the government's is missing, blank
+// or over 3 h old, and its time says "KRM station data". Weather only - never gases/PM.
+window.metFillReady = fetchFresh('https://status.krmenvironmental.com/data/station_met_fill.json')
+  .then(r => (r.ok ? r.json() : null))
+  .catch(() => null);
+window.dataReady = Promise.all([window.dataReady, window.metFillReady]).then(([d, mf]) => {
+  const now = new Date();
+  Object.entries(mf?.stations || {}).forEach(([name, s]) => {
+    const rows = window.dataByStation[name] || [];
+    const newest = {};
+    (s.rows || []).forEach(r => { if (!newest[r.param] || r.reading_utc > newest[r.param].reading_utc) newest[r.param] = r; });
+    Object.values(newest).forEach(r => {
+      const t = new Date(r.reading_utc), age = (now - t) / 3600000;
+      if (r.value == null || !isFinite(age) || age > 6) return;
+      const i = rows.findIndex(x => x.ParameterName === r.param);
+      const gov = i >= 0 ? rows[i] : null;
+      if (gov && gov.Value !== null && isFinite(gov.Value) && !gov.stale) return;
+      const row = {
+        StationName: name, ParameterName: r.param, Value: Number(r.value), ReadingDate: t.toISOString(),
+        Latitude: s.lat, Longitude: s.lon, Units: unitsLookup[r.param] || "", Shortform: shortLookup[r.param] || r.param,
+        DisplayDate: t.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) + " (KRM station data)",
+        stale: age > 3, ours: true
+      };
+      if (i >= 0) rows[i] = row; else rows.push(row);
+    });
+    if (rows.length) window.dataByStation[name] = rows;
   });
   return d;
 });
