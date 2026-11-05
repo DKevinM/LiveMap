@@ -199,7 +199,8 @@ const unitsLookup = {
   "Wind Speed": " km/hr",
   "Non-methane Hydrocarbons": " ppm",
   "Nitrogen Dioxide": " ppb",
-  "Methane": " ppm"
+  "Methane": " ppm",
+  "Precipitation": " mm"   // our own MDS gauges only - never on the government feed (station_met_fill.json)
 };
 
 const shortLookup = {
@@ -219,7 +220,8 @@ const shortLookup = {
   "Wind Speed": "Wind Speed",
   "Non-methane Hydrocarbons": "NMHC",
   "Nitrogen Dioxide": "NO2",
-  "Methane": "CH4"
+  "Methane": "CH4",
+  "Precipitation": "Precip (last hr)"
 };
 
 
@@ -446,7 +448,8 @@ window.dataReady = Promise.all([window.dataReady, window.failoverReady]).then(([
 
 // ---------------- OUR OWN STATION WEATHER (MDS) ----------------
 // 2026-11-04: AEPA dropped Enoch and Jasper entirely when their gas/PM analyzers were shut down, but the
-// weather sensors still run. scripts/publish_health.py publishes our hourly MDS wind/temp/RH for any ACA/WCAS
+// weather sensors still run. 2026-11-05: plus precipitation (mm in the hour) from our 4 gauges (Genesee,
+// Hinton-Drinnan, Hinton-Hillcrest, O'Morrow 1) - the government feed never carries it. scripts/publish_health.py publishes our hourly MDS wind/temp/RH for any ACA/WCAS
 // station whose government weather is missing. A row is used only where the government's is missing, blank
 // or over 3 h old, and its time says "KRM station data". Weather only - never gases/PM.
 window.metFillReady = fetchFresh('https://status.krmenvironmental.com/data/station_met_fill.json')

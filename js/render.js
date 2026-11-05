@@ -725,6 +725,7 @@ window.renderMap = async function () {
       "Relative Humidity",
       "Wind Speed",
       "Wind Direction",
+      "Precipitation",
       "Nitrogen Dioxide",
       "Total Oxides of Nitrogen",
       "Nitric Oxide",
@@ -892,6 +893,7 @@ window.renderMap = async function () {
       <small>Hourly average</small><br><br>
       ${staleNoteHTML}
       ${paramListHTML}
+      ${rows.some(r => r.ours) ? `<div style="font-size:11px;color:#555;margin-top:2px;">Weather/precipitation from KRM station data (not on the government feed)</div>` : ""}
       ${healthMsgHTML}
       ${smokeFxHTML}
       ${imageHTML}
