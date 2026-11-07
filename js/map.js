@@ -99,7 +99,9 @@ window.initMap = function () {
     if (headsUpPending > 0) return;
     if (headsUpAlertCount === 0 && headsUpFirmsCount === 0 && headsUpPrescribedCount === 0 && headsUpFlaresFilteredCount === 0) return;
 
-    const banner = L.DomUtil.create("div", "headsup-banner", map.getContainer());
+    // Share the top-centre stack with js/data_notice.js when that notice is showing.
+    const bannerHost = map.getContainer().querySelector(".map-notice-stack") || map.getContainer();
+    const banner = L.DomUtil.create("div", "headsup-banner", bannerHost);
     L.DomEvent.disableClickPropagation(banner);
     L.DomEvent.disableScrollPropagation(banner);
 
