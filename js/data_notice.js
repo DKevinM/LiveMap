@@ -14,7 +14,7 @@
 // plain bar under the page header.
 (function () {
   const DATA_NOTICE = {
-    until: "2026-11-09T18:00:00Z", // Mon Nov 9, noon Alberta time
+    until: "2026-11-08T06:00:00Z", // Sun Nov 8, midnight (UTC-6), AEPA back Nov 7
     html:
       "<strong>Alberta government air data is down this weekend (Nov 7&ndash;8)</strong> " +
       "while Alberta Environment and Protected Areas does system work. " +
