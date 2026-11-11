@@ -297,14 +297,20 @@ fetchFresh(`${baseURL}/station_smoke_forecast.json`)
   })
   .catch(err => console.error("Station smoke forecast load failed:", err));
 
+// Clickable dots get their own pane above overlayPane (400). The AQHI grid
+// polygons load into overlayPane after the dots, so in the same pane the
+// grid sat on top and took every click inside its area (2026-11-11: not one
+// station on index.html could be clicked). Below markerPane (600), so the
+// number labels still draw on top. Stations 450, sensors/estimates 440.
+function dotPane(name, z) {
+  if (!window.map.getPane(name)) window.map.createPane(name).style.zIndex = z;
+  return name;
+}
+
 // Popup for a station read straight from the airshed's MDS (not yet in
 // Alberta's feed, e.g. Wabamun, 2026-10-06): the latest complete hour's
 // readings plus the AQHI - just the immediate data, no history or gauge.
 // build_eAQHI.py supplies latest_hour (hourly means of the MDS half-hours).
-function mdsStationPane() {
-  if (!window.map.getPane("mdsStationPane")) window.map.createPane("mdsStationPane").style.zIndex = 450;
-  return "mdsStationPane";
-}
 function latestHourPopup(st) {
   const v = st.latest_hour.values || {};
   const end = new Date(st.latest_hour.hour_end_utc);
@@ -361,10 +367,8 @@ function loadEstimatedAQHI() {
           // Latest-hour stations (Wabamun): clicking the dot opens only its
           // own popup, not the map's nearest-stations panel / gauge / history.
           bubblingMouseEvents: !st.latest_hour,
-          // Own pane above the overlay pane: the AQHI grid polygons load
-          // later into overlayPane and would otherwise sit on top and take
-          // the click (z 450: above overlays 400, below markers 600).
-          pane: st.latest_hour ? mdsStationPane() : "overlayPane"
+          // Above the AQHI grid so the click reaches the dot (see dotPane).
+          pane: st.latest_hour ? dotPane("stationPane", 450) : dotPane("sensorPane", 440)
         });
 
 
@@ -915,7 +919,8 @@ window.renderMap = async function () {
       fillColor: color,
       color: "#222",
       weight: 2,
-      fillOpacity: 0.85
+      fillOpacity: 0.85,
+      pane: dotPane("stationPane", 450)   // above the AQHI grid (see dotPane)
     }).bindPopup(popupHTML, popupOptions);
 
     // Plotly needs a real DOM element, which only exists once Leaflet

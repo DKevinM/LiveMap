@@ -35,6 +35,11 @@ window.computeEAQHI = function(pm) {
 window.renderPurpleAir = async function () {
 
   if (!window.map) throw new Error("Map not initialized");
+  // Dots go in their own pane above the AQHI grid, which loads into
+  // overlayPane later and would otherwise take the clicks. Same pane as
+  // render.js dotPane("sensorPane", 440); made here too because AB_mobile
+  // loads this file without render.js.
+  if (!window.map.getPane("sensorPane")) window.map.createPane("sensorPane").style.zIndex = 440;
 
   if (window.layers?.purpleair) {
     window.layers.purpleair.clearLayers();
@@ -105,7 +110,8 @@ window.renderPurpleAir = async function () {
       fillColor: color,
       color: "#111",
       weight: 1,
-      fillOpacity: 0.88
+      fillOpacity: 0.88,
+      pane: "sensorPane"   // above the AQHI grid (see top of renderPurpleAir)
     }).bindPopup(`
       <strong>PurpleAir</strong>${rec.province !== "AB" ? ` (${rec.province})` : ""}<br>
       ${label}<br>
