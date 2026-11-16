@@ -88,7 +88,7 @@ window.buildStationPopup = function (rows) {
 
   // rows filled from our own MDS weather (station_met_fill.json, 2026-11-04)
   const ourNote = rows.some(r => r.ours)
-    ? `<div style="font-size:11px;color:#555;margin-top:4px;">Weather from KRM station data (not on the government feed)</div>` : "";
+    ? `<div style="font-size:11px;color:#555;margin-top:4px;">Weather from station data (not on the government feed)</div>` : "";
 
   return content + ourNote + `
     <br><br>
@@ -451,7 +451,7 @@ window.dataReady = Promise.all([window.dataReady, window.failoverReady]).then(([
 // weather sensors still run. 2026-11-05: plus precipitation (mm in the hour) from our 4 gauges (Genesee,
 // Hinton-Drinnan, Hinton-Hillcrest, O'Morrow 1) - the government feed never carries it. scripts/publish_health.py publishes our hourly MDS wind/temp/RH for any ACA/WCAS
 // station whose government weather is missing. A row is used only where the government's is missing, blank
-// or over 3 h old, and its time says "KRM station data". Weather only - never gases/PM.
+// or over 3 h old, and its time says "station data". Weather only - never gases/PM.
 window.metFillReady = fetchFresh('https://status.krmenvironmental.com/data/station_met_fill.json')
   .then(r => (r.ok ? r.json() : null))
   .catch(() => null);
@@ -470,7 +470,7 @@ window.dataReady = Promise.all([window.dataReady, window.metFillReady]).then(([d
       const row = {
         StationName: name, ParameterName: r.param, Value: Number(r.value), ReadingDate: t.toISOString(),
         Latitude: s.lat, Longitude: s.lon, Units: unitsLookup[r.param] || "", Shortform: shortLookup[r.param] || r.param,
-        DisplayDate: t.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) + " (KRM station data)",
+        DisplayDate: t.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) + " (station data)",
         stale: age > 3, ours: true
       };
       if (i >= 0) rows[i] = row; else rows.push(row);
