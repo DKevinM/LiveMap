@@ -268,6 +268,11 @@ window.ACTIVE_TYPES = ["CURRENT", "BLEND", "FORECAST_3H"];
 // This endpoint is nginx on our own Kamatera box serving the exact same
 // file run_fetch_last6h.sh writes to disk before it ever touches git - no
 // CDN in the path, so no propagation delay of any kind.
+// Decommissioned stations: AEPA keeps publishing blank rows for them in last6h.csv, which drew an empty
+// dot. Dropped from the live maps only; their history stays in aqhi_data for 2026 reporting.
+// Meadows (WCAS): shut down 2026-10-30, Kevin 2026-11-19.
+window.RETIRED_STATIONS = { "Meadows": "2026-10-30" };
+
 window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.csv')
   .then(res => res.text())
   .then(text => {
@@ -281,6 +286,7 @@ window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.c
       const e = Object.fromEntries(headers.map((h,i)=>[h,cols[i]]));
     
       if (!e.StationName || !e.Latitude || !e.Longitude) return;
+      if (window.RETIRED_STATIONS[e.StationName.trim()]) return;
     
       // ---- FIX 1: blank ParameterName is AQHI ----
       e.ParameterName = (e.ParameterName && e.ParameterName.trim())
