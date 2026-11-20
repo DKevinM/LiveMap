@@ -80,6 +80,93 @@
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <!-- HOWTO: styles -->
+  <style>
+    #howto-btn {
+      margin-left: 14px; padding: 6px 14px; border-radius: 999px;
+      border: 2px solid #ffffff; background: #ffffff; color: #0b5ed7;
+      font: 700 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      cursor: pointer; white-space: nowrap; vertical-align: middle;
+    }
+    #howto-btn:hover { background: #e8f0ff; }
+    #howto {
+      position: fixed; inset: 0; z-index: 5000; display: none;
+      background: rgba(0, 0, 0, 0.6);
+      align-items: center; justify-content: center; padding: 16px;
+    }
+    #howto.open { display: flex; }
+    #howto .sheet {
+      background: #0f1216; color: #eef1f5; width: 100%; max-width: 640px;
+      max-height: 92vh; overflow-y: auto; border-radius: 16px;
+      border: 1px solid #2a3038; box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      padding: 26px 26px 20px;
+      font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    #howto h2 { margin: 0 0 4px; font-size: 24px; color: #ffffff; }
+    #howto .lead { margin: 0 0 18px; color: #aab3bf; }
+    #howto h3 {
+      margin: 22px 0 8px; font-size: 14px; letter-spacing: .08em;
+      text-transform: uppercase; color: #7fc8ff;
+    }
+    #howto p { margin: 0 0 8px; }
+    #howto .row { display: flex; gap: 12px; align-items: flex-start; margin: 8px 0; }
+    #howto .dot {
+      flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.25); margin-top: 1px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #000;
+    }
+    #howto .dot.small { width: 16px; height: 16px; margin: 5px 5px 0; }
+    #howto .band { display: flex; border-radius: 8px; overflow: hidden; margin: 6px 0 4px; }
+    #howto .band span { flex: 1; height: 16px; }
+    #howto .risk { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; align-items: baseline; }
+    #howto .risk b { white-space: nowrap; }
+    #howto .tag { display: inline-block; min-width: 64px; text-align: center; padding: 2px 8px; border-radius: 6px; font-size: 14px; font-weight: 700; color: #000; }
+    #howto details.sec {
+      margin: 10px 0 0; border: 1px solid #2a3038; border-radius: 12px; background: #151a20;
+    }
+    #howto details.sec > summary {
+      list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; color: #fff;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    #howto details.sec > summary::-webkit-details-marker { display: none; }
+    #howto details.sec > summary::after { content: "+"; font-size: 22px; color: #7fc8ff; line-height: 1; }
+    #howto details.sec[open] > summary::after { content: "\2212"; }
+    #howto details.sec > summary small { display: block; font-weight: 400; color: #aab3bf; font-size: 14px; }
+    #howto .body { padding: 0 16px 14px; }
+    #howto .body h4 { margin: 14px 0 4px; font-size: 16px; color: #7fc8ff; }
+    #howto ul { margin: 4px 0 8px; padding-left: 20px; }
+    #howto li { margin: 3px 0; }
+    #howto .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 6px; }
+    #howto .fine { margin-top: 18px; color: #aab3bf; font-size: 15px; }
+    #howto .fine summary { cursor: pointer; color: #cfd6df; }
+    #howto .close-x {
+      float: right; background: none; border: 0; color: #aab3bf;
+      font-size: 30px; line-height: 1; cursor: pointer; margin: -8px -6px 0 0;
+    }
+    #howto .done {
+      display: block; width: 100%; margin-top: 22px; padding: 12px;
+      border: 0; border-radius: 10px; background: #0b5ed7; color: #fff;
+      font: 700 17px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; cursor: pointer;
+    }
+    /* mid-size screens: the centred hint would sit under the new button */
+    @media (min-width: 769px) and (max-width: 1200px) {
+      #header-center { display: none; }
+    }
+    /* phones/tablets: style.css stacks the header and the map covers it,
+       so float the button over the map instead (above the address box) */
+    @media (max-width: 768px) {
+      #howto-btn {
+        position: fixed; right: 12px; bottom: 64px; z-index: 2500; margin: 0;
+        background: #0b5ed7; color: #fff; border-color: #fff;
+        box-shadow: 0 4px 14px rgba(0,0,0,.35); padding: 10px 16px; font-size: 15px;
+      }
+    }
+    @media (max-width: 600px) {
+      #howto { padding: 0; }
+      #howto .sheet { max-height: 100vh; height: 100%; border-radius: 0; padding: 20px 18px; }
+    }
+  </style>
 </head>
 
 <body>
@@ -94,10 +181,11 @@
 <div id="header">
   <div id="header-left">
     WCAS Air Monitoring
+    <button id="howto-btn" type="button" onclick="openHowTo()">&#9432; How to read this map</button>
   </div>
 
   <div id="header-center">
-    Click anywhere on the map to identify nearby stations, sensors, and weather
+    Click the map for nearby readings
   </div>
 
   <div id="header-right"></div>
@@ -224,6 +312,151 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
     width: 200
   }, { displayModeBar: false });
 };
+</script>
+
+<!-- HOWTO: the guide itself (members' map, 2026-11-20). Text only - no
+     shared js/ or css/ file touched. Same look as the public map's guide,
+     plus the members-only layers. Opens only from the header button. -->
+<div id="howto" role="dialog" aria-modal="true" aria-labelledby="howto-title" onclick="if (event.target === this) closeHowTo()">
+  <div class="sheet">
+    <button class="close-x" type="button" aria-label="Close" onclick="closeHowTo()">&times;</button>
+    <h2 id="howto-title">How to read this map</h2>
+    <p class="lead">This map shows air quality right now across the West Central Airshed.</p>
+
+    <h3>The colours</h3>
+    <p>Every number is the <b>AQHI</b>, the Air Quality Health Index: a score for health risk from air pollution.</p>
+    <div class="band">
+      <span style="background:#01cbff"></span><span style="background:#0099cb"></span><span style="background:#016797"></span>
+      <span style="background:#fffe03"></span><span style="background:#ffcb00"></span><span style="background:#ff9835"></span>
+      <span style="background:#fd6866"></span><span style="background:#fe0002"></span><span style="background:#cc0001"></span>
+      <span style="background:#9a0100"></span><span style="background:#640100"></span>
+    </div>
+    <div class="risk">
+      <span class="tag" style="background:#0099cb">1&ndash;3</span><span><b>Low.</b> A great day to be outside.</span>
+      <span class="tag" style="background:#ffcb00">4&ndash;6</span><span><b>Moderate.</b> Most people are fine. If you have heart or lung problems, take it easier outside.</span>
+      <span class="tag" style="background:#fe0002">7&ndash;10</span><span><b>High.</b> Cut back on hard exercise outside, especially if you feel unwell.</span>
+      <span class="tag" style="background:#640100;color:#fff">10+</span><span><b>Very high.</b> Put off hard activity outside. People at risk should avoid it.</span>
+    </div>
+
+    <h3>What you see on the map</h3>
+    <div class="row"><span class="dot" style="background:#0099cb">2</span><span><b>Big circles</b> are official monitoring stations. The number is the AQHI right now.</span></div>
+    <div class="row"><span class="dot small" style="background:#01cbff"></span><span><b>Small circles</b> are low-cost PurpleAir sensors. The number is an <b>estimated AQHI</b> (see below).</span></div>
+    <div class="row"><span class="dot" style="background:rgba(1,203,255,.45);border-radius:4px"></span><span><b>Shading</b> is our best estimate of the AQHI in the areas between monitors.</span></div>
+    <div class="row"><span class="dot" style="background:#999"></span><span><b>Grey</b> means no reading right now.</span></div>
+    <p><b>Click anything to learn more.</b> Tap a section below for how it works.</p>
+
+    <details class="sec">
+      <summary><span>When you click&hellip;<small>The map, a station, or a sensor</small></span></summary>
+      <div class="body">
+        <h4>&hellip;anywhere on the map</h4>
+        <ul>
+          <li>A box shows the <b>2 closest stations</b> and <b>3 closest sensors</b>, with how far away they are.</li>
+          <li>It also shows the <b>weather for the next 6 hours</b>: temperature, wind and rain.</li>
+          <li>The <b>left panel</b> switches to the closest station: the AQHI now, and the forecast for today, tonight and tomorrow. Below that are the current weather, weather alerts and wildfire smoke links.</li>
+        </ul>
+        <p>You can also type an address in the box at the top right.</p>
+        <h4>&hellip;a station (big circle)</h4>
+        <ul>
+          <li>The latest hourly readings for each pollutant, plus weather.</li>
+          <li>What the AQHI means for <b>most people</b> and for <b>people at risk</b>.</li>
+          <li><b>What&rsquo;s driving this AQHI:</b> how much of today&rsquo;s number comes from ozone, nitrogen dioxide and fine particles.</li>
+          <li>Links to the station&rsquo;s <b>past data</b> and <b>live gauges</b>.</li>
+        </ul>
+        <h4>&hellip;a sensor (small circle)</h4>
+        <ul>
+          <li>The sensor&rsquo;s name and its estimated AQHI.</li>
+          <li>Its fine particle (PM2.5) reading, corrected for humidity.</li>
+          <li>A link to its past readings.</li>
+        </ul>
+        <p>Press <b>Clear Selection</b> (bottom left) to start again.</p>
+      </div>
+    </details>
+
+    <details class="sec">
+      <summary><span>How the sensors estimate the AQHI<small>The small circles</small></span></summary>
+      <div class="body">
+        <p>PurpleAir sensors measure fine particles, like smoke and dust. But the AQHI also depends on two gases, ozone and nitrogen dioxide, which these sensors can&rsquo;t measure.</p>
+        <p>So we combine each sensor&rsquo;s reading with the ozone and nitrogen dioxide levels in the area, from Environment and Climate Change Canada and nearby stations. Together they give an estimated AQHI for that spot.</p>
+        <p>We also check each sensor&rsquo;s readings and leave out ones that look faulty.</p>
+        <p><b>It is an estimate, not an official reading.</b></p>
+      </div>
+    </details>
+
+    <details class="sec">
+      <summary><span>How the shading fills the gaps<small>The AQHI grids</small></span></summary>
+      <div class="body">
+        <p>Monitors are far apart, so we fill in the map between them. Each small square takes its value from the monitors around it. <b>Closer monitors count more.</b></p>
+        <ul>
+          <li><b>&ldquo;Stations&rdquo;</b> uses official stations only.</li>
+          <li><b>&ldquo;Stations + Sensors&rdquo;</b> also uses the PurpleAir estimates, each counting half as much as a station. This one is on by default.</li>
+        </ul>
+        <h4>Pick an area</h4>
+        <p>Grids are ready for Alberta, the WCAS area, Parkland County or Yellowhead County. Smaller areas use smaller squares, for more detail.</p>
+        <h4>Good to know</h4>
+        <ul>
+          <li>Hover over a square to see its AQHI.</li>
+          <li>A <b>dashed outline</b> means one station reads very differently from its neighbours. It could be a real local event or an instrument problem.</li>
+          <li>The grids update every hour.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="sec">
+      <summary><span>eAQHI (PurpleAir)<small>Filling in stations that can&rsquo;t give a full AQHI</small></span></summary>
+      <div class="body">
+        <p>A full AQHI needs three things: ozone, nitrogen dioxide and fine particles. Some stations are missing one. This layer fills them in.</p>
+        <p>They show as <b>big circles with a dashed edge</b>.</p>
+        <ul>
+          <li><b>No fine particle monitor at the station:</b> we use the station&rsquo;s own gases, plus fine particles from up to 4 PurpleAir sensors within 20 km. Closer sensors count more, and odd readings are dropped.</li>
+          <li><b>Missing from the government feed:</b> we use the airshed&rsquo;s own backup data feed instead.</li>
+          <li><b>Station fully offline:</b> we estimate from nearby sensors only.</li>
+        </ul>
+        <p>Click one to see which case applies.</p>
+      </div>
+    </details>
+
+    <details class="sec">
+      <summary><span>The other layers<small>Turn them on with the list at the top right</small></span></summary>
+      <div class="body">
+        <h4>Roses (PM2.5, NO&#8322;, SO&#8322;)</h4>
+        <p>Around each station, the wedges show which wind directions bring the most pollution. A bigger wedge means more pollution arrives from that side.</p>
+        <h4>Radar, Winds, Lightning and Thunderstorm Outlook</h4>
+        <p>From Environment and Climate Change Canada. <b>Radar</b> shows rain and snow. <b>Winds</b> shows wind speed. <b>Lightning</b> shows recent strikes. <b>Thunderstorm Outlook</b> shows where storms are expected.</p>
+        <h4>ECCC Alerts</h4>
+        <p>Weather alerts from Environment and Climate Change Canada.</p>
+        <ul>
+          <li><span class="swatch" style="background:#e0a800"></span><b>Yellow:</b> advisory or statement</li>
+          <li><span class="swatch" style="background:#e8590c"></span><b>Orange:</b> watch</li>
+          <li><span class="swatch" style="background:#c92a2a"></span><b>Red:</b> warning</li>
+        </ul>
+        <p>Hover over an alert to see its name, the area, and when it starts and ends.</p>
+        <h4>FireSmoke (March to October)</h4>
+        <p>A wildfire smoke forecast from FireSmoke Canada. Darker colours mean more smoke. It is only shown in smoke season.</p>
+        <h4>Heads-up banner</h4>
+        <p>If there are active alerts or fires nearby, a banner appears at the top. Click its link to show them.</p>
+      </div>
+    </details>
+
+    <details class="fine">
+      <summary>Where does this data come from?</summary>
+      <p>Official stations: Alberta&rsquo;s air monitoring network. Sensors: PurpleAir. Regional ozone and nitrogen dioxide, weather and alerts: Environment and Climate Change Canada. Smoke forecast: FireSmoke Canada. Readings are near real time and have not been through final quality checks, so they can change later. For the official AQHI, check the nearest station.</p>
+    </details>
+
+    <button class="done" type="button" onclick="closeHowTo()">Got it &ndash; show me the map</button>
+  </div>
+</div>
+
+<!-- HOWTO: open/close (button only, same as the public map) -->
+<script>
+function openHowTo() {
+  document.getElementById("howto").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeHowTo() {
+  document.getElementById("howto").classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeHowTo(); });
 </script>
 
 </body>
