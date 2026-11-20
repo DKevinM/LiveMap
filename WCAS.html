@@ -436,6 +436,8 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
   .sp-hour-tip::before { display: none; }
 </style>
 <script src="js/story_panel.js?v=20261120a" defer></script>
+<!-- Animated winds + forecast bar (members' maps only) - see js/wind_anim.js -->
+<script src="js/wind_anim.js?v=20261120a" defer></script>
 
 <!-- HOWTO: the guide itself (members' map, 2026-11-20). Text only - no
      shared js/ or css/ file touched. Same look as the public map's guide,
@@ -548,6 +550,8 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
       <div class="body">
         <h4>Roses (PM2.5, NO&#8322;, SO&#8322;)</h4>
         <p>Around each station, the wedges show which wind directions bring the most pollution. A bigger wedge means more pollution arrives from that side.</p>
+        <h4>Wind animation</h4>
+        <p>Moving lines show the wind: where it is going and how fast (blue is light, red is strong). It is on when the map opens. Use the bar at the bottom left to see the wind <b>later today and tomorrow</b>, or press <b>Play</b> to watch it change. <b>Now</b> brings you back. The wind right now is matched to nearby weather stations.</p>
         <h4>Radar, Winds, Lightning and Thunderstorm Outlook</h4>
         <p>From Environment and Climate Change Canada. <b>Radar</b> shows rain and snow. <b>Winds</b> shows wind speed. <b>Lightning</b> shows recent strikes. <b>Thunderstorm Outlook</b> shows where storms are expected.</p>
         <h4>ECCC Alerts</h4>
