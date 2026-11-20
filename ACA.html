@@ -327,6 +327,129 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
 };
 </script>
 
+<!-- Station "Full story" side panel (mockup 2026-10-31, Howe Sound layout 2026-11-13) - see js/story_panel.js -->
+<style>
+  #story-panel {
+    --sp-ink: #1d2733; --sp-muted: #5f6b78; --sp-line: #2b6cb0; --sp-bad: #d62f2f;
+    --sp-gap: #e4e8ec; --sp-card: #f4f6f8; --sp-accent: #5b3fd1; --sp-grid: #e6e9ed;
+    --sp-lo: #1baf7a; --sp-hi: #d62828;
+    /* calendar: one hue light to dark, red only above the objective (Howe Sound page scale) */
+    --sp-c0: #d9f0ea; --sp-ci0: #10211d; --sp-c1: #a9dfd2; --sp-ci1: #10211d; --sp-c2: #6fc7b3; --sp-ci2: #10211d;
+    --sp-c3: #3aa08b; --sp-ci3: #10211d; --sp-c4: #0f6b5b; --sp-ci4: #fff; --sp-c5: #c1121f; --sp-ci5: #fff;
+    position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 100%;
+    background: #fff; color: var(--sp-ink); z-index: 2600; overflow-y: auto; overscroll-behavior: contain;
+    box-shadow: -8px 0 28px rgba(0,0,0,.18); padding: 0 18px 28px;
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+    transform: translateX(105%); transition: transform .25s ease;
+  }
+  #story-panel.open { transform: none; }
+  @media (max-width: 700px) {
+    #story-panel { top: auto; left: 0; width: auto; height: 78vh; border-radius: 16px 16px 0 0; padding: 0 14px 24px;
+      transform: translateY(105%); box-shadow: 0 -8px 28px rgba(0,0,0,.2); }
+  }
+  #story-panel .sp-bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 10px;
+    margin: 0 -18px 10px; padding: 10px 18px; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--sp-grid); }
+  @media (max-width: 700px) { #story-panel .sp-bar { margin: 0 -14px 10px; padding: 10px 14px; } }
+  #story-panel .sp-back { border: 1px solid #cfd5dc; background: #fff; color: var(--sp-ink); border-radius: 999px;
+    font: 600 13px system-ui, sans-serif; padding: 6px 14px 6px 10px; min-height: 34px; cursor: pointer; flex: none; }
+  #story-panel .sp-back:hover { background: var(--sp-card); }
+  #story-panel .sp-back span { font-size: 17px; line-height: 0; margin-right: 2px; }
+  #story-panel .sp-bar-name { font-size: 13px; color: var(--sp-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #story-panel .sp-loading { padding: 40px 0; color: var(--sp-muted); }
+  #story-panel .sp-head { display: flex; gap: 14px; align-items: center; margin: 4px 0 12px; }
+  #story-panel .sp-aqhi { min-width: 72px; height: 72px; border-radius: 14px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-variant-numeric: tabular-nums; flex: none; }
+  #story-panel .sp-aqhi small { font-size: 11px; font-weight: 600; letter-spacing: .06em; opacity: .9; }
+  #story-panel .sp-aqhi b { font-size: 34px; line-height: 1; }
+  #story-panel h2 { margin: 0; font-size: 20px; }
+  #story-panel .sp-sub { color: var(--sp-muted); font-size: 13px; }
+  #story-panel .sp-sub b { color: var(--sp-ink); }
+  #story-panel .sp-lede { font-size: 15.5px; margin: 0 0 10px; }
+  #story-panel .sp-peak { font-size: 14px; color: var(--sp-muted); }
+  #story-panel .sp-health { background: var(--sp-card); border-radius: 10px; padding: 8px 10px; font-size: 13px; display: grid; gap: 4px; }
+  #story-panel .sp-health span { display: block; font-size: 11px; font-weight: 600; color: var(--sp-muted); text-transform: uppercase; letter-spacing: .04em; }
+  #story-panel section { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--sp-grid); }
+  #story-panel h3 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--sp-muted); }
+  #story-panel p { margin: 0 0 6px; }
+  #story-panel .sp-small { font-size: 13px; }
+  #story-panel .sp-note { font-size: 11.5px; color: var(--sp-muted); }
+  #story-panel .sp-share { display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px; background: #fff; }
+  #story-panel .sp-share span { display: block; min-width: 3px; }
+  #story-panel .sp-radar { width: 260px; height: 220px; margin: 0 auto; }
+  #story-panel .sp-photo { display: block; margin-top: 12px; }
+  #story-panel .sp-photo img { display: block; width: 100%; max-height: 240px; object-fit: cover; border-radius: 10px; background: var(--sp-card); }
+  #story-panel .sp-share-key { display: flex; justify-content: center; gap: 14px; font-size: 12.5px; margin: 6px 0 2px; flex-wrap: wrap; }
+  #story-panel .sp-share-key i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; }
+  #story-panel .sp-list { list-style: none; padding: 0; margin: 4px 0 6px; font-size: 13px; }
+  #story-panel .sp-list li { padding: 5px 0; border-bottom: 1px solid #eef0f3; }
+  #story-panel .sp-list li span { display: block; color: var(--sp-muted); font-size: 12px; }
+  #story-panel .sp-strip { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; height: 18px; }
+  #story-panel .sp-strip span { border-radius: 2px; }
+  #story-panel .sp-strip-axis { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--sp-muted); margin: 2px 0 10px; }
+  /* dials (Howe Sound layout) */
+  #story-panel .sp-gauges { display: flex; flex-wrap: wrap; gap: 8px 4px; margin-bottom: 8px; }
+  #story-panel .sp-gg { width: 70px; text-align: center; font-size: 12px; line-height: 1.25; cursor: default; }
+  #story-panel .sp-gauge { width: 70px; height: 63px; display: block; margin: 0 auto; }
+  #story-panel .sp-gauge text { font-size: 8.5px; fill: var(--sp-muted); }
+  #story-panel .sp-gg-name { display: block; font-weight: 700; color: var(--sp-muted); }
+  #story-panel .sp-gg b { display: block; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #story-panel .sp-gg b small { font-weight: 400; color: var(--sp-muted); }
+  #story-panel .sp-gg .sp-note { display: block; font-size: 10.5px; }
+  /* 24 h table */
+  #story-panel .sp-tw { overflow-x: auto; margin: 0 -4px; }
+  #story-panel .sp-aqt { border-collapse: collapse; width: 100%; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  #story-panel .sp-aqt th { text-align: left; font-size: 11px; font-weight: 600; color: var(--sp-muted); padding: 3px 4px; border-bottom: 1px solid var(--sp-grid); white-space: nowrap; }
+  #story-panel .sp-aqt td { padding: 3px 4px; vertical-align: middle; white-space: nowrap; border-bottom: 1px solid #f0f2f4; }
+  #story-panel .sp-aqt td small { color: var(--sp-muted); }
+  #story-panel .sp-aqt svg { display: block; }
+  #story-panel .sp-aqt th.sp-sect { padding-top: 12px; color: var(--sp-ink); }
+  #story-panel .sp-nr { color: var(--sp-muted); font-style: italic; }
+  #story-panel .sp-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin: 0 3px 0 6px; vertical-align: 0; }
+  #story-panel .sp-wind { display: inline-block; font-style: normal; }
+  /* 5-week calendar */
+  #story-panel .sp-calpick { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 10px; }
+  #story-panel .sp-calpick button { font: 600 12px system-ui, sans-serif; min-height: 30px; padding: 3px 11px; border: 1px solid #cfd5dc;
+    border-radius: 999px; background: #fff; color: var(--sp-muted); cursor: pointer; }
+  #story-panel .sp-calpick button[aria-pressed="true"] { background: var(--sp-ink); border-color: var(--sp-ink); color: #fff; }
+  #story-panel .sp-calwrap { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: flex-start; }
+  #story-panel .sp-cal { display: grid; grid-template-columns: 30px repeat(7, 30px); grid-auto-rows: 26px; gap: 2px; font-size: 11px; flex: none; font-variant-numeric: tabular-nums; }
+  #story-panel .sp-cal span { display: flex; align-items: center; justify-content: center; border-radius: 3px; cursor: default; }
+  #story-panel .sp-cal .lab { color: var(--sp-muted); }
+  #story-panel .sp-cal .none { background: var(--sp-gap); color: var(--sp-muted); }
+  #story-panel .sp-cal .today { box-shadow: 0 0 0 2px var(--sp-ink); }
+  #story-panel .sp-calinfo { flex: 1 1 140px; min-width: 0; font-size: 12.5px; }
+  #story-panel .sp-calinfo h4 { margin: 0 0 4px; font-size: 13px; }
+  #story-panel .sp-calkey { display: flex; flex-wrap: wrap; gap: 3px 10px; margin: 6px 0 4px; font-size: 11.5px; color: var(--sp-muted); }
+  #story-panel .sp-calkey i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+  #story-panel .sp-smoke { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; margin-bottom: 4px; }
+  #story-panel .sp-smoke div { background: var(--sp-card); border-radius: 8px; padding: 5px 0; }
+  #story-panel .sp-smoke span { display: block; font-size: 11px; color: var(--sp-muted); }
+  #story-panel .sp-trust { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+  #story-panel .sp-trust li { padding: 5px 0 5px 22px; position: relative; }
+  #story-panel .sp-trust li::before { position: absolute; left: 0; top: 4px; font-weight: 700; }
+  #story-panel .sp-trust li.ok::before { content: "✓"; color: #2f9e44; }
+  #story-panel .sp-trust li.warn::before { content: "!"; color: #e08a00; left: 4px; }
+  #story-panel .sp-trust li.bad::before { content: "✕"; color: var(--sp-bad); }
+  #story-panel .sp-trust li.info::before { content: "i"; color: var(--sp-muted); left: 4px; font-style: italic; }
+  #story-panel .sp-foot-links { display: flex; gap: 16px; margin-top: 18px; font-size: 13px; }
+  /* tab left after "Back to map": pulls the panel back out */
+  #story-tab { position: fixed; right: 0; top: 50%; transform: translate(105%, -50%); transition: transform .25s ease; z-index: 2550;
+    display: flex; align-items: stretch; background: #1d2733; color: #fff; border-radius: 12px 0 0 12px; box-shadow: -4px 0 16px rgba(0,0,0,.25);
+    font: 600 13px system-ui, sans-serif; max-width: 220px; }
+  #story-tab.show { transform: translate(0, -50%); }
+  #story-tab button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+  #story-tab .sp-tab-open { padding: 12px 6px 12px 12px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-height: 44px; }
+  #story-tab .sp-tab-open span { font-size: 18px; line-height: 0; margin-right: 4px; }
+  #story-tab .sp-tab-x { padding: 0 10px; font-size: 18px; opacity: .7; border-left: 1px solid rgba(255,255,255,.2); }
+  #sp-tip { position: fixed; z-index: 2700; display: none; pointer-events: none; max-width: 240px; background: #1d2733; color: #fff;
+    font: 12px/1.4 system-ui, sans-serif; padding: 6px 9px; border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+  body.sp-panel-open #clear-btn, body.sp-panel-open #search-box { display: none !important; }
+  .sp-npri { background: #e8833a; border: 2px solid #fff; border-radius: 2px; box-shadow: 0 0 0 1px #9a4e12; }
+  .sp-hour-tip { background: rgba(255,255,255,.9); border: 0; box-shadow: none; font-size: 11px; font-weight: 600; color: #5b3fd1; padding: 0 4px; }
+  .sp-hour-tip::before { display: none; }
+</style>
+<script src="js/story_panel.js?v=20261120a" defer></script>
+
 <!-- HOWTO: the guide itself (members' map, 2026-11-20). Text only - no
      shared js/ or css/ file touched. Same look as the public map's guide,
      plus the members-only layers. Opens only from the header button. -->
@@ -369,11 +492,16 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
         </ul>
         <p>You can also type an address in the box at the top right.</p>
         <h4>&hellip;a station (big circle)</h4>
+        <p>A panel slides in from the side (from the bottom on a phone). Tap <b>&lsaquo; Back to map</b> to slide it away. A tab stays on the edge so you can pull it back.</p>
         <ul>
-          <li>The latest hourly readings for each pollutant, plus weather.</li>
-          <li>What the AQHI means for <b>most people</b> and for <b>people at risk</b>.</li>
-          <li><b>What&rsquo;s driving this AQHI:</b> how much of today&rsquo;s number comes from ozone, nitrogen dioxide and fine particles.</li>
-          <li>Links to the station&rsquo;s <b>past data</b> and <b>live gauges</b>.</li>
+          <li>The AQHI now, what it means for <b>most people</b> and <b>people at risk</b>, and the forecast.</li>
+          <li><b>Why it&rsquo;s this number:</b> how much of the AQHI comes from ozone, nitrogen dioxide and fine particles.</li>
+          <li><b>Dials</b> for each pollutant against the Alberta objective.</li>
+          <li>A table of the <b>last 24 hours</b>: now, average, low to high, and the trend. Weather is at the bottom.</li>
+          <li>A <b>5-week calendar</b>. Tap a pollutant to see each day&rsquo;s level.</li>
+          <li><b>Where the air came from</b> over the last 12 hours, drawn on the map, with the facilities and sensors along the way.</li>
+          <li><b>Can I trust this reading?</b> Simple checks on the station.</li>
+          <li>Links to <b>past data</b> and <b>live gauges</b>.</li>
         </ul>
         <h4>&hellip;a sensor (small circle)</h4>
         <ul>
