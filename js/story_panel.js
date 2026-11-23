@@ -48,10 +48,13 @@
     "Nitrogen Dioxide": [159, "AAAQO", "1-hour"],
     "Sulphur Dioxide": [172, "AAAQO", "1-hour"],
     "Hydrogen Sulphide": [10, "AAAQO", "1-hour"],
-    "Total Reduced Sulphur": [5, "AAAQG", "1-hour"],
+    "Total Reduced Sulphur": [5, "AAAQG", "30-minute"],   // 30-min clock average (July 2024); compared hourly, see halfHour
     "Carbon Monoxide": [13, "AAAQO", "1-hour"]
   };
   const gword = g => g[1] === "AAAQG" ? "guideline" : "objective";
+  // A 30-minute limit read off hourly data (TRS; 2026-11-23, Kevin): an hour above it means at least one half-hour
+  // was above it, but a half-hour can be above it without the hour being.
+  const halfHour = g => !!g && g[2] === "30-minute";
 
   // dial full-scale when there's no objective (otherwise twice the objective,
   // so the tick sits at the top of the dial - same as the Howe Sound page)
@@ -383,7 +386,10 @@
         txt = `<p>Past ${full.length} full days: highest ${MON[hm - 1]} ${hd} at ${hiV}. ${mod === 0 ? "Every day stayed low risk (1–3)." : `${mod === 1 ? "1 day" : mod + " days"} reached moderate risk (4+) for at least an hour.`}</p>`;
       } else {
         const over = guide ? full.filter(o => o.p[k][C.i] > guide[0]).length : 0;
-        txt = `<p>Past ${full.length} full days: highest ${MON[hm - 1]} ${hd} at ${hiV} ${unit}. ${guide ? `${over === 0 ? "No days" : over === 1 ? "1 day" : over + " days"} above the Alberta ${guide[2]} ${gword(guide)} of ${guide[0]} ${unit} (${guide[1]}).` : "Alberta has no objective for this."}</p>`;
+        txt = `<p>Past ${full.length} full days: highest ${MON[hm - 1]} ${hd} at ${hiV} ${unit}. ${!guide ? "Alberta has no objective for this."
+          : halfHour(guide)
+            ? `${over === 0 ? "No hour was" : over === 1 ? "1 day had an hour" : over + " days had an hour"} above ${guide[0]} ${unit}, the Alberta 30-minute ${gword(guide)} (${guide[1]})${over ? ", so the guideline was exceeded" : ""}. These are hourly averages, so a single half-hour above it may not show.`
+            : `${over === 0 ? "No days" : over === 1 ? "1 day" : over + " days"} above the Alberta ${guide[2]} ${gword(guide)} of ${guide[0]} ${unit} (${guide[1]}).`}</p>`;
       }
     }
     const key = k === "AQHI"
@@ -732,7 +738,7 @@
       }
       const shown = val == null ? "–" : fmtNum(val, unit);
       const tipTxt = g
-        ? `<b>${short}</b><br>${basis}: ${val == null ? "no reading" : shown + " " + unit}<br>Alberta ${g[2]} ${gword(g)}: ${g[0]} ${unit} (${g[1]})`
+        ? `<b>${short}</b><br>${basis}: ${val == null ? "no reading" : shown + " " + unit}<br>Alberta ${g[2]} ${gword(g)}: ${g[0]} ${unit} (${g[1]})${halfHour(g) ? `<br>Compared with the hourly average: an hour above ${g[0]} ${unit} means at least one half-hour was above it.` : ""}`
         : `<b>${short}</b><br>Latest hour: ${val == null ? "no reading" : shown + " " + unit}<br>Alberta has no objective for this`;
       return `<div class="sp-gg" data-tip="${tipTxt}">${miniGauge(p, val)}<span class="sp-gg-name">${short}</span>
         <b>${shown} <small>${unit}</small></b><span class="sp-note">${basis}</span></div>`;
@@ -818,7 +824,7 @@
       <section>
         <h3>Right now</h3>
         <div class="sp-gauges">${dials}</div>
-        <p class="sp-note">The needle shows the latest hour against Alberta's 1-hour limits: the objectives (AAAQO) for the gases and the guideline (AAAQG, 80 µg/m³) for PM2.5. Green is up to half the limit, yellow is up to it (the dark tick), red is above. Blue means Alberta has no limit for it. These are preliminary readings.</p>
+        <p class="sp-note">The needle shows the latest hour against Alberta's 1-hour limits: the objectives (AAAQO) for the gases and the guideline (AAAQG, 80 µg/m³) for PM2.5.${have.some(([p]) => p === "Total Reduced Sulphur") ? " TRS has a 30-minute guideline (AAAQG, 5 ppb); with hourly data, an hour above 5 ppb means at least one half-hour was above it." : ""} Green is up to half the limit, yellow is up to it (the dark tick), red is above. Blue means Alberta has no limit for it. These are preliminary readings.</p>
       </section>
 
       <section>

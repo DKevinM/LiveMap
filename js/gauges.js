@@ -261,6 +261,16 @@ const guideLabel = {
 };
 
 
+// Limits that aren't 1-hour (2026-11-23, Kevin): the provincial feed is hourly, so the hourly value is what's
+// compared. TRS guideline = 5 ppb as a 30-minute clock average (AAAQG, July 2024); an hour above 5 means at least
+// one half-hour was above it, but a half-hour can be above 5 without the hour being.
+const guideNote = {
+  "Total Reduced Sulphur": {
+    short: "30-min guideline; hourly shown",
+    tip: "Alberta's TRS guideline is 5 ppb as a 30-minute average. This map gets hourly averages, so the hour is compared with it: an hour above 5 ppb means at least one half-hour was above the guideline, but a half-hour can be above it without the hour being."
+  }
+};
+
 const gaugeMax = {
   "Ozone": 120,
   "Fine Particulate Matter": 160,
@@ -781,7 +791,7 @@ window.AppData.ready.then(() => {
         <b>${disp.text}</b> ${disp.unit}
         <div style="font-size:11px;color:#666;margin-top:2px">
           Updated ${updated}
-          ${guide ? `<br>${guideLabel[param]} = ${guide} ${unit}` : ``}
+          ${guide ? `<br><span${guideNote[param] ? ` title="${guideNote[param].tip}" style="cursor:help"` : ""}>${guideLabel[param]} = ${guide} ${unit}${guideNote[param] ? ` (${guideNote[param].short})` : ""}</span>` : ``}
         </div>
       `;
 
