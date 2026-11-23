@@ -173,6 +173,7 @@
         lines.forEach(line => {
           const c = line.split(",");
           const p = (c[iP] || "").trim() || "AQHI";
+          if (p.startsWith("AQHI") && window.NO_AQHI_STATIONS?.has((c[iS] || "").trim())) return;   // see data.js
           let v = parseFloat(c[iV]);
           if (!isFinite(v)) v = null;
           if (v !== null && PPM_TO_PPB.includes(p)) v *= 1000;

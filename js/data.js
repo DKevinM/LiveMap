@@ -272,6 +272,10 @@ window.ACTIVE_TYPES = ["CURRENT", "BLEND", "FORECAST_3H"];
 // dot. Dropped from the live maps only; their history stays in aqhi_data for 2026 reporting.
 // Meadows (WCAS): shut down 2026-10-30, Kevin 2026-11-19.
 window.RETIRED_STATIONS = { "Meadows": "2026-10-30" };
+// Stations that can't make a real AQHI - no ozone and/or no NO2 analyzer (Kevin 2026-11-23: "there is no AQHI
+// at O'Morrow, it only collects PM2.5, SO2, TRS"). AEPA still sends the odd stray AQHI row for them and our
+// backup AQHI filled the rest from model gases; both are dropped so the dot shows measured pollutants only.
+window.NO_AQHI_STATIONS = new Set(["O’Morrow Station 1", "O'Morrow Station 1", "Wagner2"]);
 
 window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.csv')
   .then(res => res.text())
@@ -292,6 +296,7 @@ window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.c
       e.ParameterName = (e.ParameterName && e.ParameterName.trim())
         ? e.ParameterName.trim()
         : "AQHI";
+      if (e.ParameterName.startsWith("AQHI") && window.NO_AQHI_STATIONS.has(e.StationName.trim())) return;
     
       // ---- FIX 2: numeric value ----     
       let v = parseFloat(e.Value);      
@@ -446,6 +451,7 @@ window.aqhiOverrideMap = {};
 window.dataReady = Promise.all([window.dataReady, window.failoverReady]).then(([d, fo]) => {
   const now = new Date();
   Object.entries(fo?.stations || {}).forEach(([n, f]) => {
+    if (window.NO_AQHI_STATIONS.has(n)) return;
     const t = new Date(f.reading_utc);
     if (f.aqhi != null && (now - t) / 3600000 <= FAILOVER_MAX_AGE_H) window.aqhiOverrideMap[n] = { aqhi: Number(f.aqhi), time: t };
   });
@@ -489,7 +495,7 @@ window.dataReady = Promise.all([window.dataReady, window.metFillReady]).then(([d
 // ---------------- STATIONS FOR MAP ----------------
 window.fetchAllStationData = async function () {
   await window.dataReady;
-  const failover = (await window.failoverReady)?.stations || {};
+  const failover = Object.fromEntries(Object.entries((await window.failoverReady)?.stations || {}).filter(([n]) => !window.NO_AQHI_STATIONS.has(n)));
   const now0 = new Date();
   const ourAQHI = name => {
     const f = failover[name];
