@@ -569,22 +569,76 @@ window.fetchAllStationData = async function () {
 
 
 // ---------------- PURPLEAIR ----------------
-async function loadPurpleAir() {
-  const url = "https://raw.githubusercontent.com/DKevinM/AB_datapull/main/data/AB_PM25_map.json";
-  const res = await fetchFresh(url);
-  const json = await res.json();
-  const records = Array.isArray(json) ? json : (json.data || []);
-  return records.map(r => {
-    const pm = isFinite(r.pm_corr) ? Number(r.pm_corr) : null;
-  
-    return {
-      lat: Number(r.latitude),
-      lon: Number(r.longitude),
-      pm: pm,
-      eAQHI: pm !== null ? Math.floor(pm / 10) + 1 : null,
-      name: r.name || `Sensor ${r.sensor_index ?? ""}`
-    };
+// One set of rules for every place a PurpleAir AQHI is shown - the map dots (purpleair.js), the click
+// popup's nearest-3 table (click_engine.js) and the mobile pages' nearest sensor (2026-11-23, Kevin: "make
+// the popup match the dots - using our proper rules"). Before this the popup used PM2.5-only 10 µg/m³ steps,
+// the mobile pages floor(pm/10)+1, and both read the Alberta file only with no exclusions.
+//   AQHI = aqhi_rg: full formula from the sensor's 3 h PM2.5 + regional O3/NO2 (build_pa_regional_aqhi.py),
+//          incl. the smoke rule and unconfirmed high PM2.5 left out; PM2.5-only steps only if it's missing.
+window.PA_SOURCES = {
+  AB: "https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json",
+  // 150 km border bands (AB_datapull/PA_border_pull.py; SK cut from SK_datapull), added 2026-09-30
+  BC: "https://dkevinm.github.io/AB_datapull/data/BC_PM25_map.json",
+  NT: "https://dkevinm.github.io/AB_datapull/data/NT_PM25_map.json",
+  SK: "https://dkevinm.github.io/AB_datapull/data/SK_band_PM25_map.json"
+};
+window.PA_EXCLUDED_SENSORS = [114435, 121565];
+
+window.paPmOnlyAQHI = function (pm) {   // fallback only: PM2.5 in 10 µg/m³ steps, 100+ -> 10
+  if (pm == null || isNaN(pm)) return null;
+  pm = Number(pm);
+  if (pm > 90) return 10;
+  if (pm > 0) return Math.ceil(pm / 10);
+  return null;
+};
+
+window.paSensorAQHI = function (rec) {
+  if (rec.aqhi_rg !== null && rec.aqhi_rg !== undefined && rec.aqhi_rg !== "" && Number.isFinite(Number(rec.aqhi_rg)))
+    return Number(rec.aqhi_rg);
+  return window.paPmOnlyAQHI(rec.pm_corr);
+};
+
+// All sensors the dots draw (Alberta + border bands, exclusions applied, a PM2.5 and an AQHI value),
+// fetched once and shared by purpleair.js and AppData.purpleair. The border files are optional.
+window.paRecordsReady = null;
+window.loadPurpleAirRecords = function () {
+  if (window.paRecordsReady) return window.paRecordsReady;
+  const load = async (prov, url) => {
+    const res = await window.fetchFresh(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const recs = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+    return recs.map(r => ({ ...r, province: prov }));
+  };
+  const entries = Object.entries(window.PA_SOURCES);
+  window.paRecordsReady = Promise.allSettled(entries.map(([prov, url]) => load(prov, url))).then(res => {
+    if (res[0].status !== "fulfilled") throw res[0].reason;   // Alberta is required
+    let recs = [];
+    res.forEach((r, i) => {
+      if (r.status === "fulfilled") recs = recs.concat(r.value);
+      else console.warn(`PurpleAir ${entries[i][0]} load failed:`, r.reason);
+    });
+    return recs.filter(r =>
+      !window.PA_EXCLUDED_SENSORS.includes(r.sensor_index) &&
+      Number.isFinite(Number(r.latitude)) && Number.isFinite(Number(r.longitude)) &&
+      r.pm_corr !== null && r.pm_corr !== "" && Number.isFinite(Number(r.pm_corr)) &&
+      window.paSensorAQHI(r) != null);
   });
+  window.paRecordsReady.catch(() => { window.paRecordsReady = null; });   // allow a retry after a failure
+  return window.paRecordsReady;
+};
+
+async function loadPurpleAir() {
+  const records = await window.loadPurpleAirRecords();
+  return records.map(r => ({
+    lat: Number(r.latitude),
+    lon: Number(r.longitude),
+    pm: Number(r.pm_corr),
+    eAQHI: window.paSensorAQHI(r),
+    name: r.name || `Sensor ${r.sensor_index ?? ""}`,
+    province: r.province,
+    sensor_index: r.sensor_index
+  }));
 }
 
 // ---------------- READY ----------------

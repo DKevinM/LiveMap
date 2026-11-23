@@ -407,16 +407,15 @@
   // near the airshed edge can still find a real nearest sensor just outside
   // the drawn box, instead of coming up empty.
   let paCache = [];
-  fetch("https://dkevinm.github.io/AB_datapull/data/AB_PM25_map.json")
-    .then(r => r.json())
-    .then(data => {
-      const records = Array.isArray(data) ? data : (Array.isArray(data.data) ? data.data : []);
+  // same sensors + AQHI rule as the desktop dots and click popup (data.js, 2026-11-23)
+  window.loadPurpleAirRecords()
+    .then(records => {
       records.forEach(rec => {
         const lat = Number(rec.latitude), lon = Number(rec.longitude), pm = Number(rec.pm_corr);
         if (!Number.isFinite(lat) || !Number.isFinite(lon) || !Number.isFinite(pm)) return;
-        const eAQHI = window.computeEAQHI ? window.computeEAQHI(pm) : null;
+        const eAQHI = window.paSensorAQHI(rec);
         if (eAQHI == null) return;
-        paCache.push({ name: rec.name || "PurpleAir sensor", lat, lon, pm, eAQHI });
+        paCache.push({ name: (rec.name || "PurpleAir sensor") + (rec.province !== "AB" ? ` (${rec.province})` : ""), lat, lon, pm, eAQHI });
         if (lat < ACA_BOUNDS.minLat || lat > ACA_BOUNDS.maxLat || lon < ACA_BOUNDS.minLon || lon > ACA_BOUNDS.maxLon) return;
         L.circleMarker([lat, lon], {
           radius: 5, color: "#111", weight: 1, fillColor: window.getAQHIColor(eAQHI), fillOpacity: 0.85

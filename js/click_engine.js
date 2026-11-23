@@ -145,8 +145,9 @@ window.handleMapClick = async function(lat, lng, map) {
     
     closestPA = paList
       .map(s => ({
-        name: s.name || "PurpleAir",
+        name: (s.name || "PurpleAir") + (s.province && s.province !== "AB" ? ` (${s.province})` : ""),
         pm: s.pm ?? null,
+        aqhi: s.eAQHI ?? null,   // same rule as the map dots (data.js paSensorAQHI)
         lat: Number(s.lat),
         lng: Number(s.lon),
         dist_km: getDistance(lat, lng, Number(s.lat), Number(s.lon)) / 1000
@@ -202,15 +203,13 @@ window.handleMapClick = async function(lat, lng, map) {
   
   const paRows = closestPA.map(p => {
   
-    const eAQHI = (p.pm != null && !isNaN(p.pm))
-      ? computeEAQHI(Number(p.pm))
-      : null;
+    const eAQHI = (p.aqhi != null && isFinite(p.aqhi)) ? Number(p.aqhi) : null;
   
     return `
       <tr>
         <td>${p.name}</td>
         <td style="text-align:center;">
-          ${eAQHI != null ? `<b>${eAQHI}</b>` : "—"}
+          ${eAQHI != null ? `<b>${eAQHI > 10 ? "10+" : Math.round(eAQHI)}</b>` : "—"}
         </td>
         <td style="text-align:right;">${p.dist_km.toFixed(1)} km</td>
       </tr>
@@ -222,7 +221,7 @@ window.handleMapClick = async function(lat, lng, map) {
       <thead>
         <tr>
           <th align="left">Sensor</th>
-          <th align="center">AQHI (est.)</th>
+          <th align="center">eAQHI</th>
           <th align="right">Dist</th>
         </tr>
       </thead>
