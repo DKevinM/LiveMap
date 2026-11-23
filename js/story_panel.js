@@ -36,12 +36,14 @@
   const DAILY_URL = "https://status.krmenvironmental.com/data/station_daily.json";
   const COMMUNITY_URL = "https://data.environment.alberta.ca/EdwServices/aqhi/odata/CommunityAqhis?$format=json";
 
-  // Alberta objectives the dials and calendar are read against: [value, name,
-  // averaging]. PM2.5 uses the 24-hour AAAQO (like the Howe Sound page uses
-  // BC's 24-hour objective); the gases use their 1-hour values, the same ones
-  // gauges.js uses. Alberta has no 8-hour ozone objective.
+  // Alberta limits the dials and calendar are read against: [value, name,
+  // averaging]. All 1-hour, the same ones gauges.js uses. PM2.5 is the 1-hour
+  // guideline (AAAQG, 80 µg/m³), not the 24-hour objective - Kevin's rule from
+  // the Spruce Grove page 2026-11-22, brought back here 2026-11-23 (it had
+  // only been changed in that copy). AAAQO = objective, AAAQG = guideline.
+  // Alberta has no 8-hour ozone objective.
   const GUIDE = {
-    "Fine Particulate Matter": [29, "AAAQO", "24-hour"],
+    "Fine Particulate Matter": [80, "AAAQG", "1-hour"],
     "Ozone": [76, "AAAQO", "1-hour"],
     "Nitrogen Dioxide": [159, "AAAQO", "1-hour"],
     "Sulphur Dioxide": [172, "AAAQO", "1-hour"],
@@ -49,6 +51,7 @@
     "Total Reduced Sulphur": [5, "AAAQG", "1-hour"],
     "Carbon Monoxide": [13, "AAAQO", "1-hour"]
   };
+  const gword = g => g[1] === "AAAQG" ? "guideline" : "objective";
 
   // dial full-scale when there's no objective (otherwise twice the objective,
   // so the tick sits at the top of the dial - same as the Howe Sound page)
@@ -68,13 +71,13 @@
   ];
 
   // Calendar: each pollutant uses the daily measure that matches its
-  // objective (PM2.5 daily average, gases highest hour), on one fixed scale
+  // 1-hour limit (highest hour each day), on one fixed scale
   // so stations can be compared. i = position in the daily file's
   // [average, highest hour, hours]. When the last cut is the objective, a
   // red band sits above it; lists with 4 cuts have no objective and no red.
   const CAL = {
     AQHI: { i: 1, what: "highest hour each day" },
-    PM25: { i: 0, what: "daily average", cuts: [3, 5, 8, 12, 29] },
+    PM25: { i: 1, what: "highest hour each day", cuts: [5, 10, 20, 40, 80] },
     O3: { i: 1, what: "highest hour each day", cuts: [20, 30, 40, 50, 76] },
     NO2: { i: 1, what: "highest hour each day", cuts: [10, 20, 40, 80, 159] },
     SO2: { i: 1, what: "highest hour each day", cuts: [1, 2, 5, 20, 172] },
@@ -380,7 +383,7 @@
         txt = `<p>Past ${full.length} full days: highest ${MON[hm - 1]} ${hd} at ${hiV}. ${mod === 0 ? "Every day stayed low risk (1–3)." : `${mod === 1 ? "1 day" : mod + " days"} reached moderate risk (4+) for at least an hour.`}</p>`;
       } else {
         const over = guide ? full.filter(o => o.p[k][C.i] > guide[0]).length : 0;
-        txt = `<p>Past ${full.length} full days: highest ${MON[hm - 1]} ${hd} at ${hiV} ${unit}. ${guide ? `${over === 0 ? "No days" : over === 1 ? "1 day" : over + " days"} above the Alberta ${guide[2]} objective of ${guide[0]} ${unit}.` : "Alberta has no objective for this."}</p>`;
+        txt = `<p>Past ${full.length} full days: highest ${MON[hm - 1]} ${hd} at ${hiV} ${unit}. ${guide ? `${over === 0 ? "No days" : over === 1 ? "1 day" : over + " days"} above the Alberta ${guide[2]} ${gword(guide)} of ${guide[0]} ${unit} (${guide[1]}).` : "Alberta has no objective for this."}</p>`;
       }
     }
     const key = k === "AQHI"
@@ -714,7 +717,7 @@
       `<li><b>${esc(f.p.FacilityName)}</b><span>${esc(f.p.SectorDescriptionEn || "")} · ${f.km < 1 ? "<1" : Math.round(f.km)} km ${f.dir}</span></li>`).join("");
     const paHigh = paAlong.filter(p => p.pm > Math.max(15, (lastValid(pm || [])?.v || 0) * 1.5));
 
-    // dials: PM2.5 as a 24-hour average (needs 18 of 24 hours), gases latest hour
+    // dials: latest hour against the 1-hour limits (a 24-hour limit would use the 24 h average, 18 of 24 hours)
     const have = POLLUTANTS.filter(([p]) => series[p] && series[p].some(v => v != null));
     const dials = have.map(([p, short, unit]) => {
       const a = series[p], g = GUIDE[p];
@@ -729,7 +732,7 @@
       }
       const shown = val == null ? "–" : fmtNum(val, unit);
       const tipTxt = g
-        ? `<b>${short}</b><br>${basis}: ${val == null ? "no reading" : shown + " " + unit}<br>Alberta ${g[2]} objective: ${g[0]} ${unit} (${g[1]})`
+        ? `<b>${short}</b><br>${basis}: ${val == null ? "no reading" : shown + " " + unit}<br>Alberta ${g[2]} ${gword(g)}: ${g[0]} ${unit} (${g[1]})`
         : `<b>${short}</b><br>Latest hour: ${val == null ? "no reading" : shown + " " + unit}<br>Alberta has no objective for this`;
       return `<div class="sp-gg" data-tip="${tipTxt}">${miniGauge(p, val)}<span class="sp-gg-name">${short}</span>
         <b>${shown} <small>${unit}</small></b><span class="sp-note">${basis}</span></div>`;
@@ -815,7 +818,7 @@
       <section>
         <h3>Right now</h3>
         <div class="sp-gauges">${dials}</div>
-        <p class="sp-note">The needle shows the reading against the Alberta objective. Green is up to half the objective, yellow is up to it (the dark tick), red is above. PM2.5 uses a 24-hour average, the gases one hour. Blue means Alberta has no objective for it. These are preliminary readings.</p>
+        <p class="sp-note">The needle shows the latest hour against Alberta's 1-hour limits: the objectives (AAAQO) for the gases and the guideline (AAAQG, 80 µg/m³) for PM2.5. Green is up to half the limit, yellow is up to it (the dark tick), red is above. Blue means Alberta has no limit for it. These are preliminary readings.</p>
       </section>
 
       <section>
