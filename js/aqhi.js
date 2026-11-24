@@ -181,7 +181,7 @@ async function loadAQHIFromAB(clickLat, clickLng) {
       current: {
         station: match.CommunityName,
         value: Number(match.Aqhi),
-        time: match.ReadingDate
+        time: match.ReadingDateTime || match.ReadingDate   // ReadingDateTime carries the -06:00 offset; ReadingDate has none and was read in the visitor's own zone
       },
       forecast: {
         today: Number(match.ForecastToday),
@@ -303,7 +303,7 @@ function drawAQHIPanel() {
   ${legendHTML}
 
   <div style="margin-top:10px;">
-    <strong>Last updated:</strong> ${new Date(C.current.time).toLocaleString()}
+    <strong>Last updated:</strong> ${new Date(C.current.time).toLocaleString("en-CA", { timeZone: window.AB_TZ })}
   </div>
 
 

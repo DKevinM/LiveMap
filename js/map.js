@@ -572,12 +572,12 @@ window.initMap = function () {
         Issued:
         ${new Date(
           p.publication_datetime
-        ).toLocaleString()}<br>
+        ).toLocaleString("en-CA", { timeZone: window.AB_TZ })}<br>
         
         Expires:
         ${new Date(
           p.expiration_datetime
-        ).toLocaleString()}
+        ).toLocaleString("en-CA", { timeZone: window.AB_TZ })}
         
         `, {
         
@@ -651,8 +651,8 @@ window.initMap = function () {
             layer.bindTooltip(`
               <b>${p.alert_name_en || "Alert"}</b><br>
               ${p.feature_name_en || p.province || ""}<br>
-              Issued: ${p.publication_datetime ? new Date(p.publication_datetime).toLocaleString() : "-"}<br>
-              Expires: ${p.expiration_datetime ? new Date(p.expiration_datetime).toLocaleString() : "-"}
+              Issued: ${p.publication_datetime ? new Date(p.publication_datetime).toLocaleString("en-CA", { timeZone: window.AB_TZ }) : "-"}<br>
+              Expires: ${p.expiration_datetime ? new Date(p.expiration_datetime).toLocaleString("en-CA", { timeZone: window.AB_TZ }) : "-"}
             `, {
               sticky: true,
               direction: "top"

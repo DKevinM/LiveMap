@@ -779,11 +779,11 @@ window.AppData.ready.then(() => {
       if (isBadValue) {
         disp = { text: "Offline", unit: "" };
         updated = latest.time
-          ? latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"})
+          ? latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit", timeZone: window.AB_TZ || "Etc/GMT+6"})
           : "--";
       } else {
         disp = formatDisplay(param, latest.value);
-        updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit"});
+        updated = latest.time.toLocaleTimeString("en-CA", {hour:"2-digit", minute:"2-digit", timeZone: window.AB_TZ || "Etc/GMT+6"});
       }
       const unit  = displayMap[param]?.unit || "ppb";
       
