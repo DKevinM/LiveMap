@@ -54,8 +54,15 @@ async function loadAQHIGroup(groupName) {
     const res = await fetchFresh(url);
     const geojson = await res.json();
 
+    // Canvas + no simplification (2026-11-24, Kevin: "the grid for parkland county did not work"). The town
+    // grids (Edmonton/Strathcona/Parkland) are 0.35 x 0.56 km cells; at the opening zoom each cell is under a
+    // pixel and the default SVG renderer + smoothFactor drew nothing at all. Canvas with smoothFactor 0 paints
+    // them at every zoom and draws Parkland's ~31,000 cells in under a second (SVG made one DOM node per cell).
+    window._gridRenderer = window._gridRenderer || L.canvas({ padding: 0.5 });
     const layer = L.geoJSON(geojson, {
       interactive: true,
+      renderer: window._gridRenderer,
+      smoothFactor: 0,
       style: f => {
         const v =
           f.properties?.aqhi ??
