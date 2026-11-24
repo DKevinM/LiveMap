@@ -1,6 +1,20 @@
 // ---------------- GLOBALS ----------------
 window.dataByStation = Object.create(null);
 
+// Alberta stays on UTC-6 (MDT) all year from 2026-11-01. Browsers that haven't picked up that tz change
+// (headless Chrome 151 still did not on 2026-11-24) put "America/Edmonton" at UTC-7 and show every live
+// time an hour early, so live times are formatted at a fixed UTC-6 instead (wind_anim.js does the same).
+// Only use this for times on/after 2026-11-01; older history keeps America/Edmonton.
+window.AB_TZ = "Etc/GMT+6";
+
+// Open-Meteo is asked for UTC (&timezone=GMT) and its local-looking "2026-11-24T02:00" strings get a "Z",
+// so new Date() reads them right on every browser.
+window.omUTC = function (data) {
+  if (data?.hourly?.time) data.hourly.time = data.hourly.time.map(t => /Z$/.test(t) ? t : t + "Z");
+  if (data?.current_weather?.time && !/Z$/.test(data.current_weather.time)) data.current_weather.time += "Z";
+  return data;
+};
+
 // raw.githubusercontent.com is served through GitHub's CDN, which can hold
 // a stale cached copy well past when the underlying file has updated - a
 // plain browser refresh doesn't force past it. Appending a timestamp makes
@@ -20,7 +34,7 @@ window.fetchFresh = function (url, options = {}) {
 // by the station popup (render.js) and gauges.html (gauges.js), the two
 // places this timestamp reaches the public.
 window.formatHourRange = function (endDate, opts = {}) {
-  const tz = opts.timeZone || "America/Edmonton";
+  const tz = opts.timeZone || window.AB_TZ;
   if (!(endDate instanceof Date) || isNaN(endDate)) return "";
 
   const startDate = new Date(endDate.getTime() - 60 * 60 * 1000);
@@ -328,7 +342,7 @@ window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.c
       // ---- FIX 5: Edmonton timestamp ----
       const dt = new Date(e.ReadingDate);
       e.DisplayDate = dt.toLocaleString("en-CA", {
-        timeZone: "America/Edmonton",
+        timeZone: window.AB_TZ,
         hour12: true
       });
     
@@ -423,7 +437,7 @@ window.dataReady = fetchFresh('https://status.krmenvironmental.com/data/last6h.c
       const row = rows?.find(r => r.ParameterName === param);
       if (param === "AQHI" && (!row || row.stale)) {
         const o = window.aqhiOverrideMap?.[station];
-        return o ? o.time.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) + " (our station data; government feed delayed)" : null;
+        return o ? o.time.toLocaleString("en-CA", { timeZone: window.AB_TZ, hour12: true }) + " (our station data; government feed delayed)" : null;
       }
       return row?.DisplayDate ?? null;
     };
@@ -482,7 +496,7 @@ window.dataReady = Promise.all([window.dataReady, window.metFillReady]).then(([d
       const row = {
         StationName: name, ParameterName: r.param, Value: Number(r.value), ReadingDate: t.toISOString(),
         Latitude: s.lat, Longitude: s.lon, Units: unitsLookup[r.param] || "", Shortform: shortLookup[r.param] || r.param,
-        DisplayDate: t.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) + " (station data)",
+        DisplayDate: t.toLocaleString("en-CA", { timeZone: window.AB_TZ, hour12: true }) + " (station data)",
         stale: age > 3, ours: true
       };
       if (i >= 0) rows[i] = row; else rows.push(row);
@@ -512,7 +526,7 @@ window.fetchAllStationData = async function () {
     if (!o || o.lat == null || o.lon == null) return null;
     const row = { StationName: n, ParameterName: "AQHI", Value: o.aqhi, ReadingDate: o.time.toISOString(),
                   Shortform: "AQHI", Units: "", Latitude: o.lat, Longitude: o.lon,
-                  DisplayDate: o.time.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour12: true }) };
+                  DisplayDate: o.time.toLocaleString("en-CA", { timeZone: window.AB_TZ, hour12: true }) };
     return { stationName: n, lat: o.lat, lon: o.lon, aqhi: o.aqhi, aqhi_stale: true, aqhi_override: o,
              rows: [row], html: window.buildStationPopup([row]) };
   }).filter(Boolean);

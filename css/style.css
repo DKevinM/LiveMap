@@ -724,3 +724,9 @@ html, body {
   position: absolute; left: 0; top: 0; width: 30px; height: 30px;
   line-height: 30px; text-align: center; font-weight: 700; font-size: 12px;
 }
+
+/* Nothing clicked yet (or Clear Selection): hide the empty white panel instead of showing a blank bar
+   beside the zoom buttons (2026-11-24). Browsers without :has() just keep the old look. */
+#panel:has(#aqhi-content:empty):has(#station-gauges:empty) {
+  display: none;
+}

@@ -289,10 +289,10 @@
   Data: Alberta Environment and Protected Areas &middot; West Central Airshed Society. Weather: Open-Meteo. For the full interactive map with all layers, sensors, and grids, use the <a href="WCAS_public.html">full WCAS map</a>.
 </footer>
 
-<script src="js/data.js?v=20261123b"></script>
+<script src="js/data.js?v=20261124a"></script>
 <script src="js/data_notice.js"></script>
 <script src="js/purpleair.js?v=20261123b"></script>
-<script src="js/weather.js"></script>
+<script src="js/weather.js?v=20261124a"></script>
 <script>
 (function () {
   const STATIONS = [
@@ -521,7 +521,7 @@
     let chips = "";
     for (let j = 1; j <= 4 && (i + j) < data.hourly.time.length; j++) {
       const t = new Date(data.hourly.time[i + j]);
-      const hhmm = t.toLocaleTimeString("en-CA", { hour: "numeric", timeZone: "America/Edmonton" });
+      const hhmm = t.toLocaleTimeString("en-CA", { hour: "numeric", timeZone: window.AB_TZ });
       const temp = data.hourly.temperature_2m?.[i + j];
       const precip = data.hourly.precipitation?.[i + j];
       chips += `
@@ -723,7 +723,7 @@
     uvEl.textContent = "—";
     try {
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${station.lat}&longitude=${station.lon}` +
-        `&hourly=uv_index&timezone=America%2FEdmonton`;
+        `&hourly=uv_index&timezone=GMT`;
       const res = await fetch(url);
       const data = await res.json();
       if (data.hourly && data.hourly.uv_index && data.hourly.time) {

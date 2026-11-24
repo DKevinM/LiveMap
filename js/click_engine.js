@@ -28,17 +28,26 @@ window.handleMapClick = async function(lat, lng, map) {
 
 
   // ---- 2) TWO CLOSEST AQHI STATIONS ----
+  // Only stations with a CURRENT AQHI, the same number the dot shows: the government AQHI when it is
+  // under 3 h old, otherwise our own MDS failover AQHI. Stations with no AQHI at all (Gold Bar, Beverly,
+  // O'Morrow, oil sands TRS sites) or only a stale one are skipped - before 2026-11-24 a downtown
+  // Edmonton click listed Gold Bar "—" and missed Edmonton East.
+  const currentAQHI = s => {
+    const ov = s.aqhi_override;
+    if (ov && Number.isFinite(Number(ov.aqhi))) return Number(ov.aqhi);
+    if (!s.aqhi_stale && s.aqhi !== null && isFinite(s.aqhi)) return Number(s.aqhi);
+    return null;
+  };
   const closestStations = (window.AppData?.stations || [])
     .map(s => ({
       station: s.stationName,
       lat: Number(s.lat),
       lng: Number(s.lon),
-      aqhi: (s.aqhi !== null && isFinite(s.aqhi))
-        ? Number(s.aqhi)
-        : null,
+      aqhi: currentAQHI(s),
       dist_km: getDistance(lat, lng, s.lat, s.lon) / 1000
     }))
-    .filter(s => isFinite(s.lat) && isFinite(s.lng))
+    .filter(s => isFinite(s.lat) && isFinite(s.lng) && s.aqhi !== null)
+    .filter(s => !window.APP_CONFIG?.excludeStations?.includes(s.station))
     .sort((a,b) => a.dist_km - b.dist_km)
     .slice(0,2);
 

@@ -18,9 +18,9 @@ function townRiskWord(v) {
 
 function townTime(iso) {
   const t = new Date(iso);
-  const opts = { timeZone: "America/Edmonton", hour: "numeric", minute: "2-digit" };
-  const sameDay = t.toLocaleDateString("en-CA", { timeZone: "America/Edmonton" }) ===
-                  new Date().toLocaleDateString("en-CA", { timeZone: "America/Edmonton" });
+  const opts = { timeZone: window.AB_TZ, hour: "numeric", minute: "2-digit" };
+  const sameDay = t.toLocaleDateString("en-CA", { timeZone: window.AB_TZ }) ===
+                  new Date().toLocaleDateString("en-CA", { timeZone: window.AB_TZ });
   if (!sameDay) Object.assign(opts, { month: "short", day: "numeric" });
   return t.toLocaleString("en-CA", opts);
 }

@@ -314,7 +314,7 @@ function dotPane(name, z) {
 function latestHourPopup(st) {
   const v = st.latest_hour.values || {};
   const end = new Date(st.latest_hour.hour_end_utc);
-  const tz = { timeZone: "America/Edmonton" };
+  const tz = { timeZone: window.AB_TZ };
   const hm = d => d.toLocaleTimeString("en-CA", Object.assign({ hour: "numeric", minute: "2-digit" }, tz));
   const start = new Date(end.getTime() - 3600 * 1000);
   const day = end.toLocaleDateString("en-CA", Object.assign({ month: "short", day: "numeric" }, tz));
@@ -706,7 +706,7 @@ window.renderMap = async function () {
     } else {
       color = Number.isFinite(aqhiVal) ? window.getAQHIColor(aqhiVal) : "#888888";
     }
-    const fmtLocal = t => t.toLocaleString("en-CA", { timeZone: "America/Edmonton", hour: "numeric", minute: "2-digit", weekday: "short" });
+    const fmtLocal = t => t.toLocaleString("en-CA", { timeZone: window.AB_TZ, hour: "numeric", minute: "2-digit", weekday: "short" });
     const staleNoteHTML = ov
       ? `<div style="margin:4px 0;padding:4px 6px;background:#eef6ff;border-left:3px solid #0099cb;font-size:12px">AQHI ${ov.aqhi > 10 ? "10+" : Math.round(ov.aqhi)} from our own station data at ${fmtLocal(ov.time)}. The government feed is delayed${aqhiRow ? ` (last update ${fmtLocal(new Date(aqhiRow.ReadingDate))})` : ""}.${ov.how ? `<br><span style="color:#555">Sources: ${ov.how}</span>` : ""}</div>`
       // only when there IS an old government number to grey out - a blank AQHI row (Enoch/Jasper since their
@@ -715,12 +715,17 @@ window.renderMap = async function () {
         ?`<div style="margin:4px 0;padding:4px 6px;background:#f3f3f3;border-left:3px solid #999;font-size:12px">Shown in grey: the government AQHI last updated ${fmtLocal(new Date(aqhiRow.ReadingDate))}, over 3 hours ago.</div>`
         : "";
   
-    // timestamp: use latest ReadingDate across the rows (rows[0] is NOT reliable)
-    let latest = null;
+    // timestamp: latest ReadingDate across rows that HAVE a value (rows[0] is NOT reliable). AEPA posts
+    // the next hour as blank rows before the numbers arrive; counting those put the heading an hour
+    // ahead of the readings under it (2026-11-24). Falls back to blank rows for an all-blank station.
+    let latest = null, latestAny = null;
     rows.forEach(r => {
       const t = new Date(r.ReadingDate);
-      if (!latest || t > latest) latest = t;
+      if (isNaN(t)) return;
+      if (!latestAny || t > latestAny) latestAny = t;
+      if (r.Value !== null && r.Value !== "" && isFinite(r.Value) && (!latest || t > latest)) latest = t;
     });
+    latest = latest || latestAny;
   
     const displayTime = latest ? window.formatHourRange(latest) : "";
   

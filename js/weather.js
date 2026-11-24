@@ -11,11 +11,11 @@ window.showCurrentWeather = async function(lat, lng) {
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
     `&current_weather=true` +
     `&hourly=uv_index` +
-    `&timezone=America%2FEdmonton`;
+    `&timezone=GMT`;
 
   try {
     const r = await fetch(url);
-    const data = await r.json();
+    const data = window.omUTC(await r.json());
 
     const cw = data.current_weather;
     if (!cw) return;
@@ -23,7 +23,7 @@ window.showCurrentWeather = async function(lat, lng) {
     const html = `
       <table class="popup-weather">
         <tr><td><strong>Time</strong></td>
-            <td>${new Date(cw.time).toLocaleString("en-CA", {timeZone: "America/Edmonton"})}</td></tr>
+            <td>${new Date(cw.time).toLocaleString("en-CA", {timeZone: window.AB_TZ})}</td></tr>
         <tr><td><strong>Temperature</strong></td>
             <td>${Math.round(cw.temperature)} °C</td></tr>
         <tr><td><strong>Wind</strong></td>
@@ -47,11 +47,11 @@ window.showWeatherForPoint = async function(lat, lng) {
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
     `&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,wind_direction_10m,uv_index` +
-    `&timezone=America%2FEdmonton`;
+    `&timezone=GMT`;
 
   try {
     const r = await fetch(url);
-    const data = await r.json();
+    const data = window.omUTC(await r.json());
     updateMiniWeather(data);   // <- call the mini renderer directly
   } catch (e) {
     console.warn("Weather fetch failed:", e);
@@ -81,7 +81,7 @@ function updateMiniWeather(data) {
     const hhmm = t.toLocaleTimeString("en-CA", {
       hour: "2-digit",
       minute: "2-digit",
-      timeZone: "America/Edmonton"
+      timeZone: window.AB_TZ
     });
 
     
@@ -137,7 +137,7 @@ window.extractCurrentWeather = function (data) {
   if (i >= data.hourly.time.length) i = data.hourly.time.length - 1;
   
   return {
-    time: now.toLocaleString("en-CA", { timeZone: "America/Edmonton" }),
+    time: now.toLocaleString("en-CA", { timeZone: window.AB_TZ }),
     temp: data.hourly.temperature_2m[i],
     rh: data.hourly.relative_humidity_2m[i],
     precip: data.hourly.precipitation[i],
@@ -153,11 +153,11 @@ window.fetchWeather = async function(lat, lng) {
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
     `&hourly=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,wind_direction_10m,uv_index` +
-    `&timezone=America%2FEdmonton`;
+    `&timezone=GMT`;
 
   try {
     const r = await fetch(url);
-    return await r.json();
+    return window.omUTC(await r.json());
   } catch (e) {
     console.warn("Weather fetch failed:", e);
     return null;
@@ -209,7 +209,7 @@ window.buildPopupWeatherTable = function(data) {
     const hhmm = t.toLocaleTimeString("en-CA", {
       hour: "2-digit",
       minute: "2-digit",
-      timeZone: "America/Edmonton"
+      timeZone: window.AB_TZ
     });
 
     const temp = data.hourly.temperature_2m?.[i + j];
