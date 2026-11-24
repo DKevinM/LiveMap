@@ -744,8 +744,15 @@ async function fetchNpriLive() {
   const pageSize = 2000;
   while (true) {
     const url = `${base}?where=ProvinceCode%3D%27AB%27&outFields=${fields}&f=geojson&resultRecordCount=${pageSize}&resultOffset=${offset}`;
-    const res = await fetch(url);
-    if (!res.ok) { console.error("NPRI live fetch failed:", res.status); break; }
+    // ECCC's server throws intermittent 500s ("Error performing query operation") - the same request
+    // works a second later (2026-11-24 03:00-04:00 MDT), so retry each page up to 3 times.
+    let res = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try { res = await fetch(url); } catch (e) { res = null; }
+      if (res && res.ok) break;
+      await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+    }
+    if (!res || !res.ok) { console.warn("NPRI live fetch failed after 3 tries:", res ? res.status : "network"); break; }
     const page = await res.json();
     const feats = page.features || [];
     allFeatures = allFeatures.concat(feats);
