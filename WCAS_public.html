@@ -75,7 +75,7 @@
     };
   </script>
 
-  <link rel="stylesheet" href="css/style.css?v=20261125f">
+  <link rel="stylesheet" href="css/style.css?v=20261125h">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
@@ -233,7 +233,7 @@
 <script src="js/data_notice.js" defer></script>
 <script src="js/aqhi.js?v=20261124b" defer></script>
 <script src="js/click_utils.js" defer></script>
-<script src="js/render.js?v=20261125g" defer></script>
+<script src="js/render.js?v=20261125h" defer></script>
 <script src="js/nav_fixes.js" defer></script>
 <script src="js/map.js?v=20261124b" defer></script>
 <script src="js/purpleair.js?v=20261123b" defer></script>
@@ -355,6 +355,7 @@ window.renderDNAChartInto = function (containerId, rows, aqhiVal) {
     <h3>What you see on the map</h3>
     <div class="row"><span class="dot" style="background:#0099cb">2</span><span><b>Big circles</b> are official monitoring stations. The number is the AQHI right now.</span></div>
     <div class="row"><span class="dot small" style="background:#01cbff"></span><span><b>Small circles</b> are low-cost PurpleAir sensors. The number is an <b>estimated AQHI</b> (see below).</span></div>
+    <div class="row"><span class="dot" style="background:none;border:0;display:inline-flex;align-items:center;justify-content:center"><span style="display:block;width:16px;height:16px;transform:rotate(45deg);background:#01cbff;border:1.5px solid #111;border-radius:2px"></span></span><span><b>Diamonds</b> are smaller monitors: E-BAM dust monitors and Alberta&rsquo;s &ldquo;Sensor&rdquo; sites. An E-BAM only measures dust (PM2.5), so its number is an estimate. One that stops reporting for a week is taken off the map.</span></div>
     <div class="row"><span class="dot" style="background:rgba(1,203,255,.45);border-radius:4px"></span><span><b>Shading</b> is our best estimate of the AQHI in the areas between monitors.</span></div>
     <div class="row"><span class="dot" style="background:#999"></span><span><b>Grey</b> means no reading right now.</span></div>
     <p><b>Click anything to learn more.</b> Tap a section below for how it works.</p>

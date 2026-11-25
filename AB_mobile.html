@@ -341,8 +341,8 @@
   }
 
   function ebamMini(s) {
-    const m = L.marker([s.lat, s.lon], { icon: L.divIcon({ className: "ebam-mini", iconSize: [20, 20], iconAnchor: [10, 10],
-      html: '<div style="width:12px;height:12px;margin:4px;transform:rotate(45deg);background:#6c757d;border:2px solid #fff;box-shadow:0 0 0 1px #555"></div>' }) }).addTo(map);
+    const m = L.marker([s.lat, s.lon], { icon: L.divIcon({ className: "ebam-mini", iconSize: [24, 24], iconAnchor: [12, 12],
+      html: '<div style="width:15px;height:15px;margin:4.5px;transform:rotate(45deg);background:#6c757d;border:2px solid #fff;box-shadow:0 0 0 1px #555"></div>' }) }).addTo(map);
     m.setStyle = o => {
       const d = m.getElement() && m.getElement().firstChild;
       if (!d) return;

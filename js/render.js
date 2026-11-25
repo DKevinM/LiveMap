@@ -320,7 +320,7 @@ window.ebamIcon = function (fill, aq, dashed) {
   const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(fill || "");
   const darkFill = m && (0.299 * parseInt(m[1], 16) + 0.587 * parseInt(m[2], 16) + 0.114 * parseInt(m[3], 16)) < 120;
   return L.divIcon({
-    className: "ebam-icon" + (dashed ? " est" : ""), iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12],
+    className: "ebam-icon" + (dashed ? " est" : ""), iconSize: [32, 32], iconAnchor: [16, 16], popupAnchor: [0, -14],
     html: `<div class="bd" style="background:${fill}"></div><div class="bn" style="color:${darkFill ? "#fff" : "#000"}">${aq == null ? "–" : aq > 10 ? "10+" : Math.round(aq)}</div>`
   });
 };

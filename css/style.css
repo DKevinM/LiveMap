@@ -731,10 +731,10 @@ html, body {
   display: none;
 }
 
-/* E-BAM + "Sensor" station diamonds (2026-11-25), same size as the Bettair diamonds - see window.ebamIcon in js/render.js */
+/* E-BAM + "Sensor" station diamonds (2026-11-25), same size as the Bettair diamonds (enlarged 2026-11-25, Kevin) - see window.ebamIcon in js/render.js */
 .ebam-icon { background: none; border: 0; }
-.ebam-icon .bd { position: absolute; left: 4px; top: 4px; width: 18px; height: 18px; transform: rotate(45deg);
+.ebam-icon .bd { position: absolute; left: 5px; top: 5px; width: 22px; height: 22px; transform: rotate(45deg);
   border: 1.5px solid #111; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.4); box-sizing: border-box; }
 .ebam-icon.est .bd { border: 1.5px dashed #000; }
-.ebam-icon .bn { position: absolute; left: 0; top: 0; width: 26px; height: 26px; display: flex; align-items: center;
-  justify-content: center; font: 700 11px/1 system-ui, sans-serif; pointer-events: none; }
+.ebam-icon .bn { position: absolute; left: 0; top: 0; width: 32px; height: 32px; display: flex; align-items: center;
+  justify-content: center; font: 700 12px/1 system-ui, sans-serif; pointer-events: none; }
