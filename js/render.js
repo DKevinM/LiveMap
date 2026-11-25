@@ -314,6 +314,17 @@ function dotPane(name, z) {
   return name;
 }
 
+// Diamond for E-BAMs and "Sensor" stations (Kevin 2026-11-25): same size as the Bettair diamonds - bigger than a
+// PurpleAir dot, smaller than a station circle. css/style.css .ebam-icon. dashed = estimate (eAQHI layer).
+window.ebamIcon = function (fill, aq, dashed) {
+  const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(fill || "");
+  const darkFill = m && (0.299 * parseInt(m[1], 16) + 0.587 * parseInt(m[2], 16) + 0.114 * parseInt(m[3], 16)) < 120;
+  return L.divIcon({
+    className: "ebam-icon" + (dashed ? " est" : ""), iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12],
+    html: `<div class="bd" style="background:${fill}"></div><div class="bn" style="color:${darkFill ? "#fff" : "#000"}">${aq == null ? "–" : aq > 10 ? "10+" : Math.round(aq)}</div>`
+  });
+};
+
 // Popup for a station read straight from the airshed's MDS (not yet in
 // Alberta's feed, e.g. Wabamun, 2026-10-06): the latest complete hour's
 // readings plus the AQHI - just the immediate data, no history or gauge.
@@ -364,7 +375,12 @@ function loadEstimatedAQHI() {
         if (isMdsDirectStation && window.APP_CONFIG?.excludeStations?.includes(st.station)) return;
         const targetLayer = isMdsDirectStation ? window.layers.stations : window.layers.eaqhi;
         const color = window.getAQHIColor(st.AQHI);
-        const marker = L.circleMarker([st.lat, st.lon], {
+        // E-BAM stand-in estimate: dashed diamond; none at all once it is off the maps (7-day rule, 2026-11-25)
+        const isEbamEst = window.isEBAM(st.station);
+        if (isEbamEst && window.ebamStatus?.stations?.[st.station]?.on_map === false) return;
+        const marker = isEbamEst
+          ? L.marker([st.lat, st.lon], { icon: window.ebamIcon(color, st.AQHI, true), pane: dotPane("sensorPane", 440), keyboard: false })
+          : L.circleMarker([st.lat, st.lon], {
           radius: 18,
           fillColor: color,
           color: "#000",
@@ -405,7 +421,8 @@ function loadEstimatedAQHI() {
         `);
         marker.addTo(targetLayer);
         
-        // add AQHI number label
+        // add AQHI number label (the E-BAM diamond carries its own number)
+        if (isEbamEst) return;
         const label = L.marker([st.lat, st.lon], {
           icon: L.divIcon({
             className: "aqhi-label",
@@ -905,12 +922,27 @@ window.renderMap = async function () {
          </div>`
       : "";
 
+    // E-BAMs (portable PM2.5 monitors) are diamonds, not circles (Kevin 2026-11-25). They measure PM2.5 only,
+    // so the government feed has no AQHI for them; the diamond shows an AQHI from PM2.5 alone, the same rule as
+    // the PurpleAir dots. One with no current reading is grey, and comes off the map after 7 days (data.js).
+    const isEbam = window.isEBAM(stationName);
+    // "Sensor" stations on the government feed (Leduc/Cochrane/Olds Sensor) are diamonds too, Kevin 2026-11-25;
+    // they keep their own AQHI and the usual grey-when-stale colour.
+    const isDiamond = isEbam || window.isSensorStation(stationName);
+    const ebamPm = isEbam ? rows.find(r => r.ParameterName === "Fine Particulate Matter" && r.Value !== null && r.Value !== "" && isFinite(r.Value)) : null;
+    const ebamAq = ebamPm ? window.paPmOnlyAQHI(Math.max(Number(ebamPm.Value), 0.1)) : null;
+    const ebamLast = isEbam ? window.ebamStatus?.stations?.[stationName]?.last_value_utc : null;
+    const ebamNoteHTML = !isEbam ? "" : ebamPm
+      ? `<div style="margin-top:6px;font-size:11px;color:#555;">E-BAM: a portable PM2.5 monitor (dust only, no gases). The number in the diamond is an AQHI from PM2.5 alone${ebamPm.stale ? "; grey because the reading is over 3 hours old" : ""}.</div>`
+      : `<div style="margin:4px 0;padding:4px 6px;background:#f3f3f3;border-left:3px solid #999;font-size:12px">E-BAM (portable PM2.5 monitor): <b>no reading${ebamLast ? " since " + fmtLocal(new Date(ebamLast)) : " in the last day"}</b>. It comes off the map after 7 days without a reading.</div>`;
+
     const popupHTML = `
       <strong>${stationName}</strong><br>
       <small>${displayTime}</small><br>
       <small>Hourly average</small><br><br>
       ${staleNoteHTML}
       ${paramListHTML}
+      ${ebamNoteHTML}
       ${rows.some(r => r.ours) ? `<div style="font-size:11px;color:#555;margin-top:2px;">Weather/precipitation from station data (not on the government feed)</div>` : ""}
       ${healthMsgHTML}
       ${smokeFxHTML}
@@ -928,7 +960,14 @@ window.renderMap = async function () {
       ? { maxWidth: 260, minWidth: 240 }
       : {};
 
-    const marker = L.circleMarker([lat, lon], {
+    const marker = isDiamond
+      ? L.marker([lat, lon], {
+          icon: isEbam
+            ? window.ebamIcon(ebamAq == null ? "#9e9e9e" : (ebamPm.stale ? "#bdbdbd" : window.getAQHIColor(ebamAq)), ebamAq)
+            : window.ebamIcon(Number.isFinite(aqhiVal) && aqhiVal >= 1 ? color : "#9e9e9e", Number.isFinite(aqhiVal) && aqhiVal >= 1 ? aqhiVal : null),
+          pane: dotPane("stationPane", 450), keyboard: false, riseOnHover: true
+        }).bindPopup(popupHTML, popupOptions)
+      : L.circleMarker([lat, lon], {
       radius: 18,
       fillColor: color,
       color: "#222",
@@ -940,7 +979,7 @@ window.renderMap = async function () {
     // Plotly needs a real DOM element, which only exists once Leaflet
     // actually opens this popup - popupopen is the right hook, not
     // build time (the div isn't in the document until then).
-    if (window.APP_CONFIG?.showDNAChart && typeof window.renderDNAChartInto === "function") {
+    if (!isEbam && window.APP_CONFIG?.showDNAChart && typeof window.renderDNAChartInto === "function") {
       marker.on("popupopen", function () {
         window.renderDNAChartInto(dnaChartId, rows, aqhiVal);
       });
@@ -953,7 +992,7 @@ window.renderMap = async function () {
     
     
     // add AQHI number inside circle
-    if (Number.isFinite(aqhiVal)) {
+    if (!isDiamond && Number.isFinite(aqhiVal)) {
     
       const label = L.marker([lat, lon], {
         icon: L.divIcon({

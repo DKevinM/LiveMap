@@ -506,6 +506,22 @@ window.dataReady = Promise.all([window.dataReady, window.metFillReady]).then(([d
   return d;
 });
 
+// ---------------- E-BAMs (Kevin 2026-11-25) ----------------
+// E-BAMs (portable PM2.5 monitors, names start "E-BAM") draw as diamonds (render.js). One with no real reading
+// for over 7 days comes off every map: AB_datapull/ebam_status.py drops its blank rows from last6h.csv at the
+// source; this repeats the cut here in case a page is reading an older copy of the file. ebam_status.json
+// also gives each E-BAM's last real reading for the "no reading since" popup.
+window.isEBAM = name => /^e-?bam/i.test(String(name || "").trim());
+window.isSensorStation = name => /\bsensor\b/i.test(String(name || ""));   // Leduc/Cochrane/Olds Sensor: diamonds, normal rules otherwise
+window.ebamStatusReady = fetchFresh('https://status.krmenvironmental.com/data/ebam_status.json')
+  .then(r => (r.ok ? r.json() : null))
+  .catch(() => null)
+  .then(j => (window.ebamStatus = j));
+window.dataReady = Promise.all([window.dataReady, window.ebamStatusReady]).then(([d, es]) => {
+  Object.entries(es?.stations || {}).forEach(([n, s]) => { if (s.on_map === false) delete window.dataByStation[n]; });
+  return d;
+});
+
 // ---------------- STATIONS FOR MAP ----------------
 window.fetchAllStationData = async function () {
   await window.dataReady;

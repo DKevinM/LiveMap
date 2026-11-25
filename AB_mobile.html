@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
+  .ebam-mini { background: none; border: 0; }   /* E-BAM diamonds, 2026-11-25 */
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
   body {
@@ -296,7 +297,7 @@
   Data: Alberta Environment and Protected Areas, plus community PurpleAir sensors. Weather: Open-Meteo. For the full interactive map with all stations, sensors, and layers, use the <a href="AB_Overview.html">full Alberta map</a>.
 </footer>
 
-<script src="js/data.js?v=20261124c"></script>
+<script src="js/data.js?v=20261125f"></script>
 <script src="js/data_notice.js"></script>
 <script src="js/purpleair.js?v=20261123b"></script>
 <script src="js/weather.js?v=20261124a"></script>
@@ -339,6 +340,19 @@
     renderAll();
   }
 
+  function ebamMini(s) {
+    const m = L.marker([s.lat, s.lon], { icon: L.divIcon({ className: "ebam-mini", iconSize: [20, 20], iconAnchor: [10, 10],
+      html: '<div style="width:12px;height:12px;margin:4px;transform:rotate(45deg);background:#6c757d;border:2px solid #fff;box-shadow:0 0 0 1px #555"></div>' }) }).addTo(map);
+    m.setStyle = o => {
+      const d = m.getElement() && m.getElement().firstChild;
+      if (!d) return;
+      if (o.fillColor) d.style.background = o.fillColor;
+      if (o.radius) d.style.transform = `rotate(45deg) scale(${o.radius / 8})`;
+    };
+    m.bringToFront = () => m.setZIndexOffset(1000);
+    return m;
+  }
+
   function highlightMarker(name) {
     Object.entries(markersByName).forEach(([n, m]) => {
       const selected = n === name;
@@ -349,7 +363,12 @@
 
   function colorMarkers() {
     STATIONS.forEach(s => {
-      const raw = window.getStationValue(s.name, "AQHI");
+      let raw = window.getStationValue(s.name, "AQHI");
+      // E-BAM: PM2.5 only, so colour from PM2.5 alone (same rule as the desktop map's diamonds)
+      if (window.isEBAM && window.isEBAM(s.name)) {
+        const pm = window.getStationValue(s.name, "Fine Particulate Matter");
+        raw = pm === null || pm === undefined || pm === "" ? null : window.paPmOnlyAQHI(Math.max(Number(pm), 0.1));
+      }
       const color = (raw === null || raw === undefined || raw === "") ? "#6c757d" : window.getAQHIColor(raw);
       if (markersByName[s.name]) markersByName[s.name].setStyle({ fillColor: color });
     });
@@ -717,7 +736,10 @@
     }).addTo(map);
 
     STATIONS.forEach(s => {
-      const marker = L.circleMarker([s.lat, s.lon], {
+      // E-BAMs and "Sensor" stations are small diamonds (Kevin 2026-11-25); setStyle shim so highlight/colour code works unchanged
+      const marker = window.isEBAM && (window.isEBAM(s.name) || window.isSensorStation(s.name))
+        ? ebamMini(s)
+        : L.circleMarker([s.lat, s.lon], {
         radius: 8, color: "#fff", weight: 2, fillColor: "#6c757d", fillOpacity: 0.9
       }).addTo(map);
       marker.bindTooltip(s.name, { direction: "top" });
